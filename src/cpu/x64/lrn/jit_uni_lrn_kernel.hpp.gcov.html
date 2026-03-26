@@ -1,0 +1,349 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/lrn/jit_uni_lrn_kernel.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/lrn">src/cpu/x64/lrn</a> - jit_uni_lrn_kernel.hpp<span style="font-size: 80%;"> (source / <a href="jit_uni_lrn_kernel.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">92.1&nbsp;%</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">35</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">68.0&nbsp;%</td>
+            <td class="headerCovTableEntry">103</td>
+            <td class="headerCovTableEntry">70</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2016 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_LRN_JIT_UNI_LRN_KERNEL_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_LRN_JIT_UNI_LRN_KERNEL_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;cpu/x64/utils/jit_io_helper.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace dnnl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace impl {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace cpu {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace x64 {</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : struct bf16_emulation_t;</span>
+<span id="L32"><span class="lineNum">      32</span>              : struct jit_args_fwd_t {</span>
+<span id="L33"><span class="lineNum">      33</span>              :     const void *src;</span>
+<span id="L34"><span class="lineNum">      34</span>              :     void *dst, *scratch, *bwd_intermediate_res;</span>
+<span id="L35"><span class="lineNum">      35</span>              : };</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : struct jit_args_bwd_t {</span>
+<span id="L38"><span class="lineNum">      38</span>              :     const void *src, *diff_dst, *scratch, *bwd_intermediate_res;</span>
+<span id="L39"><span class="lineNum">      39</span>              :     void *diff_src;</span>
+<span id="L40"><span class="lineNum">      40</span>              : };</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span>              : struct nchw8c_across_t {</span>
+<span id="L43"><span class="lineNum">      43</span>              :     /*  version:</span>
+<span id="L44"><span class="lineNum">      44</span>              :     *  -1: channels 0..7,</span>
+<span id="L45"><span class="lineNum">      45</span>              :     *   1: channels C-8 .. C-1,</span>
+<span id="L46"><span class="lineNum">      46</span>              :     *   0: other channels</span>
+<span id="L47"><span class="lineNum">      47</span>              :     *   3: channels only for this kernel(without prev and next)</span>
+<span id="L48"><span class="lineNum">      48</span>              :     */</span>
+<span id="L49"><span class="lineNum">      49</span>              :     int H, W, version;</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        4704 :     nchw8c_across_t(int h, int w, int v) : H(h), W(w), version(v) {}</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        3126 :     nchw8c_across_t() : nchw8c_across_t(0, 0, 0) {}</span></span>
+<span id="L52"><span class="lineNum">      52</span>              : };</span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              : struct within_config_t {</span>
+<span id="L55"><span class="lineNum">      55</span>              :     const int H, W, C, size;</span>
+<span id="L56"><span class="lineNum">      56</span>              :     const format_tag_t dat_tag;</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">        4704 :     within_config_t(int h, int w, int c, int s, format_tag_t dat_tag)</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        4704 :         : H(h), W(w), C(c), size(s), dat_tag(dat_tag) {}</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        2766 :     within_config_t() : within_config_t(0, 0, 0, 0, dnnl_format_tag_undef) {}</span></span>
+<span id="L60"><span class="lineNum">      60</span>              : };</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              : struct nchw_across_t {</span>
+<span id="L63"><span class="lineNum">      63</span>              :     int C, HW, tail;</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        3912 :     nchw_across_t(int c, int hw, int t) : C(c), HW(hw), tail(t) {}</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        2820 :     nchw_across_t() : nchw_across_t(0, 0, 0) {}</span></span>
+<span id="L66"><span class="lineNum">      66</span>              : };</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              : struct nhwc_across_t {</span>
+<span id="L69"><span class="lineNum">      69</span>              :     int C;</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        3912 :     nhwc_across_t(int c) : C(c) {}</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        3816 :     nhwc_across_t() : nhwc_across_t(0) {}</span></span>
+<span id="L72"><span class="lineNum">      72</span>              : };</span>
+<span id="L73"><span class="lineNum">      73</span>              : </span>
+<span id="L74"><span class="lineNum">      74</span>              : enum class lrn_config_t {</span>
+<span id="L75"><span class="lineNum">      75</span>              :     none = 0,</span>
+<span id="L76"><span class="lineNum">      76</span>              :     nchw8c_across,</span>
+<span id="L77"><span class="lineNum">      77</span>              :     within_config,</span>
+<span id="L78"><span class="lineNum">      78</span>              :     nchw_across,</span>
+<span id="L79"><span class="lineNum">      79</span>              :     nhwc_across,</span>
+<span id="L80"><span class="lineNum">      80</span>              : };</span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span>              : template &lt;class Derived&gt;</span>
+<span id="L83"><span class="lineNum">      83</span>              : class jit_uni_lrn_kernel_t; // primary template</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span>              : template &lt;template &lt;cpu_isa_t isa, data_type_t d_type&gt; class Derived,</span>
+<span id="L86"><span class="lineNum">      86</span>              :         cpu_isa_t isa, data_type_t d_type&gt;</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        4704 : class jit_uni_lrn_kernel_t&lt;Derived&lt;isa, d_type&gt;&gt; : public jit_generator_t {</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : public:</span>
+<span id="L89"><span class="lineNum">      89</span>              :     jit_uni_lrn_kernel_t(const char *name = jit_name());</span>
+<span id="L90"><span class="lineNum">      90</span>              :     jit_uni_lrn_kernel_t(</span>
+<span id="L91"><span class="lineNum">      91</span>              :             const within_config_t &amp;J, const char *name = jit_name());</span>
+<span id="L92"><span class="lineNum">      92</span>              : </span>
+<span id="L93"><span class="lineNum">      93</span>              :     ~jit_uni_lrn_kernel_t() override;</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_lrn_kernel_t);</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :     // TODO: why use double simd for sse41?</span>
+<span id="L97"><span class="lineNum">      97</span>              :     static constexpr int VECTOR_LENGTH</span>
+<span id="L98"><span class="lineNum">      98</span>              :             = (cpu_isa_traits_t&lt;(isa &gt; sse41 ? isa : avx2)&gt;::vlen</span>
+<span id="L99"><span class="lineNum">      99</span>              :                     / sizeof(float));</span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span>              : protected:</span>
+<span id="L102"><span class="lineNum">     102</span>              :     using Vmm = typename cpu_isa_traits_t&lt;isa&gt;::Vmm;</span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span>              :     void load_constant(float constant, const Vmm &amp;v_constant,</span>
+<span id="L105"><span class="lineNum">     105</span>              :             const Xbyak::Xmm &amp;x_constant);</span>
+<span id="L106"><span class="lineNum">     106</span>              :     void within_loop(</span>
+<span id="L107"><span class="lineNum">     107</span>              :             const within_config_t &amp;config, int max_reg_blocks, prop_kind_t pk);</span>
+<span id="L108"><span class="lineNum">     108</span>              :     void within_body_reg_blocked(int loop_count, int max_reg_block, int hoff,</span>
+<span id="L109"><span class="lineNum">     109</span>              :             int Hoff, int woff, int Woff, int stride, prop_kind_t pk);</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :     const bool emulate_bfloat_ = false;</span>
+<span id="L112"><span class="lineNum">     112</span>              :     const Xbyak::Zmm bf16_emu_reserv_1_ = Xbyak::Zmm(28);</span>
+<span id="L113"><span class="lineNum">     113</span>              :     const Xbyak::Zmm bf16_emu_reserv_2_ = Xbyak::Zmm(29);</span>
+<span id="L114"><span class="lineNum">     114</span>              :     const Xbyak::Reg64 bf16_emu_scratch_ = this-&gt;rax;</span>
+<span id="L115"><span class="lineNum">     115</span>              :     const Xbyak::Zmm bf16_emu_reserv_3_ = Xbyak::Zmm(30);</span>
+<span id="L116"><span class="lineNum">     116</span>              :     const Xbyak::Zmm bf16_emu_reserv_4_ = Xbyak::Zmm(31);</span>
+<span id="L117"><span class="lineNum">     117</span>              :     std::unique_ptr&lt;bf16_emulation_t&gt; bf16_emu_;</span>
+<span id="L118"><span class="lineNum">     118</span>              :     const Xbyak::Reg64 h_ = this-&gt;r9;</span>
+<span id="L119"><span class="lineNum">     119</span>              :     const Xbyak::Reg64 w_ = this-&gt;r10;</span>
+<span id="L120"><span class="lineNum">     120</span>              :     const Xbyak::Reg64 imm_addr64_ = this-&gt;rbx;</span>
+<span id="L121"><span class="lineNum">     121</span>              :     const Xbyak::Reg64 reg_tmp_ = this-&gt;rsi;</span>
+<span id="L122"><span class="lineNum">     122</span>              :     static constexpr size_t simd_w_</span>
+<span id="L123"><span class="lineNum">     123</span>              :             = cpu_isa_traits_t&lt;isa&gt;::vlen / sizeof(float);</span>
+<span id="L124"><span class="lineNum">     124</span>              :     int single_pixel_offset_</span>
+<span id="L125"><span class="lineNum">     125</span>              :             = VECTOR_LENGTH * sizeof(typename prec_traits_t&lt;d_type&gt;::type);</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              :     io::jit_io_multi_dt_helper_t&lt;Vmm&gt; io_;</span>
+<span id="L128"><span class="lineNum">     128</span>              : };</span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span>              : template &lt;cpu_isa_t isa, data_type_t d_type&gt;</span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">        7824 : class jit_uni_lrn_fwd_kernel_t</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :     : public jit_uni_lrn_kernel_t&lt;jit_uni_lrn_fwd_kernel_t&lt;isa, d_type&gt;&gt; {</span>
+<span id="L133"><span class="lineNum">     133</span>              : public:</span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       11736 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_lrn_fwd_kernel_t)</span></span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span>              :     jit_uni_lrn_fwd_kernel_t(</span>
+<span id="L137"><span class="lineNum">     137</span>              :             const within_config_t &amp;J, float A, float K, prop_kind_t pk);</span>
+<span id="L138"><span class="lineNum">     138</span>              :     jit_uni_lrn_fwd_kernel_t(</span>
+<span id="L139"><span class="lineNum">     139</span>              :             const nchw8c_across_t &amp;J, float A, float K, prop_kind_t pk);</span>
+<span id="L140"><span class="lineNum">     140</span>              :     jit_uni_lrn_fwd_kernel_t(</span>
+<span id="L141"><span class="lineNum">     141</span>              :             const nhwc_across_t &amp;J, float A, float K, prop_kind_t pk);</span>
+<span id="L142"><span class="lineNum">     142</span>              :     jit_uni_lrn_fwd_kernel_t(</span>
+<span id="L143"><span class="lineNum">     143</span>              :             const nchw_across_t &amp;J, float A, float K, prop_kind_t pk);</span>
+<span id="L144"><span class="lineNum">     144</span>              :     ~jit_uni_lrn_fwd_kernel_t() override;</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span>              : private:</span>
+<span id="L147"><span class="lineNum">     147</span>              :     using Base = jit_uni_lrn_kernel_t&lt;jit_uni_lrn_fwd_kernel_t&lt;isa, d_type&gt;&gt;;</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        3912 :     void generate() override {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        3912 :         switch (config_) {</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        1488 :             case lrn_config_t::within_config:</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        1488 :                 generate(this-&gt;within_config_);</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        1488 :                 return;</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        1236 :             case lrn_config_t::nchw8c_across:</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">        1236 :                 generate(this-&gt;nchw8c_across_);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        1236 :                 return;</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">          96 :             case lrn_config_t::nhwc_across:</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">          96 :                 generate(this-&gt;nhwc_across_);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">          96 :                 return;</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        1092 :             case lrn_config_t::nchw_across:</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        1092 :                 generate(this-&gt;nchw_across_);</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        1092 :                 return;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaUNC">           0 :             default: assert(!&quot;Configuration not supported&quot;); return;</span></span>
+<span id="L164"><span class="lineNum">     164</span>              :         }</span>
+<span id="L165"><span class="lineNum">     165</span>              :     }</span>
+<span id="L166"><span class="lineNum">     166</span>              :     void generate(const within_config_t &amp;config);</span>
+<span id="L167"><span class="lineNum">     167</span>              :     void generate(const nchw8c_across_t &amp;config);</span>
+<span id="L168"><span class="lineNum">     168</span>              :     void generate(const nhwc_across_t &amp;config);</span>
+<span id="L169"><span class="lineNum">     169</span>              :     void generate(const nchw_across_t &amp;config);</span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span>              : public:</span>
+<span id="L172"><span class="lineNum">     172</span>              :     using Base::VECTOR_LENGTH;</span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span>              : private:</span>
+<span id="L175"><span class="lineNum">     175</span>              :     friend Base;</span>
+<span id="L176"><span class="lineNum">     176</span>              :     using typename Base::Vmm;</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              :     void within_body(int hoff, int Hoff, int woff, int Woff, int stride,</span>
+<span id="L179"><span class="lineNum">     179</span>              :             prop_kind_t pk, int reg_block = 1, int single_pixel_offset = 0);</span>
+<span id="L180"><span class="lineNum">     180</span>              :     void nchw_body(int tail, int HW, prop_kind_t pk, Xbyak::Ymm ymask,</span>
+<span id="L181"><span class="lineNum">     181</span>              :             Xbyak::Ymm ya, Xbyak::Ymm yb, Xbyak::Ymm yc, Xbyak::Ymm yd,</span>
+<span id="L182"><span class="lineNum">     182</span>              :             Xbyak::Ymm ye, Xbyak::Ymm ysum);</span>
+<span id="L183"><span class="lineNum">     183</span>              :     void nchw_body_sse41(int tail, int HW, prop_kind_t pk, Xbyak::Xmm xe_lo,</span>
+<span id="L184"><span class="lineNum">     184</span>              :             Xbyak::Xmm xe_hi, Xbyak::Xmm xsum_lo, Xbyak::Xmm xsum_hi);</span>
+<span id="L185"><span class="lineNum">     185</span>              :     void nchw_tail_sse41(int tail, Xbyak::Reg64 reg_dst, Xbyak::Xmm xtail_lo,</span>
+<span id="L186"><span class="lineNum">     186</span>              :             Xbyak::Xmm xtail_hi);</span>
+<span id="L187"><span class="lineNum">     187</span>              :     void move_data_pointers(int pixel_count, prop_kind_t pk);</span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span>              :     const Xbyak::Reg64 src_ = this-&gt;rax;</span>
+<span id="L190"><span class="lineNum">     190</span>              :     const Xbyak::Reg64 dst_ = this-&gt;r8;</span>
+<span id="L191"><span class="lineNum">     191</span>              :     const Xbyak::Reg64 scratch_ = this-&gt;r14;</span>
+<span id="L192"><span class="lineNum">     192</span>              :     const Xbyak::Reg64 bwd_intermediate_res_ = this-&gt;rdx;</span>
+<span id="L193"><span class="lineNum">     193</span>              :     const Xbyak::Reg64 store_addr_ = this-&gt;rbp;</span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              :     const Xbyak::Xmm xalpha_ = this-&gt;xmm0;</span>
+<span id="L196"><span class="lineNum">     196</span>              :     const Xbyak::Xmm xk_ = this-&gt;xmm1;</span>
+<span id="L197"><span class="lineNum">     197</span>              :     const Xbyak::Ymm yk_ = this-&gt;ymm1;</span>
+<span id="L198"><span class="lineNum">     198</span>              :     const Vmm valpha_ = Vmm(0);</span>
+<span id="L199"><span class="lineNum">     199</span>              :     const Vmm vk_ = Vmm(1);</span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              :     lrn_config_t config_;</span>
+<span id="L202"><span class="lineNum">     202</span>              :     const nchw8c_across_t nchw8c_across_;</span>
+<span id="L203"><span class="lineNum">     203</span>              :     const within_config_t within_config_;</span>
+<span id="L204"><span class="lineNum">     204</span>              :     const nchw_across_t nchw_across_;</span>
+<span id="L205"><span class="lineNum">     205</span>              :     const nhwc_across_t nhwc_across_;</span>
+<span id="L206"><span class="lineNum">     206</span>              :     float alpha_;</span>
+<span id="L207"><span class="lineNum">     207</span>              :     float k_;</span>
+<span id="L208"><span class="lineNum">     208</span>              :     prop_kind_t pk_;</span>
+<span id="L209"><span class="lineNum">     209</span>              :     static constexpr int stack_space_needed_ = 11 * 4 * sizeof(float) + 16;</span>
+<span id="L210"><span class="lineNum">     210</span>              : };</span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span>              : template &lt;cpu_isa_t isa, data_type_t d_type&gt;</span>
+<span id="L213"><span class="lineNum">     213</span>              : class jit_uni_lrn_bwd_kernel_t</span>
+<span id="L214"><span class="lineNum">     214</span>              :     : public jit_uni_lrn_kernel_t&lt;jit_uni_lrn_bwd_kernel_t&lt;isa, d_type&gt;&gt; {</span>
+<span id="L215"><span class="lineNum">     215</span>              : public:</span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">        2376 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_lrn_bwd_kernel_t)</span></span>
+<span id="L217"><span class="lineNum">     217</span>              : </span>
+<span id="L218"><span class="lineNum">     218</span>              :     jit_uni_lrn_bwd_kernel_t(</span>
+<span id="L219"><span class="lineNum">     219</span>              :             const nchw8c_across_t &amp;J, float A, float B, int use_h_parallel);</span>
+<span id="L220"><span class="lineNum">     220</span>              :     jit_uni_lrn_bwd_kernel_t(const within_config_t &amp;J, float A, float B);</span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span>              : private:</span>
+<span id="L223"><span class="lineNum">     223</span>              :     using Base = jit_uni_lrn_kernel_t&lt;jit_uni_lrn_bwd_kernel_t&lt;isa, d_type&gt;&gt;;</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         792 :     void generate() override {</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         792 :         switch (config_) {</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         342 :             case lrn_config_t::nchw8c_across:</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">         342 :                 generate(this-&gt;nchw8c_across_);</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">         342 :                 return;</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">         450 :             case lrn_config_t::within_config:</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">         450 :                 generate(this-&gt;within_config_);</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">         450 :                 return;</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaUNC">           0 :             default: assert(!&quot;Configuration not supported&quot;); return;</span></span>
+<span id="L234"><span class="lineNum">     234</span>              :         }</span>
+<span id="L235"><span class="lineNum">     235</span>              :     }</span>
+<span id="L236"><span class="lineNum">     236</span>              :     void generate(const nchw8c_across_t &amp;config);</span>
+<span id="L237"><span class="lineNum">     237</span>              :     void generate(const within_config_t &amp;config);</span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span>              : public:</span>
+<span id="L240"><span class="lineNum">     240</span>              :     using Base::VECTOR_LENGTH;</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              : private:</span>
+<span id="L243"><span class="lineNum">     243</span>              :     friend Base;</span>
+<span id="L244"><span class="lineNum">     244</span>              :     using typename Base::Vmm;</span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span>              :     void within_body(int hoff, int Hoff, int woff, int Woff, int stride,</span>
+<span id="L247"><span class="lineNum">     247</span>              :             prop_kind_t pk, int reg_block = 1, int single_pixel_offset = 0);</span>
+<span id="L248"><span class="lineNum">     248</span>              :     void move_data_pointers(int pixel_count, prop_kind_t pk);</span>
+<span id="L249"><span class="lineNum">     249</span>              : </span>
+<span id="L250"><span class="lineNum">     250</span>              :     lrn_config_t config_;</span>
+<span id="L251"><span class="lineNum">     251</span>              :     const nchw8c_across_t nchw8c_across_;</span>
+<span id="L252"><span class="lineNum">     252</span>              :     const within_config_t within_config_;</span>
+<span id="L253"><span class="lineNum">     253</span>              :     prop_kind_t pk_ = prop_kind::backward;</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span>              :     float nalphabeta_;</span>
+<span id="L256"><span class="lineNum">     256</span>              :     int use_h_parallelizm_;</span>
+<span id="L257"><span class="lineNum">     257</span>              :     const Xbyak::Reg64 src_ = this-&gt;rax;</span>
+<span id="L258"><span class="lineNum">     258</span>              :     const Xbyak::Reg64 diffsrc_ = this-&gt;r13;</span>
+<span id="L259"><span class="lineNum">     259</span>              :     const Xbyak::Reg64 diffdst_ = this-&gt;r14;</span>
+<span id="L260"><span class="lineNum">     260</span>              :     const Xbyak::Reg64 scratch_ = this-&gt;r15;</span>
+<span id="L261"><span class="lineNum">     261</span>              :     const Xbyak::Reg64 bwd_intermediate_res_ = this-&gt;rdx;</span>
+<span id="L262"><span class="lineNum">     262</span>              :     const Xbyak::Xmm xnalphabeta_ = this-&gt;xmm0;</span>
+<span id="L263"><span class="lineNum">     263</span>              :     const Vmm vnalphabeta_ = Vmm(0);</span>
+<span id="L264"><span class="lineNum">     264</span>              : };</span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span>              : } // namespace x64</span>
+<span id="L267"><span class="lineNum">     267</span>              : } // namespace cpu</span>
+<span id="L268"><span class="lineNum">     268</span>              : } // namespace impl</span>
+<span id="L269"><span class="lineNum">     269</span>              : } // namespace dnnl</span>
+<span id="L270"><span class="lineNum">     270</span>              : </span>
+<span id="L271"><span class="lineNum">     271</span>              : #endif</span>
+<span id="L272"><span class="lineNum">     272</span>              : </span>
+<span id="L273"><span class="lineNum">     273</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

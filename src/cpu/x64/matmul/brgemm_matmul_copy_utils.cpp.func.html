@@ -1,0 +1,3572 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/matmul/brgemm_matmul_copy_utils.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/matmul">src/cpu/x64/matmul</a> - brgemm_matmul_copy_utils.cpp<span style="font-size: 80%;"> (<a href="brgemm_matmul_copy_utils.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">85.1&nbsp;%</td>
+            <td class="headerCovTableEntry">3292</td>
+            <td class="headerCovTableEntry">2800</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">88.6&nbsp;%</td>
+            <td class="headerCovTableEntry">333</td>
+            <td class="headerCovTableEntry">295</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="brgemm_matmul_copy_utils.cpp.func-c.html"><img src="../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2095">Xbyak::Xmm dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::maybe_mask&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, bool, bool)</a></td>
+              
+              <td class="coverFnHi">11412010</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2095">Xbyak::Xmm dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::maybe_mask&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2095">Xbyak::Ymm dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::maybe_mask&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1509528</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2095">Xbyak::Zmm dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::maybe_mask&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">9902482</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5765">dnnl::impl::cpu::x64::matmul::create_brgemm_matmul_copy_a(std::unique_ptr&lt;dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t, std::default_delete&lt;dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t&gt; &gt;&amp;, dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">25056</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5689">dnnl::impl::cpu::x64::matmul::create_brgemm_matmul_copy_b(std::unique_ptr&lt;dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t, std::default_delete&lt;dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t&gt; &gt;&amp;, dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">415556</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2802">dnnl::impl::cpu::x64::matmul::jit_amx_brgemm_matmul_copy_b_int8_t::copy_4x64(int, int, bool)</a></td>
+              
+              <td class="coverFnHi">771388</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2804">dnnl::impl::cpu::x64::matmul::jit_amx_brgemm_matmul_copy_b_int8_t::copy_4x64(int, int, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">1338016</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2734">dnnl::impl::cpu::x64::matmul::jit_amx_brgemm_matmul_copy_b_int8_t::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">770972</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2701">dnnl::impl::cpu::x64::matmul::jit_amx_brgemm_matmul_copy_b_int8_t::init_permute()</a></td>
+              
+              <td class="coverFnHi">128160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2694">dnnl::impl::cpu::x64::matmul::jit_amx_brgemm_matmul_copy_b_int8_t::jit_amx_brgemm_matmul_copy_b_int8_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">128160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3058">dnnl::impl::cpu::x64::matmul::jit_avx2_vnni_brgemm_matmul_copy_b_int8_t::copy_4x64(int, int, bool)</a></td>
+              
+              <td class="coverFnHi">4802</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3103">dnnl::impl::cpu::x64::matmul::jit_avx2_vnni_brgemm_matmul_copy_b_int8_t::copy_4x64(int, int, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">4796</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3048">dnnl::impl::cpu::x64::matmul::jit_avx2_vnni_brgemm_matmul_copy_b_int8_t::get_ymm(int)</a></td>
+              
+              <td class="coverFnHi">339226</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3039">dnnl::impl::cpu::x64::matmul::jit_avx2_vnni_brgemm_matmul_copy_b_int8_t::jit_avx2_vnni_brgemm_matmul_copy_b_int8_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3050">dnnl::impl::cpu::x64::matmul::jit_avx2_vnni_brgemm_matmul_copy_b_int8_t::load_ymm(int, unsigned long, bool, unsigned long)</a></td>
+              
+              <td class="coverFnHi">21794</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2939">dnnl::impl::cpu::x64::matmul::jit_avx512_core_brgemm_matmul_copy_b_int8_t::copy_4x64(int, int, bool)</a></td>
+              
+              <td class="coverFnHi">686314</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2922">dnnl::impl::cpu::x64::matmul::jit_avx512_core_brgemm_matmul_copy_b_int8_t::init_permute()</a></td>
+              
+              <td class="coverFnHi">108522</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2917">dnnl::impl::cpu::x64::matmul::jit_avx512_core_brgemm_matmul_copy_b_int8_t::jit_avx512_core_brgemm_matmul_copy_b_int8_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">108522</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L261">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::copy_K_loop(bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">18421</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L261">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::copy_K_loop(bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">349</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L261">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::copy_K_loop(bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">18072</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L276">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::copy_K_loop(bool, bool, bool)::{lambda(int, Xbyak::Ymm)#1}::operator()(int, Xbyak::Ymm) const</a></td>
+              
+              <td class="coverFnHi">138790</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L276">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::copy_K_loop(bool, bool, bool)::{lambda(int, Xbyak::Ymm)#1}::operator()(int, Xbyak::Ymm) const</a></td>
+              
+              <td class="coverFnAliasHi">3308</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L276">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::copy_K_loop(bool, bool, bool)::{lambda(int, Xbyak::Zmm)#1}::operator()(int, Xbyak::Zmm) const</a></td>
+              
+              <td class="coverFnAliasHi">135482</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L411">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::copy_M_loop(bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">18421</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L411">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::copy_M_loop(bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">349</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L411">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::copy_M_loop(bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">18072</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L66">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">14883</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L66">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L66">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">14780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L142">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnHi">5228</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L142">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnAliasHi">620</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L142">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::dot_product(Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnAliasHi">4608</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L450">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">14883</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L450">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L450">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">14780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L468">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnHi">17715</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L468">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">349</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L468">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">17366</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L125">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::get_vmm_comp_acc(int)</a></td>
+              
+              <td class="coverFnHi">36576</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L125">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::get_vmm_comp_acc(int)</a></td>
+              
+              <td class="coverFnAliasHi">3212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L125">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::get_vmm_comp_acc(int)</a></td>
+              
+              <td class="coverFnAliasHi">33364</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L130">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::get_vmm_copy(int)</a></td>
+              
+              <td class="coverFnHi">416638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L130">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::get_vmm_copy(int)</a></td>
+              
+              <td class="coverFnAliasHi">9924</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L130">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::get_vmm_copy(int)</a></td>
+              
+              <td class="coverFnAliasHi">406714</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L40">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_a_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">14883</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L40">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_a_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L40">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_a_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">14780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">44649</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">14780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">14780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L38">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">14780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L217">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::load_tail(int, unsigned long)</a></td>
+              
+              <td class="coverFnHi">244</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L166">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::load_vmm(int, int)</a></td>
+              
+              <td class="coverFnHi">3064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L65">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">14717425</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L65">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">253472</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L65">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">14463953</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L247">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::reduce_compensation_across_accumulators(int)</a></td>
+              
+              <td class="coverFnHi">3776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L247">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::reduce_compensation_across_accumulators(int)</a></td>
+              
+              <td class="coverFnAliasHi">328</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L247">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::reduce_compensation_across_accumulators(int)</a></td>
+              
+              <td class="coverFnAliasHi">3448</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L238">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::store_tail(int, unsigned long)</a></td>
+              
+              <td class="coverFnHi">244</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L177">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Ymm&gt;::store_vmm(int, int)</a></td>
+              
+              <td class="coverFnHi">3064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L182">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::load_tail(int, unsigned long)</a></td>
+              
+              <td class="coverFnHi">13812</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L184">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::load_tail(int, unsigned long)::{lambda(Xbyak::Opmask, unsigned long)#1}::operator()(Xbyak::Opmask, unsigned long) const</a></td>
+              
+              <td class="coverFnHi">27624</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L156">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::load_vmm(int, int)</a></td>
+              
+              <td class="coverFnHi">121670</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L224">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::store_tail(int, unsigned long)</a></td>
+              
+              <td class="coverFnHi">13812</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L171">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_impl_t&lt;Xbyak::Zmm&gt;::store_vmm(int, int)</a></td>
+              
+              <td class="coverFnHi">72090</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L555">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">9520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L555">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L555">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1089">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::deploy_transpose(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">29631</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1089">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::deploy_transpose(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">1890</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1089">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::deploy_transpose(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">27741</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1138">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">9520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1138">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1138">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1226">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::generate()::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnHi">9520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1226">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::generate()::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1226">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::generate()::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1176">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, Xbyak::Reg64 const&amp;, int)#1}::operator()(Xbyak::Reg64 const&amp;, Xbyak::Reg64 const&amp;, int) const</a></td>
+              
+              <td class="coverFnHi">16080</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1176">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, Xbyak::Reg64 const&amp;, int)#1}::operator()(Xbyak::Reg64 const&amp;, Xbyak::Reg64 const&amp;, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1016</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1176">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, Xbyak::Reg64 const&amp;, int)#1}::operator()(Xbyak::Reg64 const&amp;, Xbyak::Reg64 const&amp;, int) const</a></td>
+              
+              <td class="coverFnAliasHi">15064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1098">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnHi">9520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1098">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1098">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L533">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_a_transposed_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">9520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L533">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_a_transposed_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L533">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_a_transposed_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">28560</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">8920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L632">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::kmovw(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnHi">57054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L632">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::kmovw(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L632">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::kmovw(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">57054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L554">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">4071856</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L554">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">127747</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L554">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">3944109</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L841">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L853">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">1890</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L627">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::vmovdqa32(Xbyak::Ymm, int const*)</a></td>
+              
+              <td class="coverFnHi">10602</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L627">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::vmovdqa32(Xbyak::Ymm, int const*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L627">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::vmovdqa32(Xbyak::Zmm, int const*)</a></td>
+              
+              <td class="coverFnAliasHi">10602</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L622">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::vmovdqa64(Xbyak::Ymm, long const*)</a></td>
+              
+              <td class="coverFnHi">7068</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L622">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Ymm&gt;::vmovdqa64(Xbyak::Ymm, long const*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L622">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::vmovdqa64(Xbyak::Zmm, long const*)</a></td>
+              
+              <td class="coverFnAliasHi">7068</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L645">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">11352</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L661">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Opmask, unsigned int, bool, bool)#3}::operator()(Xbyak::Opmask, unsigned int, bool, bool) const</a></td>
+              
+              <td class="coverFnHi">22704</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L677">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Zmm, int)#4}::operator()(Xbyak::Zmm, int) const</a></td>
+              
+              <td class="coverFnHi">137058</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L651">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">972156</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L653">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">160398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L809">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_bf16(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#5}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">137058</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L920">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">16389</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1050">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda()#7}::operator()() const</a></td>
+              
+              <td class="coverFnHi">16389</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L927">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Opmask, unsigned long, bool)#1}::operator()(Xbyak::Opmask, unsigned long, bool) const</a></td>
+              
+              <td class="coverFnHi">32778</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L968">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Zmm, int)#5}::operator()(Xbyak::Zmm, int) const</a></td>
+              
+              <td class="coverFnHi">193813</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L944">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">1383306</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L949">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">849373</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L954">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">207460</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L973">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_impl_t&lt;Xbyak::Zmm&gt;::transpose_f32(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#6}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">32778</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1406">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::accumulate_compensation(Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnHi">48112</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1818">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::compute_k_loop(bool, bool)</a></td>
+              
+              <td class="coverFnHi">1007</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1881">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::compute_k_loop(bool, bool)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">472</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1762">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::compute_m_loop(int)</a></td>
+              
+              <td class="coverFnHi">2054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1308">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::create_kernel()</a></td>
+              
+              <td class="coverFnHi">653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1394">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::deploy_transpose(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">3868</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1944">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::generate()</a></td>
+              
+              <td class="coverFnHi">653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1970">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::generate()::{lambda(Xbyak::Opmask, unsigned int)#1}::operator()(Xbyak::Opmask, unsigned int) const</a></td>
+              
+              <td class="coverFnHi">4571</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1983">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::generate()::{lambda(Xbyak::Zmm, long const*)#2}::operator()(Xbyak::Zmm, long const*) const</a></td>
+              
+              <td class="coverFnHi">2702</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1374">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::get_zmm_src(int)</a></td>
+              
+              <td class="coverFnHi">332902</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1289">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::jit_brgemm_matmul_copy_a_transposed_int8_impl_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1286">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::jit_name()</a></td>
+              
+              <td class="coverFnHi">1959</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1286">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1286">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::name() const</a></td>
+              
+              <td class="coverFnAliasHi">653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1286">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1378">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::kmovd(bool, Xbyak::Opmask, unsigned int, bool)</a></td>
+              
+              <td class="coverFnHi">7736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1307">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">4066</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1402">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::reset_compensation_accumulator()</a></td>
+              
+              <td class="coverFnHi">3868</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1415">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::save_partial_compensation()</a></td>
+              
+              <td class="coverFnHi">3868</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1433">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermb(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">968</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1447">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermb(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Zmm, int)#2}::operator()(Xbyak::Zmm, int) const</a></td>
+              
+              <td class="coverFnHi">12584</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1439">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermb(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Zmm, int, Xbyak::Reg64)#1}::operator()(Xbyak::Zmm, int, Xbyak::Reg64) const</a></td>
+              
+              <td class="coverFnHi">7796</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1563">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermb(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">12584</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1586">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermw(Xbyak::Reg64, Xbyak::Reg64, int, int)</a></td>
+              
+              <td class="coverFnHi">2900</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1604">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermw(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Zmm, int)#2}::operator()(Xbyak::Zmm, int) const</a></td>
+              
+              <td class="coverFnHi">36284</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1592">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermw(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(Xbyak::Zmm, int, Xbyak::Reg64)#1}::operator()(Xbyak::Zmm, int, Xbyak::Reg64) const</a></td>
+              
+              <td class="coverFnHi">40316</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L1734">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_a_transposed_int8_impl_t::transpose_int8_vpermw(Xbyak::Reg64, Xbyak::Reg64, int, int)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">36284</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3479">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)</a></td>
+              
+              <td class="coverFnHi">744322</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3479">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">104004</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3479">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_2x32(int, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">640318</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3578">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Address const&amp;)#5}::operator()(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Address const&amp;) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3578">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Address const&amp;)#5}::operator()(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Address const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3578">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_2x32(int, int, bool)::{lambda(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Address const&amp;)#5}::operator()(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Address const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3512">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">4796769</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3512">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">657434</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3512">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_2x32(int, int, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">4139335</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">4796769</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">657434</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3531">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_2x32(int, int, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">4139335</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3501">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">15573905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3501">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1989622</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3501">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_2x32(int, int, bool)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">13584283</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3549">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int, int, int)#4}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">4796769</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3549">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_2x32(int, int, bool)::{lambda(int, int, int)#4}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">657434</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3549">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_2x32(int, int, bool)::{lambda(int, int, int)#4}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">4139335</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3710">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">742134</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3710">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">104004</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3710">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">638130</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3396">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">119523</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3396">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">16059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3396">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">103464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3790">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">119523</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3790">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">16059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3790">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">103464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3822">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool, bool) const</a></td>
+              
+              <td class="coverFnHi">347984</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3822">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">48054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3822">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">299930</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3883">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool)#2}::operator()(bool) const</a></td>
+              
+              <td class="coverFnHi">173992</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3883">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool)#2}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">24027</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3883">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(bool)#2}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">149965</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3681">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnHi">119523</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3681">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnAliasHi">16059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3681">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnAliasHi">103464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3377">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_bf16_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">119523</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3377">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_bf16_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">16059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3377">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_b_bf16_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">103464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">239046</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">16059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">16059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">103464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3375">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">103464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3457">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::kmovx(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnHi">280232</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3457">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::kmovx(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnAliasHi">34632</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3457">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::kmovx(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnAliasHi">245600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3395">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">37421768</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3395">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">6570761</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3395">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_bf16_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">30851007</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2128">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::copy_half_reg(Xbyak::Ymm const&amp;, Xbyak::Xmm const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2119">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::copy_half_reg(Xbyak::Zmm const&amp;, Xbyak::Ymm const&amp;)</a></td>
+              
+              <td class="coverFnHi">354</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2081">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::jit_brgemm_matmul_copy_b_common_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">177833</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2079">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::jit_name()</a></td>
+              
+              <td class="coverFnHi">177833</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2079">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">177833</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2079">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::name() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2079">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::source_file() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2135">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::restore_vmm_permd(Xbyak::Ymm const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5487">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::copy_block(int, int, bool)</a></td>
+              
+              <td class="coverFnHi">180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5502">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::copy_block(int, int, bool)::{lambda(int, int, int)#1}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5308">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5556">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5575">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool) const</a></td>
+              
+              <td class="coverFnHi">80</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5629">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">40</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5351">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::get_vmm(int, int)</a></td>
+              
+              <td class="coverFnHi">3776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5431">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::get_wei_scales(int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5439">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::get_wei_scales(int, bool, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5460">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::get_zero_points(int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5466">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::get_zero_points(int, bool, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5408">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::init_masks()</a></td>
+              
+              <td class="coverFnHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5287">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_b_cvt_bf16_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5285">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">64</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5285">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5285">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5285">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5373">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::maybe_update_strides(int)</a></td>
+              
+              <td class="coverFnHi">180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5307">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">3539218</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5384">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_cvt_bf16_t&lt;Xbyak::Zmm&gt;::save_half_block(int, Xbyak::Address const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4098">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::compute_k_loop(int)</a></td>
+              
+              <td class="coverFnHi">5449</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4098">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::compute_k_loop(int)</a></td>
+              
+              <td class="coverFnAliasHi">819</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4098">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::compute_k_loop(int)</a></td>
+              
+              <td class="coverFnAliasHi">4630</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4100">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::compute_k_loop(int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">10898</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4100">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::compute_k_loop(int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">1638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4100">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::compute_k_loop(int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">9260</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3987">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)</a></td>
+              
+              <td class="coverFnHi">10898</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3987">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">1638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3987">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::copy_16_x_n_block(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">9260</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3996">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">616318</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3996">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">192542</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3996">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">423776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4022">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">308159</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4022">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">96271</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4022">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">211888</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4043">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">308159</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4043">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">96271</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4043">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::copy_16_x_n_block(int, int)::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">211888</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4003">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int, int, int)#2}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">308159</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4003">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::copy_16_x_n_block(int, int)::{lambda(int, int, int)#2}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">96271</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4003">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::copy_16_x_n_block(int, int)::{lambda(int, int, int)#2}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">211888</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3939">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">4877</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3939">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3939">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">4151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4123">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">4877</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4123">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4123">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">4151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3923">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_f32_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">4877</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3923">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_f32_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3923">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_b_f32_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">4151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">9754</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">4151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3921">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">4151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3975">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::kmovw(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnHi">14151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3975">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::kmovw(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnAliasHi">726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3975">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::kmovw(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnAliasHi">13425</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3938">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">12381622</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3938">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">409084</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3938">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_f32_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">11972538</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2653">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::copy_4x64(int, int, bool)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2653">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::copy_4x64(int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2653">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::copy_4x64(int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2648">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">691116</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2648">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">4802</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2648">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::copy_block(int, int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">686314</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2566">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">237723</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2566">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2566">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">236682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2654">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnHi">30457</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2654">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2654">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::dot_product(Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnAliasHi">30457</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3149">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">237723</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3149">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3149">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">236682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3176">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool, bool) const</a></td>
+              
+              <td class="coverFnHi">685694</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3176">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">2082</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3176">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(Xbyak::Reg64 const&amp;, int, bool, bool)#1}::operator()(Xbyak::Reg64 const&amp;, int, bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">683612</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3220">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool)#2}::operator()(bool) const</a></td>
+              
+              <td class="coverFnHi">342847</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3220">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool)#2}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L3220">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(bool)#2}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">341806</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2629">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_comp_acc(int)</a></td>
+              
+              <td class="coverFnHi">164039</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2629">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_comp_acc(int)</a></td>
+              
+              <td class="coverFnAliasHi">22332</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2629">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::get_comp_acc(int)</a></td>
+              
+              <td class="coverFnAliasHi">141707</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2638">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_vmm(int, int)</a></td>
+              
+              <td class="coverFnHi">67949691</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2638">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_vmm(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">339226</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2638">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::get_vmm(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">67610465</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2631">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_vmm_wei_scale_comp_res(int)</a></td>
+              
+              <td class="coverFnHi">74640</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2631">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_vmm_wei_scale_comp_res(int)</a></td>
+              
+              <td class="coverFnAliasHi">9728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2631">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::get_vmm_wei_scale_comp_res(int)</a></td>
+              
+              <td class="coverFnAliasHi">64912</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2630">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_vmm_zp_comp_res(int)</a></td>
+              
+              <td class="coverFnHi">12978</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2630">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::get_vmm_zp_comp_res(int)</a></td>
+              
+              <td class="coverFnAliasHi">2304</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2630">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::get_vmm_zp_comp_res(int)</a></td>
+              
+              <td class="coverFnAliasHi">10674</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::init_permute()</a></td>
+              
+              <td class="coverFnHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::init_permute()</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::init_permute()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2549">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_int8_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">237723</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2549">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_int8_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2549">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_b_int8_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">236682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">713169</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">1041</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">236682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">236682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2547">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">236682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2646">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::kmovq(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2645">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::load(int, int, bool)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2565">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">3553179</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2565">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">29430</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2565">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">3523749</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2633">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::vmovdqa64(Xbyak::Ymm, void const*)</a></td>
+              
+              <td class="coverFnHi">946728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2633">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Ymm&gt;::vmovdqa64(Xbyak::Ymm, void const*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2633">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::vmovdqa64(Xbyak::Zmm, void const*)</a></td>
+              
+              <td class="coverFnAliasHi">946728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2678">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::kmovq(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnHi">1346228</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2668">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_int8_t&lt;Xbyak::Zmm&gt;::load(int, int, bool)</a></td>
+              
+              <td class="coverFnHi">6903745</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5004">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::compute_K_loop(bool, int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">91252</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5004">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::compute_K_loop(bool, int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">22254</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5004">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::compute_K_loop(bool, int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">68998</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5065">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::compute_N_loop(int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">71431</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5065">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::compute_N_loop(int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">20247</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5065">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::compute_N_loop(int, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">51184</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4840">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::copy_row_x_col(int, int)</a></td>
+              
+              <td class="coverFnHi">24840</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4848">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::copy_row_x_col(int, int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">189376</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4245">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">53401</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4245">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">10241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4245">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">43160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4357">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnHi">399120</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4357">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnAliasHi">127760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4357">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::dot_product(Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnAliasHi">271360</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5140">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">53401</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5140">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">10241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5140">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">43160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnHi">70123</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::generate()::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">20210</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L5197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::generate()::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">49913</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4465">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::init_tail_mask(int, bool)</a></td>
+              
+              <td class="coverFnHi">87220</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4465">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::init_tail_mask(int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4465">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::init_tail_mask(int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">87220</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4199">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_transposed_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnHi">53401</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4199">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::jit_brgemm_matmul_copy_b_transposed_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">10241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4199">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::jit_brgemm_matmul_copy_b_transposed_t(dnnl::impl::cpu::x64::matmul::brgemm_matmul_conf_t const*)</a></td>
+              
+              <td class="coverFnAliasHi">43160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">106802</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">10241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">10241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">43160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4197">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">43160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4331">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::kmovq(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnHi">104392</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4331">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::kmovq(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4331">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::kmovq(Xbyak::Opmask, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">104392</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4326">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::kmovw(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnHi">172732</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4326">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::kmovw(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4326">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::kmovw(Xbyak::Opmask, unsigned int)</a></td>
+              
+              <td class="coverFnAliasHi">172732</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4424">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::load_scales(int, bool)</a></td>
+              
+              <td class="coverFnHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4424">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::load_scales(int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4424">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::load_scales(int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4379">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::load_zero_point(int, bool)</a></td>
+              
+              <td class="coverFnHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4379">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::load_zero_point(int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4379">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::load_zero_point(int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4244">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnHi">25289967</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4244">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">4259626</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4244">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_t::ctx_t*)</a></td>
+              
+              <td class="coverFnAliasHi">21030341</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4506">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::preload_int4(Xbyak::Xmm const&amp;, int, int, bool, long)</a></td>
+              
+              <td class="coverFnHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4506">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::preload_int4(Xbyak::Xmm const&amp;, int, int, bool, long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4506">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::preload_int4(Xbyak::Xmm const&amp;, int, int, bool, long)</a></td>
+              
+              <td class="coverFnAliasHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4336">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::src_vmm(int)</a></td>
+              
+              <td class="coverFnHi">9135371</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4336">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::src_vmm(int)</a></td>
+              
+              <td class="coverFnAliasHi">982998</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4336">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::src_vmm(int)</a></td>
+              
+              <td class="coverFnAliasHi">8152373</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4447">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::store_half_block(Xbyak::Zmm const&amp;, Xbyak::Address const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4447">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::store_half_block(Xbyak::Zmm const&amp;, Xbyak::Address const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4447">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::store_half_block(Xbyak::Zmm const&amp;, Xbyak::Address const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4341">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::tmp_vmm(int)</a></td>
+              
+              <td class="coverFnHi">5496766</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4341">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::tmp_vmm(int)</a></td>
+              
+              <td class="coverFnAliasHi">596160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4341">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::tmp_vmm(int)</a></td>
+              
+              <td class="coverFnAliasHi">4900606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4367">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::valid_to_load_next(int, int)</a></td>
+              
+              <td class="coverFnHi">1593152</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4367">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Ymm&gt;::valid_to_load_next(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">198720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4367">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::valid_to_load_next(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">1394432</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4553">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::copy_row_x_col(int, int)</a></td>
+              
+              <td class="coverFnHi">87152</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4812">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::copy_row_x_col(int, int)::{lambda()#5}::operator()() const</a></td>
+              
+              <td class="coverFnHi">87152</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4701">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::copy_row_x_col(int, int)::{lambda(Xbyak::Zmm, int)#3}::operator()(Xbyak::Zmm, int) const</a></td>
+              
+              <td class="coverFnHi">1394432</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4566">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::copy_row_x_col(int, int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">20094</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4715">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::copy_row_x_col(int, int)::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">174304</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L4646">dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_transposed_t&lt;Xbyak::Zmm&gt;::copy_row_x_col(int, int)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">1160119</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2441">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::apply_scales&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;)</a></td>
+              
+              <td class="coverFnHi">128195</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2441">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::apply_scales&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">4063</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2441">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::apply_scales&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Operand const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">124132</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2391">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::apply_shift&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">128195</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2391">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::apply_shift&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">4063</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2391">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::apply_shift&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">124132</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2521">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_and_downcvt_2reg&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Operand const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2512">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_and_downcvt_reg&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">4796769</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2512">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_and_downcvt_reg&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">657434</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2512">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_and_downcvt_reg&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">4139335</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2502">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_reg&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">338492</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2502">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_reg&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">96271</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2502">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::decompress_reg&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">242221</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2453">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::downconvert_to_dst_dt&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">28411</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2453">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::downconvert_to_dst_dt&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2453">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::downconvert_to_dst_dt&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">28411</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2471">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::downconvert_to_dst_dt&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">20998</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2339">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_common_scale_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Reg64 const&amp;)</a></td>
+              
+              <td class="coverFnHi">177865</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2339">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_common_scale_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Reg64 const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">27026</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2339">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_common_scale_value&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Reg64 const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">150839</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2292">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_common_zp_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Reg64 const&amp;)</a></td>
+              
+              <td class="coverFnHi">177865</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2292">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_common_zp_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Reg64 const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">27026</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2292">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_common_zp_value&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Reg64 const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">150839</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2367">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_scale_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnHi">2193</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2367">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_scale_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasHi">884</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2367">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_scale_value&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Operand const&amp;, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1309</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2220">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t, bool, Xbyak::Ymm const&amp;)</a></td>
+              
+              <td class="coverFnHi">5109043</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2220">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_value&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Operand const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t, bool, Xbyak::Ymm const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">754589</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2220">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::load_value&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Operand const&amp;, Xbyak::Zmm const&amp;, dnnl_data_type_t, bool, Xbyak::Zmm const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">4354454</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2149">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::prepare_loaded_int4&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">354</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2149">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::prepare_loaded_int4&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2149">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::prepare_loaded_int4&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">354</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2416">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::upconvert_to_f32&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">128195</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2416">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::upconvert_to_f32&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">4063</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_matmul_copy_utils.cpp.gcov.html#L2416">void dnnl::impl::cpu::x64::matmul::jit_brgemm_matmul_copy_b_common_t::upconvert_to_f32&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">124132</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

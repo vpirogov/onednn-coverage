@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/rnn/brgemm_cell_common.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/rnn">src/cpu/rnn</a> - brgemm_cell_common.cpp<span style="font-size: 80%;"> (<a href="brgemm_cell_common.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">88.3&nbsp;%</td>
+            <td class="headerCovTableEntry">120</td>
+            <td class="headerCovTableEntry">106</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">45.5&nbsp;%</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntry">15</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="brgemm_cell_common.cpp.func-c.html"><img src="../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L272">dnnl::impl::cpu::ref_rnn_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnHi">44928</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L272">dnnl::impl::cpu::ref_rnn_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, void*, float*, float*, float*, float*, dnnl::impl::float16_t**, dnnl::impl::float16_t**, dnnl::impl::float16_t**, float const*, float const*, void**, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">28800</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L272">dnnl::impl::cpu::ref_rnn_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, void*, float*, float*, float*, float*, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, float const*, float const*, void**, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">16128</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L272">dnnl::impl::cpu::ref_rnn_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L66">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnHi">214334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L66">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, void*, float*, float*, float*, float*, dnnl::impl::float16_t**, dnnl::impl::float16_t**, dnnl::impl::float16_t**, float const*, float const*, void**, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">74328</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L66">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, void*, float*, float*, float*, float*, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, float const*, float const*, void**, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">51064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L66">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">75902</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L66">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, signed char const*, signed char const*, signed char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, signed char*, int*, signed char*, int*, signed char*, int*, int*, int*, int*, signed char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L66">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, unsigned char const*, unsigned char const*, unsigned char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, unsigned char*, int*, unsigned char*, int*, unsigned char*, int*, int*, int*, int*, unsigned char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">13040</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L225">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, float*, int)#4}::operator()(long, long, float*, int) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L225">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, void*, float*, float*, float*, float*, dnnl::impl::float16_t**, dnnl::impl::float16_t**, dnnl::impl::float16_t**, float const*, float const*, void**, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, float*, int)#4}::operator()(long, long, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L225">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, void*, float*, float*, float*, float*, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, float const*, float const*, void**, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, float*, int)#4}::operator()(long, long, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L225">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, float*, int)#4}::operator()(long, long, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L225">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, signed char const*, signed char const*, signed char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, signed char*, int*, signed char*, int*, signed char*, int*, int*, int*, int*, signed char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, int*, int)#4}::operator()(long, long, int*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L225">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, unsigned char const*, unsigned char const*, unsigned char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, unsigned char*, int*, unsigned char*, int*, unsigned char*, int*, int*, int*, int*, unsigned char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, int*, int)#4}::operator()(long, long, int*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L87">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, float const*, float*, float*, int)#1}::operator()(long, long, long, float const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">189404</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L87">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, void*, float*, float*, float*, float*, dnnl::impl::float16_t**, dnnl::impl::float16_t**, dnnl::impl::float16_t**, float const*, float const*, void**, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, dnnl::impl::float16_t const*, float*, float*, int)#1}::operator()(long, long, long, dnnl::impl::float16_t const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">67132</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L87">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, void*, float*, float*, float*, float*, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, float const*, float const*, void**, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, dnnl::impl::bfloat16_t const*, float*, float*, int)#1}::operator()(long, long, long, dnnl::impl::bfloat16_t const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">58292</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L87">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, float const*, float*, float*, int)#1}::operator()(long, long, long, float const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">63980</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L87">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, signed char const*, signed char const*, signed char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, signed char*, int*, signed char*, int*, signed char*, int*, int*, int*, int*, signed char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, signed char const*, int*, int*, int)#1}::operator()(long, long, long, signed char const*, int*, int*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L87">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, unsigned char const*, unsigned char const*, unsigned char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, unsigned char*, int*, unsigned char*, int*, unsigned char*, int*, int*, int*, int*, unsigned char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, unsigned char const*, int*, int*, int)#1}::operator()(long, long, long, unsigned char const*, int*, int*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L124">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, float const*, float*, float*, int)#2}::operator()(long, long, long, float const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">34230</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L124">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, void*, float*, float*, float*, float*, dnnl::impl::float16_t**, dnnl::impl::float16_t**, dnnl::impl::float16_t**, float const*, float const*, void**, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, dnnl::impl::float16_t const*, float*, float*, int)#2}::operator()(long, long, long, dnnl::impl::float16_t const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">10364</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L124">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, void*, float*, float*, float*, float*, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, float const*, float const*, void**, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, dnnl::impl::bfloat16_t const*, float*, float*, int)#2}::operator()(long, long, long, dnnl::impl::bfloat16_t const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">8372</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L124">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, float const*, float*, float*, int)#2}::operator()(long, long, long, float const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L124">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, signed char const*, signed char const*, signed char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, signed char*, int*, signed char*, int*, signed char*, int*, int*, int*, int*, signed char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, signed char const*, int*, int*, int)#2}::operator()(long, long, long, signed char const*, int*, int*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L124">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, unsigned char const*, unsigned char const*, unsigned char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, unsigned char*, int*, unsigned char*, int*, unsigned char*, int*, int*, int*, int*, unsigned char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, unsigned char const*, int*, int*, int)#2}::operator()(long, long, long, unsigned char const*, int*, int*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">15494</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L151">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, float const*, float*, float*, int)#3}::operator()(long, long, long, float const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">26794</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L151">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, void*, float*, float*, float*, float*, dnnl::impl::float16_t**, dnnl::impl::float16_t**, dnnl::impl::float16_t**, float const*, float const*, void**, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, float*, float*, float*, dnnl::impl::float16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, dnnl::impl::float16_t const*, float*, float*, int)#3}::operator()(long, long, long, dnnl::impl::float16_t const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">8364</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L151">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, void*, float*, float*, float*, float*, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t**, float const*, float const*, void**, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, float*, float*, float*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, dnnl::impl::bfloat16_t const*, float*, float*, int)#3}::operator()(long, long, long, dnnl::impl::bfloat16_t const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">6740</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L151">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, void*, float*, float*, float*, float*, float**, float**, float**, float const*, float const*, void**, float const*, float const*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, float const*, float*, float*, int)#3}::operator()(long, long, long, float const*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L151">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, signed char const*, signed char const*, signed char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, signed char*, int*, signed char*, int*, signed char*, int*, int*, int*, int*, signed char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, signed char const*, int*, int*, int)#3}::operator()(long, long, long, signed char const*, int*, int*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L151">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::cell_execution_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, void*, int*, int*, int*, int*, signed char**, signed char**, signed char**, float const*, float const*, void**, unsigned char const*, unsigned char const*, unsigned char const*, void const*, int*, int*, int*, int*, int*, float*, float*, float*, unsigned char*, int*, unsigned char*, int*, unsigned char*, int*, int*, int*, int*, unsigned char*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const::{lambda(long, long, long, unsigned char const*, int*, int*, int)#3}::operator()(long, long, long, unsigned char const*, int*, int*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">11690</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="brgemm_cell_common.cpp.gcov.html#L42">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::merged_layer_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float**, float const*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L42">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::merged_layer_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t**, dnnl::impl::float16_t const*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L42">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::merged_layer_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t**, dnnl::impl::bfloat16_t const*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L42">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::merged_layer_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float**, float const*, float*, float*, float*, float*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L42">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::merged_layer_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char**, signed char const*, int*, int*, int*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="brgemm_cell_common.cpp.gcov.html#L42">dnnl::impl::cpu::ref_rnn_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)5, (dnnl_data_type_t)4&gt;::merged_layer_brgemm(dnnl::impl::exec_ctx_t const&amp;, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char**, unsigned char const*, int*, int*, int*, int*, dnnl::impl::cpu::x64::brgemm_batch_element_t*) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

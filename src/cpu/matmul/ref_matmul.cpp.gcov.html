@@ -1,0 +1,480 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/matmul/ref_matmul.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/matmul">src/cpu/matmul</a> - ref_matmul.cpp<span style="font-size: 80%;"> (source / <a href="ref_matmul.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">97.5&nbsp;%</td>
+            <td class="headerCovTableEntry">241</td>
+            <td class="headerCovTableEntry">235</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;algorithm&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &lt;assert.h&gt;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &lt;float.h&gt;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;math.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/compiler_workarounds.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/math_utils.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/cpu_primitive.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/ref_io_helper.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &quot;cpu/matmul/matmul_utils.hpp&quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/matmul/ref_matmul.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace dnnl {</span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace impl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace cpu {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace matmul {</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      105533 : void ref_matmul_t::pd_t::init_scratchpad() {</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :     using namespace memory_tracking::names;</span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      105533 :     nthr_ = dnnl_get_max_threads();</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      105533 :     ntasks_ = nthr_;</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      105533 :     auto dst_scales = attr()-&gt;scales_.get(DNNL_ARG_DST);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">      105533 :     if (dst_scales.is_dynamic()) {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          86 :         auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">          86 :         const memory_desc_wrapper dst_d(dst_md());</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          86 :         dim_t group_size = dst_scales.get_group_size();</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          86 :         dim_t work_amount = dst_d.nelems() / group_size;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          86 :         ntasks_ = std::min&lt;dim_t&gt;(nthr_, work_amount);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">          86 :         scratchpad.template book&lt;float&gt;(</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">          86 :                 key_matmul_dst_in_acc_dt, ntasks_ * group_size);</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :     }</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">      105533 : }</span></span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       73389 : status_t ref_matmul_t::execute_ref(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       73389 :     status_t status = status::success;</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       73389 :     const auto src = CTX_IN_MEM(const void *, DNNL_ARG_SRC);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       73389 :     const auto weights = CTX_IN_MEM(const void *, DNNL_ARG_WEIGHTS);</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">       73389 :     const auto bias = CTX_IN_MEM(const void *, DNNL_ARG_BIAS);</span></span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span>              :     const auto dropout_p</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       73389 :             = CTX_IN_MEM(const float *, DNNL_ARG_ATTR_DROPOUT_PROBABILITY);</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :     const auto dropout_seed</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       73389 :             = CTX_IN_MEM(const void *, DNNL_ARG_ATTR_DROPOUT_SEED);</span></span>
+<span id="L65"><span class="lineNum">      65</span>              :     const auto dropout_offset</span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       73389 :             = CTX_IN_MEM(const int64_t *, DNNL_ARG_ATTR_DROPOUT_OFFSET);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       73389 :     auto dropout_mask = CTX_OUT_CLEAN_MEM(</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :             unsigned char *, DNNL_ARG_ATTR_DROPOUT_MASK, status);</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       73389 :     CHECK(status);</span></span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       73389 :     auto dst = CTX_OUT_CLEAN_MEM(void *, DNNL_ARG_DST, status);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       73389 :     CHECK(status);</span></span>
+<span id="L73"><span class="lineNum">      73</span>              : </span>
+<span id="L74"><span class="lineNum">      74</span>              :     const void *src_scales</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       73389 :             = CTX_IN_MEM(const void *, DNNL_ARG_ATTR_SCALES | DNNL_ARG_SRC);</span></span>
+<span id="L76"><span class="lineNum">      76</span>              :     const void *wei_scales</span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       73389 :             = CTX_IN_MEM(const void *, DNNL_ARG_ATTR_SCALES | DNNL_ARG_WEIGHTS);</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :     const void *dst_scales</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       73389 :             = CTX_IN_MEM(const void *, DNNL_ARG_ATTR_SCALES | DNNL_ARG_DST);</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :     // No need to zero-pad dynamic scales as they should have plain format.</span>
+<span id="L81"><span class="lineNum">      81</span>              :     auto dst_dynamic_scales</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       73389 :             = CTX_OUT_MEM(float *, DNNL_ARG_ATTR_SCALES | DNNL_ARG_DST);</span></span>
+<span id="L83"><span class="lineNum">      83</span>              : </span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       73389 :     const int32_t *wei_zero_points = CTX_IN_MEM(</span></span>
+<span id="L85"><span class="lineNum">      85</span>              :             const int32_t *, DNNL_ARG_ATTR_ZERO_POINTS | DNNL_ARG_WEIGHTS);</span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       73389 :     const auto src_d = ctx.memory_mdw(DNNL_ARG_SRC, pd()-&gt;src_md());</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       73389 :     const auto weights_d = ctx.memory_mdw(DNNL_ARG_WEIGHTS, pd()-&gt;weights_md());</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       73389 :     const auto dst_d = ctx.memory_mdw(DNNL_ARG_DST, pd()-&gt;dst_md());</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       73389 :     const auto bia_d = ctx.memory_mdw(DNNL_ARG_BIAS, pd()-&gt;weights_md(1));</span></span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">      146702 :     if (src_d.has_zero_dim() || weights_d.has_zero_dim()</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">      146702 :             || dst_d.has_zero_dim())</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">         114 :         return status::success;</span></span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       73275 :     const bool non_default_attrs = !pd()-&gt;attr()-&gt;has_default_values();</span></span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">       73275 :     matmul_helper_t helper(src_d, weights_d, dst_d);</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       73275 :     const int ndims = pd()-&gt;ndims();</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       73275 :     const int batch_ndims = ndims - 2;</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       73275 :     const dim_t M = helper.M();</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       73275 :     const dim_t N = helper.N();</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">       73275 :     const dim_t K = helper.K();</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">       73275 :     const dim_t batch = helper.batch();</span></span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              :     // Weights decompression</span>
+<span id="L107"><span class="lineNum">     107</span>              :     const bool with_wei_decompression</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">       73275 :             = utils::one_of(weights_d.data_type(), data_type::s8, data_type::u8,</span></span>
+<span id="L109"><span class="lineNum">     109</span>              :                       data_type::s4, data_type::u4)</span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       73275 :             &amp;&amp; pd()-&gt;attr()-&gt;fpmath_.apply_to_int_;</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">       73275 :     const auto &amp;attr_zps = pd()-&gt;attr()-&gt;zero_points_;</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :     const bool with_wei_zero_points</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">       73275 :             = !attr_zps.has_default_values(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       73275 :     int wei_zp_mask = attr_zps.get_mask(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">       73275 :     const auto &amp;wei_zp_dt = attr_zps.get_data_type(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">       73275 :     const auto wei_zp_group_k = attr_zps.get_group(DNNL_ARG_WEIGHTS, -2);</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">       73275 :     const auto wei_zp_group_n = attr_zps.get_group(DNNL_ARG_WEIGHTS, -1);</span></span>
+<span id="L118"><span class="lineNum">     118</span>              :     // Initialize a memory desc for quant entries for easier offset calculation.</span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">       73275 :     memory_desc_t wei_zp_md {};</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">       73275 :     CHECK(attr_zps.get(DNNL_ARG_WEIGHTS).get_md(wei_zp_md, *weights_d.md_));</span></span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :     const int src_mask</span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">       73275 :             = utils::get_dims_mask(dst_d.dims(), src_d.dims(), ndims);</span></span>
+<span id="L124"><span class="lineNum">     124</span>              :     const int wei_mask</span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       73275 :             = utils::get_dims_mask(dst_d.dims(), weights_d.dims(), ndims);</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :     const int bia_mask</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       73275 :             = utils::get_dims_mask(dst_d.dims(), bia_d.dims(), ndims);</span></span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span>              :     // Scales section</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">       73275 :     const auto &amp;attr_scales = pd()-&gt;attr()-&gt;scales_;</span></span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">       73275 :     const bool with_src_scales = !attr_scales.has_default_values(DNNL_ARG_SRC);</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       73275 :     const auto src_scale_mask = attr_scales.get_mask(DNNL_ARG_SRC);</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       73275 :     const auto src_scale_dt = attr_scales.get_data_type(DNNL_ARG_SRC);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       73275 :     const auto src_scale_group_m = attr_scales.get_group(DNNL_ARG_SRC, -2);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       73275 :     const auto src_scale_group_k = attr_scales.get_group(DNNL_ARG_SRC, -1);</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       73275 :     const auto src_scale_ngroups_k = K / src_scale_group_k;</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :     // Initialize a memory desc for quant entries for easier offset calculation.</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       73275 :     memory_desc_t src_scale_md {};</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       73275 :     CHECK(attr_scales.get(DNNL_ARG_SRC).get_md(src_scale_md, *src_d.md_));</span></span>
+<span id="L141"><span class="lineNum">     141</span>              : </span>
+<span id="L142"><span class="lineNum">     142</span>              :     const bool with_wei_scales</span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       73275 :             = !attr_scales.has_default_values(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">       73275 :     const auto wei_scale_mask = attr_scales.get_mask(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">       73275 :     const auto wei_scale_dt = attr_scales.get_data_type(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">       73275 :     const auto wei_scale_group_k = attr_scales.get_group(DNNL_ARG_WEIGHTS, -2);</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">       73275 :     const auto wei_scale_ngroups_k = K / wei_scale_group_k;</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">       73275 :     const auto wei_scale_group_n = attr_scales.get_group(DNNL_ARG_WEIGHTS, -1);</span></span>
+<span id="L149"><span class="lineNum">     149</span>              :     // Initialize a memory desc for quant entries for easier offset calculation.</span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       73275 :     memory_desc_t wei_scale_md {};</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       73275 :     CHECK(attr_scales.get(DNNL_ARG_WEIGHTS)</span></span>
+<span id="L152"><span class="lineNum">     152</span>              :                     .get_md(wei_scale_md, *weights_d.md_));</span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       73275 :     const bool with_dst_scales = !attr_scales.has_default_values(DNNL_ARG_DST);</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       73275 :     const auto dst_scale_dt = attr_scales.get_data_type(DNNL_ARG_DST);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       73275 :     const auto dst_scale_mask = attr_scales.get_mask(DNNL_ARG_DST);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       73275 :     const auto dst_scale_group_m = attr_scales.get_group(DNNL_ARG_DST, -2);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       73275 :     const auto dst_scale_group_n = attr_scales.get_group(DNNL_ARG_DST, -1);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       73275 :     memory_desc_t dst_scales_md {};</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       73275 :     CHECK(attr_scales.get(DNNL_ARG_DST).get_md(dst_scales_md, *dst_d.md_));</span></span>
+<span id="L161"><span class="lineNum">     161</span>              : </span>
+<span id="L162"><span class="lineNum">     162</span>              :     // For compute kernel, the minimal group is picked.</span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       73275 :     const auto ngroups_k = std::max(src_scale_ngroups_k, wei_scale_ngroups_k);</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       73275 :     const auto group_k = K / ngroups_k;</span></span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       73275 :     auto dst_rnd_mode = pd()-&gt;attr()-&gt;rounding_mode_.get(DNNL_ARG_DST);</span></span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              :     // mm kernel</span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">  1054917918 :     auto ker = [=](const dims_t dst_dims_idx, dim_t m, dim_t n) {</span></span>
+<span id="L170"><span class="lineNum">     170</span>              :         dims_t src_dims_idx, weights_dims_idx;</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">  1054917918 :         utils::copy_dims_with_mask(src_dims_idx, dst_dims_idx, ndims, src_mask);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">  1054917918 :         utils::copy_dims_with_mask(</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">  1054917918 :                 weights_dims_idx, dst_dims_idx, ndims, wei_mask);</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">  1054917918 :         src_dims_idx[ndims - 2] = m;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">  1054917918 :         weights_dims_idx[ndims - 1] = n;</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">  1054917918 :         auto &amp;src_k_dim = src_dims_idx[ndims - 1];</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">  1054917918 :         auto &amp;wei_k_dim = weights_dims_idx[ndims - 2];</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">  1054917918 :         float res = 0.0f;</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC"> >14605*10^7 :         for (dim_t i_group = 0; i_group &lt; ngroups_k; i_group++) {</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC"> >14499*10^7 :             float acc = 0.0f;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC"> >35142*10^7 :             for (dim_t k = 0; k &lt; group_k; ++k) {</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC"> >20642*10^7 :                 src_k_dim = k + i_group * group_k;</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC"> >20642*10^7 :                 wei_k_dim = k + i_group * group_k;</span></span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC"> >20642*10^7 :                 const auto src_off = src_d.off_v(src_dims_idx);</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC"> >20642*10^7 :                 const auto weights_off = weights_d.off_v(weights_dims_idx);</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :                 const float s</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC"> >20642*10^7 :                         = io::load_float_value(src_d.data_type(), src, src_off);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC"> >41285*10^7 :                 float w = io::load_float_value(</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC"> >20642*10^7 :                         weights_d.data_type(), weights, weights_off);</span></span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span>              :                 // weights decompression should happen before the operation</span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC"> >20642*10^7 :                 if (with_wei_decompression) {</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC"> 50695781000 :                     if (with_wei_zero_points) {</span></span>
+<span id="L195"><span class="lineNum">     195</span>              :                         const dim_t wei_zp_offset</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC"> >10139*10^7 :                                 = matmul_helper_t::get_quant_off(</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC"> 50695781000 :                                         weights_dims_idx, ndims, wei_zp_mask,</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC"> 50695781000 :                                         wei_zp_group_k, wei_zp_group_n,</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC"> 50695781000 :                                         wei_zp_md);</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC"> 50695781000 :                         const auto wei_zp = io::load_float_value(</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC"> 50695781000 :                                 wei_zp_dt, wei_zero_points, wei_zp_offset);</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC"> 50695781000 :                         w -= wei_zp;</span></span>
+<span id="L203"><span class="lineNum">     203</span>              :                     }</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC"> 50695781000 :                     if (with_wei_scales) {</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :                         const dim_t wei_scale_offset</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC"> >10139*10^7 :                                 = matmul_helper_t::get_quant_off(</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC"> 95381716600 :                                         weights_dims_idx, ndims, wei_scale_mask,</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC"> 95381716600 :                                         wei_scale_group_k, wei_scale_group_n,</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC"> 50695781000 :                                         wei_scale_md);</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC"> 50695781000 :                         const float wei_scale = io::load_float_value(</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC"> 50695781000 :                                 wei_scale_dt, wei_scales, wei_scale_offset);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC"> 50695781000 :                         w *= wei_scale;</span></span>
+<span id="L213"><span class="lineNum">     213</span>              :                     }</span>
+<span id="L214"><span class="lineNum">     214</span>              :                 }</span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC"> >20642*10^7 :                 acc += s * w;</span></span>
+<span id="L216"><span class="lineNum">     216</span>              :             }</span>
+<span id="L217"><span class="lineNum">     217</span>              :             // apply scales after computing a group along K</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC"> >14499*10^7 :             if (with_src_scales) {</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC"> 89363294844 :                 const dim_t src_scale_offset = matmul_helper_t::get_quant_off(</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC"> 44681644972 :                         src_dims_idx, ndims, src_scale_mask, src_scale_group_m,</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC"> 44681644972 :                         src_scale_group_k, src_scale_md);</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC"> 44681644972 :                 float src_scale = io::load_float_value(</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC"> 44681644972 :                         src_scale_dt, src_scales, src_scale_offset);</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC"> 44681644972 :                 acc *= src_scale;</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :             }</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC"> >14499*10^7 :             if (with_wei_scales &amp;&amp; !with_wei_decompression) {</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC"> 44685953272 :                 const dim_t wei_scale_offset = matmul_helper_t::get_quant_off(</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :                         weights_dims_idx, ndims, wei_scale_mask,</span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC"> 44685953272 :                         wei_scale_group_k, wei_scale_group_n, wei_scale_md);</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC"> 44685953272 :                 const float wei_scale = io::load_float_value(</span></span>
+<span id="L231"><span class="lineNum">     231</span>              :                         wei_scale_dt, wei_scales, wei_scale_offset);</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC"> 44685953272 :                 acc *= wei_scale;</span></span>
+<span id="L233"><span class="lineNum">     233</span>              :             }</span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC"> >14499*10^7 :             res += acc;</span></span>
+<span id="L235"><span class="lineNum">     235</span>              :         }</span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">  1054917918 :         return res;</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       73275 :     };</span></span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span>              :     // bias section</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">   380064292 :     auto ker_bias = [=](const dims_t &amp;dst_dims_idx) -&gt; float {</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :         dims_t bia_dims_idx;</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">   380064292 :         utils::copy_dims_with_mask(bia_dims_idx, dst_dims_idx, ndims, bia_mask);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">   380064292 :         const auto bias_off = bia_d.off_v(bia_dims_idx);</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">  1140189010 :         return io::load_float_value(bia_d.data_type(), bias, bias_off);</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       73275 :     };</span></span>
+<span id="L246"><span class="lineNum">     246</span>              : </span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">       73275 :     auto sum_dt = pd()-&gt;attr()-&gt;post_ops_.get_sum_dt(dst_d.data_type());</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       73275 :     bool with_dropout = !pd()-&gt;attr()-&gt;dropout_.has_default_values();</span></span>
+<span id="L249"><span class="lineNum">     249</span>              : </span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       73275 :     const auto &amp;scratchpad = ctx.get_scratchpad_grantor();</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">      146550 :     float *temp_dst = scratchpad.template get&lt;float&gt;(</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       73275 :             memory_tracking::names::key_matmul_dst_in_acc_dt);</span></span>
+<span id="L253"><span class="lineNum">     253</span>              : </span>
+<span id="L254"><span class="lineNum">     254</span>              :     // Note 1: If dst type is &lt; 8 bits, we cannot split a byte during</span>
+<span id="L255"><span class="lineNum">     255</span>              :     //         store or we get a race condition. To simplify logic, we limit</span>
+<span id="L256"><span class="lineNum">     256</span>              :     //         parallelization on M and N by a factor of 2.</span>
+<span id="L257"><span class="lineNum">     257</span>              :     // Note 2: dynamic quantization requires to compute a reduction</span>
+<span id="L258"><span class="lineNum">     258</span>              :     //         along dst groups, so we split parallelization accordingly</span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       73275 :     dim_t M_chunk_size = std::max&lt;dim_t&gt;(2, dst_scale_group_m);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       73275 :     dim_t N_chunk_size = std::max&lt;dim_t&gt;(2, dst_scale_group_n);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       73275 :     dim_t M_chunks = utils::div_up(M, M_chunk_size);</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       73275 :     dim_t N_chunks = utils::div_up(N, N_chunk_size);</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       73275 :     parallel_nd_ext(pd()-&gt;nthr_, batch, M_chunks, N_chunks,</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">   268628788 :             [= COMPAT_THIS_CAPTURE](</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :                     int ithr, int nthr, dim_t mb, dim_t mc, dim_t nc) {</span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">   268628788 :         if (ithr &gt;= pd()-&gt;ntasks_) return;</span></span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">  1832041128 :         int64_t dropout_seed_val = with_dropout</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">   268677940 :                 ? io::load_int64_value(</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">       49152 :                           pd()-&gt;attr()-&gt;dropout_.seed_dt_, dropout_seed, 0)</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">   268628788 :                 : 0;</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">   268628788 :         float dropout_p_val = with_dropout ? dropout_p[0] : 0.0f;</span></span>
+<span id="L273"><span class="lineNum">     273</span>              :         int64_t dropout_offset_val</span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">       49152 :                 = with_dropout &amp;&amp; pd()-&gt;attr()-&gt;dropout_.use_offset_</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">   268677940 :                 ? dropout_offset[0]</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">   268628788 :                 : 0;</span></span>
+<span id="L277"><span class="lineNum">     277</span>              : </span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">   268628788 :         for_(dim_t m_ = mc * M_chunk_size;</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">   797906476 :                 m_ &lt; std::min&lt;dim_t&gt;((mc + 1) * M_chunk_size, M);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">   529277608 :                 m_ += dst_scale_group_m)</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">   529277608 :         for (dim_t n_ = nc * N_chunk_size;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">  1584153694 :                 n_ &lt; std::min&lt;dim_t&gt;((nc + 1) * N_chunk_size, N);</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">  1054876618 :                 n_ += dst_scale_group_n) {</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">  1054876618 :             float max_dst_group = 0.0f;</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">  2109750202 :             for_(dim_t m_gidx = 0; m_gidx &lt; dst_scale_group_m; m_gidx++)</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">  2109791902 :             for (dim_t n_gidx = 0; n_gidx &lt; dst_scale_group_n; n_gidx++) {</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">  1054917918 :                 dim_t m = m_ + m_gidx;</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">  1054917918 :                 dim_t n = n_ + n_gidx;</span></span>
+<span id="L289"><span class="lineNum">     289</span>              :                 dims_t dst_dims_idx;</span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">  1054917918 :                 const size_t offset = mb * M * N + m * N + n;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">  1054917918 :                 utils::l_dims_by_l_offset(</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">  1054917918 :                         dst_dims_idx, offset, dst_d.dims(), ndims);</span></span>
+<span id="L293"><span class="lineNum">     293</span>              : </span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">  1054917918 :                 float d = ker(dst_dims_idx, m, n);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">  1054917918 :                 if (bias) d += ker_bias(dst_dims_idx);</span></span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">  1054917918 :                 const auto dst_off = dst_d.off_v(dst_dims_idx);</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">  1054917918 :                 if (non_default_attrs) {</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">  1026155956 :                     if (with_dropout)</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">      196608 :                         d = ref_dropout(d, dropout_mask, dst_off, dropout_p_val,</span></span>
+<span id="L301"><span class="lineNum">     301</span>              :                                 dropout_seed_val, dropout_offset_val);</span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">  1026155956 :                     ref_post_ops_t::args_t args;</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">  1026155956 :                     args.dst_val = io::load_float_value(sum_dt, dst, dst_off);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">  1026155956 :                     args.ctx = &amp;ctx;</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">  1026155956 :                     args.l_offset = offset;</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">  1026155956 :                     args.dst_md = pd()-&gt;dst_md();</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">  1026155956 :                     ref_post_ops-&gt;execute(d, args);</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :                 }</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">  1054917918 :                 if (attr_scales.get(DNNL_ARG_DST).is_dynamic()) {</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">       43008 :                     max_dst_group = std::max(max_dst_group, ::fabsf(d));</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">       43008 :                     auto temp_dst_off = (ithr * dst_scale_group_m + m_gidx)</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       43008 :                                     * dst_scale_group_n</span></span>
+<span id="L313"><span class="lineNum">     313</span>              :                             + n_gidx;</span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       43008 :                     io::store_float_value(</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">       43008 :                             data_type::f32, d, temp_dst, temp_dst_off);</span></span>
+<span id="L316"><span class="lineNum">     316</span>              :                 } else {</span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">  1054875218 :                     if (with_dst_scales) {</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">   536797360 :                         const float dst_scale = io::load_float_value(</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">   536797360 :                                 dst_scale_dt, dst_scales, 0);</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">   536797360 :                         d /= dst_scale;</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :                     }</span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">  1054875218 :                     if (dst_rnd_mode == rounding_mode::stochastic)</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaUNC">           0 :                         d = math::stochastic_round_fwd(d, dst_off,</span></span>
+<span id="L324"><span class="lineNum">     324</span>              :                                 dropout_seed_val, dst_d.data_type());</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">  1054875218 :                     io::store_float_value(dst_d.data_type(), d, dst, dst_off);</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">  1054875218 :                     utils::dim_iterator(</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">  1054875218 :                             dst_d.dims(), dst_dims_idx, batch_ndims);</span></span>
+<span id="L328"><span class="lineNum">     328</span>              :                 }</span>
+<span id="L329"><span class="lineNum">     329</span>              :             }</span>
+<span id="L330"><span class="lineNum">     330</span>              : </span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">  1054876618 :             if (attr_scales.get(DNNL_ARG_DST).is_dynamic()) {</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">        1344 :                 float dst_group_scale = 1.0f;</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">        1344 :                 if (attr_scales.get(DNNL_ARG_DST).is_mx()) {</span></span>
+<span id="L334"><span class="lineNum">     334</span>              :                     // MXSPEC does round_down_pow2(dst_d.data_type() /</span>
+<span id="L335"><span class="lineNum">     335</span>              :                     // round_down_pow2(max_dst_group) so the rounding</span>
+<span id="L336"><span class="lineNum">     336</span>              :                     // to a power of two happens before the division,</span>
+<span id="L337"><span class="lineNum">     337</span>              :                     // and not after.</span>
+<span id="L338"><span class="lineNum">     338</span>              :                     dst_group_scale</span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">        1344 :                             = types::round_to_dt(dst_scale_dt, max_dst_group)</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">        1344 :                             / types::round_to_dt(dst_scale_dt,</span></span>
+<span id="L341"><span class="lineNum">     341</span>              :                                     types::max_value&lt;float&gt;(dst_d.data_type()));</span>
+<span id="L342"><span class="lineNum">     342</span>              :                     dst_group_scale</span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">        1344 :                             = types::round_to_dt(dst_scale_dt, dst_group_scale);</span></span>
+<span id="L344"><span class="lineNum">     344</span>              :                 }</span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">        1344 :                 if (attr_scales.get(DNNL_ARG_DST).is_dynamic_fp()) {</span></span>
+<span id="L346"><span class="lineNum">     346</span>              :                     // In case of a dst group produced a zero `max_dst_group`,</span>
+<span id="L347"><span class="lineNum">     347</span>              :                     // clamp the scale value to the minimal normal e4m3 value.</span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaUNC">           0 :                     dst_group_scale = max_dst_group == 0.f</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaUNC">           0 :                             ? 1.f</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaUNC">           0 :                             : types::round_to_dt(dst_scale_dt,</span></span>
+<span id="L351"><span class="lineNum">     351</span>              :                                       max_dst_group</span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaUNC">           0 :                                               / types::max_value&lt;float&gt;(</span></span>
+<span id="L353"><span class="lineNum">     353</span>              :                                                       dst_d.data_type()));</span>
+<span id="L354"><span class="lineNum">     354</span>              :                 }</span>
+<span id="L355"><span class="lineNum">     355</span>              : </span>
+<span id="L356"><span class="lineNum">     356</span>              :                 dims_t dst_dims_idx;</span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">        1344 :                 const size_t offset = mb * M * N + m_ * N + n_;</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">        1344 :                 utils::l_dims_by_l_offset(</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">        1344 :                         dst_dims_idx, offset, dst_d.dims(), ndims);</span></span>
+<span id="L360"><span class="lineNum">     360</span>              : </span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">        2688 :                 const dim_t dst_scale_off = matmul_helper_t::get_quant_off(</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">        1344 :                         dst_dims_idx, ndims, dst_scale_mask, dst_scale_group_m,</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">        1344 :                         dst_scale_group_n, dst_scales_md);</span></span>
+<span id="L364"><span class="lineNum">     364</span>              : </span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">        1344 :                 io::store_float_value(dst_scale_dt, dst_group_scale,</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">        1344 :                         dst_dynamic_scales, dst_scale_off);</span></span>
+<span id="L367"><span class="lineNum">     367</span>              :                 // Pre-invert the scale to apply it as a multiplier for the</span>
+<span id="L368"><span class="lineNum">     368</span>              :                 // group. Can't be zero.</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">        1344 :                 dst_group_scale = 1.f / dst_group_scale;</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">        2688 :                 for_(dim_t m_gidx = 0; m_gidx &lt; dst_scale_group_m; m_gidx++)</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">       44352 :                 for (dim_t n_gidx = 0; n_gidx &lt; dst_scale_group_n; n_gidx++) {</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       43008 :                     dim_t m = m_ + m_gidx;</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">       43008 :                     dim_t n = n_ + n_gidx;</span></span>
+<span id="L374"><span class="lineNum">     374</span>              :                     dims_t dst_dims_idx;</span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">       43008 :                     const size_t offset = mb * M * N + m * N + n;</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">       43008 :                     utils::l_dims_by_l_offset(</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       43008 :                             dst_dims_idx, offset, dst_d.dims(), ndims);</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">       43008 :                     const auto dst_off = dst_d.off_v(dst_dims_idx);</span></span>
+<span id="L379"><span class="lineNum">     379</span>              : </span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">       43008 :                     auto temp_dst_off = (ithr * dst_scale_group_m + m_gidx)</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       43008 :                                     * dst_scale_group_n</span></span>
+<span id="L382"><span class="lineNum">     382</span>              :                             + n_gidx;</span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">       43008 :                     float d = io::load_float_value(</span></span>
+<span id="L384"><span class="lineNum">     384</span>              :                             data_type::f32, temp_dst, temp_dst_off);</span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">       43008 :                     d *= dst_group_scale;</span></span>
+<span id="L386"><span class="lineNum">     386</span>              : </span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">       43008 :                     if (dst_rnd_mode == rounding_mode::stochastic)</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaUNC">           0 :                         d = math::stochastic_round_fwd(d, dst_off,</span></span>
+<span id="L389"><span class="lineNum">     389</span>              :                                 dropout_seed_val, dst_d.data_type());</span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">       43008 :                     io::store_float_value(dst_d.data_type(), d, dst, dst_off);</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       43008 :                     utils::dim_iterator(</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">       43008 :                             dst_d.dims(), dst_dims_idx, batch_ndims);</span></span>
+<span id="L393"><span class="lineNum">     393</span>              :                 }</span>
+<span id="L394"><span class="lineNum">     394</span>              :             }</span>
+<span id="L395"><span class="lineNum">     395</span>              :         }</span>
+<span id="L396"><span class="lineNum">     396</span>              :     });</span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">       73275 :     return status::success;</span></span>
+<span id="L399"><span class="lineNum">     399</span>              : }</span>
+<span id="L400"><span class="lineNum">     400</span>              : </span>
+<span id="L401"><span class="lineNum">     401</span>              : } // namespace matmul</span>
+<span id="L402"><span class="lineNum">     402</span>              : } // namespace cpu</span>
+<span id="L403"><span class="lineNum">     403</span>              : } // namespace impl</span>
+<span id="L404"><span class="lineNum">     404</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/generic/cross_engine_reorder.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/generic">src/gpu/generic</a> - cross_engine_reorder.cpp<span style="font-size: 80%;"> (source / <a href="cross_engine_reorder.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">99</td>
+            <td class="headerCovTableEntry">99</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;common/reorder.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;gpu/generic/cross_engine_reorder.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;gpu/gpu_engine.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;gpu/gpu_stream.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;gpu/gpu_utils.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace dnnl {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace impl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace gpu {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace generic {</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">       41106 : void cross_engine_reorder_t::pd_t::init_scratchpad(impl::engine_t *gpu_engine) {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">       41106 :     if (do_reorder_) {</span></span>
+<span id="L32"><span class="lineNum">      32</span>              :         using namespace memory_tracking::names;</span>
+<span id="L33"><span class="lineNum">      33</span>              :         auto gpu_align = utils::downcast&lt;gpu::engine_t *&gt;(gpu_engine)</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       41106 :                                  -&gt;get_buffer_alignment();</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       41106 :         auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       41106 :         auto needs_dst = desc()-&gt;src_engine_kind == reorder_engine_kind_;</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       41106 :         memory_desc_wrapper wspace((needs_dst) ? dst_md() : src_md());</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       41106 :         scratchpad.book(key_reorder_cross_space, wspace.size(), 1, gpu_align);</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       41106 :         scratchpad.book(key_nested, reorder_pd_-&gt;scratchpad_registry().size(),</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :                 1, gpu_align);</span>
+<span id="L41"><span class="lineNum">      41</span>              :     }</span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       41106 : }</span></span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       52248 : status_t cross_engine_reorder_t::pd_t::init(impl::engine_t *engine,</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :         impl::engine_t *src_engine, impl::engine_t *dst_engine) {</span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       52248 :     VDISPATCH_REORDER(src_engine != dst_engine, VERBOSE_BAD_ENGINE_KIND);</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       41138 :     VDISPATCH_REORDER(utils::one_of(engine_kind::gpu, src_engine-&gt;kind(),</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :                               dst_engine-&gt;kind()),</span>
+<span id="L49"><span class="lineNum">      49</span>              :             VERBOSE_BAD_ENGINE_KIND);</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       41138 :     VDISPATCH_REORDER(attr_ok(), VERBOSE_UNSUPPORTED_ATTR);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       41138 :     VDISPATCH_REORDER(extra_ok(true), VERBOSE_UNSUPPORTED_MD_FLAG, &quot;extra_ok&quot;);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       41138 :     VDISPATCH_REORDER(impl::is_dense_format_kind({src_md(), dst_md()}),</span></span>
+<span id="L53"><span class="lineNum">      53</span>              :             VERBOSE_UNSUPPORTED_SPARSE_CFG);</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       41138 :     memory_desc_wrapper src_mdw(src_md());</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       41138 :     memory_desc_wrapper dst_mdw(dst_md());</span></span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       41138 :     VDISPATCH_REORDER(!src_mdw.has_runtime_dims_or_strides(),</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :             VERBOSE_RUNTIMEDIM_UNSUPPORTED);</span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       41138 :     gpu::quantization_t src_quant {attr(), src_mdw, DNNL_ARG_SRC};</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       41138 :     gpu::quantization_t dst_quant {attr(), dst_mdw, DNNL_ARG_DST};</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       41138 :     gpu::sum_quantization_t sum_quant {attr()};</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       63844 :     bool with_sum_ab = src_quant.with_scale() || src_quant.with_zp()</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       22706 :             || dst_quant.with_scale() || dst_quant.with_zp()</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       63844 :             || sum_quant.with_scale() || sum_quant.with_zp();</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       41138 :     do_reorder_ = with_sum_ab || src_mdw != dst_mdw;</span></span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              :     impl::engine_t *reorder_engine</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       41138 :             = src_engine-&gt;kind() == engine_kind::gpu ? src_engine : dst_engine;</span></span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       82276 :     primitive_attr_t r_attr(*attr());</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       41138 :     if (!r_attr.is_initialized()) return status::out_of_memory;</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       41138 :     auto clean_src_md = *src_md();</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       41138 :     auto clean_dst_md = *dst_md();</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       41138 :     clean_src_md.extra = clean_dst_md.extra = {};</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       41138 :     VDISPATCH_REORDER_SC(</span></span>
+<span id="L79"><span class="lineNum">      79</span>              :             reorder_primitive_desc_create(reorder_pd_, reorder_engine,</span>
+<span id="L80"><span class="lineNum">      80</span>              :                     &amp;clean_src_md, &amp;clean_dst_md, &amp;r_attr),</span>
+<span id="L81"><span class="lineNum">      81</span>              :             VERBOSE_PRIMITIVE_CREATION_FAIL, &quot;reorder&quot;);</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       41106 :     reorder_pd_t::init_desc(</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :             src_engine-&gt;kind(), dst_engine-&gt;kind(), true /* is_cross_engine */);</span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       41106 :     VDISPATCH_REORDER_SC(maybe_create_zp_precompute_conv_pd(dst_engine),</span></span>
+<span id="L87"><span class="lineNum">      87</span>              :             &quot;failed to create nested zp precompute convolution&quot;);</span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       41106 :     init_scratchpad(</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       41106 :             (dst_engine-&gt;kind() == engine_kind::gpu) ? dst_engine : src_engine);</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       41106 :     return status::success;</span></span>
+<span id="L91"><span class="lineNum">      91</span>              : }</span>
+<span id="L92"><span class="lineNum">      92</span>              : </span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">       77522 : status_t cross_engine_reorder_t::init(impl::engine_t *engine) {</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       77522 :     CHECK(pd()-&gt;maybe_create_zp_precompute_conv(</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :             zp_precomp_conv_, engine, this));</span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       77522 :     if (!pd()-&gt;do_reorder_) return status::success;</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       77522 :     return create_nested_primitive(reorder_, pd()-&gt;reorder_pd_, engine);</span></span>
+<span id="L98"><span class="lineNum">      98</span>              : }</span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       82058 : status_t cross_engine_reorder_t::execute(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L101"><span class="lineNum">     101</span>              :     using namespace memory_tracking::names;</span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       82058 :     auto *gpu_stream = utils::downcast&lt;gpu::stream_t *&gt;(ctx.stream());</span></span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">       82058 :     status_t status = status::success;</span></span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">       82058 :     auto &amp;src = CTX_IN_STORAGE(DNNL_ARG_FROM);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">       82058 :     auto &amp;dst = CTX_OUT_STORAGE(DNNL_ARG_TO);</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">       82058 :     std::unique_ptr&lt;memory_t, memory_deleter_t&gt; wspace;</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       82058 :     if (pd()-&gt;do_reorder_) {</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">       82058 :         auto src_engine_kind = pd()-&gt;desc()-&gt;src_engine_kind;</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">       82058 :         auto reorder_engine_kind = pd()-&gt;reorder_engine_kind_;</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">       82058 :         auto scratchpad = ctx.get_scratchpad_grantor().get_memory_storage(</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       82058 :                 key_reorder_cross_space);</span></span>
+<span id="L115"><span class="lineNum">     115</span>              :         auto wspace_md = src_engine_kind == reorder_engine_kind</span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">       82058 :                 ? pd()-&gt;dst_md()</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">       53089 :                 : pd()-&gt;src_md();</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">       82058 :         CHECK(safe_ptr_assign(wspace,</span></span>
+<span id="L119"><span class="lineNum">     119</span>              :                 new memory_t(ctx.stream()-&gt;engine(), wspace_md,</span>
+<span id="L120"><span class="lineNum">     120</span>              :                         std::move(scratchpad))));</span>
+<span id="L121"><span class="lineNum">     121</span>              :     }</span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">       82058 :     auto exec_reorder = [&amp;](const memory_t *src_mem, const memory_t *dst_mem,</span></span>
+<span id="L124"><span class="lineNum">     124</span>              :                                 const memory_t *src_scales_mem,</span>
+<span id="L125"><span class="lineNum">     125</span>              :                                 const memory_t *dst_scales_mem) {</span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">      164116 :         exec_args_t r_args;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       82058 :         r_args[DNNL_ARG_SRC]</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      164116 :                 = memory_arg_t {const_cast&lt;memory_t *&gt;(src_mem), true};</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       82058 :         r_args[DNNL_ARG_DST]</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">      164116 :                 = memory_arg_t {const_cast&lt;memory_t *&gt;(dst_mem), false};</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       82058 :         r_args[DNNL_ARG_ATTR_SCALES | DNNL_ARG_SRC]</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      164116 :                 = memory_arg_t {const_cast&lt;memory_t *&gt;(src_scales_mem), true};</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       82058 :         r_args[DNNL_ARG_ATTR_SCALES | DNNL_ARG_DST]</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">      164116 :                 = memory_arg_t {const_cast&lt;memory_t *&gt;(dst_scales_mem), true};</span></span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      164116 :         exec_ctx_t r_ctx(ctx, std::move(r_args));</span></span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              :         auto *nested_grantor</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       82058 :                 = create_nested_grantor(ctx.get_scratchpad_grantor(),</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       82058 :                         key_nested, reorder_-&gt;pd()-&gt;scratchpad_registry());</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       82058 :         r_ctx.set_scratchpad_grantor(nested_grantor);</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">      164116 :         return reorder_-&gt;execute(r_ctx);</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       82058 :     };</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">       82058 :     if (pd()-&gt;desc()-&gt;src_engine_kind == engine_kind::gpu) {</span></span>
+<span id="L146"><span class="lineNum">     146</span>              :         // GPU -&gt; CPU or GPU -&gt; GPU</span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">       28969 :         memory_desc_wrapper dst_mdw(pd()-&gt;dst_md());</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">       28969 :         if (pd()-&gt;do_reorder_) {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">       28969 :             if (pd()-&gt;beta() != 0.f) {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        9216 :                 status = gpu_stream-&gt;copy(dst, *wspace-&gt;memory_storage(),</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        9216 :                         dst_mdw.size(), gpu_stream-&gt;ctx().get_deps(),</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        9216 :                         gpu_stream-&gt;ctx().get_deps());</span></span>
+<span id="L153"><span class="lineNum">     153</span>              :             }</span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       28969 :             if (status == status::success)</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       28969 :                 status = exec_reorder(ctx.input(DNNL_ARG_FROM), wspace.get(),</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       28969 :                         ctx.input(DNNL_ARG_ATTR_SCALES | DNNL_ARG_SRC),</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       28969 :                         ctx.input(DNNL_ARG_ATTR_SCALES | DNNL_ARG_DST));</span></span>
+<span id="L158"><span class="lineNum">     158</span>              :         }</span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       28969 :         if (status == status::success) {</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       28969 :             status = gpu_stream-&gt;copy(</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       28969 :                     pd()-&gt;do_reorder_ ? *wspace-&gt;memory_storage() : src, dst,</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">       28969 :                     dst_mdw.size(), gpu_stream-&gt;ctx().get_deps(),</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       28969 :                     gpu_stream-&gt;ctx().get_deps());</span></span>
+<span id="L164"><span class="lineNum">     164</span>              :         }</span>
+<span id="L165"><span class="lineNum">     165</span>              :     } else {</span>
+<span id="L166"><span class="lineNum">     166</span>              :         // CPU -&gt; GPU</span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       53089 :         memory_desc_wrapper src_mdw(pd()-&gt;src_md());</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       53089 :         status = gpu_stream-&gt;copy(src,</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       53089 :                 pd()-&gt;do_reorder_ ? *wspace-&gt;memory_storage() : dst,</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       53089 :                 src_mdw.size(), gpu_stream-&gt;ctx().get_deps(),</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       53089 :                 gpu_stream-&gt;ctx().get_deps());</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       53089 :         if (status == status::success &amp;&amp; pd()-&gt;do_reorder_) {</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       53089 :             status = exec_reorder(wspace.get(), ctx.output(DNNL_ARG_TO),</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       53089 :                     ctx.input(DNNL_ARG_ATTR_SCALES | DNNL_ARG_SRC),</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       53089 :                     ctx.input(DNNL_ARG_ATTR_SCALES | DNNL_ARG_DST));</span></span>
+<span id="L176"><span class="lineNum">     176</span>              :         }</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       53089 :         if (status == status::success)</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       53089 :             status = pd()-&gt;maybe_exec_zp_precompute_conv(ctx, zp_precomp_conv_);</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :     }</span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       82058 :     return status;</span></span>
+<span id="L181"><span class="lineNum">     181</span>              : }</span>
+<span id="L182"><span class="lineNum">     182</span>              : </span>
+<span id="L183"><span class="lineNum">     183</span>              : } // namespace generic</span>
+<span id="L184"><span class="lineNum">     184</span>              : } // namespace gpu</span>
+<span id="L185"><span class="lineNum">     185</span>              : } // namespace impl</span>
+<span id="L186"><span class="lineNum">     186</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

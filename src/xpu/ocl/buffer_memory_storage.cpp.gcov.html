@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/xpu/ocl/buffer_memory_storage.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/xpu/ocl">src/xpu/ocl</a> - buffer_memory_storage.cpp<span style="font-size: 80%;"> (source / <a href="buffer_memory_storage.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">90.8&nbsp;%</td>
+            <td class="headerCovTableEntry">65</td>
+            <td class="headerCovTableEntry">59</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;CL/cl.h&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/engine.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/stream.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;xpu/ocl/buffer_memory_storage.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;xpu/ocl/engine_impl.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;xpu/ocl/stream_impl.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;xpu/ocl/usm_utils.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : #if DNNL_GPU_VENDOR == DNNL_VENDOR_INTEL</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;gpu/intel/ocl/engine.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #endif</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace dnnl {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace impl {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace xpu {</span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace ocl {</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : #if DNNL_GPU_VENDOR == DNNL_VENDOR_INTEL</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">      193403 : status_t buffer_memory_storage_t::init_allocate(size_t size) {</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :     auto ocl_engine</span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      193403 :             = utils::downcast&lt;const gpu::intel::ocl::engine_t *&gt;(engine());</span></span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      193403 :     cl_mem_flags flags = CL_MEM_READ_WRITE;</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      193403 :     if (size &gt; ocl_engine-&gt;device_info()-&gt;max_allocation_size()) {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">          10 :         if (size &gt; ocl_engine-&gt;device_info()-&gt;memory_size())</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">          10 :             return status::invalid_arguments;</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :         flags |= CL_MEM_ALLOW_UNRESTRICTED_SIZE_INTEL;</span></span>
+<span id="L46"><span class="lineNum">      46</span>              :     }</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              :     cl_int err;</span>
+<span id="L49"><span class="lineNum">      49</span>              :     mem_object_ = clCreateBuffer_wrapper(</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">      193393 :             ocl_engine-&gt;context(), flags, size, nullptr, &amp;err);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">      193393 :     OCL_CHECK(err);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">      193393 :     return status::success;</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : }</span>
+<span id="L54"><span class="lineNum">      54</span>              : #else</span>
+<span id="L55"><span class="lineNum">      55</span>              : status_t buffer_memory_storage_t::init_allocate(size_t size) {</span>
+<span id="L56"><span class="lineNum">      56</span>              :     auto context</span>
+<span id="L57"><span class="lineNum">      57</span>              :             = utils::downcast&lt;const xpu::ocl::engine_impl_t *&gt;(engine()-&gt;impl())</span>
+<span id="L58"><span class="lineNum">      58</span>              :                       -&gt;context();</span>
+<span id="L59"><span class="lineNum">      59</span>              :     cl_int err;</span>
+<span id="L60"><span class="lineNum">      60</span>              :     mem_object_ = xpu::ocl::clCreateBuffer_wrapper(</span>
+<span id="L61"><span class="lineNum">      61</span>              :             context, CL_MEM_READ_WRITE, size, nullptr, &amp;err);</span>
+<span id="L62"><span class="lineNum">      62</span>              :     OCL_CHECK(err);</span>
+<span id="L63"><span class="lineNum">      63</span>              :     return status::success;</span>
+<span id="L64"><span class="lineNum">      64</span>              : }</span>
+<span id="L65"><span class="lineNum">      65</span>              : #endif</span>
+<span id="L66"><span class="lineNum">      66</span>              : </span>
+<span id="L67"><span class="lineNum">      67</span>              : namespace {</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">      316934 : status_t get_map_queue(cl_command_queue &amp;queue, impl::engine_t *engine,</span></span>
+<span id="L69"><span class="lineNum">      69</span>              :         impl::stream_t *stream) {</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      316934 :     if (stream == nullptr) {</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">      316694 :         status_t status = engine-&gt;get_service_stream(stream);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">      316694 :         if (status != status::success) { return status::runtime_error; }</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :     }</span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">      316934 :     queue = utils::downcast&lt;xpu::ocl::stream_impl_t *&gt;(stream-&gt;impl())-&gt;queue();</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">      316934 :     return status::success;</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : }</span>
+<span id="L77"><span class="lineNum">      77</span>              : } // namespace</span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">      158472 : status_t buffer_memory_storage_t::map_data(</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :         void **mapped_ptr, impl::stream_t *stream, size_t) const {</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      158472 :     if (!mem_object()) {</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">           5 :         *mapped_ptr = nullptr;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">           5 :         return status::success;</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :     }</span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span>              :     cl_mem_flags mem_flags;</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      158467 :     OCL_CHECK(xpu::ocl::clGetMemObjectInfo(mem_object(), CL_MEM_FLAGS,</span></span>
+<span id="L88"><span class="lineNum">      88</span>              :             sizeof(mem_flags), &amp;mem_flags, nullptr));</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              :     size_t mem_bytes;</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">      158467 :     OCL_CHECK(xpu::ocl::clGetMemObjectInfo(</span></span>
+<span id="L92"><span class="lineNum">      92</span>              :             mem_object(), CL_MEM_SIZE, sizeof(mem_bytes), &amp;mem_bytes, nullptr));</span>
+<span id="L93"><span class="lineNum">      93</span>              : </span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">      158467 :     cl_map_flags map_flags = 0;</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">      158467 :     if (mem_flags &amp; CL_MEM_READ_WRITE) {</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">      158467 :         map_flags |= CL_MAP_READ;</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">      158467 :         map_flags |= CL_MAP_WRITE;</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaUNC">           0 :     } else if (mem_flags &amp; CL_MEM_READ_ONLY) {</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :         map_flags |= CL_MAP_READ;</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :     } else if (mem_flags &amp; CL_MEM_WRITE_ONLY) {</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :         map_flags |= CL_MAP_WRITE;</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :     }</span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span>              :     cl_command_queue queue;</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">      158467 :     CHECK(get_map_queue(queue, engine(), stream));</span></span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span>              :     // Use blocking operation to simplify the implementation and API</span>
+<span id="L108"><span class="lineNum">     108</span>              :     cl_int err;</span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">      158467 :     *mapped_ptr = xpu::ocl::clEnqueueMapBuffer(queue, mem_object(), CL_TRUE,</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">      158467 :             map_flags, 0, mem_bytes, 0, nullptr, nullptr, &amp;err);</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">      158467 :     return xpu::ocl::convert_to_dnnl(err);</span></span>
+<span id="L112"><span class="lineNum">     112</span>              : }</span>
+<span id="L113"><span class="lineNum">     113</span>              : </span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">      158472 : status_t buffer_memory_storage_t::unmap_data(</span></span>
+<span id="L115"><span class="lineNum">     115</span>              :         void *mapped_ptr, impl::stream_t *stream) const {</span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">      158472 :     if (!mapped_ptr) return status::success;</span></span>
+<span id="L117"><span class="lineNum">     117</span>              :     cl_command_queue queue;</span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">      158467 :     CHECK(get_map_queue(queue, engine(), stream));</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">      158467 :     OCL_CHECK(xpu::ocl::clEnqueueUnmapMemObject(queue, mem_object_,</span></span>
+<span id="L120"><span class="lineNum">     120</span>              :             const_cast&lt;void *&gt;(mapped_ptr), 0, nullptr, nullptr));</span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">      158467 :     OCL_CHECK(xpu::ocl::clFinish(queue));</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      158467 :     return status::success;</span></span>
+<span id="L123"><span class="lineNum">     123</span>              : }</span>
+<span id="L124"><span class="lineNum">     124</span>              : </span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">      128045 : std::unique_ptr&lt;memory_storage_t&gt; buffer_memory_storage_t::get_sub_storage(</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :         size_t offset, size_t size) const {</span>
+<span id="L127"><span class="lineNum">     127</span>              :     // Fast return on size = 0.</span>
+<span id="L128"><span class="lineNum">     128</span>              :     // It also seems clCreateSubBuffer() does not work properly for such case.</span>
+<span id="L129"><span class="lineNum">     129</span>              :     // Assumption: returned sub-storage won't be used for extracting cl_mem.</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">      128045 :     if (size == 0) return nullptr;</span></span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span>              :     cl_mem_flags mem_flags;</span>
+<span id="L133"><span class="lineNum">     133</span>              :     cl_int err;</span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">      256090 :     err = xpu::ocl::clGetMemObjectInfo(</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      128045 :             mem_object(), CL_MEM_FLAGS, sizeof(mem_flags), &amp;mem_flags, nullptr);</span></span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span>              :     // TODO: Generalize gpu_assert to make it available for use in the xpu</span>
+<span id="L138"><span class="lineNum">     138</span>              :     // space.</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">      128045 :     assert(err == CL_SUCCESS);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">      128045 :     if (err != CL_SUCCESS) return nullptr;</span></span>
+<span id="L141"><span class="lineNum">     141</span>              : </span>
+<span id="L142"><span class="lineNum">     142</span>              :     const auto *ocl_engine_impl</span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      128045 :             = utils::downcast&lt;const xpu::ocl::engine_impl_t *&gt;(</span></span>
+<span id="L144"><span class="lineNum">     144</span>              :                     engine()-&gt;impl());</span>
+<span id="L145"><span class="lineNum">     145</span>              :     MAYBE_UNUSED(ocl_engine_impl);</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      128045 :     assert(size != 0);</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      128045 :     assert(offset % ocl_engine_impl-&gt;get_buffer_alignment() == 0);</span></span>
+<span id="L149"><span class="lineNum">     149</span>              : </span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      128045 :     cl_buffer_region buffer_region = {base_offset_ + offset, size};</span></span>
+<span id="L151"><span class="lineNum">     151</span>              :     xpu::ocl::wrapper_t&lt;cl_mem&gt; sub_buffer</span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaUNC">           0 :             = xpu::ocl::clCreateSubBuffer(parent_mem_object(), mem_flags,</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      256090 :                     CL_BUFFER_CREATE_TYPE_REGION, &amp;buffer_region, &amp;err);</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      128045 :     assert(err == CL_SUCCESS);</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">      128045 :     if (err != CL_SUCCESS) return nullptr;</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : </span>
+<span id="L157"><span class="lineNum">     157</span>              :     auto sub_storage</span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      128045 :             = new buffer_memory_storage_t(this-&gt;engine(), root_storage());</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">      128045 :     if (sub_storage) {</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">      128045 :         sub_storage-&gt;init(memory_flags_t::use_runtime_ptr, size, sub_buffer);</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">      128045 :         sub_storage-&gt;base_offset_ = base_offset_ + offset;</span></span>
+<span id="L162"><span class="lineNum">     162</span>              :     }</span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">      128045 :     return std::unique_ptr&lt;memory_storage_t&gt;(sub_storage);</span></span>
+<span id="L164"><span class="lineNum">     164</span>              : }</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       10395 : std::unique_ptr&lt;memory_storage_t&gt; buffer_memory_storage_t::clone() const {</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       10395 :     auto storage = new buffer_memory_storage_t(engine());</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       10395 :     if (storage) storage-&gt;init(memory_flags_t::use_runtime_ptr, 0, mem_object_);</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       10395 :     return std::unique_ptr&lt;memory_storage_t&gt;(storage);</span></span>
+<span id="L170"><span class="lineNum">     170</span>              : }</span>
+<span id="L171"><span class="lineNum">     171</span>              : </span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">      128045 : cl_mem buffer_memory_storage_t::parent_mem_object() const {</span></span>
+<span id="L173"><span class="lineNum">     173</span>              :     return utils::downcast&lt;const buffer_memory_storage_t *&gt;(root_storage())</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">      128045 :             -&gt;mem_object();</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : }</span>
+<span id="L176"><span class="lineNum">     176</span>              : </span>
+<span id="L177"><span class="lineNum">     177</span>              : } // namespace ocl</span>
+<span id="L178"><span class="lineNum">     178</span>              : } // namespace xpu</span>
+<span id="L179"><span class="lineNum">     179</span>              : } // namespace impl</span>
+<span id="L180"><span class="lineNum">     180</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

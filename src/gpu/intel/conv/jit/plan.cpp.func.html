@@ -1,0 +1,1156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/conv/jit/plan.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/conv/jit">src/gpu/intel/conv/jit</a> - plan.cpp<span style="font-size: 80%;"> (<a href="plan.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">90.5&nbsp;%</td>
+            <td class="headerCovTableEntry">1872</td>
+            <td class="headerCovTableEntry">1694</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">93.3&nbsp;%</td>
+            <td class="headerCovTableEntry">135</td>
+            <td class="headerCovTableEntry">126</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="plan.cpp.func-c.html"><img src="../../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1846">dnnl::impl::gpu::intel::conv::jit::add_batch(gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">467996</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L131">dnnl::impl::gpu::intel::conv::jit::bind_kernel_grid(dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">337736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L114">dnnl::impl::gpu::intel::conv::jit::bind_thread_group_grid_idx(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">997647</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L736">dnnl::impl::gpu::intel::conv::jit::create_reduce_plan(gemmstone::dsl::hw_t const&amp;, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;, unsigned int)</a></td>
+              
+              <td class="coverFnHi">242</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L685">dnnl::impl::gpu::intel::conv::jit::create_reorder_plan(gemmstone::dsl::hw_t const&amp;, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">687676</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L64">dnnl::impl::gpu::intel::conv::jit::create_tile(dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1759358</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L81">dnnl::impl::gpu::intel::conv::jit::create_tile(dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">5278075</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L42">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::grid_idx() const</a></td>
+              
+              <td class="coverFnHi">1413188</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L45">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::iter_idx() const</a></td>
+              
+              <td class="coverFnHi">1728236</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L44">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::loop_idx() const</a></td>
+              
+              <td class="coverFnHi">439536</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L53">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::not_empty(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">4948776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L47">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::set_grid_idx(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1759358</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L50">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::set_iter_idx(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1759358</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L49">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::set_loop_idx(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1759358</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L48">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::set_tg_idx(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1759358</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L43">dnnl::impl::gpu::intel::conv::jit::dim_tile_t::tg_idx() const</a></td>
+              
+              <td class="coverFnHi">1367812</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1781">dnnl::impl::gpu::intel::conv::jit::direct_view_t::check_masks() const</a></td>
+              
+              <td class="coverFnHi">5953</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1760">dnnl::impl::gpu::intel::conv::jit::direct_view_t::check_tdims(unsigned int&amp;) const</a></td>
+              
+              <td class="coverFnHi">684804</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1790">dnnl::impl::gpu::intel::conv::jit::direct_view_t::create_vvars(int)</a></td>
+              
+              <td class="coverFnHi">5953</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1792">dnnl::impl::gpu::intel::conv::jit::direct_view_t::create_vvars(int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">1030</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1714">dnnl::impl::gpu::intel::conv::jit::direct_view_t::direct_view_t()</a></td>
+              
+              <td class="coverFnHi">675472</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1716">dnnl::impl::gpu::intel::conv::jit::direct_view_t::direct_view_t(dnnl::impl::gpu::intel::jit::view_t const&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">684804</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1727">dnnl::impl::gpu::intel::conv::jit::direct_view_t::get() const</a></td>
+              
+              <td class="coverFnHi">5916</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1805">dnnl::impl::gpu::intel::conv::jit::direct_view_t::init_direct_view()</a></td>
+              
+              <td class="coverFnHi">5953</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1723">dnnl::impl::gpu::intel::conv::jit::direct_view_t::operator bool() const</a></td>
+              
+              <td class="coverFnHi">1320471</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1729">dnnl::impl::gpu::intel::conv::jit::direct_view_t::transform(gemmstone::dsl::layout_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">5916</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1659">dnnl::impl::gpu::intel::conv::jit::do_reduce(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::abc_kind_t)</a></td>
+              
+              <td class="coverFnHi">2059580</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1854">dnnl::impl::gpu::intel::conv::jit::dpas_dims(bool)</a></td>
+              
+              <td class="coverFnHi">467996</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1521">dnnl::impl::gpu::intel::conv::jit::find_min_stride_without_conflicts(gemmstone::dsl::hw_t const&amp;, long, long)</a></td>
+              
+              <td class="coverFnHi">30268</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1448">dnnl::impl::gpu::intel::conv::jit::fma_context_t::can_vectorize_by(dnnl::impl::gpu::intel::jit::bmnk_kind_t, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">194579</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1300">dnnl::impl::gpu::intel::conv::jit::fma_context_t::fma_context_t(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">337736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1430">dnnl::impl::gpu::intel::conv::jit::fma_context_t::get_bmnk_kinds(dnnl::impl::gpu::intel::jit::abc_kind_t, bool)</a></td>
+              
+              <td class="coverFnHi">473299</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1412">dnnl::impl::gpu::intel::conv::jit::fma_context_t::get_fma_friendly_layout(dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::bmnk_mapper_t const&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">85759</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1350">dnnl::impl::gpu::intel::conv::jit::fma_context_t::get_fma_friendly_layout(dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::bmnk_mapper_t const&amp;, gemmstone::dsl::layout_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">687756</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1418">dnnl::impl::gpu::intel::conv::jit::fma_context_t::get_vec_idx(dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::bmnk_kind_t)</a></td>
+              
+              <td class="coverFnHi">408166</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1455">dnnl::impl::gpu::intel::conv::jit::fma_context_t::is_mad_compatible(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;, int, int) const</a></td>
+              
+              <td class="coverFnHi">194579</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1458">dnnl::impl::gpu::intel::conv::jit::fma_context_t::is_mad_compatible(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;, int, int) const::{lambda(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::idx_t const&amp;, int)#1}::operator()(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::idx_t const&amp;, int) const</a></td>
+              
+              <td class="coverFnHi">231630</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1311">dnnl::impl::gpu::intel::conv::jit::fma_context_t::layout_hint(dnnl::impl::gpu::intel::jit::abc_kind_t)</a></td>
+              
+              <td class="coverFnHi">4740</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1315">dnnl::impl::gpu::intel::conv::jit::fma_context_t::layout_hint(dnnl::impl::gpu::intel::jit::abc_kind_t) const</a></td>
+              
+              <td class="coverFnHi">215389</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1319">dnnl::impl::gpu::intel::conv::jit::fma_context_t::maybe_retype_layout_for_mad(bool, gemmstone::dsl::layout_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">215389</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1476">dnnl::impl::gpu::intel::conv::jit::fma_context_t::set_layout_hints(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">4752</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1296">dnnl::impl::gpu::intel::conv::jit::fma_layout_hint_t::is_empty() const</a></td>
+              
+              <td class="coverFnHi">224869</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L937">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::a_buf_size() const</a></td>
+              
+              <td class="coverFnHi">5878825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L944">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::b_buf_size() const</a></td>
+              
+              <td class="coverFnHi">5878825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L951">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::bmnk_split_idx(dnnl::impl::gpu::intel::jit::bmnk_kind_t, int, bool) const</a></td>
+              
+              <td class="coverFnHi">1422408</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L977">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::bmnk_start_idx(dnnl::impl::gpu::intel::jit::bmnk_kind_t, int) const</a></td>
+              
+              <td class="coverFnHi">711204</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L981">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::bmnk_stop_idx(dnnl::impl::gpu::intel::jit::bmnk_kind_t, int) const</a></td>
+              
+              <td class="coverFnHi">711204</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L905">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::can_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int) const</a></td>
+              
+              <td class="coverFnHi">215031</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1030">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::create_fma_block(std::vector&lt;gemmstone::dsl::ir::func_t, std::allocator&lt;gemmstone::dsl::ir::func_t&gt; &gt; const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">5878825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1050">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::create_fma_funcs(gemmstone::dsl::hw_t const&amp;, gemmstone::dsl::type_t, gemmstone::dsl::type_t) const</a></td>
+              
+              <td class="coverFnHi">177801</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L985">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::create_stmt(gemmstone::dsl::ir::ir_context_t&amp;, gemmstone::dsl::ir::buffer_manager_t&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, int, gemmstone::dsl::type_t, gemmstone::dsl::type_t) const</a></td>
+              
+              <td class="coverFnHi">177801</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1090">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::estimate_regs() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L923">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::set_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int)</a></td>
+              
+              <td class="coverFnHi">56762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1094">dnnl::impl::gpu::intel::conv::jit::fma_plan_t::str[abi:cxx11]() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1259">dnnl::impl::gpu::intel::conv::jit::get_accumulation_type(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, gemmstone::dsl::type_t const&amp;, gemmstone::dsl::type_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">685409</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1883">dnnl::impl::gpu::intel::conv::jit::get_c_layout(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">342679</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L888">dnnl::impl::gpu::intel::conv::jit::get_dpas_block_rcount(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::idx_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">235374</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1672">dnnl::impl::gpu::intel::conv::jit::get_reduce_dim_map(unsigned int, unsigned long&amp;)</a></td>
+              
+              <td class="coverFnHi">484</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1640">dnnl::impl::gpu::intel::conv::jit::get_slm_layout(dnnl::impl::gpu::intel::conv::jit::fma_context_t const&amp;, dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::bmnk_mapper_t const&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;, dnnl::impl::gpu::intel::jit::grid_info_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">85759</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L304">dnnl::impl::gpu::intel::conv::jit::init_bwd_d(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)</a></td>
+              
+              <td class="coverFnHi">298180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L344">dnnl::impl::gpu::intel::conv::jit::init_bwd_d(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)::{lambda(gemmstone::dsl::ir::expr_t const&amp;)#1}::operator()(gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">1281</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L352">dnnl::impl::gpu::intel::conv::jit::init_bwd_d(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)::{lambda(gemmstone::dsl::ir::expr_t const&amp;)#2}::operator()(gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">595506</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L449">dnnl::impl::gpu::intel::conv::jit::init_bwd_d(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)::{lambda(gemmstone::dsl::ir::expr_t const&amp;)#3}::operator()(gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">2981800</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L509">dnnl::impl::gpu::intel::conv::jit::init_bwd_w(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)</a></td>
+              
+              <td class="coverFnHi">15561</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L641">dnnl::impl::gpu::intel::conv::jit::init_bwd_w(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)::{lambda(gemmstone::dsl::ir::expr_t const&amp;)#1}::operator()(gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">155610</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L144">dnnl::impl::gpu::intel::conv::jit::init_fwd(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)</a></td>
+              
+              <td class="coverFnHi">23995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L265">dnnl::impl::gpu::intel::conv::jit::init_fwd(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;, dnnl::impl::gpu::intel::jit::view_t&amp;)::{lambda(gemmstone::dsl::ir::expr_t const&amp;)#1}::operator()(gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">239950</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2685">dnnl::impl::gpu::intel::conv::jit::init_plan(dnnl::impl::gpu::intel::conv::jit::config_t&amp;)</a></td>
+              
+              <td class="coverFnHi">337736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1859">dnnl::impl::gpu::intel::conv::jit::is_dpas_src1_compatible(int, bool, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">233998</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1871">dnnl::impl::gpu::intel::conv::jit::is_dpas_src2_compatible(int, bool, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">233998</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1272">dnnl::impl::gpu::intel::conv::jit::make_with_block(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">815978</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1596">dnnl::impl::gpu::intel::conv::jit::pad_slm_layout(gemmstone::dsl::hw_t const&amp;, gemmstone::dsl::layout_t const&amp;, dnnl::impl::gpu::intel::jit::grid_info_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">85759</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2663">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::enable_direct_view(bool)</a></td>
+              
+              <td class="coverFnHi">295</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2664">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::enable_send_2d(dnnl::impl::gpu::intel::jit::abc_kind_t, bool)</a></td>
+              
+              <td class="coverFnHi">2110</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2669">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::enable_slm(bool)</a></td>
+              
+              <td class="coverFnHi">1331</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2033">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::fixup_grf_usage(dnnl::impl::gpu::intel::conv::jit::plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">342331</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2398">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::fixup_k_blocks_order(gemmstone::dsl::layout_t&amp;, gemmstone::dsl::layout_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">343549</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2401">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::fixup_k_blocks_order(gemmstone::dsl::layout_t&amp;, gemmstone::dsl::layout_t&amp;) const::{lambda(dnnl::impl::gpu::intel::jit::abc_kind_t, gemmstone::dsl::layout_t const&amp;)#1}::operator()(dnnl::impl::gpu::intel::jit::abc_kind_t, gemmstone::dsl::layout_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">687098</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2610">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::get_plan() const</a></td>
+              
+              <td class="coverFnHi">337736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2640">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::get_send_params(gemmstone::dsl::kernel::options_t const&amp;, gemmstone::dsl::ir::send_op_t, gemmstone::dsl::ir::send_address_t, dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::view_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">256895</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2650">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::get_send_params(gemmstone::dsl::kernel::options_t const&amp;, gemmstone::dsl::ir::send_op_t, gemmstone::dsl::ir::send_address_t, gemmstone::dsl::ir::fma_kind_t, dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::view_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t const&amp;, bool) const</a></td>
+              
+              <td class="coverFnHi">792269</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2480">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_fma_plan(dnnl::impl::gpu::intel::conv::jit::x2r_plan_t const&amp;, dnnl::impl::gpu::intel::conv::jit::fma_context_t&amp;, dnnl::impl::gpu::intel::conv::jit::fma_plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">347431</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1935">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_plan()</a></td>
+              
+              <td class="coverFnHi">337736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2266">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_prefetch_plan(dnnl::impl::gpu::intel::conv::jit::prefetch_plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">342382</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2202">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_slm_plan(dnnl::impl::gpu::intel::conv::jit::slm_plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">342422</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2452">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_x2r_plan(dnnl::impl::gpu::intel::conv::jit::slm_plan_t const&amp;, dnnl::impl::gpu::intel::conv::jit::x2r_plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">343767</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2104">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_x_g2r_direct_view(dnnl::impl::gpu::intel::jit::view_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, dnnl::impl::gpu::intel::conv::jit::direct_view_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">684804</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2302">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_x_g2r_plan(dnnl::impl::gpu::intel::jit::abc_kind_t, bool, dnnl::impl::gpu::intel::jit::view_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, dnnl::impl::gpu::intel::jit::send_plan_t&amp;, dnnl::impl::gpu::intel::conv::jit::reorder_plan_t&amp;, gemmstone::dsl::layout_t&amp;, dnnl::impl::gpu::intel::conv::jit::reduce_mask_t, dnnl::impl::gpu::intel::conv::jit::reduce_plan_t*, dnnl::impl::gpu::intel::jit::tile_coord_t*) const</a></td>
+              
+              <td class="coverFnHi">687202</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2251">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_x_prefetch_plan(dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::view_t const&amp;, dnnl::impl::gpu::intel::jit::grid_info_t&amp;, dnnl::impl::gpu::intel::jit::send_plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">684764</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2274">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_x_s2r_plan(dnnl::impl::gpu::intel::jit::abc_kind_t, bool, gemmstone::dsl::layout_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, dnnl::impl::gpu::intel::jit::send_plan_t&amp;, gemmstone::dsl::layout_t&amp;, dnnl::impl::gpu::intel::conv::jit::reduce_mask_t, dnnl::impl::gpu::intel::conv::jit::reduce_plan_t*, dnnl::impl::gpu::intel::jit::tile_coord_t*) const</a></td>
+              
+              <td class="coverFnHi">687534</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2153">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_x_slm_plan(dnnl::impl::gpu::intel::jit::abc_kind_t, dnnl::impl::gpu::intel::jit::view_t const&amp;, gemmstone::dsl::layout_t&amp;, dnnl::impl::gpu::intel::jit::grid_info_t&amp;, dnnl::impl::gpu::intel::jit::send_plan_t&amp;, dnnl::impl::gpu::intel::jit::send_plan_t&amp;, dnnl::impl::gpu::intel::conv::jit::reorder_plan_t&amp;, dnnl::impl::gpu::intel::conv::jit::reduce_mask_t, dnnl::impl::gpu::intel::conv::jit::reduce_plan_t*, dnnl::impl::gpu::intel::jit::tile_coord_t*) const</a></td>
+              
+              <td class="coverFnHi">684844</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2570">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::init_zp_plan(dnnl::impl::gpu::intel::conv::jit::x2r_plan_t const&amp;, dnnl::impl::gpu::intel::conv::jit::fma_plan_t const&amp;, dnnl::impl::gpu::intel::conv::jit::zp_plan_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">334563</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2216">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::maybe_extend_prefetch_thread_view_to_256_bytes(dnnl::impl::gpu::intel::jit::view_t&amp;) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1926">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::plan_builder_t(dnnl::impl::gpu::intel::conv::jit::config_t&amp;)</a></td>
+              
+              <td class="coverFnHi">337736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1987">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::set_plan()</a></td>
+              
+              <td class="coverFnHi">326795</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2057">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::try_apply_ab_split(dnnl::impl::gpu::intel::conv::jit::plan_t&amp;, int) const</a></td>
+              
+              <td class="coverFnHi">28216</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2089">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::try_drop_prefetch(dnnl::impl::gpu::intel::conv::jit::plan_t&amp;, int) const</a></td>
+              
+              <td class="coverFnHi">13892</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2007">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::try_init_plan()</a></td>
+              
+              <td class="coverFnHi">342402</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2081">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::try_reuse_headers(dnnl::impl::gpu::intel::conv::jit::plan_t&amp;, int) const</a></td>
+              
+              <td class="coverFnHi">23004</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2112">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::use_prefetch(dnnl::impl::gpu::intel::jit::abc_kind_t) const</a></td>
+              
+              <td class="coverFnHi">684764</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2129">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::use_slm(dnnl::impl::gpu::intel::jit::abc_kind_t) const</a></td>
+              
+              <td class="coverFnHi">706967</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2347">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::verify_2d() const</a></td>
+              
+              <td class="coverFnHi">344929</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L2357">dnnl::impl::gpu::intel::conv::jit::plan_builder_t::verify_slm_k_slicing() const</a></td>
+              
+              <td class="coverFnHi">350795</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1109">dnnl::impl::gpu::intel::conv::jit::plan_t::can_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int) const</a></td>
+              
+              <td class="coverFnHi">158269</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1130">dnnl::impl::gpu::intel::conv::jit::plan_t::grf_usage() const</a></td>
+              
+              <td class="coverFnHi">496868</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1223">dnnl::impl::gpu::intel::conv::jit::plan_t::reset()</a></td>
+              
+              <td class="coverFnHi">342402</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1116">dnnl::impl::gpu::intel::conv::jit::plan_t::set_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int)</a></td>
+              
+              <td class="coverFnHi">56762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1234">dnnl::impl::gpu::intel::conv::jit::plan_t::str[abi:cxx11]() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1125">dnnl::impl::gpu::intel::conv::jit::plan_t::uses_2d_load(dnnl::impl::gpu::intel::jit::abc_kind_t) const</a></td>
+              
+              <td class="coverFnHi">3510</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L804">dnnl::impl::gpu::intel::conv::jit::prefetch_plan_t::str[abi:cxx11]() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1666">dnnl::impl::gpu::intel::conv::jit::reduce_mask(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, dnnl::impl::gpu::intel::jit::abc_kind_t)</a></td>
+              
+              <td class="coverFnHi">2059580</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1652">dnnl::impl::gpu::intel::conv::jit::reduce_mask_t::operator bool() const</a></td>
+              
+              <td class="coverFnHi">773571</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1649">dnnl::impl::gpu::intel::conv::jit::reduce_mask_t::reduce_mask_t()</a></td>
+              
+              <td class="coverFnHi">2058876</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1650">dnnl::impl::gpu::intel::conv::jit::reduce_mask_t::reduce_mask_t(unsigned int)</a></td>
+              
+              <td class="coverFnHi">704</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L751">dnnl::impl::gpu::intel::conv::jit::reduce_plan_t::can_split(int) const</a></td>
+              
+              <td class="coverFnHi">113039</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L771">dnnl::impl::gpu::intel::conv::jit::reduce_plan_t::create_stmt(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">391147</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L745">dnnl::impl::gpu::intel::conv::jit::reduce_plan_t::dst_buf_size() const</a></td>
+              
+              <td class="coverFnHi">993938</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L778">dnnl::impl::gpu::intel::conv::jit::reduce_plan_t::estimate_regs() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L765">dnnl::impl::gpu::intel::conv::jit::reduce_plan_t::set_split(int)</a></td>
+              
+              <td class="coverFnHi">77574</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L699">dnnl::impl::gpu::intel::conv::jit::reorder_plan_t::can_split(int) const</a></td>
+              
+              <td class="coverFnHi">111153</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L713">dnnl::impl::gpu::intel::conv::jit::reorder_plan_t::create_stmt(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">391147</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L727">dnnl::impl::gpu::intel::conv::jit::reorder_plan_t::estimate_regs() const</a></td>
+              
+              <td class="coverFnHi">1987472</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L707">dnnl::impl::gpu::intel::conv::jit::reorder_plan_t::set_split(int)</a></td>
+              
+              <td class="coverFnHi">153088</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L722">dnnl::impl::gpu::intel::conv::jit::reorder_plan_t::src_buf_size() const</a></td>
+              
+              <td class="coverFnHi">131194</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1503">dnnl::impl::gpu::intel::conv::jit::slm_memory_bank_count(ngen::Core)</a></td>
+              
+              <td class="coverFnHi">30268</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1512">dnnl::impl::gpu::intel::conv::jit::slm_memory_bank_granularity(ngen::Core)</a></td>
+              
+              <td class="coverFnHi">30268</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L786">dnnl::impl::gpu::intel::conv::jit::slm_plan_t::str[abi:cxx11]() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1565">dnnl::impl::gpu::intel::conv::jit::split_into_multi_blocks(gemmstone::dsl::layout_t const&amp;, std::vector&lt;long, std::allocator&lt;long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">75244</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1697">dnnl::impl::gpu::intel::conv::jit::to_reduce_layout(dnnl::impl::gpu::intel::conv::jit::config_t const&amp;, gemmstone::dsl::layout_t const&amp;, unsigned int)</a></td>
+              
+              <td class="coverFnHi">242</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L1683">dnnl::impl::gpu::intel::conv::jit::to_reduce_tensor(unsigned long, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, unsigned int)</a></td>
+              
+              <td class="coverFnHi">242</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L811">dnnl::impl::gpu::intel::conv::jit::x2r_plan_t::can_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int) const</a></td>
+              
+              <td class="coverFnHi">153139</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L815">dnnl::impl::gpu::intel::conv::jit::x2r_plan_t::can_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int) const::{lambda(gemmstone::dsl::layout_t const&amp;, long, gemmstone::dsl::idx_t const&amp;)#1}::operator()(gemmstone::dsl::layout_t const&amp;, long, gemmstone::dsl::idx_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">206618</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L860">dnnl::impl::gpu::intel::conv::jit::x2r_plan_t::estimate_regs(bool) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L836">dnnl::impl::gpu::intel::conv::jit::x2r_plan_t::set_split(dnnl::impl::gpu::intel::jit::abc_kind_t, int)</a></td>
+              
+              <td class="coverFnHi">56762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="plan.cpp.gcov.html#L876">dnnl::impl::gpu::intel::conv::jit::x2r_plan_t::str[abi:cxx11]() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

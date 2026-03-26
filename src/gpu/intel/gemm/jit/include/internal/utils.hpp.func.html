@@ -1,0 +1,2220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/include/internal/utils.hpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/include/internal">src/gpu/intel/gemm/jit/include/internal</a> - utils.hpp<span style="font-size: 80%;"> (<a href="utils.hpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">90.1&nbsp;%</td>
+            <td class="headerCovTableEntry">91</td>
+            <td class="headerCovTableEntry">82</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">49.0&nbsp;%</td>
+            <td class="headerCovTableEntry">249</td>
+            <td class="headerCovTableEntry">122</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="utils.hpp.func-c.html"><img src="../../../../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L100">bool gemmstone::is_pow2&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnHi">34135926</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L100">bool gemmstone::is_pow2&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">10288449</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L100">bool gemmstone::is_pow2&lt;long&gt;(long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">23847477</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;int, int&gt;(int, std::initializer_list&lt;int&gt;)</a></td>
+              
+              <td class="coverFnHi">10974553471</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::AccessType, gemmstone::AccessType&gt;(gemmstone::AccessType, std::initializer_list&lt;gemmstone::AccessType&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">35824718</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::Type, gemmstone::Type::_Type&gt;(gemmstone::Type, std::initializer_list&lt;gemmstone::Type::_Type&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">197276</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::WalkOrder, gemmstone::WalkOrder&gt;(gemmstone::WalkOrder, std::initializer_list&lt;gemmstone::WalkOrder&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">35020</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::dsl::hw_t, ngen::Core&gt;(gemmstone::dsl::hw_t, std::initializer_list&lt;ngen::Core&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">614561</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::dsl::idx_t, gemmstone::dsl::idx_t&gt;(gemmstone::dsl::idx_t, std::initializer_list&lt;gemmstone::dsl::idx_t&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">547061</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::op_kind_t&gt;(gemmstone::dsl::ir::op_kind_t, std::initializer_list&lt;gemmstone::dsl::ir::op_kind_t&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">8135597602</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::dsl::ir::send_op_t, gemmstone::dsl::ir::send_op_t&gt;(gemmstone::dsl::ir::send_op_t, std::initializer_list&lt;gemmstone::dsl::ir::send_op_t&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">30093512</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;gemmstone::dsl::type_t, gemmstone::dsl::type_t&gt;(gemmstone::dsl::type_t, std::initializer_list&lt;gemmstone::dsl::type_t&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">89085345</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;int, int&gt;(int, std::initializer_list&lt;int&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">2590642</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;ngen::Core, ngen::Core&gt;(ngen::Core, std::initializer_list&lt;ngen::Core&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">63975445</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;ngen::DataType, ngen::DataType&gt;(ngen::DataType, std::initializer_list&lt;ngen::DataType&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">2364935693</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;ngen::Opcode, ngen::Opcode&gt;(ngen::Opcode, std::initializer_list&lt;ngen::Opcode&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">75036587</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;ngen::ProductFamily, ngen::ProductFamily&gt;(ngen::ProductFamily, std::initializer_list&lt;ngen::ProductFamily&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">250144</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;ngen::Subregister, ngen::Subregister&gt;(ngen::Subregister, std::initializer_list&lt;ngen::Subregister&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">69298</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;signed char, int&gt;(signed char, std::initializer_list&lt;int&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">94666255</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;signed char, signed char&gt;(signed char, std::initializer_list&lt;signed char&gt;)</a></td>
+              
+              <td class="coverFnAliasHi">81034312</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L34">bool gemmstone::one_of&lt;unsigned long, unsigned int&gt;(unsigned long, std::initializer_list&lt;unsigned int&gt;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L115">decltype (((declval&lt;int&gt;)())*((declval&lt;int&gt;)())) gemmstone::round_down&lt;int, int&gt;(int, int)</a></td>
+              
+              <td class="coverFnHi">3245415</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L109">decltype (((declval&lt;int&gt;)())*((declval&lt;int&gt;)())) gemmstone::round_up&lt;int, int&gt;(int, int)</a></td>
+              
+              <td class="coverFnHi">133483966</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L109">decltype (((declval&lt;int&gt;)())*((declval&lt;int&gt;)())) gemmstone::round_up&lt;int, int&gt;(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">108845810</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L109">decltype (((declval&lt;long&gt;)())*((declval&lt;int&gt;)())) gemmstone::round_up&lt;long, int&gt;(long, int)</a></td>
+              
+              <td class="coverFnAliasHi">34472</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L109">decltype (((declval&lt;unsigned int&gt;)())*((declval&lt;int&gt;)())) gemmstone::round_up&lt;unsigned int, int&gt;(unsigned int, int)</a></td>
+              
+              <td class="coverFnAliasHi">24603684</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;int&gt;)())/((declval&lt;int&gt;)())) gemmstone::div_up&lt;int, int&gt;(int, int)</a></td>
+              
+              <td class="coverFnHi">292696274</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;int&gt;)())/((declval&lt;int&gt;)())) gemmstone::div_up&lt;int, int&gt;(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">146326275</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;int&gt;)())/((declval&lt;unsigned char&gt;)())) gemmstone::div_up&lt;int, unsigned char&gt;(int, unsigned char)</a></td>
+              
+              <td class="coverFnAliasHi">94806032</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;int&gt;)())/((declval&lt;unsigned short&gt;)())) gemmstone::div_up&lt;int, unsigned short&gt;(int, unsigned short)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;long&gt;)())/((declval&lt;int&gt;)())) gemmstone::div_up&lt;long, int&gt;(long, int)</a></td>
+              
+              <td class="coverFnAliasHi">1817732</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;long&gt;)())/((declval&lt;long&gt;)())) gemmstone::div_up&lt;long, long&gt;(long, long)</a></td>
+              
+              <td class="coverFnAliasHi">14241274</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;short&gt;)())/((declval&lt;short&gt;)())) gemmstone::div_up&lt;short, short&gt;(short, short)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;unsigned char&gt;)())/((declval&lt;unsigned short&gt;)())) gemmstone::div_up&lt;unsigned char, unsigned short&gt;(unsigned char, unsigned short)</a></td>
+              
+              <td class="coverFnAliasHi">55144</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;unsigned int&gt;)())/((declval&lt;int&gt;)())) gemmstone::div_up&lt;unsigned int, int&gt;(unsigned int, int)</a></td>
+              
+              <td class="coverFnAliasHi">30037253</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;unsigned int&gt;)())/((declval&lt;unsigned int&gt;)())) gemmstone::div_up&lt;unsigned int, unsigned int&gt;(unsigned int, unsigned int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;unsigned long&gt;)())/((declval&lt;unsigned long&gt;)())) gemmstone::div_up&lt;unsigned long, unsigned long&gt;(unsigned long, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;unsigned short&gt;)())/((declval&lt;int&gt;)())) gemmstone::div_up&lt;unsigned short, int&gt;(unsigned short, int)</a></td>
+              
+              <td class="coverFnAliasHi">5412564</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L104">decltype (((declval&lt;unsigned short&gt;)())/((declval&lt;unsigned short&gt;)())) gemmstone::div_up&lt;unsigned short, unsigned short&gt;(unsigned short, unsigned short)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L118">gemmstone::align_down(int, int)</a></td>
+              
+              <td class="coverFnHi">3245415</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L112">gemmstone::align_up(int, int)</a></td>
+              
+              <td class="coverFnHi">56085001</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L191">gemmstone::gemm_assert(bool, char const*)</a></td>
+              
+              <td class="coverFnHi">83126797059</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L203">gemmstone::gemm_assert(bool, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">2621065946</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L249">gemmstone::hasher_t::enum_hash_t&lt;gemmstone::dsl::ir::op_kind_t&gt;::operator()(gemmstone::dsl::ir::op_kind_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">2945365481</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L249">gemmstone::hasher_t::enum_hash_t&lt;gemmstone::dsl::ir::alloc_kind_t&gt;::operator()(gemmstone::dsl::ir::alloc_kind_t const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L249">gemmstone::hasher_t::enum_hash_t&lt;gemmstone::dsl::ir::op_kind_t&gt;::operator()(gemmstone::dsl::ir::op_kind_t const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">2710312576</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L249">gemmstone::hasher_t::enum_hash_t&lt;gemmstone::dsl::ir::stmt_label_t::kind_t&gt;::operator()(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L249">gemmstone::hasher_t::enum_hash_t&lt;gemmstone::dsl::type_t::kind_t&gt;::operator()(gemmstone::dsl::type_t::kind_t const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::type_t, void&gt;::call(gemmstone::dsl::type_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">7063399569</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::alloc_attr_t, void&gt;::call(gemmstone::dsl::ir::alloc_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::expr_t, void&gt;::call(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6828346664</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::func_call_attr_t, void&gt;::call(gemmstone::dsl::ir::func_call_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::stmt_label_t, void&gt;::call(gemmstone::dsl::ir::stmt_label_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::stmt_t, void&gt;::call(gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L272">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::type_t, void&gt;::call(gemmstone::dsl::type_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;int, void&gt;::call(int const&amp;)</a></td>
+              
+              <td class="coverFnHi">17338670416</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;bool, void&gt;::call(bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">461378641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;double, void&gt;::call(double const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6367679</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::alloc_kind_t, void&gt;::call(gemmstone::dsl::ir::alloc_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::op_kind_t, void&gt;::call(gemmstone::dsl::ir::op_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2710312576</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::ir::stmt_label_t::kind_t, void&gt;::call(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;gemmstone::dsl::type_t::kind_t, void&gt;::call(gemmstone::dsl::type_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;int, void&gt;::call(int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8372609513</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;long, void&gt;::call(long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3163505169</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, void&gt;::call(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;unsigned int, void&gt;::call(unsigned int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L267">gemmstone::hasher_t::get_hash_helper_t&lt;unsigned long, void&gt;::call(unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2389443933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L262">gemmstone::hasher_t::get_std_hash_helper_t&lt;gemmstone::dsl::ir::op_kind_t, void&gt;::call(gemmstone::dsl::ir::op_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">2945365481</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L262">gemmstone::hasher_t::get_std_hash_helper_t&lt;gemmstone::dsl::ir::alloc_kind_t, void&gt;::call(gemmstone::dsl::ir::alloc_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L262">gemmstone::hasher_t::get_std_hash_helper_t&lt;gemmstone::dsl::ir::op_kind_t, void&gt;::call(gemmstone::dsl::ir::op_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2710312576</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L262">gemmstone::hasher_t::get_std_hash_helper_t&lt;gemmstone::dsl::ir::stmt_label_t::kind_t, void&gt;::call(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L262">gemmstone::hasher_t::get_std_hash_helper_t&lt;gemmstone::dsl::type_t::kind_t, void&gt;::call(gemmstone::dsl::type_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;int, void&gt;::call(int const&amp;)</a></td>
+              
+              <td class="coverFnHi">14393304935</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;bool, void&gt;::call(bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">461378641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;double, void&gt;::call(double const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6367679</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;int, void&gt;::call(int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8372609513</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;long, void&gt;::call(long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3163505169</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, void&gt;::call(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;unsigned int, void&gt;::call(unsigned int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L256">gemmstone::hasher_t::get_std_hash_helper_t&lt;unsigned long, void&gt;::call(unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2389443933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L218">gemmstone::hw_unsupported()</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L152">gemmstone::hw_unsupported_exception::hw_unsupported_exception()</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L41">gemmstone::ilog2(unsigned long)</a></td>
+              
+              <td class="coverFnHi">1577097813</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L94">gemmstone::largest_pow2_divisor(int)</a></td>
+              
+              <td class="coverFnHi">1207243</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L223">gemmstone::noop()</a></td>
+              
+              <td class="coverFnHi">21133</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::hw_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">350351165</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::hw_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::idx_map_t&lt;gemmstone::dsl::ir::expr_t&gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::idx_map_t&lt;long&gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::idx_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::ir::object::impl_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::ir::object_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">312507307</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::ir::walk_order_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::kernel::options_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1667828</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L338">gemmstone::operator&lt;&lt;(std::ostream&amp;, gemmstone::dsl::type_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">36176030</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L314">gemmstone::ostringstream_t::ostringstream_t&lt;&gt;()</a></td>
+              
+              <td class="coverFnHi">396727935</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::hw_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::global_tensor_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::hw_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;bool&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;char&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;dnnl::impl::gpu::intel::conv::jit::v2::coord_info_t::entry_t&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;dnnl::impl::gpu::intel::conv::jit::v2::stride_t&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;dnnl::impl::gpu::intel::jit::v2::dim_mapper_t::map_data_t&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;gemmstone::dsl::ir::expr_t&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;int&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_map_t&lt;long&gt; &gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::idx_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::(anonymous namespace)::reg_block_mask_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::(anonymous namespace)::reg_mask_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::(anonymous namespace)::reg_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::buffer_manager_t::entry_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::constraint_set_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::modulus_info_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::ngen_operand_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::object::impl_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::object_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::reg_buf_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::relation_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::ir::walk_order_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::kernel::options_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::layout::block_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::layout_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::lval_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::profiler_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::stride_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::tensor_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L334">gemmstone::stringify_t&lt;gemmstone::dsl::type_t&gt;::dump() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L183">gemmstone::stub()</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L187">gemmstone::stub(char const*)</a></td>
+              
+              <td class="coverFnHi">9</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L141">gemmstone::stub_exception::stub_exception(char const*)</a></td>
+              
+              <td class="coverFnHi">9</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L147">gemmstone::stub_exception::unimpl()</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L58">int gemmstone::clamp&lt;int&gt;(int, int, int)</a></td>
+              
+              <td class="coverFnHi">23027490</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L63">int gemmstone::gcd&lt;int&gt;(int, int)</a></td>
+              
+              <td class="coverFnHi">389641419</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L63">int gemmstone::gcd&lt;int&gt;(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">232005827</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L63">long gemmstone::gcd&lt;long&gt;(long, long)</a></td>
+              
+              <td class="coverFnAliasHi">157635592</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L210">int gemmstone::into&lt;int, long&gt;(long)</a></td>
+              
+              <td class="coverFnHi">2311652677</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">char gemmstone::into&lt;char, unsigned long&gt;(unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">332552398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">int gemmstone::into&lt;int, long&gt;(long)</a></td>
+              
+              <td class="coverFnAliasHi">1924164111</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">int gemmstone::into&lt;int, unsigned int&gt;(unsigned int)</a></td>
+              
+              <td class="coverFnAliasHi">24603684</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">int gemmstone::into&lt;int, unsigned long&gt;(unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">30199993</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">signed char gemmstone::into&lt;signed char, int&gt;(int)</a></td>
+              
+              <td class="coverFnAliasHi">25481</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">unsigned char gemmstone::into&lt;unsigned char, long&gt;(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">unsigned int gemmstone::into&lt;unsigned int, int&gt;(int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L210">unsigned int gemmstone::into&lt;unsigned int, unsigned long&gt;(unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">107010</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L84">int gemmstone::lcm&lt;int&gt;(int, int)</a></td>
+              
+              <td class="coverFnHi">2968573</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L84">int gemmstone::lcm&lt;int&gt;(int, int)</a></td>
+              
+              <td class="coverFnAliasHi">2968573</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L84">long gemmstone::lcm&lt;long&gt;(long, long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnHi">13983040753</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;bool&gt;(bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">40963529</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;double&gt;(double const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6367679</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, int, gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">10970</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">502833</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, int, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, int const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(gemmstone::dsl::ir::expr_t const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t, unsigned int, gemmstone::dsl::ir::alloc_kind_t, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt;, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, unsigned int const&amp;, gemmstone::dsl::ir::alloc_kind_t const&amp;, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">4778886188</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">230982786</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">787828</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::op_kind_t, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(gemmstone::dsl::ir::op_kind_t const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">89098965</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::op_kind_t, unsigned long&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2389443933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::stmt_label_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::stmt_label_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::ir::stmt_label_t::kind_t, int&gt;(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::type_t, gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::type_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">185362107</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::type_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::type_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">49690799</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;gemmstone::dsl::type_t::kind_t, int, bool&gt;(gemmstone::dsl::type_t::kind_t const&amp;, int const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;int, long&gt;(int const&amp;, long const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2470125000</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;long&gt;(long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3163505169</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, gemmstone::dsl::ir::func_call_attr_t&gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::func_call_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, std::vector&lt;int, std::allocator&lt;int&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, std::vector&lt;int, std::allocator&lt;int&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">342260062</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;std::vector&lt;gemmstone::dsl::ir::stmt_t, std::allocator&lt;gemmstone::dsl::ir::stmt_t&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::stmt_t, std::allocator&lt;gemmstone::dsl::ir::stmt_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;std::vector&lt;int, std::allocator&lt;int&gt; &gt; &gt;(std::vector&lt;int, std::allocator&lt;int&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L308">unsigned long gemmstone::hash&lt;unsigned long&gt;(unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnHi">24402069985</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;bool&gt;(bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">461378641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;double&gt;(double const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6367679</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::alloc_attr_t&gt;(gemmstone::dsl::ir::alloc_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::alloc_kind_t&gt;(gemmstone::dsl::ir::alloc_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6828346664</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::func_call_attr_t&gt;(gemmstone::dsl::ir::func_call_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::op_kind_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2710312576</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::stmt_label_t::kind_t&gt;(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::stmt_label_t&gt;(gemmstone::dsl::ir::stmt_label_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::type_t::kind_t&gt;(gemmstone::dsl::type_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::type_t&gt;(gemmstone::dsl::type_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8372609513</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;long&gt;(long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3163505169</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;unsigned int&gt;(unsigned int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L276">unsigned long gemmstone::hasher_t::get_hash&lt;unsigned long&gt;(unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2389443933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L289">unsigned long gemmstone::hasher_t::get_hash&lt;int&gt;(std::vector&lt;int, std::allocator&lt;int&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">773619313</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L289">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::alloc_attr_t&gt;(std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L289">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::expr_t&gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">431359251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L289">unsigned long gemmstone::hasher_t::get_hash&lt;gemmstone::dsl::ir::stmt_t&gt;(std::vector&lt;gemmstone::dsl::ir::stmt_t, std::allocator&lt;gemmstone::dsl::ir::stmt_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L289">unsigned long gemmstone::hasher_t::get_hash&lt;int&gt;(std::vector&lt;int, std::allocator&lt;int&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">342260062</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L243">unsigned long gemmstone::hasher_t::hash_combine&lt;unsigned long&gt;(unsigned long, unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnHi">11192659035</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;int, int&gt;(int const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnHi">4273983557</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::alloc_kind_t, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt;, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::alloc_kind_t const&amp;, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">185362107</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, int, gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">10970</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, int, gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">49690799</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">231496592</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, int, gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::ir::expr_t const&amp;, int const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, int, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, int const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">49690799</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(gemmstone::dsl::ir::expr_t const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t, unsigned int, gemmstone::dsl::ir::alloc_kind_t, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt;, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::expr_t const&amp;, unsigned int const&amp;, gemmstone::dsl::ir::alloc_kind_t const&amp;, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">230982786</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::op_kind_t, gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">787828</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::op_kind_t, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(gemmstone::dsl::ir::op_kind_t const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">89098965</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::op_kind_t, unsigned long&gt;(gemmstone::dsl::ir::op_kind_t const&amp;, unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2389443933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_label_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::stmt_label_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_label_t::kind_t, int&gt;(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_t, gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::stmt_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::type_t, gemmstone::dsl::ir::expr_t, bool&gt;(gemmstone::dsl::type_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">185362107</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::type_t, gemmstone::dsl::ir::expr_t, gemmstone::dsl::ir::expr_t, int&gt;(gemmstone::dsl::type_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">49690799</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::type_t::kind_t, int, bool&gt;(gemmstone::dsl::type_t::kind_t const&amp;, int const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;int, bool&gt;(int const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;int, gemmstone::dsl::ir::expr_t, bool&gt;(int const&amp;, gemmstone::dsl::ir::expr_t const&amp;, bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;int, int&gt;(int const&amp;, int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;int, long&gt;(int const&amp;, long const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt;, gemmstone::dsl::ir::stmt_t&gt;(std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, gemmstone::dsl::ir::func_call_attr_t&gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::func_call_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt;, std::vector&lt;int, std::allocator&lt;int&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;, std::vector&lt;int, std::allocator&lt;int&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">342260062</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L231">unsigned long gemmstone::hasher_t::operator()&lt;unsigned int, gemmstone::dsl::ir::alloc_kind_t, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt;, gemmstone::dsl::ir::stmt_t&gt;(unsigned int const&amp;, gemmstone::dsl::ir::alloc_kind_t const&amp;, std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnHi">18257028120</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;bool&gt;(bool const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">461378641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;double&gt;(double const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6367679</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::alloc_kind_t&gt;(gemmstone::dsl::ir::alloc_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::expr_t&gt;(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">5527425055</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::func_call_attr_t&gt;(gemmstone::dsl::ir::func_call_attr_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::op_kind_t&gt;(gemmstone::dsl::ir::op_kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2710312576</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_label_t::kind_t&gt;(gemmstone::dsl::ir::stmt_label_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_label_t&gt;(gemmstone::dsl::ir::stmt_label_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::ir::stmt_t&gt;(gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::type_t::kind_t&gt;(gemmstone::dsl::type_t::kind_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;gemmstone::dsl::type_t&gt;(gemmstone::dsl::type_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">235052905</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;int&gt;(int const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2754869944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;long&gt;(long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3163505169</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;(std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::alloc_attr_t, std::allocator&lt;gemmstone::dsl::ir::alloc_attr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::expr_t, std::allocator&lt;gemmstone::dsl::ir::expr_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">431359251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;gemmstone::dsl::ir::stmt_t, std::allocator&lt;gemmstone::dsl::ir::stmt_t&gt; &gt; &gt;(std::vector&lt;gemmstone::dsl::ir::stmt_t, std::allocator&lt;gemmstone::dsl::ir::stmt_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;std::vector&lt;int, std::allocator&lt;int&gt; &gt; &gt;(std::vector&lt;int, std::allocator&lt;int&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">342260062</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;unsigned int&gt;(unsigned int const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="utils.hpp.gcov.html#L227">unsigned long gemmstone::hasher_t::operator()&lt;unsigned long&gt;(unsigned long const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2389443933</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

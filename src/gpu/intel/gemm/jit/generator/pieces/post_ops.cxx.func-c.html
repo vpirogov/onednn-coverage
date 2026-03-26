@@ -1,0 +1,2316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/post_ops.cxx - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - post_ops.cxx<span style="font-size: 80%;"> (<a href="post_ops.cxx.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">74.2&nbsp;%</td>
+            <td class="headerCovTableEntry">546</td>
+            <td class="headerCovTableEntry">405</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">28.6&nbsp;%</td>
+            <td class="headerCovTableEntry">252</td>
+            <td class="headerCovTableEntry">72</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><a href="post_ops.cxx.func.html"><img src="../../../../../../../updown.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></a></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><img src="../../../../../../../glass.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L39">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L837">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L57">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L78">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L90">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmBetaScale(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L669">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmCalcABOffsetAddrs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L153">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L171">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnHi">20</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L834">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">20</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L752">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRank1UpdateC(gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnHi">28</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L45">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">8</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">198</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">47</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">49</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L412">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyCOffsetDispatch(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">102</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnHi">300</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">45</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">48</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">101</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L869">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#4}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">106</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnHi">388</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">65</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">129</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L218">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">194</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">559</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">4</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">216</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L31">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmAlphaScale(gemmstone::GEMMProblem&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">337</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnHi">688</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">144</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L376">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#1}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">288</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">858</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">181</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">186</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">199</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L798">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">292</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnHi">10275</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">2630</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">2859</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L393">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::GRF, ngen::GRF)#2}::operator()(int, ngen::GRF, ngen::GRF) const</a></td>
+              
+              <td class="coverFnAliasHi">4786</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">29183</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">7483</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">7992</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L485">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmLoadBinaryOpArgs(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">13708</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">34145</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8622</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">9203</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L131">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">16320</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">35119</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2097</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8838</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L785">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">15936</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">35119</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2097</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8838</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L694">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmLoadABOffset(gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">15936</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">59456</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2644</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">15207</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">15513</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L549">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmApplyPostOps(unsigned long, unsigned long, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">26092</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">68071</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">17449</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">18790</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L263">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmBinaryOpC(gemmstone::BinaryOp, bool, bool, gemmstone::Type, gemmstone::MatrixAddressing, gemmstone::MatrixAddressingStrategy, ngen::Subregister, ngen::Subregister, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">31832</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnHi">73001</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">20556</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">21463</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L181">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">30726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnHi">271137</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">71705</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">90668</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L146">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmScalarBinaryOpC(gemmstone::BinaryOp, gemmstone::Type, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData const&amp;)#1}::operator()(int, ngen::RegData const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">108764</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">1422054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">6720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">175547</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">204009</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmVectorBinaryOpC(gemmstone::BinaryOp, bool, gemmstone::GRFMultirange const&amp;, ngen::Subregister const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, gemmstone::Type, gemmstone::RegisterLayout, int, int)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">1035778</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)4&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnHi">1590142</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)10&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)11&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)12&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)5&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)9&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)4&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1872</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)8&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">217109</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)7&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">265265</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="post_ops.cxx.gcov.html#L106">gemmstone::Generator&lt;(ngen::Core)6&gt;::binaryOp(gemmstone::BinaryOp, int, ngen::RegData const&amp;, ngen::RegData const&amp;, ngen::RegData const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1105896</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

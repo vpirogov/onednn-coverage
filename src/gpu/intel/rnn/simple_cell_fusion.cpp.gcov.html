@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/rnn/simple_cell_fusion.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/rnn">src/gpu/intel/rnn</a> - simple_cell_fusion.cpp<span style="font-size: 80%;"> (source / <a href="simple_cell_fusion.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">98.4&nbsp;%</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntry">63</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2025 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;gpu/intel/rnn/simple_cell_fusion.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;gpu/intel/primitive.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : namespace dnnl {</span>
+<span id="L21"><span class="lineNum">      21</span>              : namespace impl {</span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace gpu {</span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace intel {</span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace rnn {</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : using namespace utils;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : template &lt;size_t out_ndims, size_t in_ndims&gt;</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">        1560 : strides_t&lt;out_ndims&gt; inner(const strides_t&lt;in_ndims&gt; &amp;s) {</span></span>
+<span id="L30"><span class="lineNum">      30</span>              :     static_assert(in_ndims &gt;= out_ndims,</span>
+<span id="L31"><span class="lineNum">      31</span>              :             &quot;The output strides are expected to be smaller than the input &quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              :             &quot;strides&quot;);</span>
+<span id="L33"><span class="lineNum">      33</span>              :     strides_t&lt;out_ndims&gt; ret;</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">        4680 :     for (size_t i = 0; i &lt; out_ndims; i++) {</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        3120 :         ret[i] = s[i + in_ndims - out_ndims];</span></span>
+<span id="L36"><span class="lineNum">      36</span>              :     }</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">        1560 :     return ret;</span></span>
+<span id="L38"><span class="lineNum">      38</span>              : }</span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         390 : status_t compute_cell_fwd(const exec_ctx_t &amp;ctx,</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :         const compute::kernel_t &amp;kernel, dim_t lay, dim_t dir, dim_t iter,</span>
+<span id="L42"><span class="lineNum">      42</span>              :         const workspace_t &amp;workspace, const user_data_t user_data,</span>
+<span id="L43"><span class="lineNum">      43</span>              :         const sub_buffer_t &amp;weights_layer, const sub_buffer_t &amp;weights_iter,</span>
+<span id="L44"><span class="lineNum">      44</span>              :         const sub_buffer_t &amp;cell_layer, const strides_t&lt;4&gt; &amp;cell_layer_strides,</span>
+<span id="L45"><span class="lineNum">      45</span>              :         const sub_buffer_t &amp;cell_iter, const strides_t&lt;4&gt; &amp;cell_iter_strides,</span>
+<span id="L46"><span class="lineNum">      46</span>              :         const sub_buffer_t &amp;scratch_gates,</span>
+<span id="L47"><span class="lineNum">      47</span>              :         const strides_t&lt;2&gt; &amp;scratch_gates_strides,</span>
+<span id="L48"><span class="lineNum">      48</span>              :         const memory_storage_t &amp;scratch_cell, float alpha,</span>
+<span id="L49"><span class="lineNum">      49</span>              :         const memory_storage_t *tm_scales, const conf_t &amp;conf,</span>
+<span id="L50"><span class="lineNum">      50</span>              :         const ocl_conf_t &amp;ocl_conf, const offsets_t &amp;offsets) {</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         390 :     auto &amp;cell_conf = ocl_conf.cell_comp;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         390 :     const size_t dhc = conf.dhc;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         390 :     const size_t dhc_thr = cell_conf.dhc_thr;</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         390 :     const size_t dhc_tg = cell_conf.dhc_tg;</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         390 :     const size_t dhc_loop = utils::rnd_up(conf.dhc_loop, dhc_thr * dhc_tg);</span></span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">         390 :     gpu_assert(dhc_tg % ocl_conf.subgroup_size == 0);</span></span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         390 :     const size_t mb = conf.mb;</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         390 :     const size_t batch_tg = cell_conf.mb_tg;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         390 :     const size_t batch_thr = cell_conf.mb_thr;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         390 :     const size_t batch_local = batch_thr * batch_tg;</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :     compute::nd_range_t nd_range {</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         390 :             {utils::div_up(dhc, dhc_loop) * dhc_tg,</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         390 :                     utils::div_up(mb, batch_local) * batch_tg},</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         390 :             {dhc_tg, batch_tg}};</span></span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         780 :     auto gates = workspace.gates(lay, dir, iter);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         390 :     auto gates_strides = workspace.gates_strides();</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">         780 :     auto states = workspace.states(lay, dir, iter);</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         390 :     auto states_strides = workspace.states_strides();</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         780 :     auto bias = user_data.bias(lay, dir);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">         390 :     auto c_states_t_l = ocl_conf.cell_kind == alg_kind::vanilla_lstm</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :             ? workspace.c_states(lay, dir, iter)</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         780 :             : sub_buffer_t();</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">         390 :     auto c_states_tm1_l = ocl_conf.cell_kind == alg_kind::vanilla_lstm</span></span>
+<span id="L77"><span class="lineNum">      77</span>              :             ? workspace.c_states(lay, dir, iter - 1)</span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">         780 :             : sub_buffer_t();</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">         780 :     auto h_states_tm_l = workspace.states(lay, dir, iter - 1);</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">         780 :     auto ws_grid = workspace.grid_comp(lay, dir, iter);</span></span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">         780 :     arg_list_t arg_list;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">         390 :     arg_list.append(weights_layer, ocl_conf.wei_dt);</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">         390 :     arg_list.append(offsets.weights_layer);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">         390 :     arg_list.append(weights_iter, ocl_conf.wei_dt);</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">         390 :     arg_list.append(offsets.weights_iter);</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">         390 :     arg_list.append(cell_layer, ocl_conf.ws_state_dt);</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">         390 :     arg_list.append(inner&lt;2&gt;(cell_layer_strides));</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">         390 :     arg_list.append(cell_iter, ocl_conf.ws_state_dt);</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">         390 :     arg_list.append(inner&lt;2&gt;(cell_iter_strides));</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">         390 :     arg_list.append(gates, ocl_conf.aux_dt);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">         390 :     arg_list.append(inner&lt;2&gt;(gates_strides));</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">         390 :     arg_list.append(states, ocl_conf.ws_state_dt);</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">         390 :     arg_list.append(inner&lt;2&gt;(states_strides));</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">         390 :     arg_list.append(scratch_cell);</span></span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         390 :     if (ocl_conf.cell_kind == alg_kind::vanilla_lstm) {</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">          20 :         arg_list.append(c_states_t_l, ocl_conf.aux_dt);</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">          20 :         arg_list.append(c_states_tm1_l, ocl_conf.aux_dt);</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">          20 :         arg_list.append(conf.tm_cscale);</span></span>
+<span id="L101"><span class="lineNum">     101</span>              :     }</span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">         390 :     if (ocl_conf.cell_kind == alg_kind::lbr_gru) {</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">           5 :         arg_list.append(h_states_tm_l, ocl_conf.ws_state_dt);</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">           5 :         arg_list.append(ws_grid, ocl_conf.aux_dt);</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :     }</span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">         390 :     if (!(cell_conf.compute_gemm_layer &amp;&amp; cell_conf.compute_gemm_iter)</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaUNC">           0 :             || (ocl_conf.cell_kind == alg_kind::lbr_gru)) {</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">         390 :         arg_list.append(scratch_gates, ocl_conf.aux_dt);</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">         390 :         arg_list.append(scratch_gates_strides);</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :     }</span>
+<span id="L113"><span class="lineNum">     113</span>              : </span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">         390 :     if (cell_conf.enable_iter_block) { arg_list.append(conf.iter_loop); }</span></span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">         390 :     arg_list.append(bias, ocl_conf.bia_dt);</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">         390 :     arg_list.append(alpha);</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">         390 :     arg_list.append(get_storage(tm_scales));</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         390 :     arg_list.append(conf.mb);</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         390 :     arg_list.append(conf.dhc);</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">         390 :     arg_list.append(conf.slc);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">         390 :     arg_list.append(conf.sic);</span></span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">         390 :     arg_list.append(into&lt;dim_t&gt;(dhc_loop));</span></span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">         780 :     return primitive_t::parallel_for(ctx, nd_range, kernel, arg_list.args);</span></span>
+<span id="L127"><span class="lineNum">     127</span>              : }</span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span>              : } // namespace rnn</span>
+<span id="L130"><span class="lineNum">     130</span>              : } // namespace intel</span>
+<span id="L131"><span class="lineNum">     131</span>              : } // namespace gpu</span>
+<span id="L132"><span class="lineNum">     132</span>              : } // namespace impl</span>
+<span id="L133"><span class="lineNum">     133</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/microkernel_selector.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator">src/gpu/intel/gemm/jit/generator</a> - microkernel_selector.cpp<span style="font-size: 80%;"> (<a href="microkernel_selector.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">84.3&nbsp;%</td>
+            <td class="headerCovTableEntry">318</td>
+            <td class="headerCovTableEntry">268</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">90.0&nbsp;%</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">9</td>
+          </tr>
+                  <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="microkernel_selector.cpp.func-c.html"><img src="../../../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L112">gemmstone::microkernel::GEMMOptions::generateInterface(ngen::Core) const</a></td>
+              
+              <td class="coverFnHi">638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L140">gemmstone::microkernel::GEMMOptions::transpose() const</a></td>
+              
+              <td class="coverFnHi">318</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L51">gemmstone::microkernel::arguments(gemmstone::microkernel::GEMMOptions const&amp;)</a></td>
+              
+              <td class="coverFnHi">638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L403">gemmstone::microkernel::getStrategyByHeuristics(ngen::Core, gemmstone::GEMMStrategy&amp;, bool, bool, gemmstone::GEMMProblem&amp;, gemmstone::microkernel::HWInformation, gemmstone::SizeParams, std::vector&lt;gemmstone::StrategyRequirement, std::allocator&lt;gemmstone::StrategyRequirement&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">636</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L108">gemmstone::microkernel::makeProtocol(gemmstone::microkernel::GEMMOptions const&amp;)</a></td>
+              
+              <td class="coverFnHi">638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L161">gemmstone::microkernel::selectGEMM(gemmstone::microkernel::GEMMOptions const&amp;, gemmstone::microkernel::HWInformation, gemmstone::SizeParams, gemmstone::GEMMProblem const&amp;, std::vector&lt;gemmstone::StrategyRequirement, std::allocator&lt;gemmstone::StrategyRequirement&gt; &gt; const&amp;, std::function&lt;void (gemmstone::GEMMStrategy&amp;)&gt;, std::function&lt;void (gemmstone::kcatalog::Entry const*, double, gemmstone::EvaluateAuxOutput)&gt;*)</a></td>
+              
+              <td class="coverFnHi">638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L245">gemmstone::microkernel::selectGEMM(gemmstone::microkernel::GEMMOptions const&amp;, gemmstone::microkernel::HWInformation, gemmstone::SizeParams, gemmstone::GEMMProblem const&amp;, std::vector&lt;gemmstone::StrategyRequirement, std::allocator&lt;gemmstone::StrategyRequirement&gt; &gt; const&amp;, std::function&lt;void (gemmstone::GEMMStrategy&amp;)&gt;, std::function&lt;void (gemmstone::kcatalog::Entry const*, double, gemmstone::EvaluateAuxOutput)&gt;*)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L257">gemmstone::microkernel::selectGEMM(gemmstone::microkernel::GEMMOptions const&amp;, gemmstone::microkernel::HWInformation, gemmstone::SizeParams, gemmstone::GEMMProblem const&amp;, std::vector&lt;gemmstone::StrategyRequirement, std::allocator&lt;gemmstone::StrategyRequirement&gt; &gt; const&amp;, std::function&lt;void (gemmstone::GEMMStrategy&amp;)&gt;, std::function&lt;void (gemmstone::kcatalog::Entry const*, double, gemmstone::EvaluateAuxOutput)&gt;*)::{lambda(gemmstone::kcatalog::Entry const*)#2}::operator()(gemmstone::kcatalog::Entry const*) const</a></td>
+              
+              <td class="coverFnHi">22</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L92">gemmstone::microkernel::settings()</a></td>
+              
+              <td class="coverFnHi">638</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="microkernel_selector.cpp.gcov.html#L148">gemmstone::microkernel::strategyToString[abi:cxx11](ngen::Core, gemmstone::GEMMProblem, gemmstone::GEMMStrategy)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

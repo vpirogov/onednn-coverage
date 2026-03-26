@@ -1,0 +1,1036 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/rnn/rnn_reorders.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/rnn">src/cpu/rnn</a> - rnn_reorders.hpp<span style="font-size: 80%;"> (source / <a href="rnn_reorders.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">88.5&nbsp;%</td>
+            <td class="headerCovTableEntry">485</td>
+            <td class="headerCovTableEntry">429</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">82.8&nbsp;%</td>
+            <td class="headerCovTableEntry">122</td>
+            <td class="headerCovTableEntry">101</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2018 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_RNN_RNN_REORDERS_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_RNN_RNN_REORDERS_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;assert.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/bfloat16.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/primitive.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/platform.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/reorder/cpu_reorder_pd.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;cpu/simple_q10n.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/gemm/gemm_pack.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace dnnl {</span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace impl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace cpu {</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       17398 : static inline void init_dims(dim_t &amp;L, dim_t &amp;D, dim_t &amp;I, dim_t &amp;G, dim_t &amp;O,</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :         const memory_desc_wrapper &amp;mdw) {</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       17398 :     const auto dims = mdw.dims();</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">       17398 :     const auto ndims = mdw.ndims();</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       17398 :     L = dims[0];</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       17398 :     D = dims[1];</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       17398 :     I = dims[2];</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       17398 :     G = 0;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       17398 :     O = 0;</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :     // weights_layer/weights_iter case</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       17398 :     if (ndims == 5) {</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       16586 :         G = dims[3];</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       16586 :         O = dims[4];</span></span>
+<span id="L51"><span class="lineNum">      51</span>              :     }</span>
+<span id="L52"><span class="lineNum">      52</span>              :     // projection weights case</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       17398 :     if (ndims == 4) {</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         812 :         G = 1;</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         812 :         O = dims[3];</span></span>
+<span id="L56"><span class="lineNum">      56</span>              :     }</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       17398 :     assert(G != 0 &amp;&amp; O != 0);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       17398 : }</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              : template &lt;data_type_t type_i&gt;</span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        2212 : static inline void quantize_igo(int8_t *scratch_quantized,</span></span>
+<span id="L62"><span class="lineNum">      62</span>              :         const memory_desc_wrapper &amp;src_d, const float *src, int mask,</span>
+<span id="L63"><span class="lineNum">      63</span>              :         float *scales) {</span>
+<span id="L64"><span class="lineNum">      64</span>              :     using in_data_t = typename prec_traits_t&lt;type_i&gt;::type;</span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span>              :     // TODO: trivial strides assumes here.</span>
+<span id="L67"><span class="lineNum">      67</span>              :     //       Use proper strides where appropriate</span>
+<span id="L68"><span class="lineNum">      68</span>              :     dim_t L, D, I, G, O;</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        2212 :     init_dims(L, D, I, G, O, src_d);</span></span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        2212 :     assert(scales != nullptr);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">      338724 :     parallel(0, [=](const int ithr, const int nthr) {</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">      336512 :         dim_t start {0}, end {0};</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">      336512 :         balance211(L * D * I, nthr, ithr, start, end);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">      745384 :         for (int ldi = start; ldi &lt; end; ldi++) {</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">   140110200 :             for (int go = 0; go &lt; G * O; go++) {</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">   139701290 :                 const float s = scales[(mask == 0) ? 0 : go];</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">   279402300 :                 scratch_quantized[ldi * G * O + go]</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">   139701290 :                         = q10n::qz_b0_t&lt;in_data_t, int8_t&gt;()(</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">   139701290 :                                 src[ldi * G * O + go], s);</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :             }</span>
+<span id="L82"><span class="lineNum">      82</span>              :         }</span>
+<span id="L83"><span class="lineNum">      83</span>              :     });</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        2212 : }</span></span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span>              : template &lt;data_type_t type_i&gt;</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0 : static inline void quantize_goi(int8_t *scratch_quantized,</span></span>
+<span id="L88"><span class="lineNum">      88</span>              :         const memory_desc_wrapper &amp;src_d, const float *src, int mask,</span>
+<span id="L89"><span class="lineNum">      89</span>              :         float *scales) {</span>
+<span id="L90"><span class="lineNum">      90</span>              :     using in_data_t = typename prec_traits_t&lt;type_i&gt;::type;</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span>              :     // TODO: trivial strides assumes here.</span>
+<span id="L93"><span class="lineNum">      93</span>              :     //       Use proper strides where appropriate</span>
+<span id="L94"><span class="lineNum">      94</span>              :     dim_t L, D, I, G, O;</span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :     init_dims(L, D, I, G, O, src_d);</span></span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaUNC">           0 :     assert(scales != nullptr);</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaUNC">           0 :     parallel_nd(L * D, G * O, [=](dim_t ld, dim_t go) {</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :         const float s = scales[(mask == 0) ? 0 : go];</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :         PRAGMA_OMP_SIMD()</span></span>
+<span id="L101"><span class="lineNum">     101</span>              :         for (dim_t i = 0; i &lt; I; i++) {</span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :             scratch_quantized[ld * I * G * O + i * G * O + go]</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :                     = q10n::qz_b0_t&lt;in_data_t, int8_t&gt;()(</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :                             src[ld * G * O * I + go * I + i], s);</span></span>
+<span id="L105"><span class="lineNum">     105</span>              :         }</span>
+<span id="L106"><span class="lineNum">     106</span>              :     });</span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">        4272 : static inline void compensate_igo(float *compensation,</span></span>
+<span id="L110"><span class="lineNum">     110</span>              :         const memory_desc_wrapper &amp;src_d, int8_t *scratch_quantized,</span>
+<span id="L111"><span class="lineNum">     111</span>              :         int32_t *scratch_compensation, size_t scratch_comp_sz, int nthr) {</span>
+<span id="L112"><span class="lineNum">     112</span>              :     // TODO: trivial strides assumed here.</span>
+<span id="L113"><span class="lineNum">     113</span>              :     //       Use proper strides where appropriate</span>
+<span id="L114"><span class="lineNum">     114</span>              :     dim_t L, D, I, G, O;</span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">        4272 :     init_dims(L, D, I, G, O, src_d);</span></span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span>              :     // We parallelize on LD and GO</span>
+<span id="L118"><span class="lineNum">     118</span>              :     // TODO: maybe restrict parallelism as we might have large</span>
+<span id="L119"><span class="lineNum">     119</span>              :     // parallelisation overhead if dimensions are small</span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">        4272 :     const int LD_nthr = nstl::min(L * D, dim_t(nthr));</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        4272 :     const int GO_nthr = nstl::min(G * O, dim_t(nthr / LD_nthr));</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        4272 :     parallel(nthr, [=](const int ithr, const int nthr) {</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">      646336 :         int LD_ithr = -1;</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      646336 :         int GO_ithr = -1;</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">      646336 :         dim_t LD_s = -1, LD_e = -1;</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">      646336 :         dim_t GO_s = -1, GO_e = -1;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">      646336 :         if (ithr &lt; LD_nthr * GO_nthr) {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      543368 :             LD_ithr = ithr % LD_nthr;</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">      543368 :             GO_ithr = ithr / LD_nthr;</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">      543368 :             balance211(L * D, LD_nthr, LD_ithr, LD_s, LD_e);</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">      543368 :             balance211(G * O, GO_nthr, GO_ithr, GO_s, GO_e);</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :         }</span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">      646336 :         int32_t *compensation_s32</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">      646336 :                 = scratch_compensation + ithr * scratch_comp_sz;</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">     1189704 :         for (int ld = LD_s; ld &lt; LD_e; ld++) {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      543368 :             if (I == 1) {</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaUNC">           0 :                 PRAGMA_OMP_SIMD()</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaUNC">           0 :                 for (int go = GO_s; go &lt; GO_e; go++)</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :                     compensation[ld * G * O + go] = q10n::saturate&lt;float&gt;(</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :                             scratch_quantized[ld * I * G * O + go]);</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :             } else {</span>
+<span id="L142"><span class="lineNum">     142</span>              :                 // We split the loop on I in three to avoid conditionals or zeroing compensation</span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      543368 :                 int i = 0;</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      543368 :                 PRAGMA_OMP_SIMD()</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      543368 :                 for (int go = GO_s; go &lt; GO_e; go++)</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">     2070768 :                     compensation_s32[go]</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">     2070768 :                             = scratch_quantized[go + G * O * (i + I * (ld))];</span></span>
+<span id="L148"><span class="lineNum">     148</span>              :                 // 1 &lt;= i &lt; I-1</span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">    23884624 :                 for (i = 1; i &lt; I - 1; i++) {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">    23341226 :                     PRAGMA_OMP_SIMD()</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">    23341226 :                     for (int go = GO_s; go &lt; GO_e; go++)</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">   160704350 :                         compensation_s32[go] += scratch_quantized[go</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">   160704350 :                                 + G * O * (i + I * (ld))];</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :                 }</span>
+<span id="L155"><span class="lineNum">     155</span>              :                 // i = I-1</span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      543368 :                 PRAGMA_OMP_SIMD()</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">      543368 :                 for (int go = GO_s; go &lt; GO_e; go++)</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">     4141536 :                     compensation[ld * G * O + go] = q10n::saturate&lt;float&gt;(</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">     2070768 :                             compensation_s32[go]</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">     2070768 :                             + scratch_quantized[go + G * O * (i + I * (ld))]);</span></span>
+<span id="L161"><span class="lineNum">     161</span>              :             }</span>
+<span id="L162"><span class="lineNum">     162</span>              :         }</span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">      646336 :     });</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        4272 : }</span></span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaUNC">           0 : static inline void compensate_goi(float *compensation,</span></span>
+<span id="L167"><span class="lineNum">     167</span>              :         const memory_desc_wrapper &amp;src_d, int8_t *scratch_quantized) {</span>
+<span id="L168"><span class="lineNum">     168</span>              :     // TODO: trivial strides assumed here.</span>
+<span id="L169"><span class="lineNum">     169</span>              :     //       Use proper strides where appropriate</span>
+<span id="L170"><span class="lineNum">     170</span>              :     dim_t L, D, I, G, O;</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaUNC">           0 :     init_dims(L, D, I, G, O, src_d);</span></span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaUNC">           0 :     parallel_nd(L * D, G * O, [=](dim_t ld, dim_t go) {</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaUNC">           0 :         int32_t compensation_s32 = 0;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaUNC">           0 :         PRAGMA_OMP_SIMD()</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaUNC">           0 :         for (dim_t i = 0; i &lt; I; i++) {</span></span>
+<span id="L177"><span class="lineNum">     177</span>              :             compensation_s32</span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaUNC">           0 :                     += scratch_quantized[ld * I * G * O + i * G * O + go];</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :         }</span>
+<span id="L180"><span class="lineNum">     180</span>              :         // TODO: do not convert to f32 if this compensation is not</span>
+<span id="L181"><span class="lineNum">     181</span>              :         // going to be added to a bias (e.g. like in lstm</span>
+<span id="L182"><span class="lineNum">     182</span>              :         // projection where it is directly added to the s32</span>
+<span id="L183"><span class="lineNum">     183</span>              :         // accumulators)</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaUNC">           0 :         compensation[ld * G * O + go] = q10n::saturate&lt;float&gt;(compensation_s32);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaUNC">           0 :     });</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span>              : template &lt;data_type_t type_i, data_type_t type_o&gt;</span>
+<span id="L189"><span class="lineNum">     189</span>              : struct rnn_data_reorder_t : public primitive_t {</span>
+<span id="L190"><span class="lineNum">     190</span>              :     struct pd_t : public cpu_reorder_pd_t {</span>
+<span id="L191"><span class="lineNum">     191</span>              :         using cpu_reorder_pd_t::cpu_reorder_pd_t;</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">      355740 :         DECLARE_COMMON_PD_T(&quot;rnn_data_reorder&quot;, rnn_data_reorder_t);</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              :     private:</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      162617 :         static status_t create(reorder_pd_t **reorder_pd, engine_t *engine,</span></span>
+<span id="L197"><span class="lineNum">     197</span>              :                 const primitive_attr_t *attr, engine_t *src_engine,</span>
+<span id="L198"><span class="lineNum">     198</span>              :                 const memory_desc_t *src_md, engine_t *dst_engine,</span>
+<span id="L199"><span class="lineNum">     199</span>              :                 const memory_desc_t *dst_md) {</span>
+<span id="L200"><span class="lineNum">     200</span>              :             using namespace format_tag;</span>
+<span id="L201"><span class="lineNum">     201</span>              :             using namespace status;</span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      162617 :             const memory_desc_wrapper id(src_md), od(dst_md);</span></span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      162617 :             bool args_ok = impl::is_dense_format_kind({src_md, dst_md});</span></span>
+<span id="L205"><span class="lineNum">     205</span>              : #define PD_CHECK_ARG(x) args_ok = args_ok &amp;&amp; (x)</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(id.data_type() == type_i);</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(od.data_type() == type_o);</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(utils::one_of(id.ndims(), 3, 4));</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(!id.has_runtime_dims_or_strides());</span></span>
+<span id="L210"><span class="lineNum">     210</span>              :             auto skip_mask = primitive_attr_t::skip_mask_t::rnn_data_qparams</span>
+<span id="L211"><span class="lineNum">     211</span>              :                     | primitive_attr_t::skip_mask_t::rnn_weights_qparams</span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      162617 :                     | primitive_attr_t::skip_mask_t::</span></span>
+<span id="L213"><span class="lineNum">     213</span>              :                             rnn_weights_projection_qparams;</span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(attr-&gt;has_default_values(skip_mask));</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(IMPLICATION(id.ndims() == 3,</span></span>
+<span id="L216"><span class="lineNum">     216</span>              :                     id.matches_tag(tnc) &amp;&amp; od.matches_tag(tnc)));</span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      162617 :             PD_CHECK_ARG(IMPLICATION(id.ndims() == 4,</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :                     id.matches_tag(ldnc) &amp;&amp; od.matches_tag(ldnc)));</span>
+<span id="L219"><span class="lineNum">     219</span>              : #undef PD_CHECK_ARG</span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">      162617 :             if (!args_ok) return invalid_arguments;</span></span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       36452 :             auto _pd = make_unique_pd&lt;pd_t&gt;(attr, src_engine-&gt;kind(), src_md,</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       18226 :                     dst_engine-&gt;kind(), dst_md);</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       18226 :             if (_pd == nullptr) return out_of_memory;</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       18226 :             CHECK(_pd-&gt;init(engine, src_engine, dst_engine));</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       17986 :             CHECK(_pd-&gt;init_scratchpad_md());</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">       17986 :             return safe_ptr_assign(*reorder_pd, _pd.release());</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :         }</span>
+<span id="L229"><span class="lineNum">     229</span>              :         friend dnnl::impl::impl_list_item_t;</span>
+<span id="L230"><span class="lineNum">     230</span>              :     };</span>
+<span id="L231"><span class="lineNum">     231</span>              : </span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">       17644 :     rnn_data_reorder_t(const pd_t *apd) : primitive_t(apd) {}</span></span>
+<span id="L233"><span class="lineNum">     233</span>              : </span>
+<span id="L234"><span class="lineNum">     234</span>              : private:</span>
+<span id="L235"><span class="lineNum">     235</span>              :     using in_data_t = typename prec_traits_t&lt;type_i&gt;::type;</span>
+<span id="L236"><span class="lineNum">     236</span>              :     using out_data_t = typename prec_traits_t&lt;type_o&gt;::type;</span>
+<span id="L237"><span class="lineNum">     237</span>              : </span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">      322104 :     bool is_dense() const {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">      322104 :         const memory_desc_wrapper &amp;input_d = pd()-&gt;src_md();</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">      322104 :         const memory_desc_wrapper &amp;output_d = pd()-&gt;dst_md();</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">      966312 :         return utils::everyone_is(1,</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">      322104 :                 input_d.blocking_desc().strides[input_d.ndims() - 1],</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">      966312 :                 output_d.blocking_desc().strides[output_d.ndims() - 1]);</span></span>
+<span id="L244"><span class="lineNum">     244</span>              :     }</span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span>              :     /* This function assumes that only the innermost dimension (C) is</span>
+<span id="L247"><span class="lineNum">     247</span>              :        dense (that is to say, stride is 1).  This is enough to have</span>
+<span id="L248"><span class="lineNum">     248</span>              :        good performance and allow non trivial strides on other</span>
+<span id="L249"><span class="lineNum">     249</span>              :        dimensions (to allow an &quot;optimized&quot; path for views for</span>
+<span id="L250"><span class="lineNum">     250</span>              :        example).</span>
+<span id="L251"><span class="lineNum">     251</span>              :      */</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">      300462 :     status_t execute_dense(out_data_t *output, const in_data_t *input,</span></span>
+<span id="L253"><span class="lineNum">     253</span>              :             const float scale, const float shift) const {</span>
+<span id="L254"><span class="lineNum">     254</span>              :         assert(type_i == data_type::f32);</span>
+<span id="L255"><span class="lineNum">     255</span>              :         assert(type_o == data_type::u8 || type_o == data_type::s8);</span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">      300462 :         const memory_desc_wrapper &amp;input_d = pd()-&gt;src_md();</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">      300462 :         const memory_desc_wrapper &amp;output_d = pd()-&gt;dst_md();</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :         const dim_t outer_dim</span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">      300462 :                 = utils::array_product(input_d.dims(), input_d.ndims() - 1);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">      300462 :         const dim_t inner_dim = input_d.dims()[input_d.ndims() - 1];</span></span>
+<span id="L262"><span class="lineNum">     262</span>              : </span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">    37974490 :         parallel(0, [=](const int ithr, const int nthr) {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">    37674028 :             dim_t start {0}, end {0};</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">    37674028 :             balance211(outer_dim, nthr, ithr, start, end);</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC"> 15397176596 :             for (int i = start; i &lt; end; ++i) {</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC"> 15359487612 :                 const dim_t off_in = input_d.off_l(i * inner_dim);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC"> 15359487612 :                 const dim_t off_out = output_d.off_l(i * inner_dim);</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC"> 15359487612 :                 const in_data_t *__restrict i_ = input + off_in;</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC"> 15359487612 :                 out_data_t *__restrict o_ = output + off_out;</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC"> 15359487612 :                 PRAGMA_OMP_SIMD()</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :                 for (int j = 0; j &lt; inner_dim; ++j) {</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC"> >19654*10^7 :                     const float in = (float)i_[j] * scale + shift;</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC"> >19654*10^7 :                     o_[j] = q10n::qz_a1b0_t&lt;float, out_data_t&gt;()(in);</span></span>
+<span id="L275"><span class="lineNum">     275</span>              :                 }</span>
+<span id="L276"><span class="lineNum">     276</span>              :             }</span>
+<span id="L277"><span class="lineNum">     277</span>              :         });</span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">      300462 :         return status::success;</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :     }</span>
+<span id="L280"><span class="lineNum">     280</span>              : </span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       21642 :     status_t execute_generic(out_data_t *output, const in_data_t *input,</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :             float scale, float shift) const {</span>
+<span id="L283"><span class="lineNum">     283</span>              :         assert(type_i == data_type::f32);</span>
+<span id="L284"><span class="lineNum">     284</span>              :         assert(type_o == data_type::u8 || type_o == data_type::s8);</span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">       21642 :         const memory_desc_wrapper &amp;input_d = pd()-&gt;src_md();</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">       21642 :         const memory_desc_wrapper &amp;output_d = pd()-&gt;dst_md();</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">       21642 :         const size_t nelems = input_d.nelems();</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">       21642 :         parallel_nd(nelems, [=](size_t i) {</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">  1239884365 :             const float in = (float)input[input_d.off_l(i)] * scale + shift;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">  1239884365 :             output[output_d.off_l(i)]</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">  1239884365 :                     = q10n::qz_a1b0_t&lt;float, out_data_t&gt;()(in);</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :         });</span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">       21642 :         return status::success;</span></span>
+<span id="L295"><span class="lineNum">     295</span>              :     }</span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">      322104 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      322104 :         auto input = CTX_IN_MEM(const in_data_t *, DNNL_ARG_FROM);</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">      322104 :         auto output = CTX_OUT_MEM(out_data_t *, DNNL_ARG_TO);</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">      322104 :         const float scale = pd()-&gt;attr()-&gt;rnn_data_qparams_.scale_;</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">      322104 :         const float shift = pd()-&gt;attr()-&gt;rnn_data_qparams_.shift_;</span></span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">      322104 :         if (is_dense())</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">      300462 :             return execute_dense(output, input, scale, shift);</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :         else</span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       21642 :             return execute_generic(output, input, scale, shift);</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :     }</span>
+<span id="L308"><span class="lineNum">     308</span>              : </span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">     1932624 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L310"><span class="lineNum">     310</span>              : };</span>
+<span id="L311"><span class="lineNum">     311</span>              : </span>
+<span id="L312"><span class="lineNum">     312</span>              : template &lt;data_type_t type_i&gt;</span>
+<span id="L313"><span class="lineNum">     313</span>              : struct rnn_weights_reorder_s8_t : public primitive_t {</span>
+<span id="L314"><span class="lineNum">     314</span>              :     struct pd_t : public cpu_reorder_pd_t {</span>
+<span id="L315"><span class="lineNum">     315</span>              :         using cpu_reorder_pd_t::cpu_reorder_pd_t;</span>
+<span id="L316"><span class="lineNum">     316</span>              :         using gemm_pack_f = dnnl_status_t (*)(const char *identifier,</span>
+<span id="L317"><span class="lineNum">     317</span>              :                 const char *transa, const char *transb, const dim_t *M,</span>
+<span id="L318"><span class="lineNum">     318</span>              :                 const dim_t *N, const dim_t *K, const dim_t *lda,</span>
+<span id="L319"><span class="lineNum">     319</span>              :                 const dim_t *ldb, const void *src, void *dst);</span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">        1644 :         DECLARE_COMMON_PD_T(&quot;rnn_weights_reorder_s8&quot;, rnn_weights_reorder_s8_t);</span></span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">         188 :         status_t init(</span></span>
+<span id="L324"><span class="lineNum">     324</span>              :                 engine_t *engine, engine_t *src_engine, engine_t *dst_engine) {</span>
+<span id="L325"><span class="lineNum">     325</span>              :             status_t status</span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">         188 :                     = cpu_reorder_pd_t::init(engine, src_engine, dst_engine);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">         188 :             if (status != status::success) return status;</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">         188 :             nthr_ = dnnl_get_max_threads();</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">         188 :             init_scratchpad();</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">         188 :             return status::success;</span></span>
+<span id="L333"><span class="lineNum">     333</span>              :         }</span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span>              :         format_tag_t itag_ = format_tag::undef;</span>
+<span id="L336"><span class="lineNum">     336</span>              :         format_tag_t otag_ = format_tag::undef;</span>
+<span id="L337"><span class="lineNum">     337</span>              :         size_t thr_scratch_comp_sz_ = 0;</span>
+<span id="L338"><span class="lineNum">     338</span>              :         int nthr_; // To not exceed the limit in execute used for set up.</span>
+<span id="L339"><span class="lineNum">     339</span>              :         gemm_pack_f gemm_pack;</span>
+<span id="L340"><span class="lineNum">     340</span>              : </span>
+<span id="L341"><span class="lineNum">     341</span>              :     private:</span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">      197880 :         static status_t create(reorder_pd_t **reorder_pd, engine_t *engine,</span></span>
+<span id="L343"><span class="lineNum">     343</span>              :                 const primitive_attr_t *attr, engine_t *src_engine,</span>
+<span id="L344"><span class="lineNum">     344</span>              :                 const memory_desc_t *src_md, engine_t *dst_engine,</span>
+<span id="L345"><span class="lineNum">     345</span>              :                 const memory_desc_t *dst_md) {</span>
+<span id="L346"><span class="lineNum">     346</span>              :             using namespace format_tag;</span>
+<span id="L347"><span class="lineNum">     347</span>              :             using namespace rnn_packed_format;</span>
+<span id="L348"><span class="lineNum">     348</span>              :             using namespace status;</span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">      197880 :             const memory_desc_wrapper id(src_md), od(dst_md);</span></span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">      197880 :             bool args_ok = impl::is_dense_format_kind({src_md, dst_md});</span></span>
+<span id="L352"><span class="lineNum">     352</span>              : #define PD_CHECK_ARG(x) args_ok = args_ok &amp;&amp; (x)</span>
+<span id="L353"><span class="lineNum">     353</span>              :             // Fast checks</span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">      197880 :             PD_CHECK_ARG(id.data_type() == type_i);</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">      197880 :             PD_CHECK_ARG(od.data_type() == data_type::s8);</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">      197880 :             PD_CHECK_ARG(od.format_kind() == format_kind::rnn_packed);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">      197880 :             PD_CHECK_ARG(utils::one_of(</span></span>
+<span id="L358"><span class="lineNum">     358</span>              :                     od.rnn_packed_desc().format, ldigo_p, ldio_p));</span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">      197880 :             PD_CHECK_ARG(od.ndims() == id.ndims());</span></span>
+<span id="L360"><span class="lineNum">     360</span>              :             // TODO: we have to skip projection qparam even for regular lstm</span>
+<span id="L361"><span class="lineNum">     361</span>              :             // as we use the same attr for regular weights and projection</span>
+<span id="L362"><span class="lineNum">     362</span>              :             auto skip_mask = primitive_attr_t::skip_mask_t::rnn_data_qparams</span>
+<span id="L363"><span class="lineNum">     363</span>              :                     | primitive_attr_t::skip_mask_t::rnn_weights_qparams</span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">      197880 :                     | primitive_attr_t::skip_mask_t::</span></span>
+<span id="L365"><span class="lineNum">     365</span>              :                             rnn_weights_projection_qparams;</span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">      197880 :             PD_CHECK_ARG(attr-&gt;has_default_values(skip_mask));</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">      197880 :             if (!args_ok) return invalid_arguments;</span></span>
+<span id="L368"><span class="lineNum">     368</span>              : </span>
+<span id="L369"><span class="lineNum">     369</span>              :             // Slower checks</span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">         188 :             PD_CHECK_ARG(id.is_dense());</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">         188 :             if (!args_ok) return invalid_arguments;</span></span>
+<span id="L372"><span class="lineNum">     372</span>              : </span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">         188 :             format_tag_t itag = id.matches_one_of_tag(ldigo, ldgoi, ldio, ldoi);</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">         188 :             if (itag == format_tag::undef) return invalid_arguments;</span></span>
+<span id="L375"><span class="lineNum">     375</span>              : </span>
+<span id="L376"><span class="lineNum">     376</span>              :             // TODO: add support for layer and direction dimensions</span>
+<span id="L377"><span class="lineNum">     377</span>              :             // weights_layer and weights_iter</span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">         188 :             if (id.ndims() == 5</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">         188 :                     &amp;&amp; !utils::one_of(attr-&gt;rnn_weights_qparams_.mask_, 0, 24))</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaUNC">           0 :                 return unimplemented;</span></span>
+<span id="L381"><span class="lineNum">     381</span>              :             // weights_projection</span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">         188 :             if (id.ndims() == 4</span></span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">         188 :                     &amp;&amp; !utils::one_of(</span></span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaUNC">           0 :                             attr-&gt;rnn_weights_projection_qparams_.mask_, 0, 8))</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaUNC">           0 :                 return unimplemented;</span></span>
+<span id="L386"><span class="lineNum">     386</span>              : </span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">         376 :             auto _pd = make_unique_pd&lt;pd_t&gt;(attr, src_engine-&gt;kind(), src_md,</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">         188 :                     dst_engine-&gt;kind(), dst_md);</span></span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">         188 :             if (_pd == nullptr) return out_of_memory;</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">         188 :             _pd-&gt;itag_ = itag;</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">         188 :             CHECK(_pd-&gt;init(engine, src_engine, dst_engine));</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">         188 :             CHECK(_pd-&gt;init_scratchpad_md());</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">         188 :             const bool is_s8s8 = dst_md-&gt;extra.flags</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">         188 :                     &amp; memory_extra_flags::rnn_s8s8_compensation;</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">         188 :             _pd-&gt;gemm_pack = is_s8s8 ? &amp;gemm_s8s8s32_pack : &amp;gemm_s8u8s32_pack;</span></span>
+<span id="L396"><span class="lineNum">     396</span>              : </span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">         188 :             return safe_ptr_assign(*reorder_pd, _pd.release());</span></span>
+<span id="L398"><span class="lineNum">     398</span>              : #undef PD_CHECK_ARG</span>
+<span id="L399"><span class="lineNum">     399</span>              :         }</span>
+<span id="L400"><span class="lineNum">     400</span>              : </span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">         188 :         void init_scratchpad() {</span></span>
+<span id="L402"><span class="lineNum">     402</span>              :             using namespace format_tag;</span>
+<span id="L403"><span class="lineNum">     403</span>              : </span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">         188 :             const memory_desc_wrapper id(src_md());</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">         188 :             const size_t nelems = id.nelems();</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">         188 :             const auto &amp;dims = id.dims();</span></span>
+<span id="L407"><span class="lineNum">     407</span>              : </span>
+<span id="L408"><span class="lineNum">     408</span>              :             using namespace memory_tracking::names;</span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">         188 :             auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">         188 :             const size_t quantization_size = nelems;</span></span>
+<span id="L411"><span class="lineNum">     411</span>              :             // we do not use GO directly, as this can cause false</span>
+<span id="L412"><span class="lineNum">     412</span>              :             // sharing when parallelizing on I (2 threads writing to</span>
+<span id="L413"><span class="lineNum">     413</span>              :             // the same cache line)</span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">         188 :             thr_scratch_comp_sz_ = itag_ == ldigo ? dims[3] * dims[4] : dims[3];</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">         188 :             thr_scratch_comp_sz_ = utils::rnd_up(thr_scratch_comp_sz_, 16);</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">         188 :             size_t reduction_size = 0;</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">         188 :             if (utils::one_of(itag_, ldigo, ldio))</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">         188 :                 reduction_size = nthr_ * thr_scratch_comp_sz_;</span></span>
+<span id="L419"><span class="lineNum">     419</span>              : </span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">         188 :             scratchpad.template book&lt;int8_t&gt;(</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">         188 :                     key_reorder_rnn_weights_quantization, quantization_size);</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">         188 :             scratchpad.template book&lt;int32_t&gt;(</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">         188 :                     key_reorder_rnn_weights_reduction, reduction_size);</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">         188 :         }</span></span>
+<span id="L425"><span class="lineNum">     425</span>              : </span>
+<span id="L426"><span class="lineNum">     426</span>              :         friend dnnl::impl::impl_list_item_t;</span>
+<span id="L427"><span class="lineNum">     427</span>              :     };</span>
+<span id="L428"><span class="lineNum">     428</span>              : </span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">         188 :     rnn_weights_reorder_s8_t(const pd_t *apd) : primitive_t(apd) {}</span></span>
+<span id="L430"><span class="lineNum">     430</span>              : </span>
+<span id="L431"><span class="lineNum">     431</span>              : private:</span>
+<span id="L432"><span class="lineNum">     432</span>              :     using in_data_t = typename prec_traits_t&lt;type_i&gt;::type;</span>
+<span id="L433"><span class="lineNum">     433</span>              : </span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">        1268 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L435"><span class="lineNum">     435</span>              :         // TODO: trivial strides assumed here.</span>
+<span id="L436"><span class="lineNum">     436</span>              :         //       Use proper strides where appropriate</span>
+<span id="L437"><span class="lineNum">     437</span>              : </span>
+<span id="L438"><span class="lineNum">     438</span>              :         using namespace format_tag;</span>
+<span id="L439"><span class="lineNum">     439</span>              : </span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">        1268 :         auto src = CTX_IN_MEM(const in_data_t *, DNNL_ARG_FROM);</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">        1268 :         auto dst = CTX_OUT_MEM(char *, DNNL_ARG_TO);</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">        1268 :         const memory_desc_wrapper &amp;src_d = pd()-&gt;src_md();</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">        1268 :         const memory_desc_wrapper &amp;dst_d = pd()-&gt;dst_md();</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">        1268 :         if (src_d.has_zero_dim()) {</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaUNC">           0 :             assert(dst_d.has_zero_dim());</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaUNC">           0 :             return status::success;</span></span>
+<span id="L447"><span class="lineNum">     447</span>              :         }</span>
+<span id="L448"><span class="lineNum">     448</span>              : </span>
+<span id="L449"><span class="lineNum">     449</span>              :         dim_t L, D, I, G, O;</span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">        1268 :         init_dims(L, D, I, G, O, src_d);</span></span>
+<span id="L451"><span class="lineNum">     451</span>              : </span>
+<span id="L452"><span class="lineNum">     452</span>              :         /* Quantize src &amp; compute compensation */</span>
+<span id="L453"><span class="lineNum">     453</span>              :         auto scratch_quantized</span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">        1268 :                 = (int8_t *__restrict)ctx.get_scratchpad_grantor()</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">        2536 :                           .template get&lt;void&gt;(memory_tracking::names::</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">        1268 :                                           key_reorder_rnn_weights_quantization);</span></span>
+<span id="L457"><span class="lineNum">     457</span>              :         auto scratch_compensation</span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">        1268 :                 = (int32_t *__restrict)ctx.get_scratchpad_grantor()</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">        2536 :                           .template get&lt;void&gt;(memory_tracking::names::</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">        1268 :                                           key_reorder_rnn_weights_reduction);</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">        1268 :         float *comp = reinterpret_cast&lt;float *&gt;(</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">        1268 :                 dst + dst_d.rnn_packed_desc().offset_compensation);</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">        1268 :         float *scales = nullptr;</span></span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">        1268 :         int mask = 0;</span></span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">        1268 :         if (src_d.ndims() == 5) {</span></span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">        1268 :             scales = pd()-&gt;attr()-&gt;rnn_weights_qparams_.scales_;</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">        1268 :             mask = pd()-&gt;attr()-&gt;rnn_weights_qparams_.mask_;</span></span>
+<span id="L468"><span class="lineNum">     468</span>              :         }</span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">        1268 :         if (src_d.ndims() == 4) {</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaUNC">           0 :             scales = pd()-&gt;attr()-&gt;rnn_weights_projection_qparams_.scales_;</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaUNC">           0 :             mask = pd()-&gt;attr()-&gt;rnn_weights_projection_qparams_.mask_;</span></span>
+<span id="L472"><span class="lineNum">     472</span>              :         }</span>
+<span id="L473"><span class="lineNum">     473</span>              :         /* Step 1: we quantize if we need to */</span>
+<span id="L474"><span class="lineNum">     474</span>              :         if (type_i == data_type::f32) {</span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">         650 :             switch (pd()-&gt;itag_) {</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">         650 :                 case ldigo:</span></span>
+<span id="L477"><span class="lineNum">     477</span>              :                 case ldio:</span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">         650 :                     quantize_igo&lt;type_i&gt;(scratch_quantized, src_d, (float *)src,</span></span>
+<span id="L479"><span class="lineNum">     479</span>              :                             mask, scales);</span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">         650 :                     break;</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaUNC">           0 :                 case ldgoi:</span></span>
+<span id="L482"><span class="lineNum">     482</span>              :                 case ldoi:</span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaUNC">           0 :                     quantize_goi&lt;type_i&gt;(scratch_quantized, src_d, (float *)src,</span></span>
+<span id="L484"><span class="lineNum">     484</span>              :                             mask, scales);</span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaUNC">           0 :                 default: assert(!&quot;Unsupported reorder&quot;);</span></span>
+<span id="L487"><span class="lineNum">     487</span>              :             }</span>
+<span id="L488"><span class="lineNum">     488</span>              :         } else</span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">         618 :             scratch_quantized = (int8_t *__restrict)src;</span></span>
+<span id="L490"><span class="lineNum">     490</span>              : </span>
+<span id="L491"><span class="lineNum">     491</span>              :         /* Step 2: we pre-compute the compensation */</span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">        1268 :         switch (pd()-&gt;itag_) {</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">        1268 :             case ldigo:</span></span>
+<span id="L494"><span class="lineNum">     494</span>              :             case ldio:</span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">        1268 :                 compensate_igo(comp, src_d, scratch_quantized,</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">        1268 :                         scratch_compensation, pd()-&gt;thr_scratch_comp_sz_,</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">        1268 :                         pd()-&gt;nthr_);</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">        1268 :                 break;</span></span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaUNC">           0 :             case ldgoi:</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaUNC">           0 :             case ldoi: compensate_goi(comp, src_d, scratch_quantized); break;</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaUNC">           0 :             default: assert(!&quot;Unsupported reorder&quot;);</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :         }</span>
+<span id="L503"><span class="lineNum">     503</span>              : </span>
+<span id="L504"><span class="lineNum">     504</span>              :         /* Step 3: we pack the matrix */</span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">       12698 :         const auto off_igo = [&amp;](dim_t l, dim_t d, dim_t i, dim_t g, dim_t o) {</span></span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">       11430 :             return o + O * (g + G * (i + I * (d + D * l)));</span></span>
+<span id="L507"><span class="lineNum">     507</span>              :         };</span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">        1268 :         const int n_parts = dst_d.rnn_packed_desc().n_parts;</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">        1268 :         const size_t *size_packed_cell = dst_d.rnn_packed_desc().part_pack_size;</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">        1268 :         const int *parts = dst_d.rnn_packed_desc().parts;</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">        1268 :         const dim_t n = dst_d.rnn_packed_desc().n;</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">        1268 :         const dim_t ldb = dst_d.rnn_packed_desc().ldb;</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">        1268 :         char *to_pack = dst;</span></span>
+<span id="L514"><span class="lineNum">     514</span>              : </span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">        6408 :         for (dim_t l = 0; l &lt; L; l++) {</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">       12784 :             for (dim_t d = 0; d &lt; D; d++) {</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       19074 :                 for (dim_t p = 0; p &lt; n_parts; p++) {</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">       11430 :                     dim_t g = (p &gt; 0) ? parts[p - 1] : 0;</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       11430 :                     dim_t m_p = parts[p] * O;</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       11430 :                     dim_t k_p = I;</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       11430 :                     dim_t lda = (dim_t)G * O;</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       11430 :                     CHECK(pd()-&gt;gemm_pack(&quot;A&quot;, &quot;N&quot;, &quot;N&quot;, &amp;m_p, &amp;n, &amp;k_p, &amp;lda,</span></span>
+<span id="L523"><span class="lineNum">     523</span>              :                             &amp;ldb, scratch_quantized + off_igo(l, d, 0, g, 0),</span>
+<span id="L524"><span class="lineNum">     524</span>              :                             to_pack));</span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">       11430 :                     to_pack += size_packed_cell[p];</span></span>
+<span id="L526"><span class="lineNum">     526</span>              :                 }</span>
+<span id="L527"><span class="lineNum">     527</span>              :             }</span>
+<span id="L528"><span class="lineNum">     528</span>              :         }</span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">        1268 :         return status::success;</span></span>
+<span id="L530"><span class="lineNum">     530</span>              :     }</span>
+<span id="L531"><span class="lineNum">     531</span>              : </span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">       20956 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L533"><span class="lineNum">     533</span>              : };</span>
+<span id="L534"><span class="lineNum">     534</span>              : </span>
+<span id="L535"><span class="lineNum">     535</span>              : template &lt;data_type_t type_i, data_type_t type_o&gt;</span>
+<span id="L536"><span class="lineNum">     536</span>              : struct rnn_weights_reorder_t : public primitive_t {</span>
+<span id="L537"><span class="lineNum">     537</span>              :     struct pd_t : public cpu_reorder_pd_t {</span>
+<span id="L538"><span class="lineNum">     538</span>              :         using cpu_reorder_pd_t::cpu_reorder_pd_t;</span>
+<span id="L539"><span class="lineNum">     539</span>              : </span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">        7330 :         DECLARE_COMMON_PD_T(&quot;rnn_weights_reorder&quot;, rnn_weights_reorder_t);</span></span>
+<span id="L541"><span class="lineNum">     541</span>              : </span>
+<span id="L542"><span class="lineNum">     542</span>              :         format_tag_t itag_;</span>
+<span id="L543"><span class="lineNum">     543</span>              : </span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">         344 :         status_t init(</span></span>
+<span id="L545"><span class="lineNum">     545</span>              :                 engine_t *engine, engine_t *src_engine, engine_t *dst_engine) {</span>
+<span id="L546"><span class="lineNum">     546</span>              :             status_t status</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">         344 :                     = cpu_reorder_pd_t::init(engine, src_engine, dst_engine);</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">         344 :             if (status != status::success) return status;</span></span>
+<span id="L549"><span class="lineNum">     549</span>              : </span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">         344 :             init_scratchpad();</span></span>
+<span id="L551"><span class="lineNum">     551</span>              : </span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">         344 :             return status::success;</span></span>
+<span id="L553"><span class="lineNum">     553</span>              :         }</span>
+<span id="L554"><span class="lineNum">     554</span>              : </span>
+<span id="L555"><span class="lineNum">     555</span>              :     private:</span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">      748458 :         static status_t create(reorder_pd_t **reorder_pd, engine_t *engine,</span></span>
+<span id="L557"><span class="lineNum">     557</span>              :                 const primitive_attr_t *attr, engine_t *src_engine,</span>
+<span id="L558"><span class="lineNum">     558</span>              :                 const memory_desc_t *src_md, engine_t *dst_engine,</span>
+<span id="L559"><span class="lineNum">     559</span>              :                 const memory_desc_t *dst_md) {</span>
+<span id="L560"><span class="lineNum">     560</span>              :             using namespace format_tag;</span>
+<span id="L561"><span class="lineNum">     561</span>              :             using namespace rnn_packed_format;</span>
+<span id="L562"><span class="lineNum">     562</span>              :             using namespace status;</span>
+<span id="L563"><span class="lineNum">     563</span>              : </span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">      748458 :             const memory_desc_wrapper id(src_md), od(dst_md);</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">      748458 :             bool args_ok = impl::is_dense_format_kind({src_md, dst_md});</span></span>
+<span id="L566"><span class="lineNum">     566</span>              : #define PD_CHECK_ARG(x) args_ok = args_ok &amp;&amp; (x)</span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">      748458 :             PD_CHECK_ARG(id.data_type() == type_i);</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">      748458 :             PD_CHECK_ARG(od.data_type() == type_o);</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">      748458 :             PD_CHECK_ARG(od.format_kind() == format_kind::rnn_packed);</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">      748458 :             PD_CHECK_ARG(utils::one_of(</span></span>
+<span id="L571"><span class="lineNum">     571</span>              :                     od.rnn_packed_desc().format, ldigo_p, ldgoi_p, ldio_p));</span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">      748458 :             PD_CHECK_ARG(attr-&gt;has_default_values());</span></span>
+<span id="L573"><span class="lineNum">     573</span>              : #undef PD_CHECK_ARG</span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">      748458 :             if (!args_ok) return invalid_arguments;</span></span>
+<span id="L575"><span class="lineNum">     575</span>              : </span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">         344 :             format_tag_t itag = id.matches_one_of_tag(ldigo, ldgoi, ldio, ldoi);</span></span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">         344 :             if (itag == format_tag::undef) return invalid_arguments;</span></span>
+<span id="L578"><span class="lineNum">     578</span>              : </span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">         688 :             auto _pd = make_unique_pd&lt;pd_t&gt;(attr, src_engine-&gt;kind(), src_md,</span></span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">         344 :                     dst_engine-&gt;kind(), dst_md);</span></span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">         344 :             if (_pd == nullptr) return out_of_memory;</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">         344 :             CHECK(_pd-&gt;init(engine, src_engine, dst_engine));</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">         344 :             _pd-&gt;itag_ = itag;</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">         344 :             CHECK(_pd-&gt;init_scratchpad_md());</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">         344 :             return safe_ptr_assign(*reorder_pd, _pd.release());</span></span>
+<span id="L586"><span class="lineNum">     586</span>              :         }</span>
+<span id="L587"><span class="lineNum">     587</span>              : </span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">         344 :         void init_scratchpad() {</span></span>
+<span id="L589"><span class="lineNum">     589</span>              :             using namespace format_tag;</span>
+<span id="L590"><span class="lineNum">     590</span>              :             using namespace rnn_packed_format;</span>
+<span id="L591"><span class="lineNum">     591</span>              : </span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">         344 :             const memory_desc_wrapper id(src_md());</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">         344 :             const memory_desc_wrapper od(dst_md());</span></span>
+<span id="L594"><span class="lineNum">     594</span> <span class="tlaGNC">         344 :             const rnn_packed_desc_t &amp;rnn_pdata = od.rnn_packed_desc();</span></span>
+<span id="L595"><span class="lineNum">     595</span>              : </span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">         344 :             format_tag_t itag = id.matches_one_of_tag(ldigo, ldgoi, ldio);</span></span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">         344 :             const bool layout_cross_case</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">         274 :                     = (itag == ldigo &amp;&amp; rnn_pdata.format == ldgoi_p)</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">         344 :                     || (itag == ldgoi &amp;&amp; rnn_pdata.format == ldigo_p)</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">         688 :                     || (itag == ldio &amp;&amp; rnn_pdata.format == ldio_p),</span></span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">         344 :                     dt_cross_case = type_i == data_type::f32</span></span>
+<span id="L602"><span class="lineNum">     602</span>              :                     &amp;&amp; (type_o == data_type::bf16 || type_o == data_type::f16);</span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">         344 :             const size_t sz = id.nelems();</span></span>
+<span id="L604"><span class="lineNum">     604</span>              : </span>
+<span id="L605"><span class="lineNum">     605</span>              :             using namespace memory_tracking::names;</span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">         344 :             auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">         344 :             scratchpad.template book&lt;out_data_t&gt;(</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">         344 :                     key_reorder_rnn_weights_transposition,</span></span>
+<span id="L609"><span class="lineNum">     609</span>              :                     layout_cross_case ? sz : 0);</span>
+<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC">         344 :             scratchpad.template book&lt;out_data_t&gt;(</span></span>
+<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">         344 :                     key_reorder_rnn_weights_xf16_cvt, dt_cross_case ? sz : 0);</span></span>
+<span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC">         344 :         }</span></span>
+<span id="L613"><span class="lineNum">     613</span>              :         friend dnnl::impl::impl_list_item_t;</span>
+<span id="L614"><span class="lineNum">     614</span>              :     };</span>
+<span id="L615"><span class="lineNum">     615</span>              : </span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">         344 :     rnn_weights_reorder_t(const pd_t *apd) : primitive_t(apd) {}</span></span>
+<span id="L617"><span class="lineNum">     617</span>              : </span>
+<span id="L618"><span class="lineNum">     618</span>              : private:</span>
+<span id="L619"><span class="lineNum">     619</span>              :     using in_data_t = typename prec_traits_t&lt;type_i&gt;::type;</span>
+<span id="L620"><span class="lineNum">     620</span>              :     using out_data_t = typename prec_traits_t&lt;type_o&gt;::type;</span>
+<span id="L621"><span class="lineNum">     621</span>              : </span>
+<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">        6642 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L623"><span class="lineNum">     623</span>              :         // TODO: trivial strides assumed here.</span>
+<span id="L624"><span class="lineNum">     624</span>              :         //       Use proper strides where appropriate</span>
+<span id="L625"><span class="lineNum">     625</span>              : </span>
+<span id="L626"><span class="lineNum">     626</span>              :         using namespace format_tag;</span>
+<span id="L627"><span class="lineNum">     627</span>              :         using namespace rnn_packed_format;</span>
+<span id="L628"><span class="lineNum">     628</span>              : </span>
+<span id="L629"><span class="lineNum">     629</span> <span class="tlaGNC">        6642 :         auto input = CTX_IN_MEM(const in_data_t *, DNNL_ARG_FROM);</span></span>
+<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">        6642 :         auto output = CTX_OUT_MEM(out_data_t *, DNNL_ARG_TO);</span></span>
+<span id="L631"><span class="lineNum">     631</span> <span class="tlaGNC">        6642 :         const memory_desc_wrapper &amp;input_d = pd()-&gt;src_md();</span></span>
+<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">        6642 :         const memory_desc_wrapper &amp;output_d = pd()-&gt;dst_md();</span></span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaGNC">        6642 :         if (input_d.has_zero_dim()) {</span></span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaUNC">           0 :             assert(output_d.has_zero_dim());</span></span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaUNC">           0 :             return status::success;</span></span>
+<span id="L636"><span class="lineNum">     636</span>              :         }</span>
+<span id="L637"><span class="lineNum">     637</span>              : </span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">        6642 :         const rnn_packed_desc_t &amp;rnn_pdata = output_d.rnn_packed_desc();</span></span>
+<span id="L639"><span class="lineNum">     639</span>              :         dim_t L, D, I, G, O;</span>
+<span id="L640"><span class="lineNum">     640</span> <span class="tlaGNC">        6642 :         init_dims(L, D, I, G, O, input_d);</span></span>
+<span id="L641"><span class="lineNum">     641</span>              : </span>
+<span id="L642"><span class="lineNum">     642</span>              :         /* Pack */</span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">        6642 :         const bool from_igo = utils::one_of(pd()-&gt;itag_, ldigo, ldio);</span></span>
+<span id="L644"><span class="lineNum">     644</span> <span class="tlaGNC">        6642 :         const bool to_igo = utils::one_of(rnn_pdata.format, ldigo_p, ldio_p);</span></span>
+<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">        6642 :         const int n_parts = rnn_pdata.n_parts;</span></span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">        6642 :         const size_t *size_packed_cell = rnn_pdata.part_pack_size;</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">        6642 :         const int *parts = rnn_pdata.parts;</span></span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">        6642 :         const dim_t n = rnn_pdata.n;</span></span>
+<span id="L649"><span class="lineNum">     649</span>              : </span>
+<span id="L650"><span class="lineNum">     650</span>              :         /* Convert to fp32*/</span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">        6642 :         out_data_t *input_cvt = (out_data_t *)input;</span></span>
+<span id="L652"><span class="lineNum">     652</span>              :         if (type_i == data_type::f32 &amp;&amp; type_o == data_type::bf16) {</span>
+<span id="L653"><span class="lineNum">     653</span>              :             input_cvt</span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaGNC">        3536 :                     = (out_data_t *)ctx.get_scratchpad_grantor()</span></span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaGNC">        7072 :                               .template get&lt;void&gt;(memory_tracking::names::</span></span>
+<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">        3536 :                                               key_reorder_rnn_weights_xf16_cvt);</span></span>
+<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">        3536 :             parallel_nd(L * D, [=](dim_t ld) {</span></span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">       14672 :                 types::cvt_from_float((bfloat16_t *)input_cvt + ld * G * O * I,</span></span>
+<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">       14672 :                         (float *)input + ld * G * O * I, G * O * I);</span></span>
+<span id="L660"><span class="lineNum">     660</span>              :             });</span>
+<span id="L661"><span class="lineNum">     661</span>              :         }</span>
+<span id="L662"><span class="lineNum">     662</span>              : </span>
+<span id="L663"><span class="lineNum">     663</span>              :         /* Transpose weights prior to packing to ensure that packed GEMM</span>
+<span id="L664"><span class="lineNum">     664</span>              :          * algorithm will be dispatched */</span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaGNC">        6642 :         out_data_t *input_tr = input_cvt;</span></span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">        6642 :         if (from_igo != to_igo) {</span></span>
+<span id="L667"><span class="lineNum">     667</span>              :             input_tr</span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaUNC">           0 :                     = (out_data_t *)ctx.get_scratchpad_grantor().template get&lt;void&gt;(</span></span>
+<span id="L669"><span class="lineNum">     669</span>              :                             memory_tracking::names::</span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaUNC">           0 :                                     key_reorder_rnn_weights_transposition);</span></span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaUNC">           0 :             const dim_t M = to_igo ? G * O : I;</span></span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaUNC">           0 :             const dim_t N = to_igo ? I : G * O;</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaUNC">           0 :             parallel_nd(L * D, N, [=](dim_t ld, dim_t i) {</span></span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaUNC">           0 :                 for (dim_t j = 0; j &lt; M; j++) {</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaUNC">           0 :                     input_tr[ld * M * N + i * M + j]</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaUNC">           0 :                             = input_cvt[ld * M * N + j * N + i];</span></span>
+<span id="L677"><span class="lineNum">     677</span>              :                 }</span>
+<span id="L678"><span class="lineNum">     678</span>              :             });</span>
+<span id="L679"><span class="lineNum">     679</span>              :         }</span>
+<span id="L680"><span class="lineNum">     680</span>              : </span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">       29488 :         const auto off_igo = [&amp;](dim_t l, dim_t d, dim_t i, dim_t g, dim_t o) {</span></span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">       22846 :             return l * D * I * G * O + d * I * G * O + i * G * O + g * O + o;</span></span>
+<span id="L683"><span class="lineNum">     683</span>              :         };</span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaGNC">        6642 :         const auto off_goi = [&amp;](dim_t l, dim_t d, dim_t i, dim_t g, dim_t o) {</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaUNC">           0 :             return l * D * G * O * I + d * G * O * I + g * O * I + o * I + i;</span></span>
+<span id="L686"><span class="lineNum">     686</span>              :         };</span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaGNC">        6642 :         const dim_t lda = to_igo ? G * O : I;</span></span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaGNC">        6642 :         const dim_t ldb = rnn_pdata.ldb;</span></span>
+<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">       21056 :         for (dim_t l = 0; l &lt; L; l++) {</span></span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">       35328 :             for (dim_t d = 0; d &lt; D; d++) {</span></span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">       43760 :                 for (dim_t p = 0; p &lt; n_parts; p++) {</span></span>
+<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">       22846 :                     const dim_t g = (p &gt; 0) ? parts[p - 1] : 0;</span></span>
+<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">       22846 :                     const dim_t m_p = to_igo ? parts[p] * O : I;</span></span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">       22846 :                     const dim_t k_p = to_igo ? I : parts[p] * O;</span></span>
+<span id="L695"><span class="lineNum">     695</span>              :                     if (type_o == data_type::bf16) {</span>
+<span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">       15988 :                         CHECK(gemm_bf16bf16f32_pack(&quot;A&quot;, &quot;N&quot;, &quot;N&quot;, &amp;m_p, &amp;n,</span></span>
+<span id="L697"><span class="lineNum">     697</span>              :                                 &amp;k_p, &amp;lda, &amp;ldb,</span>
+<span id="L698"><span class="lineNum">     698</span>              :                                 (bfloat16_t *)&amp;input_tr[to_igo</span>
+<span id="L699"><span class="lineNum">     699</span>              :                                                 ? off_igo(l, d, 0, g, 0)</span>
+<span id="L700"><span class="lineNum">     700</span>              :                                                 : off_goi(l, d, 0, g, 0)],</span>
+<span id="L701"><span class="lineNum">     701</span>              :                                 (bfloat16_t *)output));</span>
+<span id="L702"><span class="lineNum">     702</span>              :                     } else if (type_o == data_type::f16) {</span>
+<span id="L703"><span class="lineNum">     703</span>              :                         assert(!&quot;Unimplemented&quot;);</span>
+<span id="L704"><span class="lineNum">     704</span>              :                         return status::unimplemented;</span>
+<span id="L705"><span class="lineNum">     705</span>              :                     } else {</span>
+<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">        6858 :                         CHECK(sgemm_pack(&quot;A&quot;, &quot;N&quot;, &quot;N&quot;, &amp;m_p, &amp;n, &amp;k_p, &amp;lda,</span></span>
+<span id="L707"><span class="lineNum">     707</span>              :                                 &amp;ldb,</span>
+<span id="L708"><span class="lineNum">     708</span>              :                                 (float *)&amp;input_tr[to_igo</span>
+<span id="L709"><span class="lineNum">     709</span>              :                                                 ? off_igo(l, d, 0, g, 0)</span>
+<span id="L710"><span class="lineNum">     710</span>              :                                                 : off_goi(l, d, 0, g, 0)],</span>
+<span id="L711"><span class="lineNum">     711</span>              :                                 (float *)output));</span>
+<span id="L712"><span class="lineNum">     712</span>              :                     }</span>
+<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">       22846 :                     output += size_packed_cell[p] / sizeof(out_data_t);</span></span>
+<span id="L714"><span class="lineNum">     714</span>              :                 }</span>
+<span id="L715"><span class="lineNum">     715</span>              :             }</span>
+<span id="L716"><span class="lineNum">     716</span>              :         }</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">        6642 :         return status::success;</span></span>
+<span id="L718"><span class="lineNum">     718</span>              :     }</span>
+<span id="L719"><span class="lineNum">     719</span>              : </span>
+<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">       19926 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L721"><span class="lineNum">     721</span>              : };</span>
+<span id="L722"><span class="lineNum">     722</span>              : </span>
+<span id="L723"><span class="lineNum">     723</span>              : template &lt;data_type_t type_i, data_type_t type_o&gt;</span>
+<span id="L724"><span class="lineNum">     724</span>              : struct rnn_brgemm_weights_reorder_s8_t : public primitive_t {</span>
+<span id="L725"><span class="lineNum">     725</span>              :     struct pd_t : public cpu_reorder_pd_t {</span>
+<span id="L726"><span class="lineNum">     726</span>              :         using cpu_reorder_pd_t::cpu_reorder_pd_t;</span>
+<span id="L727"><span class="lineNum">     727</span>              : </span>
+<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">        3660 :         DECLARE_COMMON_PD_T(&quot;rnn_brgemm_weights_reorder_s8_t&quot;,</span></span>
+<span id="L729"><span class="lineNum">     729</span>              :                 rnn_brgemm_weights_reorder_s8_t);</span>
+<span id="L730"><span class="lineNum">     730</span>              : </span>
+<span id="L731"><span class="lineNum">     731</span>              :         format_tag_t itag_;</span>
+<span id="L732"><span class="lineNum">     732</span>              :         format_tag_t otag_;</span>
+<span id="L733"><span class="lineNum">     733</span>              :         int nthr_; // To not exceed the limit in execute used for set up.</span>
+<span id="L734"><span class="lineNum">     734</span>              :         size_t thr_scratch_comp_sz_ = 0;</span>
+<span id="L735"><span class="lineNum">     735</span>              : </span>
+<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">         328 :         status_t init(</span></span>
+<span id="L737"><span class="lineNum">     737</span>              :                 engine_t *engine, engine_t *src_engine, engine_t *dst_engine) {</span>
+<span id="L738"><span class="lineNum">     738</span>              :             status_t status</span>
+<span id="L739"><span class="lineNum">     739</span> <span class="tlaGNC">         328 :                     = cpu_reorder_pd_t::init(engine, src_engine, dst_engine);</span></span>
+<span id="L740"><span class="lineNum">     740</span> <span class="tlaGNC">         328 :             if (status != status::success) return status;</span></span>
+<span id="L741"><span class="lineNum">     741</span>              : </span>
+<span id="L742"><span class="lineNum">     742</span> <span class="tlaGNC">         328 :             nthr_ = dnnl_get_max_threads();</span></span>
+<span id="L743"><span class="lineNum">     743</span> <span class="tlaGNC">         328 :             init_scratchpad();</span></span>
+<span id="L744"><span class="lineNum">     744</span>              : </span>
+<span id="L745"><span class="lineNum">     745</span> <span class="tlaGNC">         328 :             return status::success;</span></span>
+<span id="L746"><span class="lineNum">     746</span>              :         }</span>
+<span id="L747"><span class="lineNum">     747</span>              : </span>
+<span id="L748"><span class="lineNum">     748</span>              :     private:</span>
+<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">      197692 :         static status_t create(reorder_pd_t **reorder_pd, engine_t *engine,</span></span>
+<span id="L750"><span class="lineNum">     750</span>              :                 const primitive_attr_t *attr, engine_t *src_engine,</span>
+<span id="L751"><span class="lineNum">     751</span>              :                 const memory_desc_t *src_md, engine_t *dst_engine,</span>
+<span id="L752"><span class="lineNum">     752</span>              :                 const memory_desc_t *dst_md) {</span>
+<span id="L753"><span class="lineNum">     753</span>              :             using namespace status;</span>
+<span id="L754"><span class="lineNum">     754</span>              :             using namespace format_tag;</span>
+<span id="L755"><span class="lineNum">     755</span>              :             using namespace memory_extra_flags;</span>
+<span id="L756"><span class="lineNum">     756</span>              : </span>
+<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">      197692 :             const memory_desc_wrapper id(src_md), od(dst_md);</span></span>
+<span id="L758"><span class="lineNum">     758</span>              : </span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">      395384 :             const bool args_ok = impl::is_dense_format_kind({src_md, dst_md})</span></span>
+<span id="L760"><span class="lineNum">     760</span> <span class="tlaGNC">      197686 :                     &amp;&amp; id.data_type() == type_i</span></span>
+<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">      593070 :                     &amp;&amp; od.data_type() == data_type::s8 &amp;&amp; id.is_dense();</span></span>
+<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">      197692 :             if (!args_ok) return invalid_arguments;</span></span>
+<span id="L763"><span class="lineNum">     763</span>              : </span>
+<span id="L764"><span class="lineNum">     764</span>              :             const auto skip_mask</span>
+<span id="L765"><span class="lineNum">     765</span>              :                     = primitive_attr_t::skip_mask_t::rnn_data_qparams</span>
+<span id="L766"><span class="lineNum">     766</span>              :                     | primitive_attr_t::skip_mask_t::rnn_weights_qparams</span>
+<span id="L767"><span class="lineNum">     767</span> <span class="tlaGNC">      104920 :                     | primitive_attr_t::skip_mask_t::</span></span>
+<span id="L768"><span class="lineNum">     768</span>              :                             rnn_weights_projection_qparams;</span>
+<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">      104920 :             if (!attr-&gt;has_default_values(skip_mask)) return invalid_arguments;</span></span>
+<span id="L770"><span class="lineNum">     770</span>              : </span>
+<span id="L771"><span class="lineNum">     771</span>              :             // TODO: add support for layer and direction dimensions</span>
+<span id="L772"><span class="lineNum">     772</span>              :             // weights_layer and weights_iter</span>
+<span id="L773"><span class="lineNum">     773</span> <span class="tlaGNC">       91143 :             if (id.ndims() == 5</span></span>
+<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">       91143 :                     &amp;&amp; !utils::one_of(attr-&gt;rnn_weights_qparams_.mask_, 0, 24))</span></span>
+<span id="L775"><span class="lineNum">     775</span> <span class="tlaUNC">           0 :                 return unimplemented;</span></span>
+<span id="L776"><span class="lineNum">     776</span>              :             // weights_projection</span>
+<span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">       91143 :             if (id.ndims() == 4</span></span>
+<span id="L778"><span class="lineNum">     778</span> <span class="tlaGNC">      139013 :                     &amp;&amp; !utils::one_of(</span></span>
+<span id="L779"><span class="lineNum">     779</span> <span class="tlaGNC">       47870 :                             attr-&gt;rnn_weights_projection_qparams_.mask_, 0, 8))</span></span>
+<span id="L780"><span class="lineNum">     780</span> <span class="tlaUNC">           0 :                 return unimplemented;</span></span>
+<span id="L781"><span class="lineNum">     781</span>              : </span>
+<span id="L782"><span class="lineNum">     782</span>              :             // Check the proper memory desc has been passed to u8s8 and s8s8</span>
+<span id="L783"><span class="lineNum">     783</span> <span class="tlaGNC">       91143 :             const bool check_u8s8 = (od.extra().flags &amp; rnn_u8s8_compensation)</span></span>
+<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">       91471 :                     &amp;&amp; od.extra().compensation_mask</span></span>
+<span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">         328 :                             == ((id.ndims() == 5) ? 27 /* 11011 */</span></span>
+<span id="L786"><span class="lineNum">     786</span>              :                                                   : 13 /* 1101 */);</span>
+<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">       91143 :             const bool check_s8s8 = od.extra().flags &amp; rnn_s8s8_compensation</span></span>
+<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">       91143 :                     &amp;&amp; od.extra().compensation_mask == 0;</span></span>
+<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">       91143 :             if (!(check_u8s8 || check_s8s8)) return invalid_arguments;</span></span>
+<span id="L790"><span class="lineNum">     790</span>              : </span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">         656 :             auto _pd = make_unique_pd&lt;pd_t&gt;(attr, src_engine-&gt;kind(), src_md,</span></span>
+<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">         328 :                     dst_engine-&gt;kind(), dst_md);</span></span>
+<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">         328 :             if (_pd == nullptr) return out_of_memory;</span></span>
+<span id="L794"><span class="lineNum">     794</span> <span class="tlaGNC">         328 :             CHECK(_pd-&gt;init(engine, src_engine, dst_engine));</span></span>
+<span id="L795"><span class="lineNum">     795</span>              : </span>
+<span id="L796"><span class="lineNum">     796</span> <span class="tlaGNC">         328 :             _pd-&gt;itag_ = format_tag::undef;</span></span>
+<span id="L797"><span class="lineNum">     797</span>              : </span>
+<span id="L798"><span class="lineNum">     798</span>              :             format_tag_t otag, itag;</span>
+<span id="L799"><span class="lineNum">     799</span>              : </span>
+<span id="L800"><span class="lineNum">     800</span> <span class="tlaGNC">         328 :             itag = id.matches_one_of_tag(ldigo, ldio);</span></span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">         328 :             otag = od.matches_one_of_tag(</span></span>
+<span id="L802"><span class="lineNum">     802</span>              :                     ldgOI64o4i, ldgOI32o4i, ldgOI16o4i, ldOI32o4i, ldOI16o4i);</span>
+<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">         328 :             if (itag != format_tag::undef &amp;&amp; otag != format_tag::undef) {</span></span>
+<span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">         328 :                 _pd-&gt;itag_ = itag;</span></span>
+<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">         328 :                 _pd-&gt;otag_ = otag;</span></span>
+<span id="L806"><span class="lineNum">     806</span>              :             } else {</span>
+<span id="L807"><span class="lineNum">     807</span> <span class="tlaUNC">           0 :                 return invalid_arguments;</span></span>
+<span id="L808"><span class="lineNum">     808</span>              :             }</span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">         328 :             CHECK(_pd-&gt;init_scratchpad_md());</span></span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">         328 :             return safe_ptr_assign&lt;reorder_pd_t&gt;(*reorder_pd, _pd.release());</span></span>
+<span id="L811"><span class="lineNum">     811</span>              :         }</span>
+<span id="L812"><span class="lineNum">     812</span>              : </span>
+<span id="L813"><span class="lineNum">     813</span> <span class="tlaGNC">         328 :         void init_scratchpad() {</span></span>
+<span id="L814"><span class="lineNum">     814</span>              :             using namespace format_tag;</span>
+<span id="L815"><span class="lineNum">     815</span>              : </span>
+<span id="L816"><span class="lineNum">     816</span> <span class="tlaGNC">         328 :             const memory_desc_wrapper id(src_md());</span></span>
+<span id="L817"><span class="lineNum">     817</span> <span class="tlaGNC">         328 :             const size_t nelems = id.nelems();</span></span>
+<span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">         328 :             const auto &amp;dims = id.dims();</span></span>
+<span id="L819"><span class="lineNum">     819</span> <span class="tlaGNC">         328 :             const auto ndims = id.ndims();</span></span>
+<span id="L820"><span class="lineNum">     820</span>              : </span>
+<span id="L821"><span class="lineNum">     821</span>              :             using namespace memory_tracking::names;</span>
+<span id="L822"><span class="lineNum">     822</span> <span class="tlaGNC">         328 :             auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">         328 :             const size_t quantization_size = nelems;</span></span>
+<span id="L824"><span class="lineNum">     824</span>              :             // we do not use GO directly, as this can cause false</span>
+<span id="L825"><span class="lineNum">     825</span>              :             // sharing when parallelizing on I (2 threads writing to</span>
+<span id="L826"><span class="lineNum">     826</span>              :             // the same cache line)</span>
+<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">         328 :             thr_scratch_comp_sz_ = (ndims == 5) ? dims[3] * dims[4] : dims[3];</span></span>
+<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">         328 :             thr_scratch_comp_sz_ = utils::rnd_up(thr_scratch_comp_sz_, 16);</span></span>
+<span id="L829"><span class="lineNum">     829</span> <span class="tlaGNC">         328 :             const size_t reduction_size = nthr_ * thr_scratch_comp_sz_;</span></span>
+<span id="L830"><span class="lineNum">     830</span>              : </span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">         328 :             scratchpad.template book&lt;int8_t&gt;(</span></span>
+<span id="L832"><span class="lineNum">     832</span> <span class="tlaGNC">         328 :                     key_reorder_rnn_weights_quantization, quantization_size);</span></span>
+<span id="L833"><span class="lineNum">     833</span> <span class="tlaGNC">         328 :             scratchpad.template book&lt;int32_t&gt;(</span></span>
+<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">         328 :                     key_reorder_rnn_weights_reduction, reduction_size);</span></span>
+<span id="L835"><span class="lineNum">     835</span> <span class="tlaGNC">         328 :         }</span></span>
+<span id="L836"><span class="lineNum">     836</span>              :         friend dnnl::impl::impl_list_item_t;</span>
+<span id="L837"><span class="lineNum">     837</span>              :     };</span>
+<span id="L838"><span class="lineNum">     838</span>              : </span>
+<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">         328 :     rnn_brgemm_weights_reorder_s8_t(const pd_t *apd) : primitive_t(apd) {}</span></span>
+<span id="L840"><span class="lineNum">     840</span>              : </span>
+<span id="L841"><span class="lineNum">     841</span>              : private:</span>
+<span id="L842"><span class="lineNum">     842</span>              :     using in_data_t = typename prec_traits_t&lt;type_i&gt;::type;</span>
+<span id="L843"><span class="lineNum">     843</span>              :     using out_data_t = typename prec_traits_t&lt;type_o&gt;::type;</span>
+<span id="L844"><span class="lineNum">     844</span>              : </span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">        3004 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L846"><span class="lineNum">     846</span>              :         using namespace format_tag;</span>
+<span id="L847"><span class="lineNum">     847</span>              :         using namespace data_type;</span>
+<span id="L848"><span class="lineNum">     848</span>              :         using namespace utils;</span>
+<span id="L849"><span class="lineNum">     849</span>              :         using namespace memory_extra_flags;</span>
+<span id="L850"><span class="lineNum">     850</span>              : </span>
+<span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">        3004 :         auto src = CTX_IN_MEM(const in_data_t *, DNNL_ARG_FROM);</span></span>
+<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">        3004 :         auto dst = CTX_OUT_MEM(out_data_t *, DNNL_ARG_TO);</span></span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">        3004 :         const memory_desc_wrapper &amp;src_d = pd()-&gt;src_md();</span></span>
+<span id="L854"><span class="lineNum">     854</span> <span class="tlaGNC">        3004 :         const memory_desc_wrapper &amp;dst_d = pd()-&gt;dst_md();</span></span>
+<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">        3004 :         if (src_d.has_zero_dim()) {</span></span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaUNC">           0 :             assert(dst_d.has_zero_dim());</span></span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaUNC">           0 :             return status::success;</span></span>
+<span id="L858"><span class="lineNum">     858</span>              :         }</span>
+<span id="L859"><span class="lineNum">     859</span>              : </span>
+<span id="L860"><span class="lineNum">     860</span> <span class="tlaGNC">        3004 :         const int o_block = dst_d.blocking_desc().inner_blks[0];</span></span>
+<span id="L861"><span class="lineNum">     861</span>              :         static constexpr int i_block = 4;</span>
+<span id="L862"><span class="lineNum">     862</span>              : </span>
+<span id="L863"><span class="lineNum">     863</span>              :         dim_t L, D, I, G, O;</span>
+<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">        3004 :         init_dims(L, D, I, G, O, src_d);</span></span>
+<span id="L865"><span class="lineNum">     865</span>              : </span>
+<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">        3004 :         const auto &amp;pdims = dst_d.padded_dims();</span></span>
+<span id="L867"><span class="lineNum">     867</span> <span class="tlaGNC">        3004 :         const dim_t pI = pdims[2];</span></span>
+<span id="L868"><span class="lineNum">     868</span> <span class="tlaGNC">        3004 :         const dim_t pO = (src_d.ndims() == 5) ? pdims[4] : pdims[3];</span></span>
+<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">        3004 :         const dim_t IB = pI / i_block;</span></span>
+<span id="L870"><span class="lineNum">     870</span> <span class="tlaGNC">        3004 :         const dim_t OB = pO / o_block;</span></span>
+<span id="L871"><span class="lineNum">     871</span>              : </span>
+<span id="L872"><span class="lineNum">     872</span> <span class="tlaGNC">        3004 :         const size_t compensation_offset = (size_t)L * D * G * pI * pO;</span></span>
+<span id="L873"><span class="lineNum">     873</span>              : </span>
+<span id="L874"><span class="lineNum">     874</span>              :         /* Quantize src &amp; compute compensation */</span>
+<span id="L875"><span class="lineNum">     875</span>              :         auto scratch_quantized</span>
+<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">        3004 :                 = (int8_t *__restrict)ctx.get_scratchpad_grantor()</span></span>
+<span id="L877"><span class="lineNum">     877</span> <span class="tlaGNC">        6008 :                           .template get&lt;void&gt;(memory_tracking::names::</span></span>
+<span id="L878"><span class="lineNum">     878</span> <span class="tlaGNC">        3004 :                                           key_reorder_rnn_weights_quantization);</span></span>
+<span id="L879"><span class="lineNum">     879</span>              :         auto scratch_compensation</span>
+<span id="L880"><span class="lineNum">     880</span> <span class="tlaGNC">        3004 :                 = (int32_t *__restrict)ctx.get_scratchpad_grantor()</span></span>
+<span id="L881"><span class="lineNum">     881</span> <span class="tlaGNC">        6008 :                           .template get&lt;void&gt;(memory_tracking::names::</span></span>
+<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">        3004 :                                           key_reorder_rnn_weights_reduction);</span></span>
+<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">        3004 :         float *comp = reinterpret_cast&lt;float *&gt;(dst + compensation_offset);</span></span>
+<span id="L884"><span class="lineNum">     884</span> <span class="tlaGNC">        3004 :         const bool req_s8s8_comp = dst_d.extra().flags &amp; rnn_u8s8_compensation;</span></span>
+<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">        6008 :         const auto mask_ok = [&amp;](int mask) {</span></span>
+<span id="L886"><span class="lineNum">     886</span>              :             return mask</span>
+<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">        3004 :                     == ((src_d.ndims() == 5) ? 27 /* 11011 */</span></span>
+<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">        3004 :                                              : 13 /* 1101 */);</span></span>
+<span id="L889"><span class="lineNum">     889</span>              :         };</span>
+<span id="L890"><span class="lineNum">     890</span>              : </span>
+<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">        3004 :         float *scales = nullptr;</span></span>
+<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">        3004 :         int mask = 0;</span></span>
+<span id="L893"><span class="lineNum">     893</span> <span class="tlaGNC">        3004 :         if (src_d.ndims() == 5) {</span></span>
+<span id="L894"><span class="lineNum">     894</span> <span class="tlaGNC">        3004 :             scales = pd()-&gt;attr()-&gt;rnn_weights_qparams_.scales_;</span></span>
+<span id="L895"><span class="lineNum">     895</span> <span class="tlaGNC">        3004 :             mask = pd()-&gt;attr()-&gt;rnn_weights_qparams_.mask_;</span></span>
+<span id="L896"><span class="lineNum">     896</span>              :         }</span>
+<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">        3004 :         if (src_d.ndims() == 4) {</span></span>
+<span id="L898"><span class="lineNum">     898</span> <span class="tlaUNC">           0 :             scales = pd()-&gt;attr()-&gt;rnn_weights_projection_qparams_.scales_;</span></span>
+<span id="L899"><span class="lineNum">     899</span> <span class="tlaUNC">           0 :             mask = pd()-&gt;attr()-&gt;rnn_weights_projection_qparams_.mask_;</span></span>
+<span id="L900"><span class="lineNum">     900</span>              :         }</span>
+<span id="L901"><span class="lineNum">     901</span>              :         if (type_i == data_type::f32) {</span>
+<span id="L902"><span class="lineNum">     902</span> <span class="tlaGNC">        1562 :             quantize_igo&lt;type_i&gt;(</span></span>
+<span id="L903"><span class="lineNum">     903</span>              :                     scratch_quantized, src_d, (float *)src, mask, scales);</span>
+<span id="L904"><span class="lineNum">     904</span>              :         } else</span>
+<span id="L905"><span class="lineNum">     905</span> <span class="tlaGNC">        1442 :             scratch_quantized = (int8_t *__restrict)src;</span></span>
+<span id="L906"><span class="lineNum">     906</span>              : </span>
+<span id="L907"><span class="lineNum">     907</span> <span class="tlaGNC">        3004 :         if (req_s8s8_comp &amp;&amp; mask_ok(dst_d.extra().compensation_mask))</span></span>
+<span id="L908"><span class="lineNum">     908</span> <span class="tlaGNC">        3004 :             compensate_igo(comp, src_d, scratch_quantized, scratch_compensation,</span></span>
+<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">        3004 :                     pd()-&gt;thr_scratch_comp_sz_, pd()-&gt;nthr_);</span></span>
+<span id="L910"><span class="lineNum">     910</span>              : </span>
+<span id="L911"><span class="lineNum">     911</span> <span class="tlaGNC">        3004 :         const auto off_plain</span></span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC">     1256872 :                 = [=](dim_t l, dim_t d, dim_t i, dim_t g, dim_t o) {</span></span>
+<span id="L913"><span class="lineNum">     913</span> <span class="tlaGNC">     1256872 :             return ((((dim_t)l * D + d) * I + i) * G + g) * O + o;</span></span>
+<span id="L914"><span class="lineNum">     914</span>              :         };</span>
+<span id="L915"><span class="lineNum">     915</span>              : </span>
+<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">        3004 :         const auto off_blk</span></span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">     1256872 :                 = [=](dim_t l, dim_t d, dim_t g, dim_t ob, dim_t ib) {</span></span>
+<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">     1256872 :             return (((((dim_t)l * D + d) * G + g) * OB + ob) * IB + ib)</span></span>
+<span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">     1256872 :                     * i_block * o_block;</span></span>
+<span id="L920"><span class="lineNum">     920</span>              :         };</span>
+<span id="L921"><span class="lineNum">     921</span>              :         const auto off_inner_blk</span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">   125641810 :                 = [=](int xdim, int y, int x, int folding_factor) {</span></span>
+<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">   125641810 :             const int row = (xdim) * (y / folding_factor) * folding_factor;</span></span>
+<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">   125641810 :             const int col = x * folding_factor + (y % folding_factor);</span></span>
+<span id="L925"><span class="lineNum">     925</span> <span class="tlaGNC">   125641810 :             return row + col;</span></span>
+<span id="L926"><span class="lineNum">     926</span>              :         };</span>
+<span id="L927"><span class="lineNum">     927</span> <span class="tlaGNC">        3004 :         const auto kernel_plain_to_blocked</span></span>
+<span id="L928"><span class="lineNum">     928</span> <span class="tlaGNC">   581148700 :                 = [=](const out_data_t *inp, out_data_t *out, int ib, int ob) {</span></span>
+<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">     1256872 :             PRAGMA_OMP_SIMD()</span></span>
+<span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">     1256872 :             for (int i = 0; i &lt; i_block * o_block; i++)</span></span>
+<span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">   149337550 :                 out[i] = 0;</span></span>
+<span id="L932"><span class="lineNum">     932</span>              : </span>
+<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">     6284360 :             for_(int i = 0; i &lt; i_block; i++)</span></span>
+<span id="L934"><span class="lineNum">     934</span> <span class="tlaGNC">   154365090 :             for (int o = 0; o &lt; o_block; o++) {</span></span>
+<span id="L935"><span class="lineNum">     935</span> <span class="tlaGNC">   149337550 :                 if ((i + ib * i_block &lt; I) &amp;&amp; (o + ob * o_block &lt; O))</span></span>
+<span id="L936"><span class="lineNum">     936</span> <span class="tlaGNC">   251283460 :                     out[off_inner_blk(o_block, i, o, i_block)]</span></span>
+<span id="L937"><span class="lineNum">     937</span> <span class="tlaGNC">   125641810 :                             = inp[i * G * O + o];</span></span>
+<span id="L938"><span class="lineNum">     938</span>              :             }</span>
+<span id="L939"><span class="lineNum">     939</span>              :         };</span>
+<span id="L940"><span class="lineNum">     940</span>              : </span>
+<span id="L941"><span class="lineNum">     941</span> <span class="tlaGNC">        3004 :         parallel_nd(L, D, G, OB, IB,</span></span>
+<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">     3770616 :                 [=](dim_t l, dim_t d, dim_t g, dim_t ob, dim_t ib) {</span></span>
+<span id="L943"><span class="lineNum">     943</span> <span class="tlaGNC">     2513744 :             auto inp = &amp;scratch_quantized[off_plain(</span></span>
+<span id="L944"><span class="lineNum">     944</span> <span class="tlaGNC">     1256872 :                     l, d, ib * i_block, g, ob * o_block)];</span></span>
+<span id="L945"><span class="lineNum">     945</span> <span class="tlaGNC">     1256872 :             auto out = &amp;dst[off_blk(l, d, g, ob, ib)];</span></span>
+<span id="L946"><span class="lineNum">     946</span>              : </span>
+<span id="L947"><span class="lineNum">     947</span> <span class="tlaGNC">     1256872 :             kernel_plain_to_blocked(inp, out, ib, ob);</span></span>
+<span id="L948"><span class="lineNum">     948</span>              :         });</span>
+<span id="L949"><span class="lineNum">     949</span>              : </span>
+<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">        3004 :         return status::success;</span></span>
+<span id="L951"><span class="lineNum">     951</span>              :     }</span>
+<span id="L952"><span class="lineNum">     952</span>              : </span>
+<span id="L953"><span class="lineNum">     953</span> <span class="tlaGNC">       18024 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L954"><span class="lineNum">     954</span>              : };</span>
+<span id="L955"><span class="lineNum">     955</span>              : </span>
+<span id="L956"><span class="lineNum">     956</span>              : } // namespace cpu</span>
+<span id="L957"><span class="lineNum">     957</span>              : } // namespace impl</span>
+<span id="L958"><span class="lineNum">     958</span>              : } // namespace dnnl</span>
+<span id="L959"><span class="lineNum">     959</span>              : </span>
+<span id="L960"><span class="lineNum">     960</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

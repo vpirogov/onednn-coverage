@@ -1,0 +1,646 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/pool/jit/ir_builder.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/pool/jit">src/gpu/intel/pool/jit</a> - ir_builder.cpp<span style="font-size: 80%;"> (source / <a href="ir_builder.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">93.9&nbsp;%</td>
+            <td class="headerCovTableEntry">378</td>
+            <td class="headerCovTableEntry">355</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">88.2&nbsp;%</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">15</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2023 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;gpu/intel/pool/jit/ir_builder.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &lt;algorithm&gt;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;utility&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;vector&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;gemmstone/../../dsl/ir/ir.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;gemmstone/../../dsl/ir/pass/trace.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;gpu/intel/jit/ir/epilogue.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;gpu/intel/jit/ir/gemm_schedule.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;gpu/intel/jit/ir/post_ops.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;gpu/intel/jit/ir/send_builder.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &quot;gpu/intel/jit/ir/tensor_config.hpp&quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;gpu/intel/jit/pass/pass.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace dnnl {</span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace impl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace gpu {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace intel {</span>
+<span id="L38"><span class="lineNum">      38</span>              : namespace pool {</span>
+<span id="L39"><span class="lineNum">      39</span>              : namespace jit {</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : class post_op_view_mapper_t : public intel::jit::post_op_view_mapper_t {</span>
+<span id="L42"><span class="lineNum">      42</span>              :     using base_t = intel::jit::post_op_view_mapper_t;</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : public:</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       12726 :     post_op_view_mapper_t(const view_t &amp;cp_view, const int ndims)</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       12726 :         : base_t(cp_view), ndims_(ndims) {}</span></span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaUNC">           0 :     view_t create_view(const dsl::type_t &amp;type, uint32_t mask) const override {</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :         return base_t::create_view(type, normalize_mask(mask));</span></span>
+<span id="L50"><span class="lineNum">      50</span>              :     }</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        5539 :     view_t create_view(const memory_desc_t &amp;md) const override {</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        5539 :         dim_idx_t cp_ndims = cp_view().nvdims();</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">        5539 :         gpu_assert(cp_ndims &gt;= 3);</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       11078 :         layout_t layout = make_layout(md);</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       11078 :         std::vector&lt;dim_t&gt; dims(md.dims, md.dims + md.ndims);</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       11078 :         std::vector&lt;dim_t&gt; pad_dims(md.padded_dims, md.padded_dims + md.ndims);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        5539 :         maybe_reshape_dims(ndims_, layout, dims, pad_dims);</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        5539 :         layout = spatials_to_3d(layout, false, {0, 1, 2});</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       11078 :         auto tile = dims_to_3d(dims);</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       11078 :         auto pad_tile = dims_to_3d(pad_dims);</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        5539 :         gpu_assert(layout.ndims() == cp_ndims) &lt;&lt; &quot;Incompatible dimensions.&quot;;</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        5539 :         uint32_t bound_check_mask = 0;</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       33234 :         for (dim_idx_t i = 0; i &lt; cp_ndims; i++) {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       27695 :             if (tile[i] == 1) continue; // Broadcast, no bound check needed.</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        9317 :             if (pad_tile[i] != cp_view().tlayout().elems(i)) {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaUNC">           0 :                 bound_check_mask |= (1 &lt;&lt; i);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        9317 :             } else if (cp_view().has_tmask(i)) {</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        1426 :                 bound_check_mask |= (1 &lt;&lt; i);</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :             }</span>
+<span id="L71"><span class="lineNum">      71</span>              :         }</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       11078 :         return view_t(layout, cp_view().vvars(), tile, bound_check_mask);</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :     }</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        1777 :     bool need_to_restore_zero_padding() const override { return true; }</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              : private:</span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">        5539 :     static void maybe_reshape_dims(dim_idx_t ndims, layout_t &amp;layout,</span></span>
+<span id="L79"><span class="lineNum">      79</span>              :             std::vector&lt;dim_t&gt; &amp;dims, std::vector&lt;dim_t&gt; &amp;padded_dims) {</span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">        5539 :         gpu_assert(layout.ndims() == dims.size());</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">        5539 :         if (layout.ndims() &lt; ndims) {</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaUNC">           0 :             layout = layout_t(layout.type(), layout.blocks(), layout.offset(),</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaUNC">           0 :                     ndims, /*do_normalize=*/false);</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0 :             dims.resize(ndims, 1);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 :             padded_dims.resize(ndims, 1);</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :         }</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        5539 :     }</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       11078 :     static tile_t dims_to_3d(const std::vector&lt;dim_t&gt; &amp;dims) {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       11078 :         layout_t dummy_layout(dsl::type_t::u8(), dims);</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       33234 :         return spatials_to_3d(dummy_layout, false, {0, 1, 2}).tile();</span></span>
+<span id="L92"><span class="lineNum">      92</span>              :     }</span>
+<span id="L93"><span class="lineNum">      93</span>              : </span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaUNC">           0 :     uint32_t normalize_mask(uint32_t orig_mask) const {</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :         dim_idx_t cp_ndims = cp_view().nvdims();</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaUNC">           0 :         gpu_assert(cp_ndims &gt;= 3);</span></span>
+<span id="L97"><span class="lineNum">      97</span>              :         // Number of dimensions before normalization.</span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaUNC">           0 :         dim_idx_t orig_ndims = 2 + ndims_;</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :         std::vector&lt;dim_t&gt; dummy_dims(orig_ndims, 1);</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :         dim_t mask_set_value = 2;</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :         for (dim_idx_t i = 0; i &lt; orig_ndims; i++) {</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :             if ((orig_mask &amp; (1 &lt;&lt; i)) != 0) dummy_dims[i] = mask_set_value;</span></span>
+<span id="L103"><span class="lineNum">     103</span>              :         }</span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :         auto cvt_dims = dims_to_3d(dummy_dims);</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaUNC">           0 :         gpu_assert(cvt_dims.size() == cp_ndims);</span></span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 :         uint32_t mask = 0;</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaUNC">           0 :         for (dim_idx_t i = 0; i &lt; cp_ndims; i++) {</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaUNC">           0 :             if (cvt_dims[i] == mask_set_value) mask = mask | (1 &lt;&lt; i);</span></span>
+<span id="L110"><span class="lineNum">     110</span>              :         }</span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaUNC">           0 :         return mask;</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :     }</span>
+<span id="L113"><span class="lineNum">     113</span>              : </span>
+<span id="L114"><span class="lineNum">     114</span>              :     const int ndims_;</span>
+<span id="L115"><span class="lineNum">     115</span>              : };</span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span>              : class loop_bound_counter_t : public ir_mutator_t {</span>
+<span id="L118"><span class="lineNum">     118</span>              : public:</span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">       38991 :     int count(const expr_t &amp;e) {</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">       77982 :         const auto retn = simplify(mutate(e));</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       38991 :         gpu_assert(retn.is&lt;int_imm_t&gt;());</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">       77982 :         return to_cpp&lt;int&gt;(retn);</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :     }</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">       12997 :     loop_bound_counter_t(const gemm_schedule_t &amp;s) : schedule_(s) {}</span></span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span>              : private:</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       28298 :     object_t _mutate(const var_t &amp;v) override {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       28298 :         return expr_t(schedule_.var_bound(v) - 1);</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :     }</span>
+<span id="L130"><span class="lineNum">     130</span>              :     const gemm_schedule_t &amp;schedule_;</span>
+<span id="L131"><span class="lineNum">     131</span>              : };</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       12997 : stmt_t builder_t::try_build(builder_t &amp;pb, const kernel_info_t &amp;ki,</span></span>
+<span id="L134"><span class="lineNum">     134</span>              :         const config_t &amp;cfg, const primitive_desc_t &amp;pd) {</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       12997 :     const auto &amp;exec = cfg.options();</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       12997 :     const auto &amp;prb = cfg.problem();</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       12997 :     const auto &amp;src_layout = cfg.src_layout().user();</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">       12997 :     const auto &amp;dst_layout = cfg.dst_layout().user();</span></span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       12997 :     const bool is_xe2_or_xe3_small_kdhw = !(prb.kd * prb.kh * prb.kw == 1)</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       12696 :             &amp;&amp; (prb.kh * prb.kw &lt;= 9)</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       31292 :             &amp;&amp; (exec.hw().ngen_hw() == ngen::HW::Xe2</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">        5599 :                     || exec.hw().ngen_hw() == ngen::HW::Xe3);</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">       12997 :     gpu_assert(src_layout.ndims() == dst_layout.ndims());</span></span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              :     // Create loop variables.</span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">       25994 :     auto mb = var_t::make(dsl::type_t::s32(), &quot;mb&quot;);</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">       25994 :     auto oc = var_t::make(dsl::type_t::s32(), &quot;oc&quot;);</span></span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       25994 :     auto od = var_t::make(dsl::type_t::s32(), &quot;od&quot;);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       25994 :     auto oh = var_t::make(dsl::type_t::s32(), &quot;oh&quot;);</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">       25994 :     auto ow = var_t::make(dsl::type_t::s32(), &quot;ow&quot;);</span></span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       25994 :     auto kd = var_t::make(dsl::type_t::s32(), &quot;kd&quot;);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       25994 :     auto kh = var_t::make(dsl::type_t::s32(), &quot;kh&quot;);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       25994 :     auto kw = var_t::make(dsl::type_t::s32(), &quot;kw&quot;);</span></span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              :     // Initialize masks.</span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       12997 :     const bool check_iw = utils::need_src_or_dst_check(!prb.is_backward, prb.ow,</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       12997 :             prb.iw, prb.kw, prb.l_pad, prb.stride_w, prb.dw);</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">       12997 :     const bool check_ih = utils::need_src_or_dst_check(!prb.is_backward, prb.oh,</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       12997 :             prb.ih, prb.kh, prb.t_pad, prb.stride_h, prb.dh);</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       12997 :     const bool check_id = utils::need_src_or_dst_check(!prb.is_backward, prb.od,</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       12997 :             prb.id, prb.kd, prb.f_pad, prb.stride_d, prb.dd);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       12997 :     const bool check_idhw = check_id || check_ih || check_iw;</span></span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       12997 :     auto &amp;x = view_t::placeholder_var();</span></span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       25994 :     expr_t id_mask, ih_mask, iw_mask;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       12997 :     if (check_id) id_mask = (x &gt;= 0) &amp; (x &lt; prb.id);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       12997 :     if (check_ih) ih_mask = (x &gt;= 0) &amp; (x &lt; prb.ih);</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       12997 :     if (check_iw) iw_mask = (x &gt;= 0) &amp; (x &lt; prb.iw);</span></span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       12997 :     const int simd = exec.simd();</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       12997 :     const auto &amp;lg = cfg.loop_grid();</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       12997 :     const auto &amp;kg = cfg.kernel_grid();</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       12997 :     const auto &amp;tg = cfg.thread_group_grid();</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       12997 :     const auto &amp;padded_dims = cfg.dims_padded();</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       12997 :     gpu_assert(padded_dims.size() == 5);</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       25994 :     std::vector&lt;dim_t&gt; dims {padded_dims[0], src_layout.elems(1),</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       38991 :             padded_dims[2], padded_dims[3], padded_dims[4]};</span></span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span>              :     // Source.</span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">      142967 :     auto src_view = view_t({mb, oc, od, oh, ow, kd, kh, kw}, 5);</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(mb, (!is_xe2_or_xe3_small_kdhw) ? dims[0] : prb.mb);</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(oc, dims[1]);</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(od, dims[2]);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(oh, dims[3]);</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(ow, dims[4]);</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(kd, prb.kd);</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(kh, prb.kh);</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       12997 :     src_view.set_vdim(kw, prb.kw);</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">       12997 :     src_view.set_tdim(0, mb);</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       12997 :     src_view.set_tdim(1, oc);</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">       12997 :     src_view.set_tdim(</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       25994 :             2, od * prb.stride_d - prb.f_pad + kd * (1 + prb.dd), id_mask);</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       12997 :     src_view.set_tdim(</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       25994 :             3, oh * prb.stride_h - prb.t_pad + kh * (1 + prb.dh), ih_mask);</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       12997 :     src_view.set_tdim(</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       25994 :             4, ow * prb.stride_w - prb.l_pad + kw * (1 + prb.dw), iw_mask);</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">       12997 :     src_view.set_tlayout(src_layout);</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       12997 :     src_view.set_tmasks(padded_dims);</span></span>
+<span id="L204"><span class="lineNum">     204</span>              : </span>
+<span id="L205"><span class="lineNum">     205</span>              :     // Destination.</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      103976 :     auto dst_view = view_t({mb, oc, od, oh, ow}, 5);</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       12997 :     dst_view.set_vdim(mb, (!is_xe2_or_xe3_small_kdhw) ? dims[0] : prb.mb);</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">       12997 :     dst_view.set_vdim(oc, dims[1]);</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       12997 :     dst_view.set_vdim(od, dims[2]);</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">       12997 :     dst_view.set_vdim(oh, dims[3]);</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">       12997 :     dst_view.set_vdim(ow, dims[4]);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">       12997 :     dst_view.set_tdim(0, mb);</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       12997 :     dst_view.set_tdim(1, oc);</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       12997 :     dst_view.set_tdim(2, od);</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       12997 :     dst_view.set_tdim(3, oh);</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       12997 :     dst_view.set_tdim(4, ow);</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">       12997 :     dst_view.set_tlayout(dst_layout);</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       12997 :     dst_view.set_tmasks(padded_dims);</span></span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       25994 :     constraint_set_t init_cset;</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       25994 :     std::vector&lt;stmt_t&gt; init_stmts;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       12997 :     pb.init_kernel_grid(kg, tg, simd, init_cset, init_stmts);</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : </span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       25994 :     gemm_schedule_t schedule(init_cset, kg, tg);</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       12997 :     schedule.set_view(src_view);</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       12997 :     schedule.set_view(dst_view);</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">       12997 :     schedule.set_var_bound(mb, dims[0]);</span></span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       51988 :     auto kg_bind = [&amp;](const std::vector&lt;expr_t&gt; &amp;fuse, int idx) {</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       51988 :         if (fuse.size() &gt; 1)</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       26819 :             schedule.bind(schedule.fuse(fuse), kg.idx(idx));</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">       25169 :         else if (fuse.size() == 1)</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       12172 :             schedule.bind(fuse[0], kg.idx(idx));</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       51988 :     };</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       25994 :     auto odhw_to_schedule = [&amp;](expr_t s1, expr_t ns, expr_t s0) {</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :         dim_idx_t s0_idx</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       25994 :                 = (s0.is_empty()) ? dim_idx::invalid : src_view.vvar_index(s0);</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       25994 :         dim_idx_t s1_idx = src_view.vvar_index(s1);</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">       25994 :         dim_idx_t ns_idx = src_view.vvar_index(ns);</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       25994 :         gpu_assert((s0_idx &lt;= 4 || s0_idx == dim_idx::invalid) &amp;&amp; (s1_idx &lt;= 4)</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :                 &amp;&amp; (ns_idx &lt;= 4));</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              :         // s1 and ns may swap sides, which affects their fusing order: it has</span>
+<span id="L244"><span class="lineNum">     244</span>              :         // to strictly replicate that of the arguments passed to this lambda!</span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       25994 :         const bool need_swap = (s1_idx &lt;= 1);</span></span>
+<span id="L246"><span class="lineNum">     246</span>              :         // 2 spatials and 2 non-spatials disallowed; only 1 of each or bust</span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">       25994 :         gpu_assert(need_swap != (ns_idx &lt;= 1));</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       25994 :         if (need_swap) {</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       19643 :             std::swap(s1_idx, ns_idx);</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       19643 :             std::swap(s1, ns);</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :         }</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       25994 :         const dim_t s1_tlg_unroll = lg[s1_idx];</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">       25994 :         const dim_t s1_unroll = s1_tlg_unroll * tg[s1_idx - 2];</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       51988 :         const auto ps1 = s1.str();</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       51988 :         std::vector&lt;expr_t&gt; s0_fuse, s1_fuse;</span></span>
+<span id="L258"><span class="lineNum">     258</span>              : </span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       51988 :         expr_t s1_kg, s1_tlg, s1_tg, s1_lg;</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       25994 :         schedule.split(s1, s1_unroll, s1_kg, s1_tlg, ps1 + &quot;_kg&quot;, ps1 + &quot;_tlg&quot;);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       25994 :         schedule.split(</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       51988 :                 s1_tlg, s1_tlg_unroll, s1_tg, s1_lg, ps1 + &quot;_tg&quot;, ps1 + &quot;_lg&quot;);</span></span>
+<span id="L263"><span class="lineNum">     263</span>              : </span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">       25994 :         schedule.tensorize(s1_lg);</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">       25994 :         schedule.bind(s1_tg, tg.idx(s1_idx - 2));</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">       25994 :         s1_fuse.emplace_back(s1_kg);</span></span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">       25994 :         if (s0_idx != dim_idx::invalid) {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">       12997 :             gpu_assert(s0_idx == s1_idx + 1);</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">       12997 :             const dim_t s0_tlg_unroll = lg[s0_idx];</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       12997 :             const dim_t s0_unroll = s0_tlg_unroll * tg[s0_idx - 2];</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">       12997 :             const dim_t s0_full = s0_unroll * kg[s0_idx - 2];</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">       25994 :             const auto ps0 = s0.str();</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">       12997 :             if (dims[s0_idx] &gt; s0_full) {</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">        3088 :                 expr_t s0_split, s0_ktlg; // part of kg[s0] is in kg[s1]</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">        1544 :                 schedule.split(s0, s0_full, s0_split, s0_ktlg, ps0 + &quot;_split&quot;,</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">        3088 :                         ps0 + &quot;_ktlg&quot;);</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">        1544 :                 s1_fuse.emplace_back(s0_split);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        1544 :                 s0 = std::move(s0_ktlg);</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       11453 :             } else if (dims[s0_idx] &lt;= utils::div_up(s0_full, 2)) {</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        1650 :                 expr_t s1_split, s1_ktlg; // part of kg[s1] is in kg[s0]</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">         825 :                 const dim_t s1_ext = utils::div_up(s0_full, dims[s0_idx]);</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">         825 :                 schedule.split(s1_fuse[0], s1_ext, s1_ktlg, s1_split,</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        1650 :                         ps1 + &quot;_ktlg&quot;, ps1 + &quot;_split&quot;);</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">         825 :                 s1_fuse[0] = std::move(s1_ktlg);</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">         825 :                 s0_fuse.emplace_back(s1_split);</span></span>
+<span id="L288"><span class="lineNum">     288</span>              :             }</span>
+<span id="L289"><span class="lineNum">     289</span>              : </span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">       25994 :             expr_t s0_kg, s0_tlg, s0_tg, s0_lg;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">       12997 :             schedule.split(</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">       25994 :                     s0, s0_unroll, s0_kg, s0_tlg, ps0 + &quot;_kg&quot;, ps0 + &quot;_tlg&quot;);</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">       12997 :             schedule.split(s0_tlg, s0_tlg_unroll, s0_tg, s0_lg, ps0 + &quot;_tg&quot;,</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">       25994 :                     ps0 + &quot;_lg&quot;);</span></span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">       12997 :             schedule.tensorize(s0_lg);</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       12997 :             schedule.bind(s0_tg, tg.idx(s0_idx - 2));</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">       12997 :             s0_fuse.emplace_back(s0_kg);</span></span>
+<span id="L299"><span class="lineNum">     299</span>              :         }</span>
+<span id="L300"><span class="lineNum">     300</span>              : </span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">       25994 :         const dim_t ns_unroll = lg[ns_idx];</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">       51988 :         const auto pns = ns.str();</span></span>
+<span id="L303"><span class="lineNum">     303</span>              : </span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       51988 :         expr_t ns_kg, ns_lg;</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">       25994 :         schedule.split(ns, ns_unroll, ns_kg, ns_lg, pns + &quot;_kg&quot;, pns + &quot;_lg&quot;);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       25994 :         if (need_swap)</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">       19643 :             s1_fuse.emplace(s1_fuse.begin(), ns_kg);</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :         else</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">        6351 :             s1_fuse.emplace_back(ns_kg);</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">       25994 :         schedule.tensorize(ns_lg);</span></span>
+<span id="L311"><span class="lineNum">     311</span>              : </span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       25994 :         kg_bind(s0_fuse, s0_idx - 2);</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">       25994 :         kg_bind(s1_fuse, s1_idx - 2);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       25994 :     };</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">       12997 :     odhw_to_schedule(oc, od, expr_t());</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">       12997 :     if (cfg.is_blocked_by_mb())</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        6351 :         odhw_to_schedule(oh, mb, ow);</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :     else</span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">        6646 :         odhw_to_schedule(mb, oh, ow);</span></span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">       38991 :     auto kdhw_to_schedule = [&amp;](const expr_t &amp;k) {</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">       38991 :         const int k_idx = src_view.vvar_index(k);</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">       38991 :         gpu_assert((k_idx &gt;= 5) &amp;&amp; (k_idx &lt;= 7));</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">       38991 :         const dim_t k_dim = lg[k_idx];</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       38991 :         if (k_dim == schedule.var_bound(k)) {</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       34825 :             schedule.tensorize(k);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        4166 :         } else if (k_dim &lt; schedule.var_bound(k)) {</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">        4166 :             if (k_dim &gt; 1) { // otherwise it'll just waste a variable</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">        2140 :                 expr_t k_lg, k_tnz;</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">        1070 :                 schedule.split(k, k_dim, k_lg, k_tnz, k.str() + &quot;_lg&quot;,</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">        2140 :                         k.str() + &quot;_tnz&quot;);</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">        1070 :                 schedule.tensorize(k_tnz);</span></span>
+<span id="L333"><span class="lineNum">     333</span>              :             }</span>
+<span id="L334"><span class="lineNum">     334</span>              :         } else {</span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaUNC">           0 :             gpu_error_not_expected() &lt;&lt; &quot;k_dim &gt; var_bound; this is wrong&quot;;</span></span>
+<span id="L336"><span class="lineNum">     336</span>              :         }</span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">       38991 :     };</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">       12997 :     kdhw_to_schedule(kd);</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">       12997 :     kdhw_to_schedule(kh);</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">       12997 :     kdhw_to_schedule(kw);</span></span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">       12997 :     schedule.finalize();</span></span>
+<span id="L343"><span class="lineNum">     343</span>              : </span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">       12997 :     const auto expand_loop_kinds = loop_kind_t::serial</span></span>
+<span id="L345"><span class="lineNum">     345</span>              :             | loop_kind_t::kernel_grid | loop_kind_t::tg_grid;</span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">       12997 :     mb = schedule.expand(mb, true, expand_loop_kinds);</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">       12997 :     oc = schedule.expand(oc, true, expand_loop_kinds);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">       12997 :     od = schedule.expand(od, true, expand_loop_kinds);</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       12997 :     oh = schedule.expand(oh, true, expand_loop_kinds);</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">       12997 :     ow = schedule.expand(ow, true, expand_loop_kinds);</span></span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span>              :     auto src_thr_tile_coord</span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">       25994 :             = schedule.thr_view_tile_coord(src_view, /*is_relative=*/false);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       25994 :     auto src_thr_view = src_view.create_sub_view(src_thr_tile_coord);</span></span>
+<span id="L355"><span class="lineNum">     355</span>              : </span>
+<span id="L356"><span class="lineNum">     356</span>              :     auto dst_thr_tile_coord</span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">       25994 :             = schedule.thr_view_tile_coord(dst_view, /*is_relative=*/false);</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">       25994 :     auto dst_thr_view = dst_view.create_sub_view(dst_thr_tile_coord);</span></span>
+<span id="L359"><span class="lineNum">     359</span>              : </span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">       12997 :     const auto &amp;src_buf = ki.arg_var(0);</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       12997 :     const auto &amp;dst_buf = ki.arg_var(1);</span></span>
+<span id="L362"><span class="lineNum">     362</span>              : </span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">       25994 :     std::vector&lt;stmt_t&gt; allocs;</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">       44530 :     for (int i = 0; i &lt; ki.nargs(); i++) {</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       31533 :         auto &amp;var = ki.arg_var(i);</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       31533 :         if (!var.type().is_ptr()) continue;</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">       31533 :         allocs.push_back(alloc_t::make(var, 0, alloc_kind_t::global));</span></span>
+<span id="L368"><span class="lineNum">     368</span>              :     }</span>
+<span id="L369"><span class="lineNum">     369</span>              : </span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">       25994 :     ir_context_t ir_ctx(exec, init_cset);</span></span>
+<span id="L371"><span class="lineNum">     371</span>              : </span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       12997 :     auto acc_type = cfg.acc_type(simd);</span></span>
+<span id="L373"><span class="lineNum">     373</span>              :     auto acc_buf = ir_ctx.create_tmp_var(</span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">       25994 :             dsl::type_t::byte(dsl::type::attr_t::ptr), &quot;acc&quot;);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">       12997 :     const auto acc_sc_size = acc_type.base().size();</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">       12997 :     const auto acc_size = acc_sc_size * lg[4] * lg[3] * lg[2] * lg[1] * lg[0];</span></span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span>              :     auto read_buf = ir_ctx.create_tmp_var(</span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">       25994 :             dsl::type_t::byte(dsl::type::attr_t::ptr), &quot;read&quot;);</span></span>
+<span id="L380"><span class="lineNum">     380</span>              :     auto read_params = get_send_params(</span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       12997 :             exec, send_op_t::load, send_address_t::a64, src_thr_view);</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       12997 :     read_params.try_legacy = false;</span></span>
+<span id="L383"><span class="lineNum">     383</span>              :     auto read = make_access_builder(ir_ctx, src_thr_view, src_buf, read_buf,</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">       25994 :             read_params, /*zero_out=*/false);</span></span>
+<span id="L385"><span class="lineNum">     385</span>              :     std::vector&lt;stmt_t&gt; read_alloc</span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">       64985 :             = {alloc_t::make(read_buf, read.reg_buf_size(), alloc_kind_t::grf)};</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">       12997 :     const auto &amp;read_layout = read.reg_layout();</span></span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span>              :     // shall only get used on empty mb's; for all else there's epilogue builder</span>
+<span id="L390"><span class="lineNum">     390</span>              :     auto write_params = get_send_params(</span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       12997 :             exec, send_op_t::store, send_address_t::a64, dst_thr_view);</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">       12997 :     write_params.try_legacy = false;</span></span>
+<span id="L393"><span class="lineNum">     393</span>              :     auto write = make_access_builder(</span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">       25994 :             ir_ctx, dst_thr_view, dst_buf, acc_buf, write_params);</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">       12997 :     const auto &amp;write_layout = write.reg_layout();</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">       25994 :     auto write_stmt = write.stmt();</span></span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">       25994 :     tile_t src_tile(read_layout.max_subtile(simd));</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">       25994 :     tile_t dst_tile(write_layout.max_subtile(simd));</span></span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">       12997 :     gpu_assert(src_tile.elems() == simd);</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">       12997 :     gpu_assert(dst_tile.elems() == simd);</span></span>
+<span id="L402"><span class="lineNum">     402</span>              : </span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">       12997 :     const bool is_identity(prb.kd * prb.kh * prb.kw &lt;= 1);</span></span>
+<span id="L404"><span class="lineNum">     404</span>              : </span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">       12997 :     const dsl::type_t read_type(read_layout.type()[simd]);</span></span>
+<span id="L406"><span class="lineNum">     406</span>              : </span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">       25994 :     stmt_t stmt;</span></span>
+<span id="L408"><span class="lineNum">     408</span>              : </span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">       25702 :     auto gen_fill_values = [](int simd, bool isneg, dsl::type_t type) {</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">       25702 :         gpu_assert(type.base().size() &lt;= 4);</span></span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">       25702 :         const int mult = 4 / type.base().size();</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">       51404 :         expr_t v = 0;</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">       25702 :         if (isneg) {</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">        7970 :             v = type.is_f32()        ? 0xFF7FFFFF</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">       11748 :                     : type.is_bf16() ? 0xFF7FFF7F</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">        7762 :                     : type.is_f16()  ? 0xFBFFFBFF</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">        2148 :                     : (mult &gt; 1)     ? (mult &gt; 2) ? 0x80808080 : 0x80008000</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">       14104 :                                      : 0x80000000;</span></span>
+<span id="L419"><span class="lineNum">     419</span>              :         }</span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">       25702 :         v = cast_t::make(dsl::type_t::s32(), v);</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">       51404 :         auto v_long = shuffle_t::make_broadcast(v, simd);</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">       51404 :         auto v_short = shuffle_t::make_broadcast(v, simd / mult);</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">       51404 :         return std::make_pair(v_short, v_long);</span></span>
+<span id="L424"><span class="lineNum">     424</span>              :     };</span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">       13006 :     auto gen_zero_out = [&amp;](int simd, bool isneg, const expr_t &amp;buf,</span></span>
+<span id="L426"><span class="lineNum">     426</span>              :                                 const tile_t &amp;tile, const layout_t &amp;layout) {</span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">       13006 :         stmt_t retn;</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">       26012 :         const auto values = gen_fill_values(simd, isneg, layout.type());</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">      778723 :         for (auto &amp;s : layout.iter(tile)) {</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">      765717 :             const dim_t off = layout.offset&lt;dim_t&gt;(s) * layout.type().size();</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">      765717 :             if (off &gt;= utils::rnd_dn(size_bytes(layout), simd * 4))</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">        3517 :                 retn = retn.append(store_t::make(buf, off, values.first));</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">      762200 :             else if (off % (simd * 4) == 0)</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">      302011 :                 retn = retn.append(store_t::make(buf, off, values.second));</span></span>
+<span id="L435"><span class="lineNum">     435</span>              :         }</span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">       26012 :         return retn;</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">       12997 :     };</span></span>
+<span id="L438"><span class="lineNum">     438</span>              :     const bool is_neg</span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">       12997 :             = cfg.is_max() &amp;&amp; (!read_type.is_int() || read_type.is_signed());</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">       12997 :     if (is_identity) {</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">         301 :         allocs.emplace_back(read_alloc[0]);</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">         301 :         write_stmt = substitute(write_stmt, acc_buf, read_buf);</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">         301 :         acc_buf = std::move(read_buf);</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">         301 :         acc_type = read_type;</span></span>
+<span id="L445"><span class="lineNum">     445</span>              :         stmt = (check_idhw)</span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">         602 :                 ? gen_zero_out(simd, is_neg, acc_buf, dst_tile, write_layout)</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">         301 :                 : stmt_t();</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">         301 :         stmt = stmt.append(read.stmt());</span></span>
+<span id="L449"><span class="lineNum">     449</span>              :     } else {</span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       12696 :         gpu_assert(acc_size % simd == 0);</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">       12696 :         auto acc_buf_size = std::max(into&lt;int&gt;(acc_size), write.reg_buf_size());</span></span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">       12696 :         allocs.push_back(</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">       25392 :                 alloc_t::make(acc_buf, acc_buf_size, alloc_kind_t::grf));</span></span>
+<span id="L454"><span class="lineNum">     454</span>              : </span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">       25392 :         stmt_t fill_stmt, compute_stmt = read.stmt();</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">       12696 :         stmt = stmt_t();</span></span>
+<span id="L457"><span class="lineNum">     457</span>              : </span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">       12696 :         const auto a_fv = gen_fill_values(simd, is_neg, acc_type);</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">      112221 :         for (int i = 0; i &lt; acc_size; i += simd * 4)</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">      298575 :             stmt = stmt.append(store_t::make(acc_buf, i,</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">      199050 :                     (acc_size - i &lt; simd * 4) ? a_fv.first : a_fv.second));</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">       12696 :         fill_stmt = gen_zero_out(simd, is_neg, read_buf, src_tile, read_layout);</span></span>
+<span id="L463"><span class="lineNum">     463</span>              : </span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">      776482 :         for (auto &amp;s : read_layout.iter(src_tile)) {</span></span>
+<span id="L465"><span class="lineNum">     465</span>              :             const dim_t off_l</span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">      763786 :                     = read_layout.offset&lt;dim_t&gt;(s) * read_layout.type().size();</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">      763786 :             const dim_t off_a = (s.get(0) * lg[1] + s.get(1)) * acc_sc_size;</span></span>
+<span id="L468"><span class="lineNum">     468</span>              : </span>
+<span id="L469"><span class="lineNum">     469</span>              :             auto load = cast_t::make(</span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">     2291358 :                     acc_type, load_t::make(read_type, read_buf, off_l));</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">     1527572 :             auto acc = load_t::make(acc_type, acc_buf, off_a);</span></span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">      763786 :             auto op_kind = (cfg.is_max()) ? op_kind_t::_max : op_kind_t::_add;</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">      763786 :             auto op = binary_op_t::make(op_kind, acc, load);</span></span>
+<span id="L474"><span class="lineNum">     474</span>              :             compute_stmt</span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">      763786 :                     = compute_stmt.append(store_t::make(acc_buf, off_a, op));</span></span>
+<span id="L476"><span class="lineNum">     476</span>              :         }</span>
+<span id="L477"><span class="lineNum">     477</span>              : </span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">       25392 :         stmt = stmt.append(schedule.create_loop_nest(</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">       38088 :                 (check_idhw) ? fill_stmt.append(compute_stmt) : compute_stmt));</span></span>
+<span id="L480"><span class="lineNum">     480</span>              : </span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">       12696 :         if (!cfg.is_max()) {</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       14474 :             expr_t filter(prb.kd * prb.kh * prb.kw);</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">        7237 :             if (!cfg.is_padded() &amp;&amp; check_idhw) {</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">        5667 :                 auto dim = [](const expr_t &amp;o, dim_t s, dim_t p, dim_t k,</span></span>
+<span id="L485"><span class="lineNum">     485</span>              :                                    dim_t i) {</span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">        5667 :                     if (k &lt;= 1) return expr_t(1);</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">        7708 :                     return binary_op_t::make(op_kind_t::_min, o * s - p + k, i)</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">       11562 :                             - binary_op_t::make(op_kind_t::_max, o * s - p, 0);</span></span>
+<span id="L489"><span class="lineNum">     489</span>              :                 };</span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">        3778 :                 auto dhw = dim(od, prb.stride_d, prb.f_pad, prb.kd, prb.id)</span></span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">        7556 :                         * dim(oh, prb.stride_h, prb.t_pad, prb.kh, prb.ih)</span></span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">        3778 :                         * dim(ow, prb.stride_w, prb.l_pad, prb.kw, prb.iw);</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">        1889 :                 filter = cast_t::make(dsl::type_t::f32(), dhw);</span></span>
+<span id="L494"><span class="lineNum">     494</span>              :             }</span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">        7237 :             filter = shuffle_t::make_broadcast(filter, simd);</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">       74137 :             for (int i = 0; i &lt; acc_size; i += simd * acc_sc_size) {</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">      133800 :                 auto acc = cast_t::make(dsl::type_t::f32(simd),</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">      200700 :                         load_t::make(acc_type, acc_buf, i));</span></span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">       66900 :                 stmt = stmt.append(store_t::make(acc_buf, i, acc / filter));</span></span>
+<span id="L500"><span class="lineNum">     500</span>              :             }</span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">        7237 :             acc_type = dsl::type_t::f32(simd);</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :         }</span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">       12696 :         stmt = inject_alloc_stmts(stmt, read_alloc);</span></span>
+<span id="L504"><span class="lineNum">     504</span>              :     }</span>
+<span id="L505"><span class="lineNum">     505</span>              : </span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">       12997 :     if (is_identity &amp;&amp; pd.attr()-&gt;post_ops_.has_default_values()) {</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">         271 :         stmt = stmt.append(write_stmt);</span></span>
+<span id="L508"><span class="lineNum">     508</span>              :     } else {</span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">       12726 :         int buf_size = 0;</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">       25452 :         post_op_view_mapper_t view_mapper(dst_view, prb.ndims);</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">       12726 :         post_op_context_t post_op_ctx(*pd.attr(), cfg.zp_cfg(), schedule, ki,</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">       38178 :                 *pd.invariant_dst_md(), *pd.invariant_dst_md(), view_mapper);</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">       25452 :         stmt = stmt.append(create_epilogue_stmt(exec, ir_ctx, schedule,</span></span>
+<span id="L514"><span class="lineNum">     514</span>              :                 /*force_c_reorder=*/false, post_op_ctx, dst_thr_tile_coord,</span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">       25452 :                 write_layout.with(acc_type.base()), dst_buf, acc_buf,</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">       12726 :                 buf_size));</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       56443 :         for (auto &amp;alloc : allocs) {</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">       43717 :             auto &amp;a = alloc.as&lt;alloc_t&gt;();</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       43717 :             if (a.buf.is_same(acc_buf))</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       25452 :                 alloc = alloc_t::make(a.buf,</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       12726 :                         std::max(a.size, uint32_t(buf_size)), a.kind, a.attrs,</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       25452 :                         a.body);</span></span>
+<span id="L523"><span class="lineNum">     523</span>              :         }</span>
+<span id="L524"><span class="lineNum">     524</span>              :     }</span>
+<span id="L525"><span class="lineNum">     525</span>              : </span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">       25994 :     loop_bound_counter_t lbc(schedule);</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">       25994 :     auto exit_cond = (lbc.count(ow) &gt;= prb.ow) ? (ow &lt; prb.ow) : expr_t();</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">       12997 :     if (lbc.count(oh) &gt;= prb.oh)</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">         629 :         exit_cond = exit_cond ? (oh &lt; prb.oh) &amp; exit_cond : (oh &lt; prb.oh);</span></span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">       12997 :     if (lbc.count(od) &gt;= prb.od)</span></span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaUNC">           0 :         exit_cond = exit_cond ? (od &lt; prb.od) &amp; exit_cond : (od &lt; prb.od);</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">       12997 :     if (exit_cond)</span></span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">        8622 :         stmt = if_t::make(shuffle_t::make_broadcast(exit_cond, simd), stmt);</span></span>
+<span id="L534"><span class="lineNum">     534</span>              : </span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">       12997 :     if (!is_xe2_or_xe3_small_kdhw &amp;&amp; ((dims[0] - prb.mb) / lg[0] &gt;= 1)) {</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">         310 :         auto stop = gen_zero_out(simd, false, acc_buf, dst_tile, write_layout);</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">         620 :         stmt = if_t::make(shuffle_t::make_broadcast(mb &gt;= prb.mb, simd),</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">         930 :                 stop.append(write_stmt), stmt);</span></span>
+<span id="L539"><span class="lineNum">     539</span>              :     }</span>
+<span id="L540"><span class="lineNum">     540</span>              : </span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       12997 :     stmt = schedule.create_bind_stmt(stmt);</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       12997 :     stmt = inject_let_stmts(stmt, init_stmts);</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">       12997 :     stmt = inject_alloc_stmts(stmt, allocs);</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">       12997 :     stmt = inject_external_var_let(stmt, ir_ctx);</span></span>
+<span id="L545"><span class="lineNum">     545</span>              : </span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">       12997 :     stmt = simplify(stmt, ir_ctx);</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">       12997 :     stmt = lift_buffer_offsets_in_send(stmt, ir_ctx);</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">       12997 :     stmt = inject_send(stmt, ir_ctx);</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">       12997 :     stmt = split_wide_stores(stmt, ir_ctx);</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">       12997 :     stmt = fix_int32_overflow(stmt, ir_ctx);</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">       12997 :     stmt = eliminate_common_subexprs(</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">       12997 :             stmt, ir_ctx, exec.regs() * exec.grf_size());</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">       12997 :     stmt = simplify(stmt, ir_ctx);</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">       12997 :     stmt = optimize_alloc_let(stmt, ir_ctx);</span></span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">       12997 :     stmt = stmt_group_t::make(stmt_label_t::kernel(), stmt);</span></span>
+<span id="L556"><span class="lineNum">     556</span>              : </span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">       12997 :     const int regs = get_peak_regs(stmt, exec.grf_size());</span></span>
+<span id="L558"><span class="lineNum">     558</span>              : </span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">       12997 :     gpu_debug() &lt;&lt; &quot;Pooling kernel body:\n&quot; &lt;&lt; stmt;</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       12997 :     gpu_debug() &lt;&lt; &quot;Pooling cfg (~&quot; &lt;&lt; regs &lt;&lt; &quot; regs):\n&quot; &lt;&lt; cfg;</span></span>
+<span id="L561"><span class="lineNum">     561</span>              : </span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       25994 :     return (regs &gt; exec.regs()) ? stmt_t() : std::move(stmt);</span></span>
+<span id="L563"><span class="lineNum">     563</span>              : }</span>
+<span id="L564"><span class="lineNum">     564</span>              : </span>
+<span id="L565"><span class="lineNum">     565</span>              : } // namespace jit</span>
+<span id="L566"><span class="lineNum">     566</span>              : } // namespace pool</span>
+<span id="L567"><span class="lineNum">     567</span>              : } // namespace intel</span>
+<span id="L568"><span class="lineNum">     568</span>              : } // namespace gpu</span>
+<span id="L569"><span class="lineNum">     569</span>              : } // namespace impl</span>
+<span id="L570"><span class="lineNum">     570</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

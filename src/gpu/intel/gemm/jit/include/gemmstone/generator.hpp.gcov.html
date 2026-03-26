@@ -1,0 +1,650 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/include/gemmstone/generator.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/include/gemmstone">src/gpu/intel/gemm/jit/include/gemmstone</a> - generator.hpp<span style="font-size: 80%;"> (source / <a href="generator.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">94.7&nbsp;%</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">18</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">22.8&nbsp;%</td>
+            <td class="headerCovTableEntry">6324</td>
+            <td class="headerCovTableEntry">1439</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GEMMSTONE_INCLUDE_GEMMSTONE_GENERATOR_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GEMMSTONE_INCLUDE_GEMMSTONE_GENERATOR_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #define BINARY_OUTPUT</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;array&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;bitset&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;complex&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;cstdint&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &lt;exception&gt;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &lt;iostream&gt;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &lt;sstream&gt;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &lt;vector&gt;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &quot;gemmstone/config.hpp&quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;internal/ngen_includes.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &quot;gemmstone/type.hpp&quot;</span>
+<span id="L35"><span class="lineNum">      35</span>              : #include &quot;gemmstone/problem.hpp&quot;</span>
+<span id="L36"><span class="lineNum">      36</span>              : #include &quot;gemmstone/strategy.hpp&quot;</span>
+<span id="L37"><span class="lineNum">      37</span>              : #include &quot;gemmstone/microkernel_selector.hpp&quot;</span>
+<span id="L38"><span class="lineNum">      38</span>              : #include &quot;generator/pieces/copy_plan.hpp&quot;</span>
+<span id="L39"><span class="lineNum">      39</span>              : #include &quot;generator/pieces/register_layout.hpp&quot;</span>
+<span id="L40"><span class="lineNum">      40</span>              : #include &quot;generator/pieces/state.hpp&quot;</span>
+<span id="L41"><span class="lineNum">      41</span>              : #include &quot;ngen_emulation.hpp&quot;</span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span>              : // Macro configuration</span>
+<span id="L47"><span class="lineNum">      47</span>              : #ifndef GENERATOR_BASE</span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              : #define GENERATOR_SUPER(hw) ngen::OpenCLCodeGenerator&lt;hw&gt;</span>
+<span id="L50"><span class="lineNum">      50</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_SYCL</span>
+<span id="L51"><span class="lineNum">      51</span>              : #define FORWARD(hw) NGEN_FORWARD_SYCL(hw)</span>
+<span id="L52"><span class="lineNum">      52</span>              : #endif</span>
+<span id="L53"><span class="lineNum">      53</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL</span>
+<span id="L54"><span class="lineNum">      54</span>              : #define FORWARD(hw) NGEN_FORWARD_OPENCL(hw)</span>
+<span id="L55"><span class="lineNum">      55</span>              : #endif</span>
+<span id="L56"><span class="lineNum">      56</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_ZE</span>
+<span id="L57"><span class="lineNum">      57</span>              : #define FORWARD(hw) NGEN_FORWARD_LEVEL_ZERO(hw)</span>
+<span id="L58"><span class="lineNum">      58</span>              : #endif</span>
+<span id="L59"><span class="lineNum">      59</span>              : #define GENERATOR_DEBUGINFO {__FILE__, __LINE__}</span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span>              : #define GENERATOR_BASE(hw) GENERATOR_SUPER(hw)</span>
+<span id="L62"><span class="lineNum">      62</span>              : #endif</span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span>              : template &lt;ngen::HW hw&gt; class Generator : public GENERATOR_BASE(hw) {</span>
+<span id="L65"><span class="lineNum">      65</span>              : public:</span>
+<span id="L66"><span class="lineNum">      66</span>              :     using super = GENERATOR_SUPER(hw);</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       17510 :     Generator() : GENERATOR_BASE(hw)(GENERATOR_DEBUGINFO) {}</span></span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">   105242898 :     FORWARD(hw)</span></span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span>              :     // Kernel generation entrypoints.</span>
+<span id="L73"><span class="lineNum">      73</span>              :     void gemm(GEMMProblem problem, GEMMStrategy strategy, const ngen::InterfaceHandler &amp;interface_);</span>
+<span id="L74"><span class="lineNum">      74</span>              :     void gemmMicrokernel(GEMMProblem problem, GEMMStrategy strategy, const ngen::InterfaceHandler &amp;interface_);</span>
+<span id="L75"><span class="lineNum">      75</span>              :     microkernel::Package gemmMicrokernelPackage(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, const ngen::InterfaceHandler &amp;interface_, const microkernel::Protocol &amp;protocol, uint32_t gmdid, bool transposeC = false);</span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              :     // Driver information retrieval.</span>
+<span id="L78"><span class="lineNum">      78</span>              :     static CommonDriverInfo driverInfo(GEMMProblem problem, const GEMMStrategy &amp;strategy);</span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span>              : protected:</span>
+<span id="L81"><span class="lineNum">      81</span>              :     ngen::InterfaceHandler &amp;interface = super::interface_;</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span>              :     std::exception_ptr lastException;</span>
+<span id="L84"><span class="lineNum">      84</span>              :     GRFMultirange outputCRange;</span>
+<span id="L85"><span class="lineNum">      85</span>              :     RegisterLayout outputCLayout;</span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span>              :     using Injector = PostOpsProblem::Injector&lt;hw&gt;;</span>
+<span id="L88"><span class="lineNum">      88</span>              :     std::unique_ptr&lt;Injector&gt; postOpInjector;</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              :     class status_stream {</span>
+<span id="L91"><span class="lineNum">      91</span>              :     protected:</span>
+<span id="L92"><span class="lineNum">      92</span>              :         char cc;</span>
+<span id="L93"><span class="lineNum">      93</span>              :         std::stringstream line;</span>
+<span id="L94"><span class="lineNum">      94</span>              :         bool lineStart = true;</span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span>              :         Generator&lt;hw&gt; &amp;parent;</span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span>              :         friend class Generator&lt;hw&gt;;</span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span>              :     public:</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       17510 :         status_stream(Generator&lt;hw&gt; &amp;parent_, int color = 1) : cc(color + '0'), parent(parent_) {}</span></span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span>              :         static constexpr struct Endl {} endl{};</span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              :         template &lt;typename T&gt;</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">     4156346 :         status_stream &amp;operator&lt;&lt;(const T &amp;obj) {</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">     4156346 :             return *this;</span></span>
+<span id="L108"><span class="lineNum">     108</span>              :         }</span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">     1202662 :         status_stream &amp;operator&lt;&lt;(const Endl &amp;e) {</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">     1202662 :             return *this;</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :         }</span>
+<span id="L113"><span class="lineNum">     113</span>              :     } status{*this};</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :     enum class HintType     {Bank0, Bank1, TempComp0, TempComp1, LongTerm, LongTerm0, LongTerm1, R0Info, A0, A0Broadcast, A1, A1Broadcast, B0, B0Broadcast, B1, B1Broadcast, C, C1, CLoad, S, D, SAddr, DAddr};</span>
+<span id="L116"><span class="lineNum">     116</span>              :     enum class StdCRemType  {Ignore, Mask, Descriptor};</span>
+<span id="L117"><span class="lineNum">     117</span>              :     enum class COperation   {Load, Update, UpdateStore, Store};</span>
+<span id="L118"><span class="lineNum">     118</span>              :     enum class KLoop {</span>
+<span id="L119"><span class="lineNum">     119</span>              :         GEMM,</span>
+<span id="L120"><span class="lineNum">     120</span>              :     };</span>
+<span id="L121"><span class="lineNum">     121</span>              :     enum class KBarrierType {Normal, Signal, Wait};</span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :     friend std::ostream &amp;operator&lt;&lt;(std::ostream &amp;s, StdCRemType rt) {</span>
+<span id="L124"><span class="lineNum">     124</span>              :         const char *names[3] = {&quot;ignore&quot;, &quot;mask&quot;, &quot;custom descriptor&quot;};</span>
+<span id="L125"><span class="lineNum">     125</span>              :         return (s &lt;&lt; names[static_cast&lt;int&gt;(rt) % 3]);</span>
+<span id="L126"><span class="lineNum">     126</span>              :     }</span>
+<span id="L127"><span class="lineNum">     127</span>              : </span>
+<span id="L128"><span class="lineNum">     128</span>              :     // The generator method definitions are split between .cxx files</span>
+<span id="L129"><span class="lineNum">     129</span>              :     //   in the generator/pieces folder.</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :     // address_setup.cxx</span>
+<span id="L132"><span class="lineNum">     132</span>              :     template &lt;typename BO&gt; void setupAddr(Type T, const ngen::GRFRange &amp;addr, const BO &amp;ptr, const RegisterBlock &amp;block, const ngen::Subregister &amp;ld, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state, const Address2DParams &amp;params = {}, LDMultiples ldMultiples = {});</span>
+<span id="L133"><span class="lineNum">     133</span>              :     template &lt;typename BO&gt; void setupAddr(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, const BO &amp;ptr, const RegisterLayout &amp;layout, const ngen::Subregister &amp;ld, const CommonStrategy &amp;strategy, CommonState &amp;state, const Address2DParams &amp;params = {}, const LDMultiples &amp;ldMultiples = {}, int start = 0);</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              :     void offsetAddr(const ngen::GRFRange &amp;addrDst, const ngen::GRFRange &amp;addrSrc, const RegisterBlock &amp;blockDst, const RegisterBlock &amp;blockSrc, int offsetFixed, int offsetLD, const ngen::Subregister &amp;ld, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state, const LDMultiples &amp;ldMultiples = {});</span>
+<span id="L136"><span class="lineNum">     136</span>              :     void setupAddrRel(const ngen::GRFRange &amp;addrDst, const ngen::GRFRange &amp;addrSrc, const RegisterBlock &amp;blockDst, const RegisterBlock &amp;blockSrc, const RegisterLayout &amp;layout, const ngen::Subregister &amp;ld, const CommonStrategy &amp;strategy, CommonState &amp;state, const LDMultiples &amp;ldMultiples = {});</span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              :     template &lt;typename I, typename Ir, typename Ic&gt; void incAddrShifted(const ngen::GRFRange &amp;addrDst, const ngen::GRFRange &amp;addrSrc, I inc, Ir incR, Ic incC, const RegisterBlock &amp;layoutDst, const RegisterBlock &amp;layoutSrc, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L139"><span class="lineNum">     139</span>              :     template &lt;typename I, typename Ir, typename Ic&gt; void incAddrShifted(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, I inc, Ir incR, Ic incC, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L140"><span class="lineNum">     140</span>              :     template &lt;typename I&gt; void incAddrShifted(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, I inc, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L141"><span class="lineNum">     141</span>              :     template &lt;typename I, typename Ir, typename Ic&gt; void incAddr(const ngen::GRFRange &amp;addrDst, const ngen::GRFRange &amp;addrSrc, I inc, Ir incR, Ic incC, const RegisterBlock &amp;layoutDst, const RegisterBlock &amp;layoutSrc, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L142"><span class="lineNum">     142</span>              :     template &lt;typename I, typename Ir, typename Ic&gt; void incAddr(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, I inc, Ir incR, Ic incC, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L143"><span class="lineNum">     143</span>              :     template &lt;typename I&gt; void incAddr(const ngen::GRFRange &amp;addrDst, const ngen::GRFRange &amp;addrSrc, I inc, const RegisterBlock &amp;blockDst, const RegisterBlock &amp;blockSrc, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L144"><span class="lineNum">     144</span>              :     template &lt;typename I&gt; void incAddr(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, I inc, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L145"><span class="lineNum">     145</span>              :     template &lt;typename A, typename I, typename Ir, typename Ic&gt; void incDecAddr(const A &amp;addr, I inc, Ir incR, Ic incC, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state, bool decrement);</span>
+<span id="L146"><span class="lineNum">     146</span>              :     template &lt;typename A, typename I&gt; void incDecAddr(const A &amp;addr, I inc, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state, bool decrement);</span>
+<span id="L147"><span class="lineNum">     147</span>              :     void incAddrK(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, bool column, int k, const SubregisterPair &amp;ld, const LDIncrements &amp;incs, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              :     void setAddrRemainder(Type T, const ngen::GRFRange &amp;addr, const RegisterBlock &amp;block, const ngen::Subregister &amp;remR, const ngen::Subregister &amp;remC, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L150"><span class="lineNum">     150</span>              :     void setAddrRemainder(const std::vector&lt;ngen::GRFRange&gt; &amp;addr, const RegisterLayout &amp;layout, const ngen::Subregister &amp;remR, const ngen::Subregister &amp;remC, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              :     ngen::Subregister startShift(const MultishiftSubregister &amp;ptr, int shift, CommonState &amp;state);</span>
+<span id="L153"><span class="lineNum">     153</span>              :     SubregisterPair startShift(const SubregisterPair &amp;ptr, int shift, CommonState &amp;state);</span>
+<span id="L154"><span class="lineNum">     154</span>              :     template &lt;typename BO&gt; typename std::enable_if&lt;!std::is_base_of&lt;ngen::RegData, BO&gt;::value, BO&gt;::type</span>
+<span id="L155"><span class="lineNum">     155</span>              :     startShift(const BO &amp;ptr, int shift, CommonState &amp;state);</span>
+<span id="L156"><span class="lineNum">     156</span>              :     template &lt;typename BO&gt; typename std::enable_if&lt;std::is_base_of&lt;ngen::RegData, BO&gt;::value, BO&gt;::type</span>
+<span id="L157"><span class="lineNum">     157</span>              :     startShift(const BO &amp;ptr, int shift, CommonState &amp;state);</span>
+<span id="L158"><span class="lineNum">     158</span>              :     template &lt;typename BO, typename BI&gt; typename std::enable_if&lt;!std::is_base_of&lt;ngen::RegData, BO&gt;::value&gt;::type</span>
+<span id="L159"><span class="lineNum">     159</span>              :     doneShift(const BO &amp;ptr, const BI &amp;ptrShifted, int shift, CommonState &amp;state);</span>
+<span id="L160"><span class="lineNum">     160</span>              :     template &lt;typename BO, typename BI&gt; typename std::enable_if&lt;std::is_base_of&lt;ngen::RegData, BO&gt;::value&gt;::type</span>
+<span id="L161"><span class="lineNum">     161</span>              :     doneShift(const BO &amp;ptr, const BI &amp;ptrShifted, int shift, CommonState &amp;state);</span>
+<span id="L162"><span class="lineNum">     162</span>              :     void doneShift(const SubregisterPair &amp;ptr, const SubregisterPair &amp;ptrShifted, int shift, CommonState &amp;state);</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              :     // asm_helpers.cxx</span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">      106442 :     void goto12(const ngen::InstructionModifier &amp;mod, ngen::Label &amp;jip) { goto12(mod, jip, jip); }</span></span>
+<span id="L166"><span class="lineNum">     166</span>              :     void goto12(const ngen::InstructionModifier &amp;mod, ngen::Label &amp;jip, ngen::Label &amp;uip, bool branchCtrl = false);</span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              :     template &lt;typename DT = void&gt; void mulConstant(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, int32_t src1);</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              :     void cmp0(const ngen::InstructionModifier &amp;mod, ngen::RegData src0);</span>
+<span id="L171"><span class="lineNum">     171</span>              :     void syncall();</span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">      392704 :     void wrdepRanges(const GRFMultirange &amp;rr)               { for (auto &amp;r : rr.ranges) wrdep(r); }</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">      291648 :     void wrdepRanges(const std::vector&lt;GRFMultirange&gt; &amp;rrs) { for (auto &amp;rr : rrs) wrdepRanges(rr); }</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :     void simtDoWhileLoop(const ngen::InstructionModifier &amp;mod, ngen::Label &amp;dest);</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              :     void activeThreadBarrier(const ngen::GRF &amp;temp, const ngen::GRF &amp;r0_info, const CommonStrategy &amp;strategy);</span>
+<span id="L179"><span class="lineNum">     179</span>              :     void activeThreadBarrierSignal(const ngen::GRF &amp;temp, const ngen::GRF &amp;r0_info, const CommonStrategy &amp;strategy);</span>
+<span id="L180"><span class="lineNum">     180</span>              :     void slmBarrier(const ngen::GRF &amp;temp, const ngen::GRF &amp;r0_info, const CommonStrategy &amp;strategy);</span>
+<span id="L181"><span class="lineNum">     181</span>              :     void globalMemFence(const ngen::GRF &amp;temp, const ngen::GRF &amp;r0_info, const CommonStrategy &amp;strategy);</span>
+<span id="L182"><span class="lineNum">     182</span>              :     void globalMemBarrier(const ngen::GRF &amp;temp, const ngen::GRF &amp;r0_info, const CommonStrategy &amp;strategy);</span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span>              :     void pause(const CommonStrategy &amp;strategy);</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :     void doReadSuppressionWA(const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span>              :     // atomic_fusions.cxx</span>
+<span id="L189"><span class="lineNum">     189</span>              :     void gemmStoreZeroC(GEMMProblem problem, GEMMStrategy strategy, GEMMState state, bool initialZeroing = true);</span>
+<span id="L190"><span class="lineNum">     190</span>              :     void gemmFusedBetaPOInit(const ngen::Subregister &amp;groupID, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L191"><span class="lineNum">     191</span>              :     void gemmFusedBetaScale(GEMMProblem problem, GEMMStrategy strategy, GEMMState &amp;state);</span>
+<span id="L192"><span class="lineNum">     192</span>              :     void gemmFusedBetaNotifyCompletion(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L193"><span class="lineNum">     193</span>              :     void gemmFusedBetaWaitCompletion(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L194"><span class="lineNum">     194</span>              :     bool gemmFusedPostOpsFinalize(ngen::Label &amp;labelLateExit, GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L195"><span class="lineNum">     195</span>              :     void gemmRedirectToTempC(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              :     // c_update.cxx</span>
+<span id="L198"><span class="lineNum">     198</span>              :     bool gemmAccessC(COperation op, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L199"><span class="lineNum">     199</span>              :     bool gemmUpdateC(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L200"><span class="lineNum">     200</span>              :     bool gemmUpdateCDispatch(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span>              :     void gemmAccessSums(COperation op, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span>              :     void updateC(const GRFMultirange &amp;C_acc, const GRFMultirange &amp;C_accSwap, const GRFMultirange &amp;C_load, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L205"><span class="lineNum">     205</span>              :     void updateCLayout(const RegisterLayout &amp;layoutExt, const ngen::GRFRange (&amp;C_addr0)[2], const RegisterBlock &amp;C_block0, COperation op, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L206"><span class="lineNum">     206</span>              :     bool doStdCRemainder(RegisterLayout &amp;layoutExt, RegisterLayout &amp;layoutExtUnmasked, bool inside, bool columns[2], StdCRemType remTypes[2], bool fragments[2], bool fragPositives[2], int fragSizes[2], const ngen::GRFRange (&amp;C_addr0)[2], const ngen::GRFRange (&amp;C_addr0Unmasked)[2], COperation op, std::vector&lt;MaskAssignment&gt; &amp;masks, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState state, RegisterBlock *C_block0 = nullptr, RegisterBlock *C_blockUnmasked0 = nullptr);</span>
+<span id="L207"><span class="lineNum">     207</span>              :     void doAlternateCRemainder(COperation op, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L208"><span class="lineNum">     208</span>              :     void convert(const GRFMultirange &amp;range, Type Told, Type Tnew, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L209"><span class="lineNum">     209</span>              :     bool gemmConvertC(Type Tnew, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              :     void gemmDotReduce(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L212"><span class="lineNum">     212</span>              :     void gemmKReduce(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L213"><span class="lineNum">     213</span>              :     void gemmPrefetchC(const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span>              :     void setupCAddr0(ngen::GRFRange (&amp;C_addr0)[2], ngen::GRFRange (&amp;C_addr0Unmasked)[2], const RegisterLayout &amp;C_layout, const RegisterLayout &amp;C_layoutUnmasked, int C_count, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, const Address2DParams *params = nullptr);</span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              :     // common.cxx</span>
+<span id="L218"><span class="lineNum">     218</span>              :     void initInterface(const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L219"><span class="lineNum">     219</span>              :     void initState(const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L220"><span class="lineNum">     220</span>              : </span>
+<span id="L221"><span class="lineNum">     221</span>              :     void prologue(const CommonStrategy &amp;strategy, int internalSIMD = 16);</span>
+<span id="L222"><span class="lineNum">     222</span>              :     void prologue(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L223"><span class="lineNum">     223</span>              :     void epilogue(const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span>              :     void padding();</span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span>              :     void allocVFlagStorage(const CommonStrategy &amp;strategy, CommonState &amp;state, bool saveCurrent = true);</span>
+<span id="L228"><span class="lineNum">     228</span>              :     void deallocVFlagStorage(CommonState &amp;state, bool saveCurrent = true);</span>
+<span id="L229"><span class="lineNum">     229</span>              :     ngen::FlagRegister getPhysicalFlag(VirtualFlag vflag, CommonState &amp;state);</span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span>              :     ngen::Subregister copySubregister(const ngen::Subregister &amp;reg, CommonState &amp;state, ngen::Bundle hint = ngen::Bundle(ngen::Bundle::any, 0));</span>
+<span id="L232"><span class="lineNum">     232</span>              :     void duplicateScalar(SubregisterPair &amp;val, CommonState &amp;state);</span>
+<span id="L233"><span class="lineNum">     233</span>              :     void deduplicateScalar(SubregisterPair &amp;val, CommonState &amp;state);</span>
+<span id="L234"><span class="lineNum">     234</span>              :     MultishiftSubregister multishift(const ngen::Subregister &amp;reg, unsigned shifts, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::Bundle hint = ngen::Bundle());</span>
+<span id="L235"><span class="lineNum">     235</span>              : </span>
+<span id="L236"><span class="lineNum">     236</span>              :     void getFusedID(int scale, const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L237"><span class="lineNum">     237</span>              : </span>
+<span id="L238"><span class="lineNum">     238</span>              :     void moveR0(const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L239"><span class="lineNum">     239</span>              :     void moveR0(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L240"><span class="lineNum">     240</span>              :     template &lt;typename F&gt; inline void useR0(CommonState &amp;state, F f);</span>
+<span id="L241"><span class="lineNum">     241</span>              :     template &lt;typename F&gt; inline void useTempAndR0(CommonState &amp;state, F f);</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              :     void removeSG(const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, const CommonState &amp;state);</span>
+<span id="L244"><span class="lineNum">     244</span>              :     void reorderFusedEUs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span>              :     void zeroMatrix(const GRFMultirange &amp;r, const CommonStrategy &amp;strategy);</span>
+<span id="L247"><span class="lineNum">     247</span>              : </span>
+<span id="L248"><span class="lineNum">     248</span>              :     ngen::GRF loadScalars(Type T, const std::vector&lt;ngen::Subregister&gt; &amp;src, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L249"><span class="lineNum">     249</span>              :     ngen::GRFRange loadVector(Type Tsrc, Type Tdst, ngen::Subregister ptr, int n, ngen::Subregister rem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span>              :     void broadcastToWG(ngen::FlagRegister leaderFlag, ngen::GRF value, const CommonStrategy &amp;strategy, CommonState &amp;state, int slmOffset = 0);</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span>              :     void extendIndexVec(int n, CommonState &amp;state);</span>
+<span id="L254"><span class="lineNum">     254</span>              :     ngen::Subregister accessIndexVec(int n, CommonState &amp;state);</span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              :     LDMultiples createLDMultiples(bool a64, int nmultiples, const ngen::Subregister &amp;ld, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L257"><span class="lineNum">     257</span>              :     ngen::Subregister findLDMultiple(const LDMultiples &amp;multiples, bool a64, int n, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L258"><span class="lineNum">     258</span>              : </span>
+<span id="L259"><span class="lineNum">     259</span>              :     void calcIncrement(LDIncrements &amp;increments, SubregisterPair &amp;base, int scale, const CommonStrategy &amp;strategy, CommonState &amp;state, bool avoidConflicts = true);</span>
+<span id="L260"><span class="lineNum">     260</span>              :     SubregisterPair lookupIncrement(const LDIncrements &amp;increments, const SubregisterPair &amp;base, int scale, const CommonStrategy &amp;strategy, CommonState &amp;state, bool *release = nullptr);</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :     // copy.cxx</span>
+<span id="L263"><span class="lineNum">     263</span>              :     friend struct CopyInstruction;</span>
+<span id="L264"><span class="lineNum">     264</span>              :     friend struct CopyResource;</span>
+<span id="L265"><span class="lineNum">     265</span>              :     void copyRegisterBlock(Type Ts, Type Td, const RegisterBlock &amp;blockSrc, const RegisterBlock &amp;blockDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, int dOffR, int dOffC, const CommonStrategy &amp;strategy, CommonState &amp;state, bool preserveSrc = false);</span>
+<span id="L266"><span class="lineNum">     266</span>              :     void copyRegisters(const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const CommonStrategy &amp;strategy, CommonState &amp;state, bool preserveSrc = false, bool s4Shift = true);</span>
+<span id="L267"><span class="lineNum">     267</span>              :     void copyRegisters(const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, int dOffR, int dOffC, bool conjugate, const CommonStrategy &amp;strategy, CommonState &amp;state, bool preserveSrc = false, bool s4Shift = true);</span>
+<span id="L268"><span class="lineNum">     268</span>              :     void copyRegisters(Type Ts, Type Td, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const CommonStrategy &amp;strategy, CommonState &amp;state, bool preserveSrc = false, bool s4Shift = true);</span>
+<span id="L269"><span class="lineNum">     269</span>              :     void copyRegisters(Type Ts, Type Td, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, int dOffR, int dOffC, bool conjugate, const CommonStrategy &amp;strategy, CommonState &amp;state, bool preserveSrc = false, bool s4Shift = true);</span>
+<span id="L270"><span class="lineNum">     270</span>              :     void copyRegisters(Type Ts, Type Td, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, int dOffR, int dOffC, const Scalar &amp;alpha, const SubregisterPair &amp;alpha_real, const SubregisterPair &amp;alpha_imag, bool conjugate, const CommonStrategy &amp;strategy, CommonState &amp;state, bool preserveSrc = false, bool s4Shift = true);</span>
+<span id="L271"><span class="lineNum">     271</span>              :     void copyExecute(CopyPlan &amp;&amp;plan, CommonState &amp;state);</span>
+<span id="L272"><span class="lineNum">     272</span>              :     void overlappedCopy(const GRFMultirange &amp;src, const GRFMultirange &amp;dst, CommonState &amp;state);</span>
+<span id="L273"><span class="lineNum">     273</span>              : </span>
+<span id="L274"><span class="lineNum">     274</span>              :     // emulation.cxx</span>
+<span id="L275"><span class="lineNum">     275</span>              :     friend struct ngen::EmulationImplementation;</span>
+<span id="L276"><span class="lineNum">     276</span>              :     template &lt;typename DT = void&gt; void emov(const ngen::InstructionModifier &amp;mod, ngen::RegData dst, ngen::RegData src0,   const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">      347154 :     template &lt;typename DT = void&gt; void emov(const ngen::InstructionModifier &amp;mod, ngen::RegData dst, ngen::Immediate src0, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {})                                              { ngen::EmulationImplementation::emov&lt;DT&gt;(*this, mod, dst, src0, strategy.emulate, loc); }</span></span>
+<span id="L278"><span class="lineNum">     278</span>              :     template &lt;typename DT = void&gt; void eadd(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const ngen::RegData &amp;src1, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">     5939974 :     template &lt;typename DT = void&gt; void eadd(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, ngen::Immediate src1,      const CommonStrategy &amp;strategy, const CommonState &amp;state, ngen::SourceLocation loc = {}) { ngen::EmulationImplementation::eadd&lt;DT&gt;(*this, mod, dst, src0, src1, strategy.emulate, state.emulate, loc); }</span></span>
+<span id="L280"><span class="lineNum">     280</span>              :     template &lt;typename DT = void&gt; void emul(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const ngen::RegData &amp;src1, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">         336 :     template &lt;typename DT = void&gt; void emul(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, ngen::Immediate src1,      const CommonStrategy &amp;strategy, const CommonState &amp;state, ngen::SourceLocation loc = {}) { ngen::EmulationImplementation::emul&lt;DT&gt;(*this, mod, dst, src0, src1, strategy.emulate, state.emulate, loc); }</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaUNC">           0 :     template &lt;typename DT = void&gt; void eshl(const ngen::InstructionModifier &amp;mod, ngen::RegData dst, ngen::RegData src0, uint16_t src1, const CommonStrategy &amp;strategy, const CommonState &amp;state, ngen::SourceLocation loc = {})                           { ngen::EmulationImplementation::eshl&lt;DT&gt;(*this, mod, dst, src0, src1, strategy.emulate, state.emulate, loc); }</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">          76 :     template &lt;typename DT = void&gt; void eshr(const ngen::InstructionModifier &amp;mod, ngen::RegData dst, ngen::RegData src0, uint16_t src1, const CommonStrategy &amp;strategy, const CommonState &amp;state, ngen::SourceLocation loc = {})                           { ngen::EmulationImplementation::eshr&lt;DT&gt;(*this, mod, dst, src0, src1, strategy.emulate, state.emulate, loc); }</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">      427404 :     template &lt;typename DT = void&gt; void emulConstant(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, int32_t src1, const CommonStrategy &amp;strategy, const CommonState &amp;state, ngen::SourceLocation loc = {})      { ngen::EmulationImplementation::emulConstant&lt;DT&gt;(*this, mod, dst, src0, src1, strategy.emulate, state.emulate, loc); }</span></span>
+<span id="L285"><span class="lineNum">     285</span>              :     template &lt;typename DT = void&gt; void emulConstant(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, Type src1, const CommonStrategy &amp;strategy, const CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">       14678 :     template &lt;typename S1&gt; void emul32High(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dstHi, const ngen::RegData &amp;src0, const S1 &amp;src1, ngen::SourceLocation loc = {})                                                                     { ngen::EmulationImplementation::emul32High(*this, mod, dstHi, src0, src1, loc); }</span></span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span>              :     template &lt;typename S0, typename S2&gt; void emad(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const S0 &amp;src0, const ngen::RegData &amp;src1, const S2 &amp;src2, const CommonStrategy &amp;strategy, CommonState &amp;state, bool sub, ngen::SourceLocation loc = {});</span>
+<span id="L289"><span class="lineNum">     289</span>              :     template &lt;typename S0&gt; void emad(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const S0 &amp;src0, const ngen::RegData &amp;src1, const ngen::Immediate &amp;src2, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L290"><span class="lineNum">     290</span>              :     template &lt;typename S0&gt; void emad(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const S0 &amp;src0, ngen::RegData src1, ngen::RegData src2, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L291"><span class="lineNum">     291</span>              :     template &lt;typename S0&gt; void emad(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const S0 &amp;src0, const ngen::RegData &amp;src1, int32_t src2, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L292"><span class="lineNum">     292</span>              :     template &lt;typename S0&gt; void eaddScaled(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const S0 &amp;src0, const ngen::RegData &amp;src1, Type src2, const CommonStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L293"><span class="lineNum">     293</span>              :     template &lt;typename DT = void, typename S0, typename S2&gt; void eadd3(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const S0 &amp;src0, const ngen::RegData &amp;src1, const S2 &amp;src2, ngen::SourceLocation loc = {});</span>
+<span id="L294"><span class="lineNum">     294</span>              :     template &lt;typename S0&gt; void ecsel(const ngen::InstructionModifier &amp;mod, const ngen::InstructionModifier &amp;cmod, const ngen::FlagRegister &amp;flag, const ngen::RegData &amp;dst, const S0 &amp;src0, const ngen::RegData &amp;src1, const ngen::RegData &amp;src2, ngen::SourceLocation loc = {});</span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span>              :     template &lt;typename DT = void&gt; void emath(const ngen::InstructionModifier &amp;mod, ngen::MathFunction fc, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const GEMMStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {});</span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">        1719 :     template &lt;typename DT = void&gt; void einv(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const GEMMStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {}) { emath&lt;DT&gt;(mod, ngen::MathFunction::inv, dst, src0, strategy, state, loc); }</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        1122 :     template &lt;typename DT = void&gt; void esqt(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const GEMMStrategy &amp;strategy, CommonState &amp;state, ngen::SourceLocation loc = {}) { emath&lt;DT&gt;(mod, ngen::MathFunction::sqt, dst, src0, strategy, state, loc); }</span></span>
+<span id="L299"><span class="lineNum">     299</span>              : </span>
+<span id="L300"><span class="lineNum">     300</span>              :     void ejmpi(ngen::InstructionModifier mod, ngen::Label &amp;dst, ngen::SourceLocation loc = {});</span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span>              :     // gemm.cxx</span>
+<span id="L303"><span class="lineNum">     303</span>              :     void gemm(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L304"><span class="lineNum">     304</span>              :     void gemmSubkernel(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState state);</span>
+<span id="L305"><span class="lineNum">     305</span>              :     bool gemmBody(GEMMProblem problem, GEMMStrategy strategy, GEMMState state);</span>
+<span id="L306"><span class="lineNum">     306</span>              :     bool gemmBodyInternal(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L307"><span class="lineNum">     307</span>              : </span>
+<span id="L308"><span class="lineNum">     308</span>              :     bool gemmKLoop(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L309"><span class="lineNum">     309</span>              :     bool gemmAccumulateC(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L310"><span class="lineNum">     310</span>              : </span>
+<span id="L311"><span class="lineNum">     311</span>              :     bool wgRemCheck(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy);</span>
+<span id="L312"><span class="lineNum">     312</span>              :     template &lt;typename Problem&gt; bool mnRemainderHandling(LoopType loop, Problem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state, bool (Generator&lt;hw&gt;::*func)(Problem, GEMMStrategy, GEMMState));</span>
+<span id="L313"><span class="lineNum">     313</span>              :     template &lt;typename Problem&gt; bool mnJointSplitRemainderHandling(Problem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state, bool (Generator&lt;hw&gt;::*func)(Problem, GEMMStrategy, GEMMState));</span>
+<span id="L314"><span class="lineNum">     314</span>              :     bool gemmMEdge(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L315"><span class="lineNum">     315</span>              :     bool gemmNEdge(GEMMProblem problem, GEMMStrategy strategy, GEMMState state);</span>
+<span id="L316"><span class="lineNum">     316</span>              :     void gemmOOBExit(ngen::Label &amp;target, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L317"><span class="lineNum">     317</span>              : </span>
+<span id="L318"><span class="lineNum">     318</span>              :     void makeSLMBaseRelative(ngen::Subregister addr, const GEMMState &amp;state);</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span>              :     // gemm_setup.cxx</span>
+<span id="L321"><span class="lineNum">     321</span>              :     void gemmInitInterface(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state, bool inSK = false);</span>
+<span id="L322"><span class="lineNum">     322</span>              :     void gemmInitState(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state, bool inSK = false);</span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              :     bool gemmAccumulateCSetup(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L325"><span class="lineNum">     325</span>              :     void gemmAccumulateCTeardown(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L326"><span class="lineNum">     326</span>              : </span>
+<span id="L327"><span class="lineNum">     327</span>              :     void gemmAllocateTokens(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L328"><span class="lineNum">     328</span>              :     void gemmABPrefetchAddrSetup(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool doA = true, bool doB = true);</span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span>              :     void gemmOffsetAm(const ngen::Subregister &amp;i, const ngen::Subregister &amp;effA, const MatrixAddressing &amp;globalA, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L331"><span class="lineNum">     331</span>              :     void gemmOffsetAk(int h, const ngen::Subregister &amp;effA, const MatrixAddressing &amp;globalA, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L332"><span class="lineNum">     332</span>              :     void gemmOffsetAk(const ngen::Subregister &amp;h, const ngen::Subregister &amp;effA, const MatrixAddressing &amp;globalA, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L333"><span class="lineNum">     333</span>              :     void gemmOffsetBk(int h, const ngen::Subregister &amp;effB, const MatrixAddressing &amp;globalB, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L334"><span class="lineNum">     334</span>              :     void gemmOffsetBk(const ngen::Subregister &amp;h, const ngen::Subregister &amp;effB, const MatrixAddressing &amp;globalB, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L335"><span class="lineNum">     335</span>              :     void gemmOffsetBn(const ngen::Subregister &amp;j, const ngen::Subregister &amp;effB, const MatrixAddressing &amp;globalB, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span>              :     void gemmFoldOffsets(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L338"><span class="lineNum">     338</span>              :     void gemmRestoreOffsets(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span>              :     void gemmCheck32(const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L341"><span class="lineNum">     341</span>              :     void gemmReverseLoops(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L342"><span class="lineNum">     342</span>              :     void gemmScaleInputs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L343"><span class="lineNum">     343</span>              :     void gemmCalcWGRemainders(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L344"><span class="lineNum">     344</span>              : </span>
+<span id="L345"><span class="lineNum">     345</span>              :     void gemmGetBatchIDs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L346"><span class="lineNum">     346</span>              :     void gemmReleaseBatchIDs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L347"><span class="lineNum">     347</span>              : </span>
+<span id="L348"><span class="lineNum">     348</span>              :     void gemmOffsetABC(bool initial, ngen::Subregister i0, ngen::Subregister j0, ngen::Subregister h0, ngen::Subregister i0p, ngen::Subregister j0p, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool doA = true, bool doB = true, bool doC = true, bool doBinary = false);</span>
+<span id="L349"><span class="lineNum">     349</span>              :     void gemmOffsetBatchABC(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L350"><span class="lineNum">     350</span>              :     void gemmSetupABC(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span>              :     void gemmCacheLDABMultiples(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool doA = true, bool doB = true);</span>
+<span id="L353"><span class="lineNum">     353</span>              :     void gemmCacheLDCMultiples(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool prefetch = false);</span>
+<span id="L354"><span class="lineNum">     354</span>              : </span>
+<span id="L355"><span class="lineNum">     355</span>              :     void gemmDowngradeAccess(const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L356"><span class="lineNum">     356</span>              : </span>
+<span id="L357"><span class="lineNum">     357</span>              :     CoopSplit effCoopSplitA(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy);</span>
+<span id="L358"><span class="lineNum">     358</span>              :     CoopSplit effCoopSplitB(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy);</span>
+<span id="L359"><span class="lineNum">     359</span>              : </span>
+<span id="L360"><span class="lineNum">     360</span>              :     void gemmFreeIncrements(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool doA = true, bool doB = true);</span>
+<span id="L361"><span class="lineNum">     361</span>              :     void gemmCalcIncrements(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int ka_load = 0, int kb_load = 0, bool doA = true, bool doB = true);</span>
+<span id="L362"><span class="lineNum">     362</span>              :     void gemmCalcQuantizationIncrements(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L363"><span class="lineNum">     363</span>              : </span>
+<span id="L364"><span class="lineNum">     364</span>              :     ngen::Subregister gemmMNLinearID(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L365"><span class="lineNum">     365</span>              : </span>
+<span id="L366"><span class="lineNum">     366</span>              :     void gemmApplyWorkshareOffset(bool isA, ngen::Subregister &amp;base, ngen::Subregister alias, Address2DParams &amp;params2D, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, int r, int c, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L367"><span class="lineNum">     367</span>              :     void gemmCalcWorkshareAOffset(ngen::Subregister &amp;off, ngen::Subregister &amp;offR, ngen::Subregister &amp;offC, const MatrixAddressing &amp;A, const MatrixAddressingStrategy &amp;A_strategy, int ma, int ka, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L368"><span class="lineNum">     368</span>              :     void gemmCalcWorkshareBOffset(ngen::Subregister &amp;off, ngen::Subregister &amp;offR, ngen::Subregister &amp;offC, const MatrixAddressing &amp;B, const MatrixAddressingStrategy &amp;B_strategy, int kb, int nb, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L369"><span class="lineNum">     369</span>              : </span>
+<span id="L370"><span class="lineNum">     370</span>              :     // k_loop.cxx</span>
+<span id="L371"><span class="lineNum">     371</span>              :     void gemmAIncrementInternal(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, int ka_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int ha = 0);</span>
+<span id="L372"><span class="lineNum">     372</span>              :     void gemmAIncrementInternal(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const MultishiftSubregister &amp;ka_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int ha = 0);</span>
+<span id="L373"><span class="lineNum">     373</span>              :     void gemmAIncrementInternal(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const ngen::Subregister &amp;ka_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int ha = 0);</span>
+<span id="L374"><span class="lineNum">     374</span>              :     template &lt;typename I&gt; void gemmAIncrement(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, I ka_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int ha = 0, int h = 0);</span>
+<span id="L375"><span class="lineNum">     375</span>              :     void gemmALoad(const GRFMultirange &amp;regs, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L376"><span class="lineNum">     376</span>              :     template &lt;typename I&gt; void gemmALoadInc(const GRFMultirange &amp;regs, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, I ka_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span>              :     void gemmBIncrementInternal(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, int kb_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int hb = 0);</span>
+<span id="L379"><span class="lineNum">     379</span>              :     void gemmBIncrementInternal(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const MultishiftSubregister &amp;kb_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int hb = 0);</span>
+<span id="L380"><span class="lineNum">     380</span>              :     void gemmBIncrementInternal(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const ngen::Subregister &amp;kb_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int hb = 0);</span>
+<span id="L381"><span class="lineNum">     381</span>              :     template &lt;typename I&gt; void gemmBIncrement(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, I kb_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int hb = 0, int h = 0);</span>
+<span id="L382"><span class="lineNum">     382</span>              :     void gemmBLoad(const GRFMultirange &amp;regs, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L383"><span class="lineNum">     383</span>              :     template &lt;typename I&gt; void gemmBLoadInc(const GRFMultirange &amp;regs, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, I kb_inc, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L384"><span class="lineNum">     384</span>              : </span>
+<span id="L385"><span class="lineNum">     385</span>              :     template &lt;bool doA&gt; void gemmAiBiRemLoadInc(int h, bool incremental, bool incrementalCopy, bool keepAddrTogether, bool willRemask, const ngen::Subregister &amp;kSLMX, const GRFMultirange &amp;Xi_regs, const RegisterLayout &amp;Xi_layout, const std::vector&lt;ngen::GRFRange&gt; &amp;Xi_addrs, const std::vector&lt;RegisterLayout&gt; &amp;Xi_layoutK, const std::vector&lt;std::vector&lt;ngen::GRFRange&gt;&gt; &amp;Xi_addrsK, const GRFMultirange &amp;Xo_regs, const RegisterLayout &amp;Xo_layout, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L386"><span class="lineNum">     386</span>              : </span>
+<span id="L387"><span class="lineNum">     387</span>              :     void gemmSLMRemask(bool remaskA, bool remaskB, GRFMultirange &amp;Ao_regs, GRFMultirange &amp;Bo_regs, int kOffset, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span>              :     void kLoopActivateABRemainder(bool active, bool doA, bool doB, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int kOffset = 0);</span>
+<span id="L390"><span class="lineNum">     390</span>              :     void kLoopActivateSLMRemainder(bool active, bool preactivate, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int kOffset = 0);</span>
+<span id="L391"><span class="lineNum">     391</span>              : </span>
+<span id="L392"><span class="lineNum">     392</span>              :     void kLoop(KLoop type, const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L393"><span class="lineNum">     393</span>              :     bool kLoopSingle(KLoop type, const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L394"><span class="lineNum">     394</span>              : </span>
+<span id="L395"><span class="lineNum">     395</span>              :     // k_loop_setup.cxx</span>
+<span id="L396"><span class="lineNum">     396</span>              :     bool gemmPrepMaskedAB(const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span>              :     void gemmCalcKLoopBarrierCount(ngen::Subregister &amp;count, const ngen::Subregister &amp;k, int cooldown, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L399"><span class="lineNum">     399</span>              :     void gemmCalcKSLM(const ngen::Subregister &amp;kSLM, const ngen::Subregister &amp;lid, int kgran, int kdiv, int krep, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, ngen::Subregister kBase = ngen::Subregister());</span>
+<span id="L400"><span class="lineNum">     400</span>              :     void gemmCalcKSLMA(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, ngen::Subregister kBase = ngen::Subregister());</span>
+<span id="L401"><span class="lineNum">     401</span>              :     void gemmCalcKSLMB(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, ngen::Subregister kBase = ngen::Subregister());</span>
+<span id="L402"><span class="lineNum">     402</span>              : </span>
+<span id="L403"><span class="lineNum">     403</span>              :     void kLoopAllocBarrierHeader(GEMMState &amp;state);</span>
+<span id="L404"><span class="lineNum">     404</span>              :     ngen::GRF kLoopGetBarrierHeader(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L405"><span class="lineNum">     405</span>              : </span>
+<span id="L406"><span class="lineNum">     406</span>              :     bool kLoopSetup(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L407"><span class="lineNum">     407</span>              :     void kLoopTeardown(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L408"><span class="lineNum">     408</span>              : </span>
+<span id="L409"><span class="lineNum">     409</span>              :     // l3_prefetch.cxx</span>
+<span id="L410"><span class="lineNum">     410</span>              :     void gemmInitL3Prefetch(bool nextWave, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L411"><span class="lineNum">     411</span>              :     void gemmWarmupL3Prefetch(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L412"><span class="lineNum">     412</span>              :     void gemmScheduleL3Prefetches(void *ls, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L413"><span class="lineNum">     413</span>              :     void gemmScheduleL3PrefetchIncs(void *ls, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool allowDelay = true);</span>
+<span id="L414"><span class="lineNum">     414</span>              :     void gemmTeardownL3Prefetch(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L415"><span class="lineNum">     415</span>              : </span>
+<span id="L416"><span class="lineNum">     416</span>              :     // layout_setup.cxx</span>
+<span id="L417"><span class="lineNum">     417</span>              :     bool tryAddRemainder(Type T, RegisterBlock &amp;block, bool remainderR, bool remainderC, RemainderOptions remOpts, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy);</span>
+<span id="L418"><span class="lineNum">     418</span>              :     bool tryAddRemainder(RegisterLayout &amp;layout, bool remainderR, bool remainderC, RemainderOptions remOpts);</span>
+<span id="L419"><span class="lineNum">     419</span>              :     void addRemainder(RegisterLayout &amp;layout, bool remainderR, bool remainderC, RemainderOptions remOpts);</span>
+<span id="L420"><span class="lineNum">     420</span>              :     void addRemainder(RegisterLayout &amp;layout, std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const ngen::Subregister &amp;ld, bool remainderR, bool remainderC, RemainderOptions remOpts, const CommonStrategy &amp;strategy, CommonState &amp;state, int dataRegs = -1);</span>
+<span id="L421"><span class="lineNum">     421</span>              :     void updateBlock2DSizes(ngen::GRF addr, const RegisterBlock &amp;dst, const RegisterBlock &amp;src, const MatrixAddressing &amp;atype);</span>
+<span id="L422"><span class="lineNum">     422</span>              :     void adjustSubblockAddrs(const RegisterLayout &amp;sublayout, const std::vector&lt;ngen::GRFRange&gt; &amp;subaddrs, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const CommonStrategy &amp;strategy, const CommonState &amp;state);</span>
+<span id="L423"><span class="lineNum">     423</span>              : </span>
+<span id="L424"><span class="lineNum">     424</span>              :     // masks.cxx</span>
+<span id="L425"><span class="lineNum">     425</span>              :     bool assignMasks(RegisterLayout &amp;layout, LoopType rloop, LoopType cloop, std::vector&lt;MaskAssignment&gt; &amp;assignments, const CommonStrategy &amp;strategy, CommonState &amp;state, bool retryVirtual = false, const std::vector&lt;MaskAssignment&gt; *existing = nullptr);</span>
+<span id="L426"><span class="lineNum">     426</span>              :     void loadMask(MaskAssignment assignment, ngen::Subregister index, const CommonStrategy &amp;strategy, CommonState &amp;state, int offset = 0);</span>
+<span id="L427"><span class="lineNum">     427</span>              :     void loadMasks(const std::vector&lt;MaskAssignment&gt; &amp;assignments, ngen::Subregister (&amp;indices)[3], const CommonStrategy &amp;strategy, CommonState &amp;state, int start = 0);</span>
+<span id="L428"><span class="lineNum">     428</span>              :     void loadMasks(const std::vector&lt;MaskAssignment&gt; &amp;assignments, ngen::Subregister (&amp;indices)[3], int (&amp;offsets)[3], const CommonStrategy &amp;strategy, CommonState &amp;state, int start = 0);</span>
+<span id="L429"><span class="lineNum">     429</span>              : </span>
+<span id="L430"><span class="lineNum">     430</span>              :     // math_helpers.cxx</span>
+<span id="L431"><span class="lineNum">     431</span>              :     void addScaled(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, int src0, const ngen::RegData &amp;src1, int numerator, int denominator, CommonState &amp;state, bool exact = false);</span>
+<span id="L432"><span class="lineNum">     432</span>              :     void addScaled(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const ngen::RegData &amp;src1, int numerator, int denominator,  CommonState &amp;state, bool exact = false);</span>
+<span id="L433"><span class="lineNum">     433</span>              :     void addScaled(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, int src1, int numerator, int denominator,  CommonState &amp;state, bool exact = false);</span>
+<span id="L434"><span class="lineNum">     434</span>              :     template &lt;typename S0, typename S1&gt; void addScaled(const ngen::InstructionModifier &amp;mod, const ngen::RegData &amp;dst, S0 src0, S1 src1, Type T, CommonState &amp;state, bool exact = false, int scale = 1);</span>
+<span id="L435"><span class="lineNum">     435</span>              : </span>
+<span id="L436"><span class="lineNum">     436</span>              :     template &lt;typename DT = void&gt; void mod(const ngen::InstructionModifier &amp;finalMod, const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint16_t modulus, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L437"><span class="lineNum">     437</span>              :     template &lt;typename DT = void&gt; void mod(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint16_t modulus, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L438"><span class="lineNum">     438</span>              :     template &lt;typename DT = void&gt; void modExt(const ngen::Subregister &amp;dstMod, const ngen::Subregister &amp;dstMultiple, const ngen::Subregister &amp;src, uint16_t modulus, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L439"><span class="lineNum">     439</span>              :     template &lt;typename DT = void&gt; void alignDown(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint16_t align, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L440"><span class="lineNum">     440</span>              :     template &lt;typename DT = void&gt; void alignDown(const ngen::InstructionModifier &amp;mod, const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint16_t align, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L441"><span class="lineNum">     441</span>              :     template &lt;typename DT = void&gt; void alignUp(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint16_t align, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L442"><span class="lineNum">     442</span>              :     template &lt;typename DT = void&gt; void divDown(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint32_t divisor, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L443"><span class="lineNum">     443</span>              :     template &lt;typename DT = void&gt; void divUp(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src, uint32_t divisor, const CommonStrategy &amp;strategy, CommonState &amp;state, bool relax = false);</span>
+<span id="L444"><span class="lineNum">     444</span>              :     template &lt;typename DT = void&gt; void divDown(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src0, const ngen::Subregister &amp;src1, const ngen::Subregister &amp;src1Recip, const ngen::FlagRegister &amp;flag, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L445"><span class="lineNum">     445</span>              :     template &lt;typename DT = void&gt; void divUp(const ngen::Subregister &amp;dst, const ngen::Subregister &amp;src0, const ngen::Subregister &amp;src1, const ngen::Subregister &amp;src1Recip, const ngen::FlagRegister &amp;flag, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L446"><span class="lineNum">     446</span>              :     void divMod(const ngen::Subregister &amp;qot, const ngen::Subregister &amp;rem, const ngen::Subregister &amp;num, const ngen::Subregister &amp;denom, const GEMMStrategy &amp;strategy, CommonState &amp;state, bool large = false);</span>
+<span id="L447"><span class="lineNum">     447</span>              : </span>
+<span id="L448"><span class="lineNum">     448</span>              :     // matrix_access.cxx</span>
+<span id="L449"><span class="lineNum">     449</span>              :     void setupTeardownLoadStoreDesc(bool setup, const RegisterLayout &amp;layout, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L450"><span class="lineNum">     450</span>              :     void loadLoadStoreDescriptors(bool load, bool store, RegisterBlock &amp;block, ngen::Subregister count, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const CommonStrategy &amp;strategy, CommonState &amp;state, bool clamp = false, int offset = 0);</span>
+<span id="L451"><span class="lineNum">     451</span>              :     void startDoubleMask(VirtualFlag vflag, CommonState &amp;state);</span>
+<span id="L452"><span class="lineNum">     452</span>              :     void prepareSeriesRegisterBlockDoubleMasking(const RegisterLayout &amp;layout, CommonState &amp;state, int start);</span>
+<span id="L453"><span class="lineNum">     453</span>              :     void prepareSeriesRegisterBlockMasking(const RegisterLayout &amp;layout, CommonState &amp;state, int start);</span>
+<span id="L454"><span class="lineNum">     454</span>              :     ngen::InstructionModifier registerBlockMasking(const RegisterBlock &amp;block, CommonState &amp;state, ngen::FlagRegister *outFlag = nullptr);</span>
+<span id="L455"><span class="lineNum">     455</span>              :     void finishRegisterBlockMasking(CommonState &amp;state);</span>
+<span id="L456"><span class="lineNum">     456</span>              : </span>
+<span id="L457"><span class="lineNum">     457</span>              :     void loadMatrixBlock(const ngen::Register &amp;dest, const RegisterBlock &amp;layout, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const ngen::GRFRange &amp;addr, const CommonStrategy &amp;strategy, CommonState &amp;state, bool readCheck = false, bool series = false);</span>
+<span id="L458"><span class="lineNum">     458</span>              :     void loadMatrix(const GRFMultirange &amp;dest, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const CommonStrategy &amp;strategy, CommonState &amp;state, bool readCheck = false);</span>
+<span id="L459"><span class="lineNum">     459</span>              :     void prefetchMatrix(const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L460"><span class="lineNum">     460</span>              :     void storeMatrixBlock(const ngen::GRF &amp;src, const RegisterBlock &amp;layout, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const ngen::GRFRange &amp;addr, const CommonStrategy &amp;strategy, CommonState &amp;state, bool series = false);</span>
+<span id="L461"><span class="lineNum">     461</span>              :     void storeMatrix(const GRFMultirange &amp;src, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L462"><span class="lineNum">     462</span>              :     void atomicAddMatrixBlock(Type T, const ngen::GRF &amp;src, const RegisterBlock &amp;layout, const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const ngen::GRFRange &amp;addr, const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state, bool series = false);</span>
+<span id="L463"><span class="lineNum">     463</span>              :     void atomicAddMatrix(const GRFMultirange &amp;src, const RegisterLayout &amp;layout, const std::vector&lt;ngen::GRFRange&gt; &amp;addrs, const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L464"><span class="lineNum">     464</span>              : </span>
+<span id="L465"><span class="lineNum">     465</span>              :     // matrix_multiply.cxx</span>
+<span id="L466"><span class="lineNum">     466</span>              :     void innerProductFMA(int h, int ha, int hb, int opCount, bool rem, const RegisterLayout &amp;A_layout, const RegisterLayout &amp;B_layout, const GRFMultirange &amp;A_regs, const GRFMultirange &amp;B_regs, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L467"><span class="lineNum">     467</span>              :     void outerProductFMA(int h, int ha, int hb, int opCount, bool rem, const RegisterLayout &amp;A_layout, const RegisterLayout &amp;B_layout, const GRFMultirange &amp;A_regs, const GRFMultirange &amp;B_regs, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L468"><span class="lineNum">     468</span>              :     void outerProductSystolic(int h, int ha, int hb, int opCount, bool rem, const RegisterLayout &amp;A_layout, const RegisterLayout &amp;B_layout, const GRFMultirange &amp;A_regs, const GRFMultirange &amp;B_regs, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L469"><span class="lineNum">     469</span>              :     void outerProduct(int h, int ha, int hb, int opCount, bool rem, const RegisterLayout &amp;A_layout, const RegisterLayout &amp;B_layout, const GRFMultirange &amp;A_regs, const GRFMultirange &amp;B_regs, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L470"><span class="lineNum">     470</span>              :     void setupTeardownAccumulateSumSystolic(bool setup, Type Tother, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L471"><span class="lineNum">     471</span>              :     void outerProductRepackC(int x0, int xr0, int nx, int h, bool rem, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L472"><span class="lineNum">     472</span>              :     void applyLateABOffset(bool isA, int h, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int x0 = 0, int xr0 = 0, int nx = -1);</span>
+<span id="L473"><span class="lineNum">     473</span>              : </span>
+<span id="L474"><span class="lineNum">     474</span>              :     // monolithic_k_loop_dpasw.cxx</span>
+<span id="L475"><span class="lineNum">     475</span>              :     bool sysgemmAccumulateC(GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L476"><span class="lineNum">     476</span>              :     void sysgemmKLoop(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L477"><span class="lineNum">     477</span>              :     void sysgemmKLoop4(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool oddB);</span>
+<span id="L478"><span class="lineNum">     478</span>              :     void sysgemmStoreSignal(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool forceFence = false);</span>
+<span id="L479"><span class="lineNum">     479</span>              :     void sysgemmCopyLoad(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int storeBuffer, bool useC = false);</span>
+<span id="L480"><span class="lineNum">     480</span>              :     void sysgemmCopyLoad4(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int storeBuffer, bool loadB, int useC = 0, ngen::RegData flagLoadB = ngen::RegData());</span>
+<span id="L481"><span class="lineNum">     481</span>              :     void sysgemmCopyStore(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int storeBuffer, bool first = false);</span>
+<span id="L482"><span class="lineNum">     482</span>              :     void sysgemmCopyStore4(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int storeBuffer, bool storeB, int useC = 0, int useC_B = 0);</span>
+<span id="L483"><span class="lineNum">     483</span>              :     void sysgemmMultiply(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int buffer, bool lastMultiply = false);</span>
+<span id="L484"><span class="lineNum">     484</span>              :     void sysgemmMultiply4(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int buffer, bool firstMultiply = false, ngen::RegData flagWaitLoad = ngen::RegData(), ngen::RegData flagSignal = ngen::RegData(), ngen::Label *labelDone = nullptr);</span>
+<span id="L485"><span class="lineNum">     485</span>              :     void sysgemmMultiplyChunk(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, bool first, int ao, int i0, bool waitB, bool prepB, const ngen::InstructionModifier &amp;swsb0 = ngen::InstructionModifier(), const ngen::InstructionModifier &amp;swsbEnd = ngen::InstructionModifier());</span>
+<span id="L486"><span class="lineNum">     486</span>              :     void sysgemmBarrierPrep(const ngen::InstructionModifier &amp;swsb, const ngen::GRF &amp;header);</span>
+<span id="L487"><span class="lineNum">     487</span>              :     void sysgemmReorderLocalIDs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L488"><span class="lineNum">     488</span>              : </span>
+<span id="L489"><span class="lineNum">     489</span>              :     bool sysgemm2AccumulateC(GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L490"><span class="lineNum">     490</span>              :     void sysgemm2KLoopCompute(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L491"><span class="lineNum">     491</span>              :     void sysgemm2KLoopCopy(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L492"><span class="lineNum">     492</span>              :     void sysgemm2Multiply(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int buffer, bool cooldown = false, ngen::FlagRegister flagWaitLoad = ngen::FlagRegister(), ngen::FlagRegister flagSignal = ngen::FlagRegister());</span>
+<span id="L493"><span class="lineNum">     493</span>              :     void sysgemm2MultiplyX32(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int buffer, bool cooldown = false, ngen::FlagRegister flagWaitLoad = ngen::FlagRegister(), ngen::FlagRegister flagSignal = ngen::FlagRegister());</span>
+<span id="L494"><span class="lineNum">     494</span>              :     void sysgemm2MultiplyX48(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, int buffer, bool cooldown = false, ngen::FlagRegister flagWaitLoad = ngen::FlagRegister(), ngen::FlagRegister flagSignal = ngen::FlagRegister());</span>
+<span id="L495"><span class="lineNum">     495</span>              :     void sysgemm2MultiplyChunkX32(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, int chunkA, bool odd);</span>
+<span id="L496"><span class="lineNum">     496</span>              :     void sysgemm2MultiplyChunkX48(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, int chunkA);</span>
+<span id="L497"><span class="lineNum">     497</span>              : </span>
+<span id="L498"><span class="lineNum">     498</span>              :     // post_ops.cxx</span>
+<span id="L499"><span class="lineNum">     499</span>              :     void gemmAlphaScale(GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool cxCombine = true);</span>
+<span id="L500"><span class="lineNum">     500</span>              :     void gemmBetaScale(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L501"><span class="lineNum">     501</span>              :     void binaryOp(BinaryOp op, int simd, const ngen::RegData &amp;dst, const ngen::RegData &amp;src0, const ngen::RegData &amp;src1, CommonState &amp;state);</span>
+<span id="L502"><span class="lineNum">     502</span>              :     void gemmScalarBinaryOpC(BinaryOp op, Type Tco, const GRFMultirange &amp;offsets, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L503"><span class="lineNum">     503</span>              :     void gemmScalarBinaryOpC(BinaryOp op, Type Tco, const ngen::Subregister &amp;scalar, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L504"><span class="lineNum">     504</span>              :     void gemmVectorBinaryOpC(BinaryOp op, bool column, const GRFMultirange &amp;offsets, const ngen::Subregister &amp;scale, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, Type Tco = Type::invalid, RegisterLayout CO_layout = RegisterLayout(), int y0 = -1, int y1 = -1);</span>
+<span id="L505"><span class="lineNum">     505</span>              :     void gemmRank1UpdateC(const GRFMultirange &amp;r, const GRFMultirange &amp;c, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L506"><span class="lineNum">     506</span>              :     void gemmCalcABOffsetAddrs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L507"><span class="lineNum">     507</span>              :     bool gemmLoadABOffset(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L508"><span class="lineNum">     508</span>              :     void gemmApplyABOffset(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L509"><span class="lineNum">     509</span>              :     bool gemmBinaryOpC(BinaryOp op, bool row, bool column, Type Tco, MatrixAddressing CO, MatrixAddressingStrategy CO_strategy, ngen::Subregister base, ngen::Subregister ld, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L510"><span class="lineNum">     510</span>              :     bool gemmApplyCOffsetDispatch(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L511"><span class="lineNum">     511</span>              : </span>
+<span id="L512"><span class="lineNum">     512</span>              :     void gemmApplyPostOps(size_t poMin, size_t poMax, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L513"><span class="lineNum">     513</span>              :     void gemmLoadBinaryOpArgs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L514"><span class="lineNum">     514</span>              : </span>
+<span id="L515"><span class="lineNum">     515</span>              :     // quantization.cxx</span>
+<span id="L516"><span class="lineNum">     516</span>              :     bool gemmMake2DQuantizationLayouts(bool isA, const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L517"><span class="lineNum">     517</span>              :     void gemmRepack2DQuantizationData(Type Ts, Type Td, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L518"><span class="lineNum">     518</span>              :     void gemmRepack2DQuantizationData(const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L519"><span class="lineNum">     519</span>              :     void gemmRepack2DOffsetData(Type Text, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L520"><span class="lineNum">     520</span>              :     void dequantizeInt4Shift(Type Tsrc, GRFMultirange src, const CommonStrategy &amp;strategy);</span>
+<span id="L521"><span class="lineNum">     521</span>              :     void dequantizeInt4(bool doA, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const RegisterLayout &amp;layoutOffset, const RegisterLayout &amp;layoutScale, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const GRFMultirange &amp;offset, const GRFMultirange &amp;scale, int offR, int offC, int h, int kab_load, int kq_load, const GEMMProblem *problem, const CommonStrategy &amp;strategy, CommonState &amp;state, bool s4Shift = true);</span>
+<span id="L522"><span class="lineNum">     522</span>              :     void gemmDequantizeOperation(bool doA, Type T, Type Tq, BinaryOp op, const RegisterLayout &amp;layout, const RegisterLayout &amp;qlayout, const GRFMultirange &amp;regs, const GRFMultirange &amp;qregs, int h, int kab_load, int kq_load, const GEMMProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L523"><span class="lineNum">     523</span>              :     void gemmDequantizeAB(bool doA, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst, const GRFMultirange &amp;src, const GRFMultirange &amp;dst, int h, int kab_load, int kab_repack, int kq_load, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, bool s4Shift = true);</span>
+<span id="L524"><span class="lineNum">     524</span>              :     // register_allocation.cxx</span>
+<span id="L525"><span class="lineNum">     525</span>              :     ngen::Bundle getHint(HintType type);</span>
+<span id="L526"><span class="lineNum">     526</span>              :     ngen::Bundle getHint(HintType type, const CommonStrategy &amp;strategy);</span>
+<span id="L527"><span class="lineNum">     527</span>              :     ngen::Bundle getHint(HintType type, const GEMMStrategy &amp;strategy);</span>
+<span id="L528"><span class="lineNum">     528</span>              : </span>
+<span id="L529"><span class="lineNum">     529</span>              :     void gemmAllocRegs(GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L530"><span class="lineNum">     530</span>              :     void gemmAllocAoBoRegs(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L531"><span class="lineNum">     531</span>              : </span>
+<span id="L532"><span class="lineNum">     532</span>              :     // remask.cxx</span>
+<span id="L533"><span class="lineNum">     533</span>              :     void setupTeardownRemask(Type T, int index, bool setup, int nq, ngen::Subregister remQ, const CommonStrategy &amp;strategy, CommonState &amp;state, int fixedOffQ = 0, const ngen::Subregister &amp;variableOffQ = ngen::Subregister());</span>
+<span id="L534"><span class="lineNum">     534</span>              :     void remaskLayout(int index, bool column, const RegisterLayout &amp;layout, const GRFMultirange &amp;regs, const CommonStrategy &amp;strategy, CommonState &amp;state, int offset = 0);</span>
+<span id="L535"><span class="lineNum">     535</span>              :     void remaskLayoutSingle(int index, bool column, int nq, ngen::Subregister remQ, const RegisterLayout &amp;layout, const GRFMultirange &amp;regs, const CommonStrategy &amp;strategy, CommonState &amp;state, int fixedOffQ = 0, const ngen::Subregister &amp;variableOffQ = ngen::Subregister(), int maskOff = 0);</span>
+<span id="L536"><span class="lineNum">     536</span>              : </span>
+<span id="L537"><span class="lineNum">     537</span>              :     // row_column_sums.cxx</span>
+<span id="L538"><span class="lineNum">     538</span>              :     void accumulateSum(bool column, const GRFMultirange &amp;srcRegs, const RegisterLayout &amp;srcLayout, const GRFMultirange &amp;dstRegs, const RegisterLayout &amp;dstLayout, const CommonStrategy &amp;strategy, CommonState &amp;state, int q0 = -1, int q1 = -1);</span>
+<span id="L539"><span class="lineNum">     539</span>              :     void makeSumLayout(bool column, const RegisterLayout &amp;srcLayout, Type Tdst, RegisterLayout &amp;dstLayout, const CommonStrategy &amp;strategy, CommonState &amp;state, bool systolicSum = false);</span>
+<span id="L540"><span class="lineNum">     540</span>              :     void horizontalAdd(bool column, const GRFMultirange &amp;regs, RegisterLayout &amp;layout, CommonState &amp;state);</span>
+<span id="L541"><span class="lineNum">     541</span>              :     bool gemmFinalizeSums(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L542"><span class="lineNum">     542</span>              : </span>
+<span id="L543"><span class="lineNum">     543</span>              :     // state_utils.cxx</span>
+<span id="L544"><span class="lineNum">     544</span>              :     void saveMNLocalIDs(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L545"><span class="lineNum">     545</span>              :     void saveKLocalIDSize(const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L546"><span class="lineNum">     546</span>              :     void releaseSavedMNLocalIDs(GEMMState &amp;state);</span>
+<span id="L547"><span class="lineNum">     547</span>              : </span>
+<span id="L548"><span class="lineNum">     548</span>              :     // stream_k.cxx</span>
+<span id="L549"><span class="lineNum">     549</span>              :     void gemmStreamKPrepareSlice2(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L550"><span class="lineNum">     550</span>              :     void gemmStreamKSetup(ngen::Label &amp;lKVPhaseDone, ngen::Label &amp;lKernelDone, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L551"><span class="lineNum">     551</span>              : </span>
+<span id="L552"><span class="lineNum">     552</span>              :     // tlb_warmup.cxx</span>
+<span id="L553"><span class="lineNum">     553</span>              :     void tlbWarmup(ngen::AddressBase base, const ngen::Subregister &amp;ptr, const ngen::Subregister &amp;bytes, const ngen::Subregister &amp;lid, int whose, const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L554"><span class="lineNum">     554</span>              :     void tlbWarmup(const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy, const ngen::Subregister &amp;base, const ngen::Subregister &amp;r, const ngen::Subregister &amp;c, const ngen::Subregister &amp;ld, const ngen::Subregister &amp;lid, int whose, const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state);</span>
+<span id="L555"><span class="lineNum">     555</span>              :     void gemmTLBWarmup(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L556"><span class="lineNum">     556</span>              : </span>
+<span id="L557"><span class="lineNum">     557</span>              :     // walk_orders.cxx</span>
+<span id="L558"><span class="lineNum">     558</span>              :     void gemmLinearOrder(const ngen::Subregister &amp;groupIDMN, const ngen::Subregister &amp;groupIDM, const ngen::Subregister &amp;groupIDN, const ngen::Subregister &amp;aLeader, const ngen::Subregister &amp;bLeader, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L559"><span class="lineNum">     559</span>              :     void gemmSimpleLinearOrder(const ngen::Subregister &amp;groupIDMN, const ngen::Subregister &amp;groupIDM, const ngen::Subregister &amp;groupIDN, const ngen::Subregister &amp;aLeader, const ngen::Subregister &amp;bLeader, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L560"><span class="lineNum">     560</span>              :     void gemmNestedLinearOrder(const ngen::Subregister &amp;groupIDMN, const ngen::Subregister &amp;groupIDM, const ngen::Subregister &amp;groupIDN, const ngen::Subregister &amp;aLeader, const ngen::Subregister &amp;bLeader, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L561"><span class="lineNum">     561</span>              :     void gemmHilbertlikeOrder(const ngen::Subregister &amp;groupIDMN, const ngen::Subregister &amp;groupIDM, const ngen::Subregister &amp;groupIDN, const ngen::Subregister &amp;aLeader, const ngen::Subregister &amp;bLeader, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L562"><span class="lineNum">     562</span>              :     void gemmBoustrophedonOrder(const ngen::Subregister &amp;groupIDMN, const ngen::Subregister &amp;groupIDM, const ngen::Subregister &amp;groupIDN, const ngen::Subregister &amp;aLeader, const ngen::Subregister &amp;bLeader, const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L563"><span class="lineNum">     563</span>              :     void gemmReorderGlobalIDs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L564"><span class="lineNum">     564</span>              :     void gemmReorderLocalIDs(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L565"><span class="lineNum">     565</span>              : };</span>
+<span id="L566"><span class="lineNum">     566</span>              : </span>
+<span id="L567"><span class="lineNum">     567</span>              : #define MOCK_BARRIERS</span>
+<span id="L568"><span class="lineNum">     568</span>              : </span>
+<span id="L569"><span class="lineNum">     569</span>              : template &lt;ngen::HW hw&gt; using gemm_kernel_generator_t = Generator&lt;hw&gt;;</span>
+<span id="L570"><span class="lineNum">     570</span>              : </span>
+<span id="L571"><span class="lineNum">     571</span>              : #include &quot;internal/generator_inline.hxx&quot;</span>
+<span id="L572"><span class="lineNum">     572</span>              : GEMMSTONE_NAMESPACE_END</span>
+<span id="L573"><span class="lineNum">     573</span>              : </span>
+<span id="L574"><span class="lineNum">     574</span>              : #endif /* header guard */</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

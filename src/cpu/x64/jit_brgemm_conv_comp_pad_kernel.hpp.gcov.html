@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_brgemm_conv_comp_pad_kernel.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_brgemm_conv_comp_pad_kernel.hpp<span style="font-size: 80%;"> (source / <a href="jit_brgemm_conv_comp_pad_kernel.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">77.8&nbsp;%</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">14</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_JIT_BRGEMM_CONV_COMP_PAD_KERNEL_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_JIT_BRGEMM_CONV_COMP_PAD_KERNEL_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;cpu/x64/jit_primitive_conf.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace dnnl {</span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace impl {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace cpu {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace x64 {</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace jit_uni_brgemm_conv_comp_pad_kernel {</span>
+<span id="L29"><span class="lineNum">      29</span>              : struct jit_brgemm_conv_comp_pad_args_t {</span>
+<span id="L30"><span class="lineNum">      30</span>              :     const void *ptr_in = nullptr;</span>
+<span id="L31"><span class="lineNum">      31</span>              :     void *ptr_zp_out = nullptr;</span>
+<span id="L32"><span class="lineNum">      32</span>              :     void *ptr_cp_out = nullptr;</span>
+<span id="L33"><span class="lineNum">      33</span>              :     size_t use_inversion = 0;</span>
+<span id="L34"><span class="lineNum">      34</span>              :     size_t kw_l = 0;</span>
+<span id="L35"><span class="lineNum">      35</span>              :     size_t kh_l = 0;</span>
+<span id="L36"><span class="lineNum">      36</span>              :     size_t kd_l = 0;</span>
+<span id="L37"><span class="lineNum">      37</span>              :     size_t ker_l = 1;</span>
+<span id="L38"><span class="lineNum">      38</span>              :     size_t last_ocb = 1;</span>
+<span id="L39"><span class="lineNum">      39</span>              : };</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : // Kernel is unified to work with fwd and bwd_d conv</span>
+<span id="L42"><span class="lineNum">      42</span>              : // Variables with &quot;ic&quot; and &quot;oc&quot; are named from perspective of fwd</span>
+<span id="L43"><span class="lineNum">      43</span>              : // For bwd_d &quot;ic&quot; and &quot;oc&quot; are swapped</span>
+<span id="L44"><span class="lineNum">      44</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L45"><span class="lineNum">      45</span>              : struct jit_uni_brgemm_conv_comp_pad_kernel_t : public jit_generator_t {</span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       48252 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_brgemm_conv_comp_pad_kernel_t)</span></span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              :     using reg64_t = const Xbyak::Reg64;</span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span>              :     jit_uni_brgemm_conv_comp_pad_kernel_t(const jit_brgemm_conv_conf_t &amp;ajcp);</span>
+<span id="L52"><span class="lineNum">      52</span>              : </span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       32168 :     ~jit_uni_brgemm_conv_comp_pad_kernel_t() override = default;</span></span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              : protected:</span>
+<span id="L56"><span class="lineNum">      56</span>              :     static constexpr bool is_ymm_ = std::is_same&lt;Vmm, Xbyak::Ymm&gt;::value;</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              :     jit_brgemm_conv_conf_t jcp_ = utils::zero&lt;decltype(jcp_)&gt;();</span>
+<span id="L59"><span class="lineNum">      59</span>              :     const int inp_dsz_;</span>
+<span id="L60"><span class="lineNum">      60</span>              :     const int out_dsz_;</span>
+<span id="L61"><span class="lineNum">      61</span>              :     const size_t nb_ic_;</span>
+<span id="L62"><span class="lineNum">      62</span>              :     const size_t inp_ic_sz_;</span>
+<span id="L63"><span class="lineNum">      63</span>              :     const size_t inp_kw_sz_;</span>
+<span id="L64"><span class="lineNum">      64</span>              :     const size_t inp_kh_sz_;</span>
+<span id="L65"><span class="lineNum">      65</span>              :     const size_t inp_kd_sz_;</span>
+<span id="L66"><span class="lineNum">      66</span>              :     const size_t out_ow_sz_;</span>
+<span id="L67"><span class="lineNum">      67</span>              :     const size_t out_ker_sz_;</span>
+<span id="L68"><span class="lineNum">      68</span>              :     const int isa_max_regs;</span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span>              :     // Register decomposition</span>
+<span id="L71"><span class="lineNum">      71</span>              :     const reg64_t param1 = abi_param1;</span>
+<span id="L72"><span class="lineNum">      72</span>              :     const reg64_t reg_in = r15;</span>
+<span id="L73"><span class="lineNum">      73</span>              :     const reg64_t reg_comp_out = r14;</span>
+<span id="L74"><span class="lineNum">      74</span>              :     const reg64_t reg_zp_comp_out = r13;</span>
+<span id="L75"><span class="lineNum">      75</span>              :     const reg64_t reg_use_inversion = rax;</span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              :     const reg64_t reg_kd_l = r12;</span>
+<span id="L78"><span class="lineNum">      78</span>              :     const reg64_t reg_kh_l = r11;</span>
+<span id="L79"><span class="lineNum">      79</span>              :     const reg64_t reg_kw_l = r10;</span>
+<span id="L80"><span class="lineNum">      80</span>              :     const reg64_t reg_icb = r9;</span>
+<span id="L81"><span class="lineNum">      81</span>              :     const reg64_t reg_ker_l = rdx;</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span>              :     const reg64_t reg_aux_comp_out = r9;</span>
+<span id="L84"><span class="lineNum">      84</span>              :     const reg64_t reg_aux_zp_comp_out = r10;</span>
+<span id="L85"><span class="lineNum">      85</span>              :     const reg64_t reg_aux_in = r8;</span>
+<span id="L86"><span class="lineNum">      86</span>              :     const reg64_t reg_aux_kh_in = rbx;</span>
+<span id="L87"><span class="lineNum">      87</span>              :     const reg64_t reg_aux_kd_in = rsi;</span>
+<span id="L88"><span class="lineNum">      88</span>              :     const reg64_t reg_tmp = rax;</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              :     Vmm vmm_tmp = Vmm(isa_max_regs - 1);</span>
+<span id="L91"><span class="lineNum">      91</span>              :     Vmm vmm_one_bytes = Vmm(isa_max_regs - 2);</span>
+<span id="L92"><span class="lineNum">      92</span>              :     Vmm vmm_zp_shift = Vmm(isa_max_regs - 3);</span>
+<span id="L93"><span class="lineNum">      93</span>              :     Vmm vmm_cp_shift = Vmm(isa_max_regs - 4);</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span>              :     Xbyak::Zmm zmm_one_words = Xbyak::Zmm(27);</span>
+<span id="L96"><span class="lineNum">      96</span>              :     Xbyak::Zmm zmm_int8_temp = Xbyak::Zmm(26);</span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span>              :     const int last_ic_block_ = 4;</span>
+<span id="L99"><span class="lineNum">      99</span>              :     const int m_block2_ = vreg_traits_t&lt;Vmm&gt;::vlen / sizeof(int32_t);</span>
+<span id="L100"><span class="lineNum">     100</span>              :     static constexpr int max_oc_block_ = 64;</span>
+<span id="L101"><span class="lineNum">     101</span>              :     const int n_max_regs_ = max_oc_block_ / m_block2_;</span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">      756136 :     const Vmm &amp;vmm_tmp_1() const noexcept { return vmm_tmp; }</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              :     Vmm accum(const int n_block, const int m, const int n) const;</span>
+<span id="L106"><span class="lineNum">     106</span>              :     size_t out_oc_offset(const int n, const int w) const;</span>
+<span id="L107"><span class="lineNum">     107</span>              :     size_t inp_ic_offset(</span>
+<span id="L108"><span class="lineNum">     108</span>              :             const int m_block, const int icb, const int m, const int n) const;</span>
+<span id="L109"><span class="lineNum">     109</span>              :     int compute_ic_step(</span>
+<span id="L110"><span class="lineNum">     110</span>              :             const int m_max_regs, const int m_block, const int n_block) const;</span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span>              :     void store_accumulators(const int m_block, const int n_block,</span>
+<span id="L113"><span class="lineNum">     113</span>              :             const int ow_b, const int ow_e);</span>
+<span id="L114"><span class="lineNum">     114</span>              :     void zero_accumulators(const int m_block, const int n_block);</span>
+<span id="L115"><span class="lineNum">     115</span>              :     void compute(const int ic_step, const int m_block, const int n_block,</span>
+<span id="L116"><span class="lineNum">     116</span>              :             const int m_tail, const bool is_mb_tail);</span>
+<span id="L117"><span class="lineNum">     117</span>              :     void icb_loop(const int icb, const int icb_tail, const int ic_step,</span>
+<span id="L118"><span class="lineNum">     118</span>              :             const int m_block, const int mb_tail, const int n_block);</span>
+<span id="L119"><span class="lineNum">     119</span>              :     void kdh_loop(const int icb, const int icb_tail, const int ic_step,</span>
+<span id="L120"><span class="lineNum">     120</span>              :             const int m_block, const int mb_tail, const int n_block);</span>
+<span id="L121"><span class="lineNum">     121</span>              :     void copy_ow(const int m_block, const int n_block, const int ow_b,</span>
+<span id="L122"><span class="lineNum">     122</span>              :             const int ow_e);</span>
+<span id="L123"><span class="lineNum">     123</span>              :     void copy_ow_body(const int n_block, const int ow_b, const int ow_e);</span>
+<span id="L124"><span class="lineNum">     124</span>              :     void kw_loop(const int icb, const int icb_tail, const int ic_step,</span>
+<span id="L125"><span class="lineNum">     125</span>              :             const int m_block, const int mb_tail, const int n_block,</span>
+<span id="L126"><span class="lineNum">     126</span>              :             const bool use_inversion);</span>
+<span id="L127"><span class="lineNum">     127</span>              :     void kw_loop_base(const int icb, const int icb_tail, const int ic_step,</span>
+<span id="L128"><span class="lineNum">     128</span>              :             const int m_block, const int mb_tail, const int n_block);</span>
+<span id="L129"><span class="lineNum">     129</span>              :     void fwd_kw_ow_loop(const int icb, const int icb_tail, const int ic_step,</span>
+<span id="L130"><span class="lineNum">     130</span>              :             const int m_block, const int mb_tail, const int n_block,</span>
+<span id="L131"><span class="lineNum">     131</span>              :             const bool use_inversion);</span>
+<span id="L132"><span class="lineNum">     132</span>              :     void bwd_kw_iw_loop(const int icb, const int icb_tail, const int ic_step,</span>
+<span id="L133"><span class="lineNum">     133</span>              :             const int m_block, const int mb_tail, const int n_block);</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              :     void load_params();</span>
+<span id="L136"><span class="lineNum">     136</span>              :     void generate() override;</span>
+<span id="L137"><span class="lineNum">     137</span>              : };</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L140"><span class="lineNum">     140</span>              : struct jit_uni_brgemm_conv_relo_comp_pad_kernel_t : public jit_generator_t {</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">          15 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_brgemm_conv_relo_comp_pad_kernel_t)</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :     using reg64_t = const Xbyak::Reg64;</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span>              :     jit_uni_brgemm_conv_relo_comp_pad_kernel_t(</span>
+<span id="L145"><span class="lineNum">     145</span>              :             const jit_brgemm_conv_conf_t &amp;ajcp);</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">          10 :     ~jit_uni_brgemm_conv_relo_comp_pad_kernel_t() override = default;</span></span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              : protected:</span>
+<span id="L149"><span class="lineNum">     149</span>              :     jit_brgemm_conv_conf_t jcp_ = utils::zero&lt;decltype(jcp_)&gt;();</span>
+<span id="L150"><span class="lineNum">     150</span>              :     const int inp_dsz_;</span>
+<span id="L151"><span class="lineNum">     151</span>              :     const int out_dsz_;</span>
+<span id="L152"><span class="lineNum">     152</span>              :     const int inp_oc_block_;</span>
+<span id="L153"><span class="lineNum">     153</span>              :     const size_t inp_ic_sz_;</span>
+<span id="L154"><span class="lineNum">     154</span>              :     const size_t inp_kw_sz_;</span>
+<span id="L155"><span class="lineNum">     155</span>              :     const size_t inp_kh_sz_;</span>
+<span id="L156"><span class="lineNum">     156</span>              :     const size_t inp_oc_sz_;</span>
+<span id="L157"><span class="lineNum">     157</span>              :     const size_t out_ow_sz_;</span>
+<span id="L158"><span class="lineNum">     158</span>              :     const size_t out_ker_sz_;</span>
+<span id="L159"><span class="lineNum">     159</span>              :     const int isa_max_regs_;</span>
+<span id="L160"><span class="lineNum">     160</span>              : </span>
+<span id="L161"><span class="lineNum">     161</span>              :     // Register decomposition</span>
+<span id="L162"><span class="lineNum">     162</span>              :     const reg64_t param1 = abi_param1;</span>
+<span id="L163"><span class="lineNum">     163</span>              :     const reg64_t reg_in = r15;</span>
+<span id="L164"><span class="lineNum">     164</span>              :     const reg64_t reg_comp_out = r14;</span>
+<span id="L165"><span class="lineNum">     165</span>              :     const reg64_t reg_zp_comp_out = r13;</span>
+<span id="L166"><span class="lineNum">     166</span>              :     const reg64_t reg_kh_l = r12;</span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              :     const reg64_t reg_aux_zp_comp_out = r11;</span>
+<span id="L169"><span class="lineNum">     169</span>              :     const reg64_t reg_aux_comp_out = r10;</span>
+<span id="L170"><span class="lineNum">     170</span>              :     const reg64_t reg_aux_in = r9;</span>
+<span id="L171"><span class="lineNum">     171</span>              :     const reg64_t reg_ker_l = rsi;</span>
+<span id="L172"><span class="lineNum">     172</span>              :     const reg64_t reg_last_ocb = rbx;</span>
+<span id="L173"><span class="lineNum">     173</span>              :     const reg64_t reg_tmp = rax;</span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span>              :     Vmm vmm_tmp = Vmm(isa_max_regs_ - 1);</span>
+<span id="L176"><span class="lineNum">     176</span>              :     Vmm vmm_cp_shift = Vmm(isa_max_regs_ - 2);</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              :     const int n_max_regs_ = 4;</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :     Vmm accum(const int n, const bool has_s8s8_shift = false) const;</span>
+<span id="L181"><span class="lineNum">     181</span>              :     size_t out_oc_offset(const int n, const int w) const;</span>
+<span id="L182"><span class="lineNum">     182</span>              :     size_t inp_ic_offset(const int kw, const int ic, const int m) const;</span>
+<span id="L183"><span class="lineNum">     183</span>              :     void zero_accumulators(const int n_block);</span>
+<span id="L184"><span class="lineNum">     184</span>              :     void store_accumulators(const int n_block, const int ow_b, const int ow_e);</span>
+<span id="L185"><span class="lineNum">     185</span>              :     void store(const int n_block, const int ow_b, const int ow_e);</span>
+<span id="L186"><span class="lineNum">     186</span>              :     void kw_loop(const int n_block);</span>
+<span id="L187"><span class="lineNum">     187</span>              :     void compute(const int n_block, const int kw_b, const int kw_e);</span>
+<span id="L188"><span class="lineNum">     188</span>              :     void load_params();</span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              :     void generate() override;</span>
+<span id="L191"><span class="lineNum">     191</span>              : };</span>
+<span id="L192"><span class="lineNum">     192</span>              : } // namespace jit_uni_brgemm_conv_comp_pad_kernel</span>
+<span id="L193"><span class="lineNum">     193</span>              : </span>
+<span id="L194"><span class="lineNum">     194</span>              : } // namespace x64</span>
+<span id="L195"><span class="lineNum">     195</span>              : } // namespace cpu</span>
+<span id="L196"><span class="lineNum">     196</span>              : } // namespace impl</span>
+<span id="L197"><span class="lineNum">     197</span>              : } // namespace dnnl</span>
+<span id="L198"><span class="lineNum">     198</span>              : </span>
+<span id="L199"><span class="lineNum">     199</span>              : #endif</span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

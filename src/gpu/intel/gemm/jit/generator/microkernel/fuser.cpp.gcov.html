@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/microkernel/fuser.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/microkernel">src/gpu/intel/gemm/jit/generator/microkernel</a> - fuser.cpp<span style="font-size: 80%;"> (source / <a href="fuser.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.2&nbsp;%</td>
+            <td class="headerCovTableEntry">130</td>
+            <td class="headerCovTableEntry">125</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2024 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;cstdint&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &lt;cstring&gt;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &lt;fstream&gt;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;stdexcept&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;vector&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;generator/microkernel/elf.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;gemmstone/microkernel/fuser.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace microkernel {</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : static void fixupJumpTargets(uint8_t *start, size_t len, ptrdiff_t adjust);</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">        1284 : void fuse(std::vector&lt;uint8_t&gt; &amp;binary,</span></span>
+<span id="L32"><span class="lineNum">      32</span>              :         const std::vector&lt;uint8_t&gt; &amp;microkernel, long id) {</span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">        1284 :     auto base = binary.data();</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">        1284 :     auto bytes = binary.size();</span></span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        1284 :     auto fheaderPtr = reinterpret_cast&lt;FileHeader *&gt;(base);</span></span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        1284 :     bool ok = bytes &gt;= sizeof(fheaderPtr) &amp;&amp; fheaderPtr-&gt;magic == ELFMagic</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        1284 :             &amp;&amp; fheaderPtr-&gt;elfClass == ELFClass64</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        1284 :             &amp;&amp; fheaderPtr-&gt;endian == ELFLittleEndian</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        1284 :             &amp;&amp; fheaderPtr-&gt;sectionHeaderSize == sizeof(SectionHeader)</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        1284 :             &amp;&amp; (fheaderPtr-&gt;version == 0 || fheaderPtr-&gt;version == ELFVersion1)</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        1284 :             &amp;&amp; (fheaderPtr-&gt;type == ZebinExec</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">        1284 :                     || fheaderPtr-&gt;type == ELFRelocatable)</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">        2568 :             &amp;&amp; bytes &gt;= sizeof(fheaderPtr)</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">        1284 :                             + sizeof(SectionHeader) * fheaderPtr-&gt;sectionCount;</span></span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">        1284 :     if (!ok)</span></span>
+<span id="L49"><span class="lineNum">      49</span>              :         throw std::runtime_error(</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :                 &quot;IGC did not generate a valid zebin program binary&quot;);</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        1284 :     bool foundZeInfo = false;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        1284 :     SectionHeader *text = nullptr;</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">        1284 :     const char *snames = nullptr;</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">        1284 :     int textSectionID = -1, relSectionID = -1;</span></span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">        1284 :     auto *sheaders = reinterpret_cast&lt;SectionHeader *&gt;(</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        1284 :             base + fheaderPtr-&gt;sectionTableOff);</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        1284 :     snames = reinterpret_cast&lt;char *&gt;(</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        1284 :             base + sheaders[fheaderPtr-&gt;strTableIndex].offset);</span></span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       14124 :     for (int s = 0; s &lt; fheaderPtr-&gt;sectionCount; s++) {</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       12840 :         switch (sheaders[s].type) {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1284 :             case SectionHeader::Type::ZeInfo: foundZeInfo = true; break;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1284 :             case SectionHeader::Type::Program: {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">        1284 :                 if (snames) {</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        1284 :                     std::string sname(snames + sheaders[s].name);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        1284 :                     if (sname == &quot;.text.Intel_Symbol_Table_Void_Program&quot;)</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaUNC">           0 :                         continue;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        1284 :                     if (sname.substr(0, 6) != &quot;.text.&quot;) continue;</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :                 }</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        1284 :                 if (text)</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaUNC">           0 :                     throw std::runtime_error(&quot;Multiple kernels in program&quot;);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        1284 :                 text = sheaders + s;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">        1284 :                 textSectionID = s;</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        1284 :                 break;</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :             }</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       10272 :             default: break;</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :         }</span>
+<span id="L81"><span class="lineNum">      81</span>              :     }</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        1284 :     if (!foundZeInfo || !text || text-&gt;offset + text-&gt;size &gt; bytes)</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :         throw std::runtime_error(</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 :                 &quot;IGC did not generate a valid zebin program binary&quot;);</span></span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        1284 :     std::string rname = &quot;.rel&quot;;</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        1284 :     rname += (snames + text-&gt;name);</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       14124 :     for (int s = 0; s &lt; fheaderPtr-&gt;sectionCount; s++) {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">       12840 :         if (sheaders[s].type != SectionHeader::Type::Relocation) continue;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        1284 :         if (rname != (snames + sheaders[s].name)) continue;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        1284 :         if (relSectionID &gt;= 0)</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 :             throw std::runtime_error(&quot;Multiple relocation sections for kernel&quot;);</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">        1284 :         relSectionID = s;</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :     }</span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">        1284 :     auto *insn = reinterpret_cast&lt;const uint32_t *&gt;(base + text-&gt;offset);</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">        1284 :     auto *iend = reinterpret_cast&lt;const uint32_t *&gt;(</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">        1284 :             base + text-&gt;offset + text-&gt;size);</span></span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        1284 :     const uint8_t *spliceStart = nullptr;</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">        1284 :     const uint8_t *spliceEnd = nullptr;</span></span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">     4799969 :     for (; insn &lt; iend; insn += 4) {</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">     4799323 :         if (insn[0] &amp; (1u &lt;&lt; 29))</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      777753 :             insn -= 2;</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">     4021567 :         else if (insn[3] == (sigilStart ^ id))</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">         646 :             spliceStart = reinterpret_cast&lt;const uint8_t *&gt;(insn);</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">     4020921 :         else if (insn[3] == (sigilEnd ^ id)) {</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">         646 :             spliceEnd = reinterpret_cast&lt;const uint8_t *&gt;(insn);</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">         646 :             break;</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :         }</span>
+<span id="L113"><span class="lineNum">     113</span>              :     }</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">        1284 :     if (!spliceStart || !spliceEnd) return;</span></span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">         646 :     auto removeBytes = spliceEnd - spliceStart + 16;</span></span>
+<span id="L118"><span class="lineNum">     118</span>              : </span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         646 :     size_t before = spliceStart - base;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         646 :     auto after = bytes - before - removeBytes;</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">         646 :     ptrdiff_t sizeAdjust = microkernel.size() - removeBytes;</span></span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">         646 :     auto kbefore = before - text-&gt;offset;</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">         646 :     auto kafter = text-&gt;size - kbefore - removeBytes;</span></span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        1292 :     std::vector&lt;uint8_t&gt; newBinary(bytes + sizeAdjust);</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">         646 :     auto newBase = newBinary.data();</span></span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">         646 :     memmove(newBase, base, before);</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">         646 :     memmove(newBase + before, microkernel.data(), microkernel.size());</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">         646 :     memmove(newBase + before + microkernel.size(), spliceStart + removeBytes,</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :             after);</span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">         646 :     fixupJumpTargets(newBase + text-&gt;offset, kbefore, +sizeAdjust);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        1292 :     fixupJumpTargets(</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         646 :             newBase + before + microkernel.size(), kafter, -sizeAdjust);</span></span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">         646 :     fheaderPtr = reinterpret_cast&lt;FileHeader *&gt;(newBase);</span></span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">         646 :     if (fheaderPtr-&gt;sectionTableOff &gt; before)</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         646 :         fheaderPtr-&gt;sectionTableOff += sizeAdjust;</span></span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">         646 :     sheaders = reinterpret_cast&lt;SectionHeader *&gt;(</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">         646 :             newBase + fheaderPtr-&gt;sectionTableOff);</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">         646 :     sheaders[textSectionID].size += sizeAdjust;</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        7106 :     for (int s = 0; s &lt; fheaderPtr-&gt;sectionCount; s++)</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        6460 :         if (sheaders[s].offset &gt; before) sheaders[s].offset += sizeAdjust;</span></span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">         646 :     if (relSectionID &gt;= 0) {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">         646 :         auto relSection = sheaders + relSectionID;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">         646 :         auto rel = reinterpret_cast&lt;Relocation *&gt;(newBase + relSection-&gt;offset);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">         646 :         auto relEnd = reinterpret_cast&lt;Relocation *&gt;(</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">         646 :                 newBase + relSection-&gt;offset + relSection-&gt;size);</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        1938 :         for (; rel &lt; relEnd; rel++) {</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">        1292 :             if (rel-&gt;offset &gt;= kbefore) rel-&gt;offset += sizeAdjust;</span></span>
+<span id="L156"><span class="lineNum">     156</span>              :         }</span>
+<span id="L157"><span class="lineNum">     157</span>              :     }</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              : #ifdef SPLICE_DEBUG</span>
+<span id="L160"><span class="lineNum">     160</span>              :     std::ofstream dump0(&quot;original.bin&quot;);</span>
+<span id="L161"><span class="lineNum">     161</span>              :     dump0.write((const char *)binary.data(), binary.size());</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span>              :     std::ofstream dump(&quot;patched.bin&quot;);</span>
+<span id="L164"><span class="lineNum">     164</span>              :     dump.write((const char *)newBinary.data(), newBinary.size());</span>
+<span id="L165"><span class="lineNum">     165</span>              : #endif</span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">         646 :     std::swap(binary, newBinary);</span></span>
+<span id="L168"><span class="lineNum">     168</span>              : </span>
+<span id="L169"><span class="lineNum">     169</span>              :     // Tail-recurse to handle any further instances of this microkernel</span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">         646 :     fuse(binary, microkernel, id);</span></span>
+<span id="L171"><span class="lineNum">     171</span>              : }</span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">         320 : void fuse(std::vector&lt;uint8_t&gt; &amp;binary, const char *source) {</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">         640 :     std::vector&lt;uint8_t&gt; microkernel;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         320 :     const auto sigilLen = strlen(sigilBinary);</span></span>
+<span id="L176"><span class="lineNum">     176</span>              : </span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">    38554226 :     auto toNybble = [](char c) {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">    38554226 :         return ((c &gt;= 'A') ? (c - 'A' + 10) : (c - '0')) &amp; 0xF;</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :     };</span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">         958 :     for (const char *s = std::strstr(source, sigilBinary); s;</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">         638 :             s = std::strstr(s, sigilBinary)) {</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">         638 :         s += sigilLen;</span></span>
+<span id="L184"><span class="lineNum">     184</span>              :         char *after;</span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         638 :         long id = strtol(s, &amp;after, 10);</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">         638 :         microkernel.clear();</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">    19277764 :         for (s = after + 1; *s != '\n'; s += 2) {</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">    19277118 :             if (!s[0] || !s[1]) break;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">    19277118 :             microkernel.push_back(static_cast&lt;uint8_t&gt;(</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">    19277118 :                     (toNybble(s[0]) &lt;&lt; 4) | toNybble(s[1])));</span></span>
+<span id="L191"><span class="lineNum">     191</span>              :         }</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">         638 :         fuse(binary, microkernel, id);</span></span>
+<span id="L193"><span class="lineNum">     193</span>              :     }</span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">         320 : }</span></span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        1292 : static void fixupJumpTargets(uint8_t *start, size_t len, ptrdiff_t adjust) {</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">        1292 :     auto istart = reinterpret_cast&lt;int32_t *&gt;(start);</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">        1292 :     auto iend = reinterpret_cast&lt;int32_t *&gt;(start + len);</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">     2038291 :     for (auto insn = istart; insn &lt; iend; insn += 4) {</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">     2036999 :         if (insn[0] &amp; (1u &lt;&lt; 29)) {</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      490724 :             insn -= 2; /* skip compacted instructions */</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">     1958962 :             continue;</span></span>
+<span id="L204"><span class="lineNum">     204</span>              :         }</span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">     1546275 :         uint8_t op = insn[0] &amp; 0xFF;</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">     1546275 :         if ((op &amp; 0xF0) != 0x20) continue; /* skip non-jumps */</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       78037 :         if (op == 0x2B || op == 0x2D) continue; /* skip ret/calla */</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">       77537 :         bool hasUIP = (op == 0x22 || op == 0x23 || op == 0x24 || op == 0x28</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">      155574 :                 || op == 0x2A || op == 0x2E);</span></span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      103093 :         auto jumpFixup = [=](int32_t &amp;ip) {</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      103093 :             auto target = ((insn - istart) &lt;&lt; 2) + ip;</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      103093 :             if (target &lt; 0 || target &gt;= ptrdiff_t(len)) ip += adjust;</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      181130 :         };</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       78037 :         if (hasUIP) jumpFixup(insn[2]);</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">       78037 :         jumpFixup(insn[3]);</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :     }</span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">        1292 : }</span></span>
+<span id="L220"><span class="lineNum">     220</span>              : </span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">         320 : bool hasMicrokernels(const char *source) {</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">         320 :     return std::strstr(source, sigilBinary);</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : }</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span>              : }</span>
+<span id="L226"><span class="lineNum">     226</span>              : GEMMSTONE_NAMESPACE_END</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

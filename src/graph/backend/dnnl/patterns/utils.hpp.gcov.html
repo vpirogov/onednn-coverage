@@ -1,0 +1,671 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/backend/dnnl/patterns/utils.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/backend/dnnl/patterns">src/graph/backend/dnnl/patterns</a> - utils.hpp<span style="font-size: 80%;"> (source / <a href="utils.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">97.3&nbsp;%</td>
+            <td class="headerCovTableEntry">291</td>
+            <td class="headerCovTableEntry">283</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntry">48</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2020 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : #ifndef GRAPH_BACKEND_DNNL_PATTERNS_UTILS_HPP</span>
+<span id="L17"><span class="lineNum">      17</span>              : #define GRAPH_BACKEND_DNNL_PATTERNS_UTILS_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &lt;functional&gt;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;memory&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;string&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;vector&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;graph/interface/c_types_map.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;graph/interface/graph.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;graph/interface/value.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace dnnl {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace impl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace graph {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace dnnl_impl {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace pattern {</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : #define VCHECK_PATTERN_UTILS(cond, status, msg, ...) \</span>
+<span id="L35"><span class="lineNum">      35</span>              :     VCONDCHECK(graph, create, check, pattern, (cond), status, msg, \</span>
+<span id="L36"><span class="lineNum">      36</span>              :             ##__VA_ARGS__);</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : template &lt;int64_t N&gt;</span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        4979 : bool check_zps_values(op_t *op) {</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        4979 :     if (op-&gt;has_attr(op_attr::zps) == false) return true;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        4786 :     auto zps = op-&gt;get_attr&lt;std::vector&lt;int64_t&gt;&gt;(op_attr::zps);</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        9572 :     return std::all_of(</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       88427 :             zps.begin(), zps.end(), [](int64_t i) { return i == N; });</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : }</span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         118 : inline bool check_quant_with_no_effect(op_t *op) {</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         118 :     const op_kind_t kind = op-&gt;get_kind();</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         118 :     if (!graph::utils::one_of(</span></span>
+<span id="L49"><span class="lineNum">      49</span>              :                 kind, graph::op_kind::Quantize, graph::op_kind::Dequantize))</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :         return true;</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         118 :     auto scales = op-&gt;get_attr&lt;std::vector&lt;float&gt;&gt;(op_attr::scales);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         118 :     const auto scale_no_effect = std::all_of(</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         118 :             scales.begin(), scales.end(), [](float i) { return i == 1.f; });</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         118 :     return scale_no_effect &amp;&amp; check_zps_values&lt;0&gt;(op);</span></span>
+<span id="L56"><span class="lineNum">      56</span>              : }</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              : template &lt;size_t N&gt;</span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        3746 : bool check_input_num(op_t *op) {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        3746 :     return op-&gt;num_inputs() == N;</span></span>
+<span id="L61"><span class="lineNum">      61</span>              : }</span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span>              : template &lt;size_t N&gt;</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         484 : bool check_output_num(op_t *op) {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         484 :     return op-&gt;num_outputs() == N;</span></span>
+<span id="L66"><span class="lineNum">      66</span>              : }</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              : template &lt;data_type_t DTYPE&gt;</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         675 : bool check_unsupported_input_dtype(op_t *op) {</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        1350 :     for (size_t i = 0; i &lt; op-&gt;num_inputs(); ++i) {</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         675 :         const logical_tensor_t &amp;iport = op-&gt;get_input_logical_tensor(i);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">         675 :         if (iport.data_type == DTYPE) return false;</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :     }</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         675 :     return true;</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : }</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              : template &lt;data_type_t DTYPE&gt;</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       14478 : bool check_input_dtype(op_t *op) {</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       27474 :     for (size_t i = 0; i &lt; op-&gt;num_inputs(); ++i) {</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       15373 :         const logical_tensor_t &amp;iport = op-&gt;get_input_logical_tensor(i);</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       15373 :         if (iport.data_type != DTYPE) return false;</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :     }</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       12101 :     return true;</span></span>
+<span id="L86"><span class="lineNum">      86</span>              : }</span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span>              : template &lt;data_type_t DTYPE, size_t N&gt;</span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        2491 : bool check_input_dtype_from_offset(op_t *op) {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">        2491 :     if (N &gt;= op-&gt;num_inputs()) return true;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        9066 :     for (size_t i = N; i &lt; op-&gt;num_inputs(); ++i) {</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        6911 :         const logical_tensor_t &amp;iport = op-&gt;get_input_logical_tensor(i);</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        6911 :         if (iport.data_type != DTYPE) return false;</span></span>
+<span id="L94"><span class="lineNum">      94</span>              :     }</span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">        2155 :     return true;</span></span>
+<span id="L97"><span class="lineNum">      97</span>              : }</span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span>              : template &lt;dim N&gt;</span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">        1604 : static inline bool check_conv_weight_size(op_t *op) {</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        3208 :     std::string weight_fmt = op-&gt;get_attr&lt;std::string&gt;(op_attr::weights_format);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">        1604 :     const logical_tensor_t &amp;weight_lt = op-&gt;get_input_logical_tensor(1);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">        1604 :     const auto weight_lt_wrapper = logical_tensor_wrapper_t(weight_lt);</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">        1604 :     if (weight_lt_wrapper.ndims() == DNNL_GRAPH_UNKNOWN_NDIMS) { return false; }</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">        1262 :     dims fil_sp = weight_lt_wrapper.get_weight_spatial_dims(weight_fmt);</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">        1262 :     bool all_equal = std::all_of(</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">        2185 :             fil_sp.begin(), fil_sp.end(), [](dim value) { return value == N; });</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">        1262 :     return all_equal;</span></span>
+<span id="L109"><span class="lineNum">     109</span>              : }</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              : template &lt;data_type_t DTYPE&gt;</span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">       17159 : bool check_output_dtype(op_t *op) {</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">       33548 :     for (size_t i = 0; i &lt; op-&gt;num_outputs(); ++i) {</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       17159 :         const logical_tensor_t &amp;oport = op-&gt;get_output_logical_tensor(i);</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">       17159 :         if (oport.data_type != DTYPE) return false;</span></span>
+<span id="L116"><span class="lineNum">     116</span>              :     }</span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">       16389 :     return true;</span></span>
+<span id="L119"><span class="lineNum">     119</span>              : }</span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span>              : template &lt;size_t N&gt;</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        3810 : bool check_producer_input_num(op_t *op) {</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        3810 :     op_t *producer = op-&gt;get_input_op(0);</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">        3810 :     return producer-&gt;num_inputs() == N;</span></span>
+<span id="L125"><span class="lineNum">     125</span>              : }</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       10791 : inline bool check_qtype_equal_to_per_tensor(op_t *op) {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       21582 :     std::string qtype = op-&gt;get_attr&lt;std::string&gt;(op_attr::qtype);</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       21582 :     return qtype == &quot;per_tensor&quot;;</span></span>
+<span id="L130"><span class="lineNum">     130</span>              : }</span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">        1031 : inline bool check_begin_norm_axis_attr(const op_t *op) {</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">        1031 :     const logical_tensor_t &amp;src_lt = op-&gt;get_input_logical_tensor(0);</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">        1031 :     const auto src_lt_wrapper = logical_tensor_wrapper_t(src_lt);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        1031 :     const auto ndims = src_lt_wrapper.ndims();</span></span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        1031 :     if (op-&gt;has_attr(op_attr::begin_norm_axis)) {</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :         const auto begin_norm_axis</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">        1031 :                 = op-&gt;get_attr&lt;int64_t&gt;(op_attr::begin_norm_axis);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">        1031 :         if (ndims == DNNL_GRAPH_UNKNOWN_NDIMS) return begin_norm_axis == -1;</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         913 :         return begin_norm_axis == -1 || begin_norm_axis == ndims - 1;</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaUNC">           0 :     return true;</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : }</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span>              : // min &lt;= input[offset]-&gt;ndims() &lt;= max</span>
+<span id="L147"><span class="lineNum">     147</span>              : template &lt;size_t OFFSET, int32_t MIN, int32_t MAX&gt;</span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">        1000 : inline bool check_input_ndim_from_offset(const op_t *op) {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        1000 :     if (OFFSET &gt;= op-&gt;num_inputs()) return false;</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        1000 :     const logical_tensor_t &amp;src_lt = op-&gt;get_input_logical_tensor(OFFSET);</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        1000 :     const auto src_lt_wrapper = logical_tensor_wrapper_t(src_lt);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        1000 :     const auto ndims = src_lt_wrapper.ndims();</span></span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        1000 :     if (ndims == DNNL_GRAPH_UNKNOWN_NDIMS) return true;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">         882 :     return ndims &gt;= MIN &amp;&amp; ndims &lt;= MAX;</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : }</span>
+<span id="L157"><span class="lineNum">     157</span>              : </span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       35325 : inline const std::vector&lt;op_kind_t&gt; &amp;get_unary_ops() {</span></span>
+<span id="L159"><span class="lineNum">     159</span>              :     const static std::vector&lt;op_kind_t&gt; unary = {</span>
+<span id="L160"><span class="lineNum">     160</span>              :             graph::op_kind::Abs,</span>
+<span id="L161"><span class="lineNum">     161</span>              :             graph::op_kind::Clamp,</span>
+<span id="L162"><span class="lineNum">     162</span>              :             graph::op_kind::Elu,</span>
+<span id="L163"><span class="lineNum">     163</span>              :             graph::op_kind::Exp,</span>
+<span id="L164"><span class="lineNum">     164</span>              :             graph::op_kind::GELU,</span>
+<span id="L165"><span class="lineNum">     165</span>              :             graph::op_kind::HardSigmoid,</span>
+<span id="L166"><span class="lineNum">     166</span>              :             graph::op_kind::HardSwish,</span>
+<span id="L167"><span class="lineNum">     167</span>              :             graph::op_kind::LeakyReLU,</span>
+<span id="L168"><span class="lineNum">     168</span>              :             graph::op_kind::Log,</span>
+<span id="L169"><span class="lineNum">     169</span>              :             graph::op_kind::Mish,</span>
+<span id="L170"><span class="lineNum">     170</span>              :             graph::op_kind::Sigmoid,</span>
+<span id="L171"><span class="lineNum">     171</span>              :             graph::op_kind::SoftPlus,</span>
+<span id="L172"><span class="lineNum">     172</span>              :             graph::op_kind::ReLU,</span>
+<span id="L173"><span class="lineNum">     173</span>              :             graph::op_kind::Round,</span>
+<span id="L174"><span class="lineNum">     174</span>              :             graph::op_kind::Sqrt,</span>
+<span id="L175"><span class="lineNum">     175</span>              :             graph::op_kind::Square,</span>
+<span id="L176"><span class="lineNum">     176</span>              :             graph::op_kind::Tanh,</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       35325 :     };</span></span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       35325 :     return unary;</span></span>
+<span id="L180"><span class="lineNum">     180</span>              : }</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">        7065 : inline const std::vector&lt;op_kind_t&gt; &amp;get_unary_bwd_ops() {</span></span>
+<span id="L183"><span class="lineNum">     183</span>              :     const static std::vector&lt;op_kind_t&gt; unary_bwd = {</span>
+<span id="L184"><span class="lineNum">     184</span>              :             graph::op_kind::AbsBackward,</span>
+<span id="L185"><span class="lineNum">     185</span>              :             graph::op_kind::ClampBackward,</span>
+<span id="L186"><span class="lineNum">     186</span>              :             graph::op_kind::EluBackward,</span>
+<span id="L187"><span class="lineNum">     187</span>              :             graph::op_kind::GELUBackward,</span>
+<span id="L188"><span class="lineNum">     188</span>              :             graph::op_kind::HardSigmoidBackward,</span>
+<span id="L189"><span class="lineNum">     189</span>              :             graph::op_kind::HardSwishBackward,</span>
+<span id="L190"><span class="lineNum">     190</span>              :             graph::op_kind::MishBackward,</span>
+<span id="L191"><span class="lineNum">     191</span>              :             graph::op_kind::SigmoidBackward,</span>
+<span id="L192"><span class="lineNum">     192</span>              :             graph::op_kind::SoftPlusBackward,</span>
+<span id="L193"><span class="lineNum">     193</span>              :             graph::op_kind::ReLUBackward,</span>
+<span id="L194"><span class="lineNum">     194</span>              :             graph::op_kind::SqrtBackward,</span>
+<span id="L195"><span class="lineNum">     195</span>              :             graph::op_kind::TanhBackward,</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        7065 :     };</span></span>
+<span id="L197"><span class="lineNum">     197</span>              : </span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">        7065 :     return unary_bwd;</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : }</span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       63585 : inline const std::vector&lt;op_kind_t&gt; &amp;get_binary_ops() {</span></span>
+<span id="L202"><span class="lineNum">     202</span>              :     const static std::vector&lt;op_kind_t&gt; binary = {</span>
+<span id="L203"><span class="lineNum">     203</span>              :             graph::op_kind::Add,</span>
+<span id="L204"><span class="lineNum">     204</span>              :             graph::op_kind::Multiply,</span>
+<span id="L205"><span class="lineNum">     205</span>              :             graph::op_kind::Maximum,</span>
+<span id="L206"><span class="lineNum">     206</span>              :             graph::op_kind::Minimum,</span>
+<span id="L207"><span class="lineNum">     207</span>              :             graph::op_kind::Divide,</span>
+<span id="L208"><span class="lineNum">     208</span>              :             graph::op_kind::Subtract,</span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       63585 :     };</span></span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">       63585 :     return binary;</span></span>
+<span id="L212"><span class="lineNum">     212</span>              : }</span>
+<span id="L213"><span class="lineNum">     213</span>              : </span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      207963 : inline const std::vector&lt;op_kind_t&gt; &amp;get_unary_binary_ops() {</span></span>
+<span id="L215"><span class="lineNum">     215</span>              :     const static std::vector&lt;op_kind_t&gt; unary_binary = {</span>
+<span id="L216"><span class="lineNum">     216</span>              :             graph::op_kind::Abs,</span>
+<span id="L217"><span class="lineNum">     217</span>              :             graph::op_kind::Clamp,</span>
+<span id="L218"><span class="lineNum">     218</span>              :             graph::op_kind::Elu,</span>
+<span id="L219"><span class="lineNum">     219</span>              :             graph::op_kind::Exp,</span>
+<span id="L220"><span class="lineNum">     220</span>              :             graph::op_kind::GELU,</span>
+<span id="L221"><span class="lineNum">     221</span>              :             graph::op_kind::HardSigmoid,</span>
+<span id="L222"><span class="lineNum">     222</span>              :             graph::op_kind::HardSwish,</span>
+<span id="L223"><span class="lineNum">     223</span>              :             graph::op_kind::LeakyReLU,</span>
+<span id="L224"><span class="lineNum">     224</span>              :             graph::op_kind::Log,</span>
+<span id="L225"><span class="lineNum">     225</span>              :             graph::op_kind::Mish,</span>
+<span id="L226"><span class="lineNum">     226</span>              :             graph::op_kind::Sigmoid,</span>
+<span id="L227"><span class="lineNum">     227</span>              :             graph::op_kind::SoftPlus,</span>
+<span id="L228"><span class="lineNum">     228</span>              :             graph::op_kind::ReLU,</span>
+<span id="L229"><span class="lineNum">     229</span>              :             graph::op_kind::Round,</span>
+<span id="L230"><span class="lineNum">     230</span>              :             graph::op_kind::Sqrt,</span>
+<span id="L231"><span class="lineNum">     231</span>              :             graph::op_kind::Square,</span>
+<span id="L232"><span class="lineNum">     232</span>              :             graph::op_kind::Tanh,</span>
+<span id="L233"><span class="lineNum">     233</span>              :             graph::op_kind::Add,</span>
+<span id="L234"><span class="lineNum">     234</span>              :             graph::op_kind::Multiply,</span>
+<span id="L235"><span class="lineNum">     235</span>              :             graph::op_kind::Maximum,</span>
+<span id="L236"><span class="lineNum">     236</span>              :             graph::op_kind::Minimum,</span>
+<span id="L237"><span class="lineNum">     237</span>              :             graph::op_kind::Divide,</span>
+<span id="L238"><span class="lineNum">     238</span>              :             graph::op_kind::Subtract,</span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">      207963 :     };</span></span>
+<span id="L240"><span class="lineNum">     240</span>              : </span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">      207963 :     return unary_binary;</span></span>
+<span id="L242"><span class="lineNum">     242</span>              : }</span>
+<span id="L243"><span class="lineNum">     243</span>              : </span>
+<span id="L244"><span class="lineNum">     244</span>              : // Optional Quantize for weight will only be fused</span>
+<span id="L245"><span class="lineNum">     245</span>              : // when:</span>
+<span id="L246"><span class="lineNum">     246</span>              : // 1. input logical tensor has constant property type</span>
+<span id="L247"><span class="lineNum">     247</span>              : // 2. the optional Quantize has a Wildcard producer</span>
+<span id="L248"><span class="lineNum">     248</span>              : // 3. the optional Quantize has no producer</span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        3191 : inline bool check_if_constant_weight(op_t *op) {</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        6382 :     const auto &amp;in_value = op-&gt;get_input_value(0);</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">        3191 :     if (in_value-&gt;get_logical_tensor().property</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        3191 :             == graph::property_type::constant) {</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         168 :         return true;</span></span>
+<span id="L254"><span class="lineNum">     254</span>              :     }</span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        3023 :     if (in_value-&gt;has_producer()) {</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">          24 :         return in_value-&gt;get_producer().get_kind() == graph::op_kind::Wildcard;</span></span>
+<span id="L257"><span class="lineNum">     257</span>              :     } else {</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">        2999 :         return true;</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :     }</span>
+<span id="L260"><span class="lineNum">     260</span>              : }</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">        9899 : inline bool is_f8_quantization(const op_t *op) {</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        9899 :     const op_kind_t kind = op-&gt;get_kind();</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        9899 :     if (kind == graph::op_kind::Quantize) {</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaUNC">           0 :         const auto &amp;out = op-&gt;get_output_logical_tensor(0);</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaUNC">           0 :         return graph::utils::one_of(out.data_type, graph::data_type::f8_e4m3,</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaUNC">           0 :                 graph::data_type::f8_e5m2);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        9899 :     } else if (kind == graph::op_kind::Dequantize) {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        9899 :         const auto &amp;in = op-&gt;get_input_logical_tensor(0);</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        9899 :         return graph::utils::one_of(in.data_type, graph::data_type::f8_e4m3,</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        9899 :                 graph::data_type::f8_e5m2);</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :     } else {</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaUNC">           0 :         return false;</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :     }</span>
+<span id="L275"><span class="lineNum">     275</span>              : }</span>
+<span id="L276"><span class="lineNum">     276</span>              : </span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       61043 : inline bool is_int8_quantization(const op_t *op) {</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       61043 :     const op_kind_t kind = op-&gt;get_kind();</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       61043 :     if (kind == graph::op_kind::Quantize) {</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        7198 :         const auto &amp;out = op-&gt;get_output_logical_tensor(0);</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       14396 :         return graph::utils::one_of(</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        7198 :                 out.data_type, graph::data_type::s8, graph::data_type::u8);</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">       53845 :     } else if (kind == graph::op_kind::Dequantize) {</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">       53845 :         const auto &amp;in = op-&gt;get_input_logical_tensor(0);</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">      107690 :         return graph::utils::one_of(</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">       53845 :                 in.data_type, graph::data_type::s8, graph::data_type::u8);</span></span>
+<span id="L287"><span class="lineNum">     287</span>              :     } else {</span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaUNC">           0 :         return false;</span></span>
+<span id="L289"><span class="lineNum">     289</span>              :     }</span>
+<span id="L290"><span class="lineNum">     290</span>              : }</span>
+<span id="L291"><span class="lineNum">     291</span>              : </span>
+<span id="L292"><span class="lineNum">     292</span>              : // Optional BiasAdd after operator like Conv/ConvTranspose/Matmul. If</span>
+<span id="L293"><span class="lineNum">     293</span>              : // `maybe_typecase` is true, there will also be an optional TypeCast before the</span>
+<span id="L294"><span class="lineNum">     294</span>              : // 2nd input of BiasAdd.</span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">      164124 : inline graph::utils::pm::repetition_t *optional_bias_add(</span></span>
+<span id="L296"><span class="lineNum">     296</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L297"><span class="lineNum">     297</span>              :         graph::utils::pm::pb_op_t *input, bool maybe_typecast = false) {</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      164124 :     auto popt_bias_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">      164124 :     graph::utils::pm::pb_op_t *pbias = nullptr;</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">      164124 :     if (maybe_typecast) {</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">       45288 :         auto popt_tc_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L302"><span class="lineNum">     302</span>              :         graph::utils::pm::pb_op_t *typecast_bias</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">       45288 :                 = popt_tc_graph-&gt;append_op(graph::op_kind::TypeCast);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       45288 :         popt_tc_graph-&gt;create_input_port(0, typecast_bias, 0);</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">       45288 :         popt_tc_graph-&gt;create_output_port(0, typecast_bias, 0);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       45288 :         auto popt_tc = popt_bias_graph-&gt;append_optional(popt_tc_graph);</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">       90576 :         pbias = popt_bias_graph-&gt;append_op(graph::op_kind::BiasAdd,</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">      135864 :                 graph::utils::pm::in_edges_t {in_edge(1, popt_tc, 0)});</span></span>
+<span id="L309"><span class="lineNum">     309</span>              :     } else {</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">      118836 :         pbias = popt_bias_graph-&gt;append_op(graph::op_kind::BiasAdd);</span></span>
+<span id="L311"><span class="lineNum">     311</span>              :     }</span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">      164124 :     pbias-&gt;append_decision_function(check_producer_input_num&lt;2&gt;);</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">      164124 :     popt_bias_graph-&gt;create_input_port(0, pbias, 0);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">      164124 :     popt_bias_graph-&gt;create_output_port(0, pbias, 0);</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">      328248 :     auto popt_bias = pgraph-&gt;append_optional(popt_bias_graph,</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">      492372 :             graph::utils::pm::in_edges_t {in_edge(0, input, 0)});</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">      328248 :     return popt_bias;</span></span>
+<span id="L318"><span class="lineNum">     318</span>              : }</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">       34056 : inline graph::utils::pm::repetition_t *post_quantized_add(</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L322"><span class="lineNum">     322</span>              :         graph::utils::pm::pb_node_t *input, bool check_zps = false) {</span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              :     // post sum</span>
+<span id="L325"><span class="lineNum">     325</span>              :     graph::utils::pm::pb_op_t *pdequant_add</span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       34056 :             = pgraph-&gt;append_op(graph::op_kind::Dequantize);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">       34056 :     if (check_zps) pdequant_add-&gt;append_decision_function(check_zps_values&lt;0&gt;);</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">       68112 :     graph::utils::pm::pb_op_t *padd = pgraph-&gt;append_op(graph::op_kind::Add,</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">      136224 :             graph::utils::pm::in_edges_t {</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">       68112 :                     in_edge(0, input, 0), in_edge(1, pdequant_add, 0)});</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span>              :     // other following post ops</span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       34056 :     auto postop_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L334"><span class="lineNum">     334</span>              :     graph::utils::pm::pb_op_t *pop</span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">       34056 :             = postop_graph-&gt;append_alternation(get_unary_binary_ops());</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">       34056 :     pop-&gt;allow_internal_inputs();</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">       34056 :     postop_graph-&gt;create_input_port(0, pop, 0);</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">       34056 :     postop_graph-&gt;create_input_port(1, pop, 1);</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">       34056 :     postop_graph-&gt;create_output_port(0, pop, 0);</span></span>
+<span id="L340"><span class="lineNum">     340</span>              : </span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">       68112 :     auto prep = pgraph-&gt;append_repetition(postop_graph, {0, 0}, 0,</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">      102168 :             MAX_REPETITION, graph::utils::pm::in_edges_t {in_edge(0, padd, 0)});</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">       68112 :     return prep;</span></span>
+<span id="L344"><span class="lineNum">     344</span>              : }</span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span>              : /*</span>
+<span id="L347"><span class="lineNum">     347</span>              :     if optional_qout is true:</span>
+<span id="L348"><span class="lineNum">     348</span>              :         pattern is [ [Multiply / Divide]* - Quantize]*</span>
+<span id="L349"><span class="lineNum">     349</span>              :     else:</span>
+<span id="L350"><span class="lineNum">     350</span>              :         pattern is [Multiply / Divide]* - Quantize</span>
+<span id="L351"><span class="lineNum">     351</span>              : */</span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       15579 : inline graph::utils::pm::pb_node_t *optional_smooth_quant(</span></span>
+<span id="L353"><span class="lineNum">     353</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L354"><span class="lineNum">     354</span>              :         graph::utils::pm::pb_node_t *input, bool optional_qout = false) {</span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">       31158 :     auto optional_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">       15579 :     graph::utils::pm::pb_op_t *smooth_op = optional_graph-&gt;append_alternation(</span></span>
+<span id="L357"><span class="lineNum">     357</span>              :             {graph::op_kind::Multiply, graph::op_kind::Divide});</span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">       15579 :     optional_graph-&gt;create_input_port(0, smooth_op, 0);</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">       15579 :     optional_graph-&gt;create_output_port(0, smooth_op, 0);</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">       31158 :     auto popt_qout_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       31158 :     auto p_curr_graph = optional_qout ? popt_qout_graph : pgraph;</span></span>
+<span id="L362"><span class="lineNum">     362</span>              :     auto opt = optional_qout</span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">       15579 :             ? p_curr_graph-&gt;append_optional(optional_graph)</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">       17028 :             : p_curr_graph-&gt;append_optional(optional_graph,</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       32607 :                       graph::utils::pm::in_edges_t {in_edge(0, input, 0)});</span></span>
+<span id="L366"><span class="lineNum">     366</span>              :     graph::utils::pm::pb_op_t *quant_out</span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">       31158 :             = p_curr_graph-&gt;append_op(graph::op_kind::Quantize,</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">       46737 :                     graph::utils::pm::in_edges_t {in_edge(0, opt, 0)});</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">       15579 :     if (optional_qout) {</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">        7065 :         p_curr_graph-&gt;create_input_port(0, opt, 0);</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">        7065 :         p_curr_graph-&gt;create_output_port(0, quant_out, 0);</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       14130 :         auto opt_qout = pgraph-&gt;append_optional(p_curr_graph,</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">       21195 :                 graph::utils::pm::in_edges_t {in_edge(0, input, 0)});</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">        7065 :         return opt_qout;</span></span>
+<span id="L375"><span class="lineNum">     375</span>              :     } else {</span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">        8514 :         return quant_out;</span></span>
+<span id="L377"><span class="lineNum">     377</span>              :     }</span>
+<span id="L378"><span class="lineNum">     378</span>              : }</span>
+<span id="L379"><span class="lineNum">     379</span>              : </span>
+<span id="L380"><span class="lineNum">     380</span>              : // Optional Select</span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">      169560 : inline graph::utils::pm::repetition_t *optional_select(</span></span>
+<span id="L382"><span class="lineNum">     382</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L383"><span class="lineNum">     383</span>              :         graph::utils::pm::pb_node_t *input, int input_index) {</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">      169560 :     auto popt_select_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L385"><span class="lineNum">     385</span>              : </span>
+<span id="L386"><span class="lineNum">     386</span>              :     graph::utils::pm::pb_op_t *select_op</span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">      169560 :             = popt_select_graph-&gt;append_op(graph::op_kind::Select);</span></span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">      169560 :     popt_select_graph-&gt;create_input_port(0, select_op, 0);</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">      169560 :     popt_select_graph-&gt;create_input_port(1, select_op, 1);</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">      169560 :     popt_select_graph-&gt;create_input_port(2, select_op, 2);</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">      169560 :     popt_select_graph-&gt;create_output_port(0, select_op, 0);</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      339120 :     auto pselect = pgraph-&gt;append_optional(popt_select_graph,</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">      508680 :             graph::utils::pm::in_edges_t {in_edge(input_index, input, 0)});</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">      339120 :     return pselect;</span></span>
+<span id="L396"><span class="lineNum">     396</span>              : }</span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">      127170 : inline graph::utils::pm::repetition_t *optional_scale(</span></span>
+<span id="L399"><span class="lineNum">     399</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L400"><span class="lineNum">     400</span>              :         graph::utils::pm::pb_node_t *input) {</span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">      127170 :     auto scale_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">      127170 :     auto scale = scale_graph-&gt;append_alternation(</span></span>
+<span id="L403"><span class="lineNum">     403</span>              :             {graph::op_kind::Divide, graph::op_kind::Multiply});</span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">      127170 :     scale_graph-&gt;create_input_port(0, scale, 0);</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">      127170 :     scale_graph-&gt;create_output_port(0, scale, 0);</span></span>
+<span id="L406"><span class="lineNum">     406</span>              :     auto optional_scale</span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">      254340 :             = pgraph-&gt;append_optional(scale_graph, {in_edge(0, input, 0)});</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">      254340 :     return optional_scale;</span></span>
+<span id="L409"><span class="lineNum">     409</span>              : }</span>
+<span id="L410"><span class="lineNum">     410</span>              : </span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">       21195 : inline graph::utils::pm::repetition_t *optional_dropout(</span></span>
+<span id="L412"><span class="lineNum">     412</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L413"><span class="lineNum">     413</span>              :         graph::utils::pm::pb_node_t *input) {</span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">       21195 :     auto dropout_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">       21195 :     auto dropout = dropout_graph-&gt;append_op(graph::op_kind::Dropout);</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">       21195 :     dropout_graph-&gt;create_input_port(0, dropout, 0);</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">       21195 :     dropout_graph-&gt;create_output_port(0, dropout, 0);</span></span>
+<span id="L418"><span class="lineNum">     418</span>              :     auto optional_dropout</span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">       42390 :             = pgraph-&gt;append_optional(dropout_graph, {in_edge(0, input, 0)});</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">       42390 :     return optional_dropout;</span></span>
+<span id="L421"><span class="lineNum">     421</span>              : }</span>
+<span id="L422"><span class="lineNum">     422</span>              : </span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">      120105 : inline graph::utils::pm::repetition_t *optional_explicit_mask(</span></span>
+<span id="L424"><span class="lineNum">     424</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L425"><span class="lineNum">     425</span>              :         graph::utils::pm::pb_node_t *scaled_output) {</span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">      120105 :     auto mask_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">      120105 :     auto add = mask_graph-&gt;append_op(graph::op_kind::Add);</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">      120105 :     mask_graph-&gt;create_input_port(0, add, 0);</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">      120105 :     mask_graph-&gt;create_output_port(0, add, 0);</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">      240210 :     auto optional_mask = pgraph-&gt;append_optional(</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">      120105 :             mask_graph, {in_edge(0, scaled_output, 0)});</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">      240210 :     return optional_mask;</span></span>
+<span id="L433"><span class="lineNum">     433</span>              : }</span>
+<span id="L434"><span class="lineNum">     434</span>              : </span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">        7065 : inline graph::utils::pm::repetition_t *optional_soft_capping(</span></span>
+<span id="L436"><span class="lineNum">     436</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L437"><span class="lineNum">     437</span>              :         graph::utils::pm::pb_node_t *input) {</span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">        7065 :     auto graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">        7065 :     auto tanh = graph-&gt;append_op(graph::op_kind::Tanh);</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">       14130 :     auto multiply = graph-&gt;append_op(graph::op_kind::Multiply,</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       21195 :             graph::utils::pm::in_edges_t {in_edge(0, tanh, 0)});</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">        7065 :     graph-&gt;create_input_port(0, tanh, 0);</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">        7065 :     graph-&gt;create_output_port(0, multiply, 0);</span></span>
+<span id="L444"><span class="lineNum">     444</span>              :     auto optional_soft_capping</span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       14130 :             = pgraph-&gt;append_optional(graph, {in_edge(0, input, 0)});</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       14130 :     return optional_soft_capping;</span></span>
+<span id="L447"><span class="lineNum">     447</span>              : }</span>
+<span id="L448"><span class="lineNum">     448</span>              : </span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">        1930 : inline bool check_inputs_xf16(op_t *op) {</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">        5130 :     for (size_t i = 0; i &lt; op-&gt;num_inputs(); ++i) {</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">        3530 :         const logical_tensor_t &amp;iport = op-&gt;get_input_logical_tensor(i);</span></span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">        3530 :         if (iport.data_type != graph::data_type::f16</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">        2204 :                 &amp;&amp; iport.data_type != graph::data_type::bf16)</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">         330 :             return false;</span></span>
+<span id="L455"><span class="lineNum">     455</span>              :     }</span>
+<span id="L456"><span class="lineNum">     456</span>              : </span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">        1600 :     return true;</span></span>
+<span id="L458"><span class="lineNum">     458</span>              : }</span>
+<span id="L459"><span class="lineNum">     459</span>              : </span>
+<span id="L460"><span class="lineNum">     460</span>              : // Implicit Causal Mask</span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">      120105 : inline graph::utils::pm::repetition_t *optional_causal_mask(</span></span>
+<span id="L462"><span class="lineNum">     462</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L463"><span class="lineNum">     463</span>              :         graph::utils::pm::pb_node_t *scaled_output, bool check_xf16 = false) {</span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">      240210 :     auto popt_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L465"><span class="lineNum">     465</span>              : </span>
+<span id="L466"><span class="lineNum">     466</span>              :     graph::utils::pm::pb_op_t *gen_index_row</span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">      120105 :             = popt_graph-&gt;append_op(graph::op_kind::GenIndex);</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">      120105 :     if (check_xf16) {</span></span>
+<span id="L469"><span class="lineNum">     469</span>              :         // sdpa_primitive only supports f16/bf16 on gpu</span>
+<span id="L470"><span class="lineNum">     470</span>              :         // for other dtypes, we don't have a reference implementation on gpu</span>
+<span id="L471"><span class="lineNum">     471</span>              :         // so filter them out</span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaUNC">           0 :         gen_index_row-&gt;append_decision_function(check_inputs_xf16);</span></span>
+<span id="L473"><span class="lineNum">     473</span>              :     }</span>
+<span id="L474"><span class="lineNum">     474</span>              : </span>
+<span id="L475"><span class="lineNum">     475</span>              :     // Optional Add and Sub operations for bottom-right causal mask</span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">      120105 :     auto add_sub_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">      120105 :     auto add_op = add_sub_graph-&gt;append_op(graph::op_kind::Add);</span></span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">      240210 :     auto sub_op = add_sub_graph-&gt;append_op(</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">      120105 :             graph::op_kind::Subtract, {in_edge(0, add_op, 0)});</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">      120105 :     add_sub_graph-&gt;create_input_port(0, add_op, 0);</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">      120105 :     add_sub_graph-&gt;create_output_port(0, sub_op, 0);</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">      240210 :     auto add_sub_optional = popt_graph-&gt;append_optional(</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">      120105 :             add_sub_graph, {in_edge(0, gen_index_row, 0)});</span></span>
+<span id="L484"><span class="lineNum">     484</span>              : </span>
+<span id="L485"><span class="lineNum">     485</span>              :     graph::utils::pm::pb_op_t *gen_index_col</span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">      120105 :             = popt_graph-&gt;append_op(graph::op_kind::GenIndex);</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">      240210 :     graph::utils::pm::pb_op_t *greater_equal = popt_graph-&gt;append_op(</span></span>
+<span id="L488"><span class="lineNum">     488</span>              :             graph::op_kind::GreaterEqual,</span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">      480420 :             graph::utils::pm::in_edges_t {in_edge(0, add_sub_optional, 0),</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">      240210 :                     {in_edge(1, gen_index_col, 0)}});</span></span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">      240210 :     graph::utils::pm::pb_op_t *select = popt_graph-&gt;append_op(</span></span>
+<span id="L492"><span class="lineNum">     492</span>              :             graph::op_kind::Select,</span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">      360315 :             graph::utils::pm::in_edges_t {in_edge(0, greater_equal, 0)});</span></span>
+<span id="L494"><span class="lineNum">     494</span>              : </span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">      120105 :     popt_graph-&gt;create_input_port(0, gen_index_row, 0);</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">      120105 :     popt_graph-&gt;create_input_port(0, gen_index_col, 0);</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">      120105 :     popt_graph-&gt;create_input_port(0, select, 1);</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">      120105 :     popt_graph-&gt;create_input_port(1, select, 2);</span></span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">      120105 :     popt_graph-&gt;create_output_port(0, select, 0);</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">      240210 :     auto pmask = pgraph-&gt;append_optional(popt_graph,</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">      360315 :             graph::utils::pm::in_edges_t {in_edge(0, scaled_output, 0)});</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">      240210 :     return pmask;</span></span>
+<span id="L503"><span class="lineNum">     503</span>              : }</span>
+<span id="L504"><span class="lineNum">     504</span>              : </span>
+<span id="L505"><span class="lineNum">     505</span>              : // Optional (transpose + reorder/staticReshape)</span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">       35325 : inline graph::utils::pm::repetition_t *optional_transpose_reshape(</span></span>
+<span id="L507"><span class="lineNum">     507</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L508"><span class="lineNum">     508</span>              :         graph::utils::pm::pb_node_t *input, int input_index) {</span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">       35325 :     auto popt_graph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L510"><span class="lineNum">     510</span>              : </span>
+<span id="L511"><span class="lineNum">     511</span>              :     graph::utils::pm::pb_op_t *transpose</span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">       35325 :             = popt_graph-&gt;append_op(graph::op_kind::StaticTranspose);</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">       70650 :     graph::utils::pm::pb_op_t *reshape_out = popt_graph-&gt;append_alternation(</span></span>
+<span id="L514"><span class="lineNum">     514</span>              :             {graph::op_kind::Reorder, graph::op_kind::StaticReshape},</span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">       35325 :             {in_edge(0, transpose, 0)});</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">       35325 :     popt_graph-&gt;create_input_port(0, transpose, 0);</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       35325 :     popt_graph-&gt;create_output_port(0, reshape_out, 0);</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">       70650 :     auto popt_transpose_reshape = pgraph-&gt;append_optional(popt_graph,</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">      105975 :             graph::utils::pm::in_edges_t {in_edge(input_index, input, 0)});</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">       70650 :     return popt_transpose_reshape;</span></span>
+<span id="L521"><span class="lineNum">     521</span>              : }</span>
+<span id="L522"><span class="lineNum">     522</span>              : </span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       56520 : inline graph::utils::pm::pb_node_t *create_dequant_matmul(</span></span>
+<span id="L524"><span class="lineNum">     524</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L525"><span class="lineNum">     525</span>              :         graph::utils::pm::pb_node_t *input, bool is_bf16 = false,</span>
+<span id="L526"><span class="lineNum">     526</span>              :         bool is_int8 = false) {</span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">       56520 :     graph::utils::pm::in_edges_t in_edges;</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">       56520 :     if (input) {</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">       56520 :         in_edges = graph::utils::pm::in_edges_t {in_edge(0, input, 0)};</span></span>
+<span id="L530"><span class="lineNum">     530</span>              :     }</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">       56520 :     if (is_int8) {</span></span>
+<span id="L532"><span class="lineNum">     532</span>              :         auto dequantize_A</span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">       28260 :                 = pgraph-&gt;append_op(graph::op_kind::Dequantize, in_edges);</span></span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">       28260 :         auto dequantize_B = pgraph-&gt;append_op(graph::op_kind::Dequantize);</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">       28260 :         if (is_bf16) {</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">       28260 :             auto typecast_A = pgraph-&gt;append_op(</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">       14130 :                     graph::op_kind::TypeCast, {in_edge(0, dequantize_A, 0)});</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">       28260 :             auto typecast_B = pgraph-&gt;append_op(</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">       14130 :                     graph::op_kind::TypeCast, {in_edge(0, dequantize_B, 0)});</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">       56520 :             in_edges = graph::utils::pm::in_edges_t {</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       42390 :                     in_edge(0, typecast_A, 0), in_edge(1, typecast_B, 0)};</span></span>
+<span id="L542"><span class="lineNum">     542</span>              :         } else {</span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">       56520 :             in_edges = graph::utils::pm::in_edges_t {</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">       42390 :                     in_edge(0, dequantize_A, 0), in_edge(1, dequantize_B, 0)};</span></span>
+<span id="L545"><span class="lineNum">     545</span>              :         }</span>
+<span id="L546"><span class="lineNum">     546</span>              :     }</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">       56520 :     auto matmul = pgraph-&gt;append_op(graph::op_kind::MatMul, in_edges);</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">      113040 :     return matmul;</span></span>
+<span id="L549"><span class="lineNum">     549</span>              : }</span>
+<span id="L550"><span class="lineNum">     550</span>              : </span>
+<span id="L551"><span class="lineNum">     551</span>              : // only for single input and single output op</span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">       14130 : inline graph::utils::pm::pb_node_t *append_siso_repetition_subgraph(</span></span>
+<span id="L553"><span class="lineNum">     553</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L554"><span class="lineNum">     554</span>              :         graph::op_kind_t kind, graph::utils::pm::pb_node_t *input,</span>
+<span id="L555"><span class="lineNum">     555</span>              :         int rep_min = 0, int rep_max = 2) {</span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">       28260 :     graph::utils::pm::in_edges_t in_edges;</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">       14130 :     if (input) {</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">       28260 :         in_edges = graph::utils::pm::in_edges_t {in_edge(0, input, 0)};</span></span>
+<span id="L559"><span class="lineNum">     559</span>              :     }</span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       14130 :     auto rep_subgraph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       14130 :     auto single_op = rep_subgraph-&gt;append_op(kind);</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       14130 :     rep_subgraph-&gt;create_input_port(0, single_op, 0);</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">       14130 :     rep_subgraph-&gt;create_output_port(0, single_op, 0);</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       28260 :     auto rep = pgraph-&gt;append_repetition(</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">       14130 :             rep_subgraph, {0, 0}, rep_min, rep_max, in_edges);</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">       28260 :     return rep;</span></span>
+<span id="L567"><span class="lineNum">     567</span>              : }</span>
+<span id="L568"><span class="lineNum">     568</span>              : </span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">       14130 : inline graph::utils::pm::pb_node_t *append_optional_typecast_quantize(</span></span>
+<span id="L570"><span class="lineNum">     570</span>              :         const std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; &amp;pgraph,</span>
+<span id="L571"><span class="lineNum">     571</span>              :         graph::utils::pm::pb_node_t *input, bool is_bf16 = false) {</span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">       28260 :     auto subgraph = std::make_shared&lt;graph::utils::pm::pb_graph_t&gt;();</span></span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">       14130 :     graph::utils::pm::in_edges_t in_edges;</span></span>
+<span id="L574"><span class="lineNum">     574</span> <span class="tlaGNC">       14130 :     graph::utils::pm::pb_node_t *subgraph_in_node = nullptr;</span></span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">       14130 :     if (is_bf16) {</span></span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">        7065 :         auto typecast_output = subgraph-&gt;append_op(graph::op_kind::TypeCast);</span></span>
+<span id="L577"><span class="lineNum">     577</span>              :         in_edges</span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">       14130 :                 = graph::utils::pm::in_edges_t {in_edge(0, typecast_output, 0)};</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">        7065 :         subgraph_in_node = typecast_output;</span></span>
+<span id="L580"><span class="lineNum">     580</span>              :     }</span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">       14130 :     auto quantize = subgraph-&gt;append_op(graph::op_kind::Quantize, in_edges);</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">       14130 :     if (!is_bf16) { subgraph_in_node = quantize; }</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">       14130 :     subgraph-&gt;create_input_port(0, subgraph_in_node, 0);</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">       14130 :     subgraph-&gt;create_output_port(0, quantize, 0);</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">       28260 :     auto output = pgraph-&gt;append_optional(subgraph, {in_edge(0, input, 0)});</span></span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">       28260 :     return output;</span></span>
+<span id="L587"><span class="lineNum">     587</span>              : }</span>
+<span id="L588"><span class="lineNum">     588</span>              : </span>
+<span id="L589"><span class="lineNum">     589</span>              : } // namespace pattern</span>
+<span id="L590"><span class="lineNum">     590</span>              : } // namespace dnnl_impl</span>
+<span id="L591"><span class="lineNum">     591</span>              : } // namespace graph</span>
+<span id="L592"><span class="lineNum">     592</span>              : } // namespace impl</span>
+<span id="L593"><span class="lineNum">     593</span>              : } // namespace dnnl</span>
+<span id="L594"><span class="lineNum">     594</span>              : </span>
+<span id="L595"><span class="lineNum">     595</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

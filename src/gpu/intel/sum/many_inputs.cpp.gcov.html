@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/sum/many_inputs.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/sum">src/gpu/intel/sum</a> - many_inputs.cpp<span style="font-size: 80%;"> (source / <a href="many_inputs.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
+            <td class="headerCovTableEntry">33</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;gpu/intel/sum/many_inputs.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : namespace dnnl {</span>
+<span id="L20"><span class="lineNum">      20</span>              : namespace impl {</span>
+<span id="L21"><span class="lineNum">      21</span>              : namespace gpu {</span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace intel {</span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace sum {</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaUNC">           0 : status_t many_inputs_t::execute(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaUNC">           0 :     auto &amp;output = CTX_OUT_STORAGE(DNNL_ARG_DST);</span></span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaUNC">           0 :     const int num_arrs = pd()-&gt;n_inputs()</span></span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaUNC">           0 :             - 1; // input0 is copied over to output. Accumulate the rest.</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaUNC">           0 :     const memory_desc_wrapper o_d(pd()-&gt;dst_md());</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaUNC">           0 :     const size_t nelems = o_d.nelems(true);</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaUNC">           0 :     compute::kernel_arg_list_t arg_list;</span></span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 :     int num_batches = utils::div_up(num_arrs, max_num_arrs);</span></span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaUNC">           0 :     auto &amp;input0 = CTX_IN_STORAGE(DNNL_ARG_MULTIPLE_SRC);</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaUNC">           0 :     const bool is_inplace = (output.data_handle() == input0.data_handle());</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaUNC">           0 :     if (!is_inplace) {</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :         auto *intel_stream = utils::downcast&lt;intel::stream_t *&gt;(ctx.stream());</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :         CHECK(intel_stream-&gt;copy(input0, output, o_d.size(),</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :                 intel_stream-&gt;ctx().get_deps(),</span>
+<span id="L41"><span class="lineNum">      41</span>              :                 intel_stream-&gt;ctx().get_deps()));</span>
+<span id="L42"><span class="lineNum">      42</span>              :     }</span>
+<span id="L43"><span class="lineNum">      43</span>              :     status_t status;</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :     for (int batch_iter = 0; batch_iter &lt; num_batches; batch_iter++) {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :         int kernel_num_arrs = max_num_arrs;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :         if ((batch_iter == num_batches - 1) &amp;&amp; (num_arrs % max_num_arrs)) {</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaUNC">           0 :             kernel_num_arrs = num_arrs % max_num_arrs;</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :         }</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :         for (int a = 0; a &lt; max_num_arrs; ++a) {</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :             if (a &lt; kernel_num_arrs) {</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 :                 auto &amp;input = CTX_IN_STORAGE(DNNL_ARG_MULTIPLE_SRC + 1 + a</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :                         + batch_iter * max_num_arrs);</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaUNC">           0 :                 arg_list.set(a, input);</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :             } else</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC">           0 :                 arg_list.set(a, memory_storage_t::empty_storage());</span></span>
+<span id="L56"><span class="lineNum">      56</span>              :         }</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaUNC">           0 :         arg_list.set(many_inputs_t::max_num_arrs, output);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaUNC">           0 :         arg_list.set(</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :                 many_inputs_t::max_num_arrs + 1, CTX_GPU_RES_STORAGE(SCALES_));</span></span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :         const size_t total_width = nelems * kernel_num_arrs;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :         const size_t lws = utils::rnd_dn(256, kernel_num_arrs);</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :         compute::nd_range_t nd_range({utils::rnd_up(total_width, lws)}, {lws});</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :         if (batch_iter == num_batches - 1) {</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :             status = parallel_for(ctx, nd_range, kernel_, arg_list);</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :         } else {</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :             status = parallel_for(ctx, nd_range, batched_kernel_, arg_list);</span></span>
+<span id="L69"><span class="lineNum">      69</span>              :         }</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaUNC">           0 :         if (status != dnnl_success) return status;</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     }</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :     return status;</span></span>
+<span id="L73"><span class="lineNum">      73</span>              : }</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              : } // namespace sum</span>
+<span id="L76"><span class="lineNum">      76</span>              : } // namespace intel</span>
+<span id="L77"><span class="lineNum">      77</span>              : } // namespace gpu</span>
+<span id="L78"><span class="lineNum">      78</span>              : } // namespace impl</span>
+<span id="L79"><span class="lineNum">      79</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,1268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/gemm/gemm_driver.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/gemm">src/cpu/x64/gemm</a> - gemm_driver.cpp<span style="font-size: 80%;"> (<a href="gemm_driver.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">94.1&nbsp;%</td>
+            <td class="headerCovTableEntry">1064</td>
+            <td class="headerCovTableEntry">1001</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">87.2&nbsp;%</td>
+            <td class="headerCovTableEntry">117</td>
+            <td class="headerCovTableEntry">102</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="gemm_driver.cpp.func-c.html"><img src="../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1046">bool dnnl::impl::cpu::x64::nocopy_checker&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">141254683</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1046">bool dnnl::impl::cpu::x64::nocopy_checker&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">10376878</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1046">bool dnnl::impl::cpu::x64::nocopy_checker&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">124340227</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1046">bool dnnl::impl::cpu::x64::nocopy_checker&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">866340</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1046">bool dnnl::impl::cpu::x64::nocopy_checker&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">5671238</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L252">dnnl::impl::cpu::x64::align(void*, unsigned long)</a></td>
+              
+              <td class="coverFnHi">388601173</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1909">dnnl::impl::cpu::x64::gemm_threading_driver&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">130760512</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1909">dnnl::impl::cpu::x64::gemm_threading_driver&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;*)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">9323216</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1909">dnnl::impl::cpu::x64::gemm_threading_driver&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">116250254</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1909">dnnl::impl::cpu::x64::gemm_threading_driver&lt;signed char, signed char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt;*)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">811813</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1909">dnnl::impl::cpu::x64::gemm_threading_driver&lt;signed char, unsigned char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt;*)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">4375229</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L2030">dnnl::impl::cpu::x64::gemm_threading_driver&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">147705</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2030">dnnl::impl::cpu::x64::gemm_threading_driver&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;*)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">39464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2030">dnnl::impl::cpu::x64::gemm_threading_driver&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2030">dnnl::impl::cpu::x64::gemm_threading_driver&lt;signed char, signed char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt;*)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1340</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2030">dnnl::impl::cpu::x64::gemm_threading_driver&lt;signed char, unsigned char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt;*)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">106901</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L941">dnnl::impl::cpu::x64::nocopy_checker_avx2(int, int, int, long, long, long, long, long, long)</a></td>
+              
+              <td class="coverFnHi">2284220</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L973">dnnl::impl::cpu::x64::nocopy_checker_avx512(int, int, int, long, long, long, long, long, long)</a></td>
+              
+              <td class="coverFnHi">3809957</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1285">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnHi">1527286</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1285">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, bool, bool, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">302256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1285">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1285">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, bool, bool, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">64467</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1285">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, bool, bool, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">1160563</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1290">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda()#3}::operator()() const</a></td>
+              
+              <td class="coverFnHi">1516081</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1290">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, bool, bool, bool)::{lambda()#3}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">302256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1290">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda()#3}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1290">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, bool, bool, bool)::{lambda()#3}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">57083</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1290">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, bool, bool, bool)::{lambda()#3}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">1156742</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1293">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda()#4}::operator()() const</a></td>
+              
+              <td class="coverFnHi">1504390</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1293">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, bool, bool, bool)::{lambda()#4}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">302256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1293">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda()#4}::operator()() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1293">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, bool, bool, bool)::{lambda()#4}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">53019</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1293">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, bool, bool, bool)::{lambda()#4}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">1149115</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda(long, long&amp;, int&amp;, long, long&amp;, long)#1}::operator()(long, long&amp;, int&amp;, long, long&amp;, long) const</a></td>
+              
+              <td class="coverFnHi">4547757</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, bool, bool, bool)::{lambda(long, long&amp;, int&amp;, long, long&amp;, long)#1}::operator()(long, long&amp;, int&amp;, long, long&amp;, long) const</a></td>
+              
+              <td class="coverFnAliasHi">906768</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)::{lambda(long, long&amp;, int&amp;, long, long&amp;, long)#1}::operator()(long, long&amp;, int&amp;, long, long&amp;, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, bool, bool, bool)::{lambda(long, long&amp;, int&amp;, long, long&amp;, long)#1}::operator()(long, long&amp;, int&amp;, long, long&amp;, long) const</a></td>
+              
+              <td class="coverFnAliasHi">174569</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, bool, bool, bool)::{lambda(long, long&amp;, int&amp;, long, long&amp;, long)#1}::operator()(long, long&amp;, int&amp;, long, long&amp;, long) const</a></td>
+              
+              <td class="coverFnAliasHi">3466420</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L292">dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">625608</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L292">dnnl::impl::cpu::x64::sum_k_blocks&lt;float&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;float&gt;*, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">283176</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L292">dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">342432</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L296">dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">532292</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L296">dnnl::impl::cpu::x64::sum_k_blocks&lt;float&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;float&gt;*, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">200784</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L296">dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">331508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L303">dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">532292</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L303">dnnl::impl::cpu::x64::sum_k_blocks&lt;float&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;float&gt;*, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">200784</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L303">dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnAliasHi">331508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1692">dnnl_status_t dnnl::impl::cpu::x64::call_no_copy_sgemm&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)</a></td>
+              
+              <td class="coverFnHi">6647042</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1692">dnnl_status_t dnnl::impl::cpu::x64::call_no_copy_sgemm&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1692">dnnl_status_t dnnl::impl::cpu::x64::call_no_copy_sgemm&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)</a></td>
+              
+              <td class="coverFnAliasHi">6647042</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1692">dnnl_status_t dnnl::impl::cpu::x64::call_no_copy_sgemm&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt;*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1692">dnnl_status_t dnnl::impl::cpu::x64::call_no_copy_sgemm&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt;*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L2043">dnnl_status_t dnnl::impl::cpu::x64::gemm_driver&lt;float, float, float&gt;(char const*, char const*, char const*, long const*, long const*, long const*, float const*, float const*, long const*, float const*, float const*, long const*, float const*, float const*, float*, long const*, float const*, bool, dnnl::impl::cpu::x64::pack_type, dnnl::impl::cpu::x64::gemm_pack_storage_t*, bool)</a></td>
+              
+              <td class="coverFnHi">18011689</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2043">dnnl_status_t dnnl::impl::cpu::x64::gemm_driver&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(char const*, char const*, char const*, long const*, long const*, long const*, float const*, dnnl::impl::bfloat16_t const*, long const*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, long const*, dnnl::impl::bfloat16_t const*, float const*, float*, long const*, float const*, bool, dnnl::impl::cpu::x64::pack_type, dnnl::impl::cpu::x64::gemm_pack_storage_t*, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2187465</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2043">dnnl_status_t dnnl::impl::cpu::x64::gemm_driver&lt;float, float, float&gt;(char const*, char const*, char const*, long const*, long const*, long const*, float const*, float const*, long const*, float const*, float const*, long const*, float const*, float const*, float*, long const*, float const*, bool, dnnl::impl::cpu::x64::pack_type, dnnl::impl::cpu::x64::gemm_pack_storage_t*, bool)</a></td>
+              
+              <td class="coverFnAliasHi">13924680</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2043">dnnl_status_t dnnl::impl::cpu::x64::gemm_driver&lt;signed char, signed char, int&gt;(char const*, char const*, char const*, long const*, long const*, long const*, float const*, signed char const*, long const*, signed char const*, signed char const*, long const*, signed char const*, float const*, int*, long const*, int const*, bool, dnnl::impl::cpu::x64::pack_type, dnnl::impl::cpu::x64::gemm_pack_storage_t*, bool)</a></td>
+              
+              <td class="coverFnAliasHi">139714</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L2043">dnnl_status_t dnnl::impl::cpu::x64::gemm_driver&lt;signed char, unsigned char, int&gt;(char const*, char const*, char const*, long const*, long const*, long const*, float const*, signed char const*, long const*, signed char const*, unsigned char const*, long const*, unsigned char const*, float const*, int*, long const*, int const*, bool, dnnl::impl::cpu::x64::pack_type, dnnl::impl::cpu::x64::gemm_pack_storage_t*, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1759830</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L528">dnnl_status_t dnnl::impl::cpu::x64::gemm_kernel_driver&lt;float, float, float&gt;(int, long, long, long, float const*, float const*, float, float*, long, dnnl::impl::cpu::x64::offset_type, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">133072606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L528">dnnl_status_t dnnl::impl::cpu::x64::gemm_kernel_driver&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, long, long, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, float, float*, long, dnnl::impl::cpu::x64::offset_type, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">10018641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L528">dnnl_status_t dnnl::impl::cpu::x64::gemm_kernel_driver&lt;float, float, float&gt;(int, long, long, long, float const*, float const*, float, float*, long, dnnl::impl::cpu::x64::offset_type, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">117051101</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L528">dnnl_status_t dnnl::impl::cpu::x64::gemm_kernel_driver&lt;signed char, signed char, int&gt;(int, long, long, long, signed char const*, signed char const*, float, int*, long, dnnl::impl::cpu::x64::offset_type, int const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">858860</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L528">dnnl_status_t dnnl::impl::cpu::x64::gemm_kernel_driver&lt;signed char, unsigned char, int&gt;(int, long, long, long, signed char const*, unsigned char const*, float, int*, long, dnnl::impl::cpu::x64::offset_type, int const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">5144004</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L339">dnnl_status_t dnnl::impl::cpu::x64::gemm_packing_driver&lt;float, float, float&gt;(int, long, long, long, float const*, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">238378</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L339">dnnl_status_t dnnl::impl::cpu::x64::gemm_packing_driver&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, long, long, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">57572</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L339">dnnl_status_t dnnl::impl::cpu::x64::gemm_packing_driver&lt;float, float, float&gt;(int, long, long, long, float const*, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">62836</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L339">dnnl_status_t dnnl::impl::cpu::x64::gemm_packing_driver&lt;signed char, signed char, int&gt;(int, long, long, long, signed char const*, signed char const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">31481</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L339">dnnl_status_t dnnl::impl::cpu::x64::gemm_packing_driver&lt;signed char, unsigned char, int&gt;(int, long, long, long, signed char const*, unsigned char const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">86489</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1724">dnnl_status_t dnnl::impl::cpu::x64::gemm_threading_driver&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)</a></td>
+              
+              <td class="coverFnHi">18011689</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1724">dnnl_status_t dnnl::impl::cpu::x64::gemm_threading_driver&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;*)</a></td>
+              
+              <td class="coverFnAliasHi">2187465</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1724">dnnl_status_t dnnl::impl::cpu::x64::gemm_threading_driver&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)</a></td>
+              
+              <td class="coverFnAliasHi">13924680</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1724">dnnl_status_t dnnl::impl::cpu::x64::gemm_threading_driver&lt;signed char, signed char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt;*)</a></td>
+              
+              <td class="coverFnAliasHi">139714</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1724">dnnl_status_t dnnl::impl::cpu::x64::gemm_threading_driver&lt;signed char, unsigned char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt;*)</a></td>
+              
+              <td class="coverFnAliasHi">1759830</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L798">dnnl_status_t dnnl::impl::cpu::x64::kernel_driver_parallel_acopiedbcopy&lt;float, float, float&gt;(int, long, long, long, long, long, float const*, float const*, float, float*, dnnl::impl::cpu::x64::offset_type, float const*, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">167760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L798">dnnl_status_t dnnl::impl::cpu::x64::kernel_driver_parallel_acopiedbcopy&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, long, long, long, long, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, float, float*, dnnl::impl::cpu::x64::offset_type, float const*, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L798">dnnl_status_t dnnl::impl::cpu::x64::kernel_driver_parallel_acopiedbcopy&lt;float, float, float&gt;(int, long, long, long, long, long, float const*, float const*, float, float*, dnnl::impl::cpu::x64::offset_type, float const*, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">28848</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L798">dnnl_status_t dnnl::impl::cpu::x64::kernel_driver_parallel_acopiedbcopy&lt;signed char, signed char, int&gt;(int, long, long, long, long, long, signed char const*, signed char const*, float, int*, dnnl::impl::cpu::x64::offset_type, int const*, int const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">15024</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L798">dnnl_status_t dnnl::impl::cpu::x64::kernel_driver_parallel_acopiedbcopy&lt;signed char, unsigned char, int&gt;(int, long, long, long, long, long, signed char const*, unsigned char const*, float, int*, dnnl::impl::cpu::x64::offset_type, int const*, int const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">123888</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L327">dnnl_status_t dnnl::impl::cpu::x64::pack_no_copy&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)</a></td>
+              
+              <td class="coverFnHi">3667</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L327">dnnl_status_t dnnl::impl::cpu::x64::pack_no_copy&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L327">dnnl_status_t dnnl::impl::cpu::x64::pack_no_copy&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt;*)</a></td>
+              
+              <td class="coverFnAliasHi">3667</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L327">dnnl_status_t dnnl::impl::cpu::x64::pack_no_copy&lt;signed char, signed char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt;*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L327">dnnl_status_t dnnl::impl::cpu::x64::pack_no_copy&lt;signed char, unsigned char, int&gt;(dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt;*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1435">dnnl_status_t dnnl::impl::cpu::x64::parallel_a_copy&lt;float, float, float&gt;(int, int, long, long, long, float const*, float const*, float, float*, long, dnnl::impl::cpu::x64::offset_type, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, char**)</a></td>
+              
+              <td class="coverFnHi">33296</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1435">dnnl_status_t dnnl::impl::cpu::x64::parallel_a_copy&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, int, long, long, long, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, float, float*, long, dnnl::impl::cpu::x64::offset_type, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, char**)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1435">dnnl_status_t dnnl::impl::cpu::x64::parallel_a_copy&lt;float, float, float&gt;(int, int, long, long, long, float const*, float const*, float, float*, long, dnnl::impl::cpu::x64::offset_type, float const*, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, char**)</a></td>
+              
+              <td class="coverFnAliasHi">2544</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1435">dnnl_status_t dnnl::impl::cpu::x64::parallel_a_copy&lt;signed char, signed char, int&gt;(int, int, long, long, long, signed char const*, signed char const*, float, int*, long, dnnl::impl::cpu::x64::offset_type, int const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, char**)</a></td>
+              
+              <td class="coverFnAliasHi">8512</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1435">dnnl_status_t dnnl::impl::cpu::x64::parallel_a_copy&lt;signed char, unsigned char, int&gt;(int, int, long, long, long, signed char const*, unsigned char const*, float, int*, long, dnnl::impl::cpu::x64::offset_type, int const*, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, char**)</a></td>
+              
+              <td class="coverFnAliasHi">22240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L78">int dnnl::impl::cpu::x64::get_vector_length&lt;int&gt;()</a></td>
+              
+              <td class="coverFnHi">55062893</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L78">int dnnl::impl::cpu::x64::get_vector_length&lt;float&gt;()</a></td>
+              
+              <td class="coverFnAliasHi">50067488</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L78">int dnnl::impl::cpu::x64::get_vector_length&lt;int&gt;()</a></td>
+              
+              <td class="coverFnAliasHi">4995405</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1354">int dnnl::impl::cpu::x64::set_thread_opts&lt;float, float, float&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">130001566</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1354">int dnnl::impl::cpu::x64::set_thread_opts&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">9215400</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1354">int dnnl::impl::cpu::x64::set_thread_opts&lt;float, float, float&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">116104507</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1354">int dnnl::impl::cpu::x64::set_thread_opts&lt;signed char, signed char, int&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">747148</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1354">int dnnl::impl::cpu::x64::set_thread_opts&lt;signed char, unsigned char, int&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">3934511</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L187">long dnnl::impl::cpu::x64::get_k_padd&lt;float, float, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">97293203</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L187">long dnnl::impl::cpu::x64::get_k_padd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">9552077</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L187">long dnnl::impl::cpu::x64::get_k_padd&lt;float, float, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">83263411</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L187">long dnnl::impl::cpu::x64::get_k_padd&lt;signed char, signed char, int&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">783589</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L187">long dnnl::impl::cpu::x64::get_k_padd&lt;signed char, unsigned char, int&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">3694126</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L213">long dnnl::impl::cpu::x64::get_m_padd&lt;float, float, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">97293203</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L213">long dnnl::impl::cpu::x64::get_m_padd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">9552077</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L213">long dnnl::impl::cpu::x64::get_m_padd&lt;float, float, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">83263411</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L213">long dnnl::impl::cpu::x64::get_m_padd&lt;signed char, signed char, int&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">783589</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L213">long dnnl::impl::cpu::x64::get_m_padd&lt;signed char, unsigned char, int&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">3694126</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L225">long dnnl::impl::cpu::x64::get_m_padd_parallel_a&lt;float, float, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, int)</a></td>
+              
+              <td class="coverFnHi">33296</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L225">long dnnl::impl::cpu::x64::get_m_padd_parallel_a&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L225">long dnnl::impl::cpu::x64::get_m_padd_parallel_a&lt;float, float, float&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, int)</a></td>
+              
+              <td class="coverFnAliasHi">2544</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L225">long dnnl::impl::cpu::x64::get_m_padd_parallel_a&lt;signed char, signed char, int&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, int)</a></td>
+              
+              <td class="coverFnAliasHi">8512</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L225">long dnnl::impl::cpu::x64::get_m_padd_parallel_a&lt;signed char, unsigned char, int&gt;(int, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, int)</a></td>
+              
+              <td class="coverFnAliasHi">22240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L240">long dnnl::impl::cpu::x64::get_n_padd&lt;float, float, float&gt;(int, long, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">97300935</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L240">long dnnl::impl::cpu::x64::get_n_padd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, long, long, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">9552077</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L240">long dnnl::impl::cpu::x64::get_n_padd&lt;float, float, float&gt;(int, long, long, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">83289715</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L240">long dnnl::impl::cpu::x64::get_n_padd&lt;signed char, signed char, int&gt;(int, long, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">780040</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L240">long dnnl::impl::cpu::x64::get_n_padd&lt;signed char, unsigned char, int&gt;(int, long, long, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">3679103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1407">std::tuple&lt;float const*, float const*, float*, float const*&gt; dnnl::impl::cpu::x64::decompose_matrices&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_slice_t const&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">129449756</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1407">std::tuple&lt;dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, float*, float const*&gt; dnnl::impl::cpu::x64::decompose_matrices&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::x64::gemm_slice_t const&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">8976454</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1407">std::tuple&lt;float const*, float const*, float*, float const*&gt; dnnl::impl::cpu::x64::decompose_matrices&lt;float, float, float&gt;(dnnl::impl::cpu::x64::gemm_slice_t const&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">116208232</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1407">std::tuple&lt;signed char const*, signed char const*, int*, int const*&gt; dnnl::impl::cpu::x64::decompose_matrices&lt;signed char, signed char, int&gt;(dnnl::impl::cpu::x64::gemm_slice_t const&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">752891</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1407">std::tuple&lt;signed char const*, unsigned char const*, int*, int const*&gt; dnnl::impl::cpu::x64::decompose_matrices&lt;signed char, unsigned char, int&gt;(dnnl::impl::cpu::x64::gemm_slice_t const&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">3512179</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L115">void dnnl::impl::cpu::x64::add_results&lt;int&gt;(long, long, float, float, int const*, long, int*, long, int const*, dnnl::impl::cpu::x64::offset_type)</a></td>
+              
+              <td class="coverFnHi">2443027</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L115">void dnnl::impl::cpu::x64::add_results&lt;float&gt;(long, long, float, float, float const*, long, float*, long, float const*, dnnl::impl::cpu::x64::offset_type)</a></td>
+              
+              <td class="coverFnAliasHi">816</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L115">void dnnl::impl::cpu::x64::add_results&lt;int&gt;(long, long, float, float, int const*, long, int*, long, int const*, dnnl::impl::cpu::x64::offset_type)</a></td>
+              
+              <td class="coverFnAliasHi">2442211</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1601">void dnnl::impl::cpu::x64::adjust_thread_count&lt;int&gt;(long, long, long, int*)</a></td>
+              
+              <td class="coverFnHi">11263677</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1601">void dnnl::impl::cpu::x64::adjust_thread_count&lt;float&gt;(long, long, long, int*)</a></td>
+              
+              <td class="coverFnAliasHi">9403847</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1601">void dnnl::impl::cpu::x64::adjust_thread_count&lt;int&gt;(long, long, long, int*)</a></td>
+              
+              <td class="coverFnAliasHi">1859830</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L395">void dnnl::impl::cpu::x64::gemm_kernel&lt;float, float, float&gt;(long, long, long, float, float const*, float const*, float, float*, long, float const*, float const*, float*, float*, float const*, dnnl::impl::cpu::x64::offset_type, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">4419228754</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L395">void dnnl::impl::cpu::x64::gemm_kernel&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(long, long, long, float, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t const*, float, float*, long, float const*, float const*, float*, float*, float const*, dnnl::impl::cpu::x64::offset_type, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">34714348</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L395">void dnnl::impl::cpu::x64::gemm_kernel&lt;float, float, float&gt;(long, long, long, float, float const*, float const*, float, float*, long, float const*, float const*, float*, float*, float const*, dnnl::impl::cpu::x64::offset_type, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">4324833042</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L395">void dnnl::impl::cpu::x64::gemm_kernel&lt;signed char, signed char, int&gt;(long, long, long, float, signed char const*, signed char const*, float, int*, long, int const*, int const*, int*, int*, int const*, dnnl::impl::cpu::x64::offset_type, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">6255513</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L395">void dnnl::impl::cpu::x64::gemm_kernel&lt;signed char, unsigned char, int&gt;(long, long, long, float, signed char const*, unsigned char const*, float, int*, long, int const*, int const*, int*, int*, int const*, dnnl::impl::cpu::x64::offset_type, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">53425851</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L103">void dnnl::impl::cpu::x64::round_to_nearest&lt;int&gt;(int*, double)</a></td>
+              
+              <td class="coverFnHi">4916705000</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L257">void dnnl::impl::cpu::x64::scale_matrix&lt;float, float&gt;(long, long, float, float*, long)</a></td>
+              
+              <td class="coverFnHi">17969</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1080">void dnnl::impl::cpu::x64::set_thread_opts_nopack&lt;float, float, float&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnHi">129958542</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1080">void dnnl::impl::cpu::x64::set_thread_opts_nopack&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">9195674</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1080">void dnnl::impl::cpu::x64::set_thread_opts_nopack&lt;float, float, float&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">116098647</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1080">void dnnl::impl::cpu::x64::set_thread_opts_nopack&lt;signed char, signed char, int&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">745584</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1080">void dnnl::impl::cpu::x64::set_thread_opts_nopack&lt;signed char, unsigned char, int&gt;(int, int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*)</a></td>
+              
+              <td class="coverFnAliasHi">3918637</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L1239">void dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">1504390</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1239">void dnnl::impl::cpu::x64::set_thread_opts_pack&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt; const*, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">302256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1239">void dnnl::impl::cpu::x64::set_thread_opts_pack&lt;float, float, float&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;float, float, float&gt; const*, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1239">void dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, signed char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, signed char, int&gt; const*, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">53019</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L1239">void dnnl::impl::cpu::x64::set_thread_opts_pack&lt;signed char, unsigned char, int&gt;(int, dnnl::impl::cpu::x64::gemm_threading_t&amp;, dnnl::impl::cpu::x64::gemm_info_t&lt;signed char, unsigned char, int&gt; const*, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1149115</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L280">void dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)</a></td>
+              
+              <td class="coverFnHi">180110</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L280">void dnnl::impl::cpu::x64::sum_k_blocks&lt;float&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;float&gt;*, bool)</a></td>
+              
+              <td class="coverFnAliasHi">66928</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L280">void dnnl::impl::cpu::x64::sum_k_blocks&lt;int&gt;(int, dnnl::impl::cpu::x64::gemm_per_thread_t&lt;int&gt;*, bool)</a></td>
+              
+              <td class="coverFnAliasHi">113182</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="gemm_driver.cpp.gcov.html#L269">void dnnl::impl::cpu::x64::sum_matrices&lt;int&gt;(long, long, int*, long, int*, long)</a></td>
+              
+              <td class="coverFnHi">532292</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L269">void dnnl::impl::cpu::x64::sum_matrices&lt;float&gt;(long, long, float*, long, float*, long)</a></td>
+              
+              <td class="coverFnAliasHi">200784</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="gemm_driver.cpp.gcov.html#L269">void dnnl::impl::cpu::x64::sum_matrices&lt;int&gt;(long, long, int*, long, int*, long)</a></td>
+              
+              <td class="coverFnAliasHi">331508</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

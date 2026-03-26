@@ -1,0 +1,3820 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/brgemm/jit_brgemm_kernel.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/brgemm">src/cpu/x64/brgemm</a> - jit_brgemm_kernel.cpp<span style="font-size: 80%;"> (<a href="jit_brgemm_kernel.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">92.7&nbsp;%</td>
+            <td class="headerCovTableEntry">1840</td>
+            <td class="headerCovTableEntry">1705</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">72.6&nbsp;%</td>
+            <td class="headerCovTableEntry">354</td>
+            <td class="headerCovTableEntry">257</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="jit_brgemm_kernel.cpp.func-c.html"><img src="../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Xmm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_mask&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnHi">49164525</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Xmm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_mask&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">61206</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Xmm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_mask&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Xmm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_mask&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">6777265</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Ymm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_mask&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">61206</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Ymm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_mask&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">3564583</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Ymm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_mask&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">6777265</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Zmm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_mask&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">2243083</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L658">Xbyak::Zmm dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_mask&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, bool, bool, Xbyak::Opmask) const</a></td>
+              
+              <td class="coverFnAliasHi">29679917</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3205">dnnl::impl::cpu::x64::brgemm_attr_t::brgemm_attr_t()</a></td>
+              
+              <td class="coverFnHi">3595567351</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3231">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::brgemm_kernel_common_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3231">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::brgemm_kernel_common_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3231">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Ymm&gt;::brgemm_kernel_common_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3231">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Zmm&gt;::brgemm_kernel_common_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3235">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3235">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3235">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Ymm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3235">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Zmm&gt;::create_kernel()</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3247">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::get_jit_generator() const</a></td>
+              
+              <td class="coverFnHi">2686730</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3247">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::get_jit_generator() const</a></td>
+              
+              <td class="coverFnAliasHi">2928</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3247">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Ymm&gt;::get_jit_generator() const</a></td>
+              
+              <td class="coverFnAliasHi">290082</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3247">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Zmm&gt;::get_jit_generator() const</a></td>
+              
+              <td class="coverFnAliasHi">2393720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3241">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::operator()(dnnl::impl::cpu::x64::brgemm_kernel_params_t*) const</a></td>
+              
+              <td class="coverFnHi">512136491</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3241">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::operator()(dnnl::impl::cpu::x64::brgemm_kernel_params_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">31617926</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3241">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Ymm&gt;::operator()(dnnl::impl::cpu::x64::brgemm_kernel_params_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">162939335</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3241">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Zmm&gt;::operator()(dnnl::impl::cpu::x64::brgemm_kernel_params_t*) const</a></td>
+              
+              <td class="coverFnAliasHi">317579230</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3252">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::~brgemm_kernel_common_t()</a></td>
+              
+              <td class="coverFnHi">3230482</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3252">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Tmm&gt;::~brgemm_kernel_common_t()</a></td>
+              
+              <td class="coverFnAliasHi">401016</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3252">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Ymm&gt;::~brgemm_kernel_common_t()</a></td>
+              
+              <td class="coverFnAliasHi">377042</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3252">dnnl::impl::cpu::x64::brgemm_kernel_common_t&lt;Xbyak::Zmm&gt;::~brgemm_kernel_common_t()</a></td>
+              
+              <td class="coverFnAliasHi">2452424</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L483">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::A_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnHi">35227493</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L483">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::A_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">305564</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L483">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::A_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">4674430</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L483">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::A_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">30247499</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L490">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::B_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnHi">32339571</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L490">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::B_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">287408</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L490">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::B_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">4359060</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L490">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::B_offset(long, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">27693103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L506">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::C_offset(long, long) const</a></td>
+              
+              <td class="coverFnHi">21751187</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L506">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::C_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">4389354</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L506">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::C_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">2057847</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L506">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::C_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">15303986</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L512">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::D_offset(long, long) const</a></td>
+              
+              <td class="coverFnHi">10862078</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L512">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::D_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">80542</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L512">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::D_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">2284574</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L512">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::D_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">8496962</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L280">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::accm(long, long, long)</a></td>
+              
+              <td class="coverFnHi">123190612</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L280">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::accm(long, long, long)</a></td>
+              
+              <td class="coverFnAliasHi">9016906</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L280">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::accm(long, long, long)</a></td>
+              
+              <td class="coverFnAliasHi">15584017</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L280">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::accm(long, long, long)</a></td>
+              
+              <td class="coverFnAliasHi">98589689</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L841">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::advance_bd_block2_post_op_regs(long)</a></td>
+              
+              <td class="coverFnHi">1701327</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L841">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::advance_bd_block2_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasHi">209645</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L841">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::advance_bd_block2_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasHi">200104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L841">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::advance_bd_block2_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasHi">1291578</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L758">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::advance_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnHi">966</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L758">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::advance_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasHi">966</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L758">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::advance_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L758">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::advance_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L710">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::advance_ldb_post_op_regs()</a></td>
+              
+              <td class="coverFnHi">2395</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L710">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::advance_ldb_post_op_regs()</a></td>
+              
+              <td class="coverFnAliasHi">2395</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L710">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::advance_ldb_post_op_regs()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L710">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::advance_ldb_post_op_regs()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1086">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_alpha_beta(long, long, bool)</a></td>
+              
+              <td class="coverFnHi">734133</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1086">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_alpha_beta(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">221212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1086">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::apply_alpha_beta(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">77478</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1086">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::apply_alpha_beta(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">435443</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1592">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_compensation(long, long, bool)</a></td>
+              
+              <td class="coverFnHi">76762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1592">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_compensation(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">172</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1592">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::apply_compensation(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">20852</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1592">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::apply_compensation(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">55738</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1158">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnHi">468612</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1158">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2090</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1158">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">87533</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1158">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">378989</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1172">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">468612</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1172">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">2090</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1172">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">87533</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1172">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">378989</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1193">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnHi">118325</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1193">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">1054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1193">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">27368</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1193">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::apply_post_ops(long, long, long, bool)::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnAliasHi">89903</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L284">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bcst(long)</a></td>
+              
+              <td class="coverFnHi">76576394</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L284">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bcst(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L284">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bcst(long)</a></td>
+              
+              <td class="coverFnAliasHi">12859064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L284">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bcst(long)</a></td>
+              
+              <td class="coverFnAliasHi">63717330</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L603">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bd_compensation_offset(long, long) const</a></td>
+              
+              <td class="coverFnHi">193887</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L603">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bd_compensation_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L603">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bd_compensation_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">47616</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L603">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bd_compensation_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">146271</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L630">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bd_zp_comp_a_offset(long, long) const</a></td>
+              
+              <td class="coverFnHi">121540</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L630">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bd_zp_comp_a_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">1064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L630">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bd_zp_comp_a_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">6175</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L630">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bd_zp_comp_a_offset(long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">114301</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L555">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_A_offset(long) const</a></td>
+              
+              <td class="coverFnHi">1701327</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L555">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_A_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">209645</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L555">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_A_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">200104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L555">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_A_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">1291578</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L560">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_C_offset(long) const</a></td>
+              
+              <td class="coverFnHi">1786261</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L560">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_C_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">294579</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L560">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_C_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">200104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L560">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_C_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">1291578</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L566">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_D_offset(long) const</a></td>
+              
+              <td class="coverFnHi">1702293</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L566">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_D_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">210611</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L566">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_D_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">200104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L566">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_D_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">1291578</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L597">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_compensation_offset(long) const</a></td>
+              
+              <td class="coverFnHi">7139</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L597">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_compensation_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">32</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L597">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_compensation_offset(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L597">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_compensation_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">7107</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2834">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2834">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2834">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_loop()</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2834">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_loop()</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2924">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(bool)#3}::operator()(bool) const</a></td>
+              
+              <td class="coverFnHi">1475496</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2924">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(bool)#3}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2924">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_loop()::{lambda(bool)#3}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">198776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2924">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_loop()::{lambda(bool)#3}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1276720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3007">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(bool)#4}::operator()(bool) const</a></td>
+              
+              <td class="coverFnHi">203412</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3007">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(bool)#4}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">203412</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3007">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_loop()::{lambda(bool)#4}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3007">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_loop()::{lambda(bool)#4}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3062">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(bool)#5}::operator()(bool) const</a></td>
+              
+              <td class="coverFnHi">1678908</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3062">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(bool)#5}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">203412</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3062">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_loop()::{lambda(bool)#5}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">198776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3062">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_loop()::{lambda(bool)#5}::operator()(bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1276720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2835">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#1}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnHi">1836620</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2835">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#1}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">212947</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2835">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#1}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">239898</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2835">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#1}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1383775</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2862">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#2}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnHi">1701327</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2862">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#2}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">209645</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2862">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#2}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">200104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2862">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_loop()::{lambda(long, bool, bool, bool, long, bool)#2}::operator()(long, bool, bool, bool, long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1291578</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_po_offset(long) const</a></td>
+              
+              <td class="coverFnHi">6398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_po_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">6398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_po_offset(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_po_offset(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L624">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_zp_comp_a_offset(long) const</a></td>
+              
+              <td class="coverFnHi">6392</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L624">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_zp_comp_a_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">24</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L624">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_zp_comp_a_offset(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L624">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_zp_comp_a_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">6368</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L641">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnHi">958</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L641">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bdb_zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L641">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bdb_zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">90</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L641">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bdb_zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">868</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L323">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_1() const</a></td>
+              
+              <td class="coverFnHi">7551</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L323">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_1() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L323">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bf16_emu_reserv_1() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L323">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bf16_emu_reserv_1() const</a></td>
+              
+              <td class="coverFnAliasHi">7551</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L324">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_2() const</a></td>
+              
+              <td class="coverFnHi">7551</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L324">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_2() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L324">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bf16_emu_reserv_2() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L324">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bf16_emu_reserv_2() const</a></td>
+              
+              <td class="coverFnAliasHi">7551</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L325">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_3() const</a></td>
+              
+              <td class="coverFnHi">7551</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L325">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_3() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L325">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bf16_emu_reserv_3() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L325">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bf16_emu_reserv_3() const</a></td>
+              
+              <td class="coverFnAliasHi">7551</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L326">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_4() const</a></td>
+              
+              <td class="coverFnHi">15102</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L326">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bf16_emu_reserv_4() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L326">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bf16_emu_reserv_4() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L326">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bf16_emu_reserv_4() const</a></td>
+              
+              <td class="coverFnAliasHi">15102</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L577">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bias_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">1043627</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L577">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bias_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">7264</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L577">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bias_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">222908</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L577">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bias_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">813455</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2643">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnHi">1898606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2643">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">215834</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2643">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">262641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2643">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1420131</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)::{lambda(long, bool)#1}::operator()(long, bool) const</a></td>
+              
+              <td class="coverFnHi">2085795</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)::{lambda(long, bool)#1}::operator()(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">212788</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)::{lambda(long, bool)#1}::operator()(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">306065</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::bs_loop(long, bool, long, bool, bool, bool, long, bool)::{lambda(long, bool)#1}::operator()(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1566942</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L590">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::compensations_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">14030</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L590">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::compensations_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L590">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::compensations_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">10100</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L590">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::compensations_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">3930</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2286">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)</a></td>
+              
+              <td class="coverFnHi">26264</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2286">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2286">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)</a></td>
+              
+              <td class="coverFnAliasHi">12240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2286">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)</a></td>
+              
+              <td class="coverFnAliasHi">14024</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2291">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)::{lambda(Xbyak::Zmm, Xbyak::Zmm, long, long, long)#1}::operator()(Xbyak::Zmm, Xbyak::Zmm, long, long, long) const</a></td>
+              
+              <td class="coverFnHi">143096</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2291">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)::{lambda(Xbyak::Zmm, Xbyak::Zmm, long, long, long)#1}::operator()(Xbyak::Zmm, Xbyak::Zmm, long, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2291">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)::{lambda(Xbyak::Ymm, Xbyak::Ymm, long, long, long)#1}::operator()(Xbyak::Ymm, Xbyak::Ymm, long, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">47984</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2291">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::compute_int8_compensation(long, long, long, long, long, bool, long)::{lambda(Xbyak::Zmm, Xbyak::Zmm, long, long, long)#1}::operator()(Xbyak::Zmm, Xbyak::Zmm, long, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">95112</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L863">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::copy_post_ops_stack_values_to_aux(bool)</a></td>
+              
+              <td class="coverFnHi">1898606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L863">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::copy_post_ops_stack_values_to_aux(bool)</a></td>
+              
+              <td class="coverFnAliasHi">215834</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L863">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::copy_post_ops_stack_values_to_aux(bool)</a></td>
+              
+              <td class="coverFnAliasHi">262641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L863">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::copy_post_ops_stack_values_to_aux(bool)</a></td>
+              
+              <td class="coverFnAliasHi">1420131</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L678">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::cvt2ps(dnnl_data_type_t, Xbyak::Zmm, Xbyak::Operand const&amp;, bool, bool, Xbyak::Opmask, long)</a></td>
+              
+              <td class="coverFnHi">2135558</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L678">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::cvt2ps(dnnl_data_type_t, Xbyak::Zmm, Xbyak::Operand const&amp;, bool, bool, Xbyak::Opmask, long)</a></td>
+              
+              <td class="coverFnAliasHi">19019</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L678">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::cvt2ps(dnnl_data_type_t, Xbyak::Ymm, Xbyak::Operand const&amp;, bool, bool, Xbyak::Opmask, long)</a></td>
+              
+              <td class="coverFnAliasHi">365387</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L678">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::cvt2ps(dnnl_data_type_t, Xbyak::Zmm, Xbyak::Operand const&amp;, bool, bool, Xbyak::Opmask, long)</a></td>
+              
+              <td class="coverFnAliasHi">1751152</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2261">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::dot_product(Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnHi">54099171</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2261">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::dot_product(Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2261">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::dot_product(Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm)</a></td>
+              
+              <td class="coverFnAliasHi">8112129</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2261">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::dot_product(Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm)</a></td>
+              
+              <td class="coverFnAliasHi">45987042</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L364">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::f16_perm_even_vreg() const</a></td>
+              
+              <td class="coverFnHi">157336</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L364">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::f16_perm_even_vreg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L364">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::f16_perm_even_vreg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L364">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::f16_perm_even_vreg() const</a></td>
+              
+              <td class="coverFnAliasHi">157336</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L367">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::f16_perm_odd_vreg() const</a></td>
+              
+              <td class="coverFnHi">120384</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L367">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::f16_perm_odd_vreg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L367">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::f16_perm_odd_vreg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L367">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::f16_perm_odd_vreg() const</a></td>
+              
+              <td class="coverFnAliasHi">120384</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1011">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::fp8_to_f16_upconvert(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnHi">1562</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1011">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::fp8_to_f16_upconvert(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1562</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1011">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::fp8_to_f16_upconvert(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1011">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::fp8_to_f16_upconvert(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1050">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::fp8_to_f16_upconvert_to_vnni(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnHi">2161</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1050">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::fp8_to_f16_upconvert_to_vnni(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2161</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1050">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::fp8_to_f16_upconvert_to_vnni(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1050">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::fp8_to_f16_upconvert_to_vnni(long, long, Xbyak::Reg64, long, Xbyak::Reg64, dnnl_data_type_t, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2399">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)</a></td>
+              
+              <td class="coverFnHi">2081224</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2399">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2399">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)</a></td>
+              
+              <td class="coverFnAliasHi">326687</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2399">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)</a></td>
+              
+              <td class="coverFnAliasHi">1754537</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2433">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(Xbyak::Zmm, long, long)#1}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnHi">25098493</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2433">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(Xbyak::Zmm, long, long)#1}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2433">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(Xbyak::Ymm, long, long)#1}::operator()(Xbyak::Ymm, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">4604406</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2433">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(Xbyak::Zmm, long, long)#1}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">20494087</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2480">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(long, long, long)#2}::operator()(long, long, long) const</a></td>
+              
+              <td class="coverFnHi">19551572</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2480">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(long, long, long)#2}::operator()(long, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2480">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(long, long, long)#2}::operator()(long, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">2747788</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2480">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemm_microkernel(long, bool, long, bool, bool, long, long)::{lambda(long, long, long)#2}::operator()(long, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">16803784</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2200">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">212939</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2200">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">212939</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2200">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2200">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2203">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)::{lambda(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;)#1}::operator()(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;) const</a></td>
+              
+              <td class="coverFnHi">414993</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2203">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)::{lambda(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;)#1}::operator()(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">414993</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2203">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)::{lambda(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;)#1}::operator()(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2203">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemm_microkernel_amx(long, bool, long, bool, bool, bool)::{lambda(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;)#1}::operator()(Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;, Xbyak::Tmm const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)</a></td>
+              
+              <td class="coverFnHi">11811</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemv_microkernel(bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">11811</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemv_microkernel(bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2378">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long)#2}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnHi">70024</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2378">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long)#2}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2378">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Ymm, long, long)#2}::operator()(Xbyak::Ymm, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">70024</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2378">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long)#2}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2382">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long)#3}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnHi">11811</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2382">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long)#3}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2382">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Ymm, long, long)#3}::operator()(Xbyak::Ymm, long, long) const</a></td>
+              
+              <td class="coverFnAliasHi">11811</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2382">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long)#3}::operator()(Xbyak::Zmm, long, long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2365">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t)#1}::operator()(Xbyak::Zmm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t) const</a></td>
+              
+              <td class="coverFnHi">81835</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2365">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t)#1}::operator()(Xbyak::Zmm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2365">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Ymm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::matrix_kind_t)#1}::operator()(Xbyak::Ymm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::matrix_kind_t) const</a></td>
+              
+              <td class="coverFnAliasHi">81835</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2365">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::gemv_microkernel(bool, long, bool)::{lambda(Xbyak::Zmm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::matrix_kind_t)#1}::operator()(Xbyak::Zmm, long, long, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::matrix_kind_t) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L3096">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3096">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3096">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L3096">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L144">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::get_brg() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L144">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::get_brg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L144">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::get_brg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L144">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::get_brg() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L269">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::get_max_effective_vregs(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L269">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::get_max_effective_vregs(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L269">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::get_max_effective_vregs(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L269">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::get_max_effective_vregs(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::int8_dot_product_temp() const</a></td>
+              
+              <td class="coverFnHi">8294742</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::int8_dot_product_temp() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::int8_dot_product_temp() const</a></td>
+              
+              <td class="coverFnAliasHi">308376</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L360">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::int8_dot_product_temp() const</a></td>
+              
+              <td class="coverFnAliasHi">7986366</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L357">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::int8_ones_words() const</a></td>
+              
+              <td class="coverFnHi">2137715</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L357">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::int8_ones_words() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L357">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::int8_ones_words() const</a></td>
+              
+              <td class="coverFnAliasHi">82887</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L357">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::int8_ones_words() const</a></td>
+              
+              <td class="coverFnAliasHi">2054828</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L47">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::jit_brgemm_kernel_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L47">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::jit_brgemm_kernel_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L47">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::jit_brgemm_kernel_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L47">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::jit_brgemm_kernel_t(dnnl::impl::cpu::x64::brgemm_desc_t const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnHi">4845723</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::jit_name()</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::name() const</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L142">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::source_file() const</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L528">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_B_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">417093</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L528">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_B_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">22732</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L528">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::ldb_B_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">321036</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L528">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::ldb_B_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">73325</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L535">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_C_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">386675</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L535">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_C_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">234600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L535">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::ldb_C_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">78750</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L535">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::ldb_C_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">73325</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L542">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_D_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">179514</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L542">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_D_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">27439</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L542">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::ldb_D_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">78750</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L542">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::ldb_D_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">73325</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2781">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_loop(long, bool, long, long, bool, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnHi">1898606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2781">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_loop(long, bool, long, long, bool, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">215834</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2781">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::ldb_loop(long, bool, long, long, bool, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">262641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2781">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::ldb_loop(long, bool, long, long, bool, bool, bool, bool, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1420131</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L549">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_po_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">6398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L549">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_po_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">6398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L549">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::ldb_po_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L549">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::ldb_po_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L793">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_regs_shift(long, bool)</a></td>
+              
+              <td class="coverFnHi">174807</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L793">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::ldb_regs_shift(long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">22732</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L793">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::ldb_regs_shift(long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">78750</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L793">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::ldb_regs_shift(long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">73325</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L294">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::load(long)</a></td>
+              
+              <td class="coverFnHi">83596210</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L294">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::load(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L294">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::load(long)</a></td>
+              
+              <td class="coverFnAliasHi">10982205</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L294">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::load(long)</a></td>
+              
+              <td class="coverFnAliasHi">72614005</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2048">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_pre_process_data(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, long, long, bool)</a></td>
+              
+              <td class="coverFnHi">3723</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2048">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_pre_process_data(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">3723</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2048">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::maybe_pre_process_data(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::matrix_kind_t, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2048">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::maybe_pre_process_data(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::matrix_kind_t, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2033">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_pre_process_data(dnnl_data_type_t, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;)</a></td>
+              
+              <td class="coverFnHi">12041469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2033">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_pre_process_data(dnnl_data_type_t, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2033">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::maybe_pre_process_data(dnnl_data_type_t, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2033">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::maybe_pre_process_data(dnnl_data_type_t, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">12041469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2135">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_pre_process_k_tail(bool, bool, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t)</a></td>
+              
+              <td class="coverFnHi">589249</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2135">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_pre_process_k_tail(bool, bool, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t)</a></td>
+              
+              <td class="coverFnAliasHi">589249</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2135">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::maybe_pre_process_k_tail(bool, bool, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::matrix_kind_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2135">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::maybe_pre_process_k_tail(bool, bool, Xbyak::Tmm const&amp;, Xbyak::Reg64, long, Xbyak::Reg64, dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::matrix_kind_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L666">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_set_avx_mask(bool)</a></td>
+              
+              <td class="coverFnHi">1925351</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L666">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_set_avx_mask(bool)</a></td>
+              
+              <td class="coverFnAliasHi">216300</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L666">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::maybe_set_avx_mask(bool)</a></td>
+              
+              <td class="coverFnAliasHi">267235</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L666">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::maybe_set_avx_mask(bool)</a></td>
+              
+              <td class="coverFnAliasHi">1441816</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L672">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_set_avx_rd_tail_mask(bool)</a></td>
+              
+              <td class="coverFnHi">11811</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L672">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_set_avx_rd_tail_mask(bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L672">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::maybe_set_avx_rd_tail_mask(bool)</a></td>
+              
+              <td class="coverFnAliasHi">11811</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L672">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::maybe_set_avx_rd_tail_mask(bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L2074">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_tileloadd_nt(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t, long, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">592972</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2074">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::maybe_tileloadd_nt(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::matrix_kind_t, long, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">592972</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2074">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::maybe_tileloadd_nt(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::matrix_kind_t, long, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L2074">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::maybe_tileloadd_nt(dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::matrix_kind_t, long, long, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L518">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::rdb_A_offset() const</a></td>
+              
+              <td class="coverFnHi">2062499</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L518">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::rdb_A_offset() const</a></td>
+              
+              <td class="coverFnAliasHi">518352</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L518">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::rdb_A_offset() const</a></td>
+              
+              <td class="coverFnAliasHi">254760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L518">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::rdb_A_offset() const</a></td>
+              
+              <td class="coverFnAliasHi">1289387</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L523">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::rdb_B_offset() const</a></td>
+              
+              <td class="coverFnHi">2044343</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L523">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::rdb_B_offset() const</a></td>
+              
+              <td class="coverFnAliasHi">500196</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L523">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::rdb_B_offset() const</a></td>
+              
+              <td class="coverFnAliasHi">254760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L523">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::rdb_B_offset() const</a></td>
+              
+              <td class="coverFnAliasHi">1289387</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L899">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::read_params()</a></td>
+              
+              <td class="coverFnHi">1615241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L899">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::read_params()</a></td>
+              
+              <td class="coverFnAliasHi">200508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L899">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::read_params()</a></td>
+              
+              <td class="coverFnAliasHi">188521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L899">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::read_params()</a></td>
+              
+              <td class="coverFnAliasHi">1226212</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::reduce_gemv_accumulators(long, long)</a></td>
+              
+              <td class="coverFnHi">10020</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::reduce_gemv_accumulators(long, long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::reduce_gemv_accumulators(long, long)</a></td>
+              
+              <td class="coverFnAliasHi">10020</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1274">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::reduce_gemv_accumulators(long, long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1955">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::restore_A_B_matrices()</a></td>
+              
+              <td class="coverFnHi">1830447</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1955">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::restore_A_B_matrices()</a></td>
+              
+              <td class="coverFnAliasHi">212788</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1955">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::restore_A_B_matrices()</a></td>
+              
+              <td class="coverFnAliasHi">251334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1955">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::restore_A_B_matrices()</a></td>
+              
+              <td class="coverFnAliasHi">1366325</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L773">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::restore_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnHi">3037</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L773">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::restore_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasHi">3037</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L773">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::restore_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L773">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::restore_bdb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L734">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::restore_ldb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnHi">2312</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L734">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::restore_ldb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasHi">2312</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L734">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::restore_ldb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L734">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::restore_ldb_post_op_regs(long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1970">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::set_A_B_matrices()</a></td>
+              
+              <td class="coverFnHi">2085795</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1970">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::set_A_B_matrices()</a></td>
+              
+              <td class="coverFnAliasHi">212788</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1970">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::set_A_B_matrices()</a></td>
+              
+              <td class="coverFnAliasHi">306065</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1970">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::set_A_B_matrices()</a></td>
+              
+              <td class="coverFnAliasHi">1566942</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1738">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnHi">1898606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1738">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">215834</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1738">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::store_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">262641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1738">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::store_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1420131</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1760">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators(long, bool, long, bool, bool)::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnHi">218949</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1760">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators(long, bool, long, bool, bool)::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">218949</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1760">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::store_accumulators(long, bool, long, bool, bool)::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1760">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::store_accumulators(long, bool, long, bool, bool)::{lambda(bool, bool)#1}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1287">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators_apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnHi">1001227</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1287">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators_apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">6398</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1287">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::store_accumulators_apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">165521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1287">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::store_accumulators_apply_post_ops(long, long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">829308</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L1676">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators_without_post_ops(long, long, bool)</a></td>
+              
+              <td class="coverFnHi">1909518</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1676">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::store_accumulators_without_post_ops(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">226746</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1676">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::store_accumulators_without_post_ops(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">262641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L1676">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::store_accumulators_without_post_ops(long, long, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1420131</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L314">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_beta()</a></td>
+              
+              <td class="coverFnHi">14646</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L314">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_beta()</a></td>
+              
+              <td class="coverFnAliasHi">5076</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L314">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_beta()</a></td>
+              
+              <td class="coverFnAliasHi">1752</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L314">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_beta()</a></td>
+              
+              <td class="coverFnAliasHi">7818</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L349">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_bcst() const</a></td>
+              
+              <td class="coverFnHi">12041469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L349">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_bcst() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L349">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_bcst() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L349">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_bcst() const</a></td>
+              
+              <td class="coverFnAliasHi">12041469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L330">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux1() const</a></td>
+              
+              <td class="coverFnHi">164311</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L330">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux1() const</a></td>
+              
+              <td class="coverFnAliasHi">1288</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L330">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_emu_aux1() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L330">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_emu_aux1() const</a></td>
+              
+              <td class="coverFnAliasHi">163023</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L333">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux2() const</a></td>
+              
+              <td class="coverFnHi">164311</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L333">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux2() const</a></td>
+              
+              <td class="coverFnAliasHi">1288</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L333">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_emu_aux2() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L333">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_emu_aux2() const</a></td>
+              
+              <td class="coverFnAliasHi">163023</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L336">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux3() const</a></td>
+              
+              <td class="coverFnHi">164311</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L336">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux3() const</a></td>
+              
+              <td class="coverFnAliasHi">1288</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L336">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_emu_aux3() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L336">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_emu_aux3() const</a></td>
+              
+              <td class="coverFnAliasHi">163023</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L339">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux4() const</a></td>
+              
+              <td class="coverFnHi">88532</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L339">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux4() const</a></td>
+              
+              <td class="coverFnAliasHi">265</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L339">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_emu_aux4() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L339">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_emu_aux4() const</a></td>
+              
+              <td class="coverFnAliasHi">88267</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L342">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux5() const</a></td>
+              
+              <td class="coverFnHi">88532</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L342">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_emu_aux5() const</a></td>
+              
+              <td class="coverFnAliasHi">265</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L342">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_emu_aux5() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L342">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_emu_aux5() const</a></td>
+              
+              <td class="coverFnAliasHi">88267</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L345">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_load() const</a></td>
+              
+              <td class="coverFnHi">14779932</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L345">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_fp8_load() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L345">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_fp8_load() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L345">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_fp8_load() const</a></td>
+              
+              <td class="coverFnAliasHi">14779932</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L320">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_inp_shift() const</a></td>
+              
+              <td class="coverFnHi">1226119</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L320">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_inp_shift() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L320">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_inp_shift() const</a></td>
+              
+              <td class="coverFnAliasHi">292196</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L320">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_inp_shift() const</a></td>
+              
+              <td class="coverFnAliasHi">933923</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L315">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_lbound()</a></td>
+              
+              <td class="coverFnHi">2815028</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L315">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_lbound()</a></td>
+              
+              <td class="coverFnAliasHi">26198</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L315">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_lbound()</a></td>
+              
+              <td class="coverFnAliasHi">562862</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L315">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_lbound()</a></td>
+              
+              <td class="coverFnAliasHi">2225968</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L318">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_one_bytes() const</a></td>
+              
+              <td class="coverFnHi">70752</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L318">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_one_bytes() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L318">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_one_bytes() const</a></td>
+              
+              <td class="coverFnAliasHi">28704</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L318">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_one_bytes() const</a></td>
+              
+              <td class="coverFnAliasHi">42048</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L313">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_tail_mask()</a></td>
+              
+              <td class="coverFnHi">592559</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L313">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_tail_mask()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L313">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_tail_mask()</a></td>
+              
+              <td class="coverFnAliasHi">592559</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L313">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_tail_mask()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L305">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_tmp(long)</a></td>
+              
+              <td class="coverFnHi">12106645</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L305">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_tmp(long)</a></td>
+              
+              <td class="coverFnAliasHi">523380</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L305">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_tmp(long)</a></td>
+              
+              <td class="coverFnAliasHi">2633636</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L305">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_tmp(long)</a></td>
+              
+              <td class="coverFnAliasHi">8949629</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L316">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_ubound()</a></td>
+              
+              <td class="coverFnHi">3316266</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L316">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_ubound()</a></td>
+              
+              <td class="coverFnAliasHi">27662</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L316">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_ubound()</a></td>
+              
+              <td class="coverFnAliasHi">562862</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L316">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_ubound()</a></td>
+              
+              <td class="coverFnAliasHi">2725742</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L319">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_zp_a_shift() const</a></td>
+              
+              <td class="coverFnHi">70752</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L319">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::vmm_zp_a_shift() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L319">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::vmm_zp_a_shift() const</a></td>
+              
+              <td class="coverFnAliasHi">28704</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L319">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::vmm_zp_a_shift() const</a></td>
+              
+              <td class="coverFnAliasHi">42048</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L609">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::wei_scales_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">234054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L609">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::wei_scales_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">614</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L609">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::wei_scales_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">72021</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L609">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::wei_scales_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">161419</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L987">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zero_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnHi">1898606</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L987">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zero_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">215834</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L987">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::zero_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">262641</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L987">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::zero_accumulators(long, bool, long, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1420131</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L354">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zmm_tmp_1() const</a></td>
+              
+              <td class="coverFnHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L354">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zmm_tmp_1() const</a></td>
+              
+              <td class="coverFnAliasHi">103</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L354">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::zmm_tmp_1() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L354">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::zmm_tmp_1() const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zp_c_values_offset(long, bool) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zp_c_values_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::zp_c_values_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L647">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::zp_c_values_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L617">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zp_comp_a_offset(long, bool) const</a></td>
+              
+              <td class="coverFnHi">2367</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L617">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zp_comp_a_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L617">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::zp_comp_a_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1347</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L617">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::zp_comp_a_offset(long, bool) const</a></td>
+              
+              <td class="coverFnAliasHi">1020</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_kernel.cpp.gcov.html#L636">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnHi">10069</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L636">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Tmm&gt;::zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L636">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Ymm&gt;::zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">610</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_brgemm_kernel.cpp.gcov.html#L636">dnnl::impl::cpu::x64::jit_brgemm_kernel_t&lt;Xbyak::Zmm&gt;::zp_comp_b_offset(long) const</a></td>
+              
+              <td class="coverFnAliasHi">9459</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

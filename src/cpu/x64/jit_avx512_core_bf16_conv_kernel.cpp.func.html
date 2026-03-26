@@ -1,0 +1,1220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_avx512_core_bf16_conv_kernel.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_avx512_core_bf16_conv_kernel.cpp<span style="font-size: 80%;"> (<a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.3&nbsp;%</td>
+            <td class="headerCovTableEntry">3070</td>
+            <td class="headerCovTableEntry">2956</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">127</td>
+            <td class="headerCovTableEntry">127</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="jit_avx512_core_bf16_conv_kernel.cpp.func-c.html"><img src="../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L88">dnnl::impl::cpu::x64::(anonymous namespace)::is_1stconv(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">113712</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L82">dnnl::impl::cpu::x64::(anonymous namespace)::is_iw_threading_available(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">3772</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L85">dnnl::impl::cpu::x64::(anonymous namespace)::is_iw_threading_on(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">2587</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L75">dnnl::impl::cpu::x64::(anonymous namespace)::is_ow_threading_available(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">37282</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L79">dnnl::impl::cpu::x64::(anonymous namespace)::is_ow_threading_on(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">9572</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L47">dnnl::impl::cpu::x64::(anonymous namespace)::pick_loop_order(dnnl::impl::cpu::x64::jit_conv_conf_t&amp;)</a></td>
+              
+              <td class="coverFnHi">40276</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1561">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_t::init_conf(dnnl::impl::cpu::x64::jit_conv_conf_t&amp;, dnnl::impl::convolution_desc_t const&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, int)</a></td>
+              
+              <td class="coverFnHi">9947</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1794">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_t::init_conf(dnnl::impl::cpu::x64::jit_conv_conf_t&amp;, dnnl::impl::convolution_desc_t const&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, int)::{lambda(long, long)#1}::operator()(long, long) const</a></td>
+              
+              <td class="coverFnHi">7410</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1233">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnHi">4248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1233">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">78</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1233">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Ymm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1233">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Zmm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">4165</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1374">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">2587</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1374">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">68</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1374">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1374">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">2514</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1117">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::prepare_output(int)</a></td>
+              
+              <td class="coverFnHi">4248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1117">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::prepare_output(int)</a></td>
+              
+              <td class="coverFnAliasHi">78</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1117">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Ymm&gt;::prepare_output(int)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1117">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Zmm&gt;::prepare_output(int)</a></td>
+              
+              <td class="coverFnAliasHi">4165</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1127">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::store_output(int)</a></td>
+              
+              <td class="coverFnHi">4248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1127">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Xmm&gt;::store_output(int)</a></td>
+              
+              <td class="coverFnAliasHi">78</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1127">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Ymm&gt;::store_output(int)</a></td>
+              
+              <td class="coverFnAliasHi">5</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1127">dnnl::impl::cpu::x64::jit_avx512_core_bf16_bwd_data_kernel_vmm_t&lt;Xbyak::Zmm&gt;::store_output(int)</a></td>
+              
+              <td class="coverFnAliasHi">4165</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4644">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::balance(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, int&amp;, int&amp;, int&amp;, int&amp;, int&amp;)</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4660">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::balance(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, int&amp;, int&amp;, int&amp;, int&amp;, int&amp;)::{lambda(int, int, int)#1}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">681790</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4685">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::balance(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, int&amp;, int&amp;, int&amp;, int&amp;, int&amp;)::{lambda(int, int, int)#1}::operator()(int, int, int) const::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">681790</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4692">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::balance(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, int&amp;, int&amp;, int&amp;, int&amp;, int&amp;)::{lambda(int, int, int)#1}::operator()(int, int, int) const::{lambda()#2}::operator()() const</a></td>
+              
+              <td class="coverFnHi">681790</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4696">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::balance(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, int&amp;, int&amp;, int&amp;, int&amp;, int&amp;)::{lambda(int, int, int)#1}::operator()(int, int, int) const::{lambda()#3}::operator()() const</a></td>
+              
+              <td class="coverFnHi">681790</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2561">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_diff_bias_init()</a></td>
+              
+              <td class="coverFnHi">44219</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2576">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_diff_bias_row(bool)</a></td>
+              
+              <td class="coverFnHi">44259</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2588">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_diff_bias_row(bool)::{lambda(bool)#1}::operator()(bool) const</a></td>
+              
+              <td class="coverFnHi">44343</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3743">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()</a></td>
+              
+              <td class="coverFnHi">69</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3814">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda()#6}::operator()() const</a></td>
+              
+              <td class="coverFnHi">150</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3821">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda()#6}::operator()() const::{lambda(int, bool)#1}::operator()(int, bool) const</a></td>
+              
+              <td class="coverFnHi">162</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3869">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda()#7}::operator()() const</a></td>
+              
+              <td class="coverFnHi">75</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3889">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda(bool, bool)#8}::operator()(bool, bool) const</a></td>
+              
+              <td class="coverFnHi">75</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3802">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">19380</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3803">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">21840</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3807">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">1140</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3812">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda(int)#5}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">3600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3804">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_full_spat_loop()::{lambda(int, int)#3}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">18240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2679">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step(int, int, int, int, int, int, int, bool)</a></td>
+              
+              <td class="coverFnHi">77890</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1899">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_extern(int, int, int, int, int, int, int, bool)</a></td>
+              
+              <td class="coverFnHi">57395</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1913">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_extern(int, int, int, int, int, int, int, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">4747645</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1929">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_extern(int, int, int, int, int, int, int, bool)::{lambda(int)#5}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">223005</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1910">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_extern(int, int, int, int, int, int, int, bool)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">6608560</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1918">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_extern(int, int, int, int, int, int, int, bool)::{lambda(int, int)#3}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">1041963</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1923">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_extern(int, int, int, int, int, int, int, bool)::{lambda(int, int, long, bool)#4}::operator()(int, int, long, bool) const</a></td>
+              
+              <td class="coverFnHi">4524430</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2022">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)</a></td>
+              
+              <td class="coverFnHi">245</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2048">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">63942</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2066">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int)#6}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">3243</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2045">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">69885</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2056">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int, int)#4}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">4593</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2072">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int, int, Xbyak::Opmask, bool, Xbyak::Opmask, bool)#7}::operator()(int, int, Xbyak::Opmask, bool, Xbyak::Opmask, bool) const</a></td>
+              
+              <td class="coverFnHi">2634</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2051">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int, int, bool)#3}::operator()(int, int, bool) const</a></td>
+              
+              <td class="coverFnHi">5268</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2061">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_interleave(int, int, int, int, int, int, int, bool)::{lambda(int, int, long, bool)#5}::operator()(int, int, long, bool) const</a></td>
+              
+              <td class="coverFnHi">60699</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2476">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw(int, int, int, int, int, int, int, bool)</a></td>
+              
+              <td class="coverFnHi">16</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2493">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw(int, int, int, int, int, int, int, bool)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">156</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2520">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw(int, int, int, int, int, int, int, bool)::{lambda(int, int, int)#2}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">3480</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2350">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw_expl(int, int, int, int, int, int, int, bool)</a></td>
+              
+              <td class="coverFnHi">20234</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2370">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw_expl(int, int, int, int, int, int, int, bool)::{lambda(int)#3}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">165620</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2375">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw_expl(int, int, int, int, int, int, int, bool)::{lambda(int)#4}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">21798</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2363">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw_expl(int, int, int, int, int, int, int, bool)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">521368</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2366">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw_expl(int, int, int, int, int, int, int, bool)::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">193560</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2399">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_ic_block_step_vpermw_expl(int, int, int, int, int, int, int, bool)::{lambda(int, int, int)#5}::operator()(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">94992</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4072">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_loop()</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3610">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_od_loop_common(bool)</a></td>
+              
+              <td class="coverFnHi">39736</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3353">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_loop_common(bool)</a></td>
+              
+              <td class="coverFnHi">42604</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2972">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_step_common(int)</a></td>
+              
+              <td class="coverFnHi">6571</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3008">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_step_common(int)::{lambda(int)#1}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">6537</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3113">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_step_common(int)::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">34</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3253">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_step_disp()</a></td>
+              
+              <td class="coverFnHi">47696</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2840">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_step_unroll_ow(int)</a></td>
+              
+              <td class="coverFnHi">25974</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2739">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::compute_oh_step_unroll_ow_icblock(int)</a></td>
+              
+              <td class="coverFnHi">15151</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2259">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::convert_src_to_vnni_format(int, int, int, int)</a></td>
+              
+              <td class="coverFnHi">7278</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4149">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::generate()</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2698">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::get_ur_w(int&amp;, int&amp;, int&amp;) const</a></td>
+              
+              <td class="coverFnHi">53182</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4174">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::init_conf(dnnl::impl::cpu::x64::jit_conv_conf_t&amp;, dnnl::impl::convolution_desc_t const&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, int)</a></td>
+              
+              <td class="coverFnHi">115950</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4577">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::init_scratchpad(dnnl::impl::memory_tracking::registrar_t&amp;, dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2018">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::interleave_stack_size(int, int)</a></td>
+              
+              <td class="coverFnHi">313</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2014">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::interleave_w_reorder_bytes(int)</a></td>
+              
+              <td class="coverFnHi">558</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2009">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::interleave_w_reorder_size(int) const</a></td>
+              
+              <td class="coverFnHi">803</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2341">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::may_be_reset_oc_tail_mask()</a></td>
+              
+              <td class="coverFnHi">64469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2329">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::may_be_set_oc_tail_mask()</a></td>
+              
+              <td class="coverFnHi">64469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L2633">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::maybe_compute_diff_bias()</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L3291">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::maybe_zero_kernel()</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1871">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::od_step_comeback_pointers()</a></td>
+              
+              <td class="coverFnHi">43102</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L1885">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::oh_step_comeback_pointers()</a></td>
+              
+              <td class="coverFnHi">4594</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L4124">dnnl::impl::cpu::x64::jit_avx512_core_bf16_conv_bwd_weights_kernel_f32_t::setup_stack_space()</a></td>
+              
+              <td class="coverFnHi">42673</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L825">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_t::init_conf(dnnl::impl::cpu::x64::jit_conv_conf_t&amp;, dnnl::impl::convolution_desc_t const&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_memory_desc&amp;, dnnl_primitive_attr&amp;, int)</a></td>
+              
+              <td class="coverFnHi">64616</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L816">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_t::init_scratchpad(dnnl::impl::memory_tracking::registrar_t&amp;, dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">36565</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L170">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)</a></td>
+              
+              <td class="coverFnHi">12334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L170">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)</a></td>
+              
+              <td class="coverFnAliasHi">995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L170">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)</a></td>
+              
+              <td class="coverFnAliasHi">577</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L170">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)</a></td>
+              
+              <td class="coverFnAliasHi">10762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L181">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnHi">4728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L181">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">228</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L181">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">116</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L181">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">4384</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L213">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnHi">35186</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L213">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">8064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L213">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">6384</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L213">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}::operator()(bool, int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">20738</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L359">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnHi">12334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L359">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L359">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">577</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L359">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::compute_loop(int, int, int)</a></td>
+              
+              <td class="coverFnAliasHi">10762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::generate()</a></td>
+              
+              <td class="coverFnHi">9572</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">646</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">233</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L572">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::generate()</a></td>
+              
+              <td class="coverFnAliasHi">8693</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L98">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::jit_avx512_core_bf16_fwd_kernel_vmm_t(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, dnnl_primitive_attr const&amp;, dnnl_memory_desc const&amp;)</a></td>
+              
+              <td class="coverFnHi">9572</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L98">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::jit_avx512_core_bf16_fwd_kernel_vmm_t(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, dnnl_primitive_attr const&amp;, dnnl_memory_desc const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">646</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L98">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::jit_avx512_core_bf16_fwd_kernel_vmm_t(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, dnnl_primitive_attr const&amp;, dnnl_memory_desc const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">233</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L98">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::jit_avx512_core_bf16_fwd_kernel_vmm_t(dnnl::impl::cpu::x64::jit_conv_conf_t const&amp;, dnnl_primitive_attr const&amp;, dnnl_memory_desc const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">8693</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L132">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::prepare_dst(int)</a></td>
+              
+              <td class="coverFnHi">12334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L132">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::prepare_dst(int)</a></td>
+              
+              <td class="coverFnAliasHi">995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L132">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::prepare_dst(int)</a></td>
+              
+              <td class="coverFnAliasHi">577</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L132">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::prepare_dst(int)</a></td>
+              
+              <td class="coverFnAliasHi">10762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L222">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::store_dst(int)</a></td>
+              
+              <td class="coverFnHi">12334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L222">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::store_dst(int)</a></td>
+              
+              <td class="coverFnAliasHi">995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L222">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::store_dst(int)</a></td>
+              
+              <td class="coverFnAliasHi">577</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L222">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::store_dst(int)</a></td>
+              
+              <td class="coverFnAliasHi">10762</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L149">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::vmm_dst(int, int) const</a></td>
+              
+              <td class="coverFnHi">2283456</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L149">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::vmm_dst(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">66451</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L149">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::vmm_dst(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">77764</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L149">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::vmm_dst(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">2139241</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L141">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::vmm_dst_idx(int, int) const</a></td>
+              
+              <td class="coverFnHi">2323370</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L141">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::vmm_dst_idx(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">74743</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L141">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::vmm_dst_idx(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">84264</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L141">dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::vmm_dst_idx(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">2164363</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1} const&amp;)</a></td>
+              
+              <td class="coverFnHi">4410</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">28</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">896</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#1} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">12</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">560</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#1} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">360</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L155">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, bool, bool, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2554</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L165">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnHi">4010</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L165">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Xmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">896</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L165">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Ymm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">560</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_avx512_core_bf16_conv_kernel.cpp.gcov.html#L165">void dnnl::impl::cpu::x64::iterate&lt;dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2}&gt;(int, int, dnnl::impl::cpu::x64::jit_avx512_core_bf16_fwd_kernel_vmm_t&lt;Xbyak::Zmm&gt;::apply_postops(int)::{lambda(bool, int, int)#2} const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2554</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

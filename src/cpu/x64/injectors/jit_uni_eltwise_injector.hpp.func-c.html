@@ -1,0 +1,948 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/injectors/jit_uni_eltwise_injector.hpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/injectors">src/cpu/x64/injectors</a> - jit_uni_eltwise_injector.hpp<span style="font-size: 80%;"> (<a href="jit_uni_eltwise_injector.hpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.2&nbsp;%</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntry">25</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">70.9&nbsp;%</td>
+            <td class="headerCovTableEntry">103</td>
+            <td class="headerCovTableEntry">73</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><a href="jit_uni_eltwise_injector.hpp.func.html"><img src="../../../../updown.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></a></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><img src="../../../../glass.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">663940</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">778</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">806</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">880</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1310</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2698</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">13322</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">16739</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">45521</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">215087</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L118">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_post_ops::entry_t::eltwise_t const&amp;, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">366090</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">937332</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">14</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6369</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">22930</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">48174</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">80262</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">91874</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">330646</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L134">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::compute_vector(unsigned long, std::set&lt;unsigned long, std::less&lt;unsigned long&gt;, std::allocator&lt;unsigned long&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">357063</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L37">dnnl::impl::cpu::x64::eltwise_injector::static_params_t::static_params_t(bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">1015744</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnHi">1067469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">778</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">806</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1310</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2705</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">12345</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">15352</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">39632</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">45937</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">74121</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">397181</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L92">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::jit_uni_eltwise_injector_t(dnnl::impl::cpu::x64::jit_generator_t*, dnnl_alg_kind_t, float, float, float, dnnl_data_type_t, bool, Xbyak::Reg64, Xbyak::Opmask, bool, bool, bool, bool)</a></td>
+              
+              <td class="coverFnAliasHi">476593</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnHi">4159453</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">469</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">2334</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">2626</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">2658</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">3417</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">25343</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">27632</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">92053</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">157796</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">231864</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">857517</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L139">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::load_table_addr()</a></td>
+              
+              <td class="coverFnAliasHi">2755504</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnHi">47011149</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">480</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">2760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">12940</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">180834</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">233580</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">268376</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">286270</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">414089</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">625784</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">1977914</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">3216893</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">18045992</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L341">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::table_val(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">21745237</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnHi">85967225</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">3600</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">8857</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">23054</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">257578</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">319206</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)3632, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">547812</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)48, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">563461</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)13168, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">633846</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)32626, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">1950341</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)16, Xbyak::Xmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">5397714</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)560, Xbyak::Ymm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">5979747</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)30577, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">34170138</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_eltwise_injector.hpp.gcov.html#L328">dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::table_off(dnnl::impl::cpu::x64::jit_uni_eltwise_injector_t&lt;(dnnl::impl::cpu::x64::cpu_isa_t)880, Xbyak::Zmm&gt;::key_t, unsigned long)</a></td>
+              
+              <td class="coverFnAliasHi">36111871</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

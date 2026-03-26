@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_brgemm_conv.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_brgemm_conv.hpp<span style="font-size: 80%;"> (source / <a href="jit_brgemm_conv.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntry">34</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">94.4&nbsp;%</td>
+            <td class="headerCovTableEntry">143</td>
+            <td class="headerCovTableEntry">135</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_JIT_BRGEMM_CONV_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_JIT_BRGEMM_CONV_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;array&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;unordered_map&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/memory_tracking.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/primitive.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/cpu_convolution_pd.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;cpu/platform.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/x64/amx_tile_configure.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &quot;cpu/x64/brgemm/brgemm.hpp&quot;</span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &quot;cpu/x64/brgemm/brgemm_containers.hpp&quot;</span>
+<span id="L35"><span class="lineNum">      35</span>              : #include &quot;cpu/x64/cpu_barrier.hpp&quot;</span>
+<span id="L36"><span class="lineNum">      36</span>              : #include &quot;cpu/x64/cpu_reducer.hpp&quot;</span>
+<span id="L37"><span class="lineNum">      37</span>              : #include &quot;cpu/x64/jit_avx512_core_amx_conv_kernel.hpp&quot;</span>
+<span id="L38"><span class="lineNum">      38</span>              : #include &quot;cpu/x64/jit_brgemm_conv_comp_pad_kernel.hpp&quot;</span>
+<span id="L39"><span class="lineNum">      39</span>              : #include &quot;cpu/x64/jit_brgemm_conv_trans_kernel.hpp&quot;</span>
+<span id="L40"><span class="lineNum">      40</span>              : #include &quot;cpu/x64/jit_brgemm_conv_utils.hpp&quot;</span>
+<span id="L41"><span class="lineNum">      41</span>              : #include &quot;cpu/x64/jit_brgemm_post_ops.hpp&quot;</span>
+<span id="L42"><span class="lineNum">      42</span>              : #include &quot;cpu/x64/jit_brgemm_transpose_utils.hpp&quot;</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : namespace dnnl {</span>
+<span id="L45"><span class="lineNum">      45</span>              : namespace impl {</span>
+<span id="L46"><span class="lineNum">      46</span>              : namespace cpu {</span>
+<span id="L47"><span class="lineNum">      47</span>              : namespace x64 {</span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              : template &lt;cpu_isa_t isa&gt;</span>
+<span id="L50"><span class="lineNum">      50</span>              : struct brgemm_convolution_fwd_t : public primitive_t {</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              :     struct brgemm_thread_ctx_t;</span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              :     struct pd_t : public cpu_convolution_fwd_pd_t {</span>
+<span id="L55"><span class="lineNum">      55</span>              :         using cpu_convolution_fwd_pd_t::cpu_convolution_fwd_pd_t;</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">     2586974 :         DECLARE_COMMON_PD_T(JIT_IMPL_NAME_HELPER(&quot;brg_conv_fwd:&quot;, isa, &quot;&quot;),</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :                 brgemm_convolution_fwd_t);</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              :         status_t init(engine_t *engine);</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              :         int brgs_sz_ {};</span>
+<span id="L63"><span class="lineNum">      63</span>              :         std::shared_ptr&lt;brgemm_containers::brgemm_desc_container_t&gt;</span>
+<span id="L64"><span class="lineNum">      64</span>              :                 brgemm_descriptors_;</span>
+<span id="L65"><span class="lineNum">      65</span>              :         bool with_sum_ = false;</span>
+<span id="L66"><span class="lineNum">      66</span>              :         jit_brgemm_conv_conf_t jcp_ = utils::zero&lt;decltype(jcp_)&gt;();</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              :         int ic_chunks {};</span>
+<span id="L69"><span class="lineNum">      69</span>              :         bool need_postwork {};</span>
+<span id="L70"><span class="lineNum">      70</span>              :         dim_t wei_g_stride {}, wei_ic_stride {}, wei_ocb_stride {};</span>
+<span id="L71"><span class="lineNum">      71</span>              :         dim_t wei_kw_stride {}, wei_kh_stride {}, wei_kd_stride {};</span>
+<span id="L72"><span class="lineNum">      72</span>              :         dim_t pbuf_w_sz {}, pbuf_h_sz {}, pbuf_d_sz {};</span>
+<span id="L73"><span class="lineNum">      73</span>              :         int ndims {0};</span>
+<span id="L74"><span class="lineNum">      74</span>              :         int rd {0};</span>
+<span id="L75"><span class="lineNum">      75</span>              : </span>
+<span id="L76"><span class="lineNum">      76</span>              :         // batch sizes info for unrolled kernels</span>
+<span id="L77"><span class="lineNum">      77</span>              :         int bs_c {};</span>
+<span id="L78"><span class="lineNum">      78</span>              :         // need custom hasher to use array as key in unordered_map</span>
+<span id="L79"><span class="lineNum">      79</span>              :         template &lt;int asize&gt;</span>
+<span id="L80"><span class="lineNum">      80</span>              :         struct hasher_t {</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">   285768247 :             size_t operator()(const std::array&lt;int, asize&gt; &amp;a) const {</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">   285768247 :                 size_t seed = 0;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">  2556184067 :                 for (auto e : a)</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">  2270417410 :                     seed = hash_combine(seed, e);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">   285768247 :                 return seed;</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :             }</span>
+<span id="L87"><span class="lineNum">      87</span>              :         };</span>
+<span id="L88"><span class="lineNum">      88</span>              :         template &lt;int asize&gt;</span>
+<span id="L89"><span class="lineNum">      89</span>              :         using Arrmap = std::unordered_map&lt;std::array&lt;int, asize&gt;, int,</span>
+<span id="L90"><span class="lineNum">      90</span>              :                 hasher_t&lt;asize&gt;&gt;;</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span>              :         Arrmap&lt;4&gt; batchsizes;</span>
+<span id="L93"><span class="lineNum">      93</span>              :         int brg_indices_c {0};</span>
+<span id="L94"><span class="lineNum">      94</span>              :         Arrmap&lt;8&gt; brg_indices;</span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span>              :         int get_brg_idx(int m, bool do_initialization, bool is_N_tail,</span>
+<span id="L97"><span class="lineNum">      97</span>              :                 bool is_K_tail, int kd_b, int kd_e, int kh_b, int kh_e) const;</span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">     5068869 :         inline int get_bs(int kd_b, int kd_e, int kh_b, int kh_e) const {</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">     5068869 :             const auto kd_l = nstl::min(KD_BLOCK, kd_e - kd_b);</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">     5068869 :             const auto kh_l = nstl::min(KH_BLOCK, kh_e - kh_b);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">     5068869 :             const auto bs = kd_l</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">    10119038 :                     * (jcp_.is_relo_whi()</span></span>
+<span id="L104"><span class="lineNum">     104</span>              :                                     ? 1</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">     5050169 :                                     : (kh_l * (jcp_.is_relo_wi() ? 1 : KW)));</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">     5068869 :             return bs;</span></span>
+<span id="L107"><span class="lineNum">     107</span>              :         }</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span>              :         int get_any_brg_idx(bool is_N_tail, bool is_K_tail) const;</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">  2447763335 :         inline int maybe_invert(int k, int K) const {</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">  2447763335 :             return desc()-&gt;use_inversion ? K - 1 - k : k;</span></span>
+<span id="L113"><span class="lineNum">     113</span>              :         }</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :         // This method calculates the value of k_l</span>
+<span id="L116"><span class="lineNum">     116</span>              :         void init_batch(int icc, const char *src_base, const char *wei_base,</span>
+<span id="L117"><span class="lineNum">     117</span>              :                 int n_ic_blocks, int ic_block_s, int iid_b, int iih_b,</span>
+<span id="L118"><span class="lineNum">     118</span>              :                 int iiw_b, const dim_t *const __restrict kw_top_vpads,</span>
+<span id="L119"><span class="lineNum">     119</span>              :                 const dim_t *const __restrict kw_bottom_vpads, int kd_b,</span>
+<span id="L120"><span class="lineNum">     120</span>              :                 int kd_e, int kh_b, int kh_e, int kw_b, int kw_e, int &amp;k_l,</span>
+<span id="L121"><span class="lineNum">     121</span>              :                 brgemm_batch_element_t *brg_batch) const;</span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :         void get_A_B(int icc, const char *src_base, const char *wei_base,</span>
+<span id="L124"><span class="lineNum">     124</span>              :                 int ic_block_s, int iid_b, int iih_b, int iiw_b, int kd_b,</span>
+<span id="L125"><span class="lineNum">     125</span>              :                 int kh_b, const void *&amp;ptrA, const void *&amp;ptrB) const;</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              :         status_t add_brg_descriptor(int M, bool is_N_tail, bool is_K_tail,</span>
+<span id="L128"><span class="lineNum">     128</span>              :                 bool do_init, int kd_b, int kd_e, int kh_b, int kh_e);</span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span>              :     protected:</span>
+<span id="L131"><span class="lineNum">     131</span>              :         int KD {}, KH {}, KW {}, EXT_KD {}, EXT_KH {}, EXT_KW {}, KS {},</span>
+<span id="L132"><span class="lineNum">     132</span>              :                 KD_BLOCK {}, KH_BLOCK {}, KW_BLOCK {}, KD_BLOCK_PAD {},</span>
+<span id="L133"><span class="lineNum">     133</span>              :                 KH_BLOCK_PAD {}, ID {}, IH {}, IW {}, IDP {}, IHP {}, IWP {},</span>
+<span id="L134"><span class="lineNum">     134</span>              :                 OD {}, OH {}, OW {}, SD {}, SH {}, SW {}, FP {}, TP {}, LP {},</span>
+<span id="L135"><span class="lineNum">     135</span>              :                 DD {}, DH {}, DW {};</span>
+<span id="L136"><span class="lineNum">     136</span>              :         size_t acc_dsz {}, bia_dsz {}, src_dsz {}, wei_dsz {}, dst_dsz {};</span>
+<span id="L137"><span class="lineNum">     137</span>              :         dim_t src_w_sz {}, src_h_sz {}, dst_w_sz {}, dst_h_sz {}, wei_ocb_sz {};</span>
+<span id="L138"><span class="lineNum">     138</span>              :         dim_t adj_src_h_sz {}, adj_src_h_offset {}, src_iw_offset {},</span>
+<span id="L139"><span class="lineNum">     139</span>              :                 src_d_offset {}, wei_ic_offset {}, wei_kd_offset {},</span>
+<span id="L140"><span class="lineNum">     140</span>              :                 wei_kh_offset {}, wei_kw_offset {};</span>
+<span id="L141"><span class="lineNum">     141</span>              :     };</span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span>              :     brgemm_convolution_fwd_t(const pd_t *apd);</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      454341 :     ~brgemm_convolution_fwd_t() override = default;</span></span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              :     status_t execute(const exec_ctx_t &amp;ctx) const override;</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              : protected:</span>
+<span id="L150"><span class="lineNum">     150</span>              :     status_t init(engine_t *engine) override;</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              : private:</span>
+<span id="L153"><span class="lineNum">     153</span>              :     //  brgemm convolution execution context</span>
+<span id="L154"><span class="lineNum">     154</span>              :     struct brgemm_exec_ctx_t {</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">      542291 :         brgemm_exec_ctx_t(const exec_ctx_t &amp;ctx, const pd_t *pd)</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      542291 :             : src(CTX_IN_MEM(const char *, DNNL_ARG_SRC))</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">     1084582 :             , weights(CTX_IN_MEM(const char *, DNNL_ARG_WEIGHTS))</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">     1084582 :             , bias(CTX_IN_MEM(const char *, DNNL_ARG_BIAS))</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">     1084582 :             , dst(CTX_OUT_MEM(char *, DNNL_ARG_DST))</span></span>
+<span id="L160"><span class="lineNum">     160</span>              :             , post_ops_binary_rhs_arg_vec(binary_injector::prepare_binary_args(</span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">      542291 :                       pd-&gt;attr()-&gt;post_ops_, ctx)) {}</span></span>
+<span id="L162"><span class="lineNum">     162</span>              :         const char *const __restrict src;</span>
+<span id="L163"><span class="lineNum">     163</span>              :         const char *const __restrict weights;</span>
+<span id="L164"><span class="lineNum">     164</span>              :         const char *const __restrict bias;</span>
+<span id="L165"><span class="lineNum">     165</span>              :         char *const __restrict dst;</span>
+<span id="L166"><span class="lineNum">     166</span>              :         const std::vector&lt;const void *&gt; post_ops_binary_rhs_arg_vec;</span>
+<span id="L167"><span class="lineNum">     167</span>              :     };</span>
+<span id="L168"><span class="lineNum">     168</span>              : </span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">    17227616 :     inline static int get_ker_po_idx(int m, bool do_postwork, bool is_N_tail) {</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">    17227616 :         return (m * 2 + static_cast&lt;int&gt;(do_postwork)) * 2</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">    17227616 :                 + static_cast&lt;int&gt;(is_N_tail);</span></span>
+<span id="L172"><span class="lineNum">     172</span>              :     }</span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">   122760460 :     inline static int get_inp_size(</span></span>
+<span id="L175"><span class="lineNum">     175</span>              :             int max_src_size, int dst_size, int k, int stride, int dilate) {</span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">   122760460 :         const auto res = nstl::min(max_src_size,</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">   122760460 :                 calculate_end_padding(0, dst_size, 0, stride,</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">   122760460 :                         calculate_extended_filter_size(k, dilate)));</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">   122760460 :         return res;</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :     }</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">     1504416 :     inline int maybe_invert_range(int k, int k_inv, int K) const {</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">     1504416 :         return pd()-&gt;desc()-&gt;use_inversion ? K - k_inv : k;</span></span>
+<span id="L184"><span class="lineNum">     184</span>              :     }</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :     dim_t get_src_base_offset(</span>
+<span id="L187"><span class="lineNum">     187</span>              :             const brgemm_thread_ctx_t &amp;btc, const dim_t ic) const;</span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span>              :     void ker_base(brgemm_thread_ctx_t &amp;btc) const;</span>
+<span id="L190"><span class="lineNum">     190</span>              :     void ker_trans(brgemm_thread_ctx_t &amp;btc) const;</span>
+<span id="L191"><span class="lineNum">     191</span>              :     void ker_vpad(brgemm_thread_ctx_t &amp;btc) const;</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span>              :     void perform_outwork(const brgemm_thread_ctx_t &amp;btc, char *dst_base,</span>
+<span id="L194"><span class="lineNum">     194</span>              :             const char *bias_w, int ow, int g_oc, bool is_oc_tail, int ker_ow_s,</span>
+<span id="L195"><span class="lineNum">     195</span>              :             int ker_ow_f, int kd_l, int kh_l, bool maybe_do_init,</span>
+<span id="L196"><span class="lineNum">     196</span>              :             bool do_postwork, size_t comp_ker_offs, bool do_post_comp) const;</span>
+<span id="L197"><span class="lineNum">     197</span>              : </span>
+<span id="L198"><span class="lineNum">     198</span>              :     void call_brgemm_kernel(const brgemm_thread_ctx_t &amp;btc,</span>
+<span id="L199"><span class="lineNum">     199</span>              :             const brgemm_kernel_t *brg_ker, int batch_size, char *ptr_C,</span>
+<span id="L200"><span class="lineNum">     200</span>              :             char *ptr_D, const char *bias_w, int g_oc, bool do_postops,</span>
+<span id="L201"><span class="lineNum">     201</span>              :             size_t comp_ker_offs, bool do_only_comp) const;</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :     void maybe_conv_inp(brgemm_thread_ctx_t &amp;btc,</span>
+<span id="L204"><span class="lineNum">     204</span>              :             const brgemm_thread_ctx_t &amp;last_btc,</span>
+<span id="L205"><span class="lineNum">     205</span>              :             const char *__restrict src) const;</span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span>              :     void maybe_conv_weights(const exec_ctx_t &amp;ctx,</span>
+<span id="L208"><span class="lineNum">     208</span>              :             const char *__restrict input_weights,</span>
+<span id="L209"><span class="lineNum">     209</span>              :             const char *__restrict &amp;wei) const;</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              :     status_t add_po_kernel(brgemm_desc_t *bcfg, int ker_idx, bool is_init);</span>
+<span id="L212"><span class="lineNum">     212</span>              :     status_t add_po_kernels(int i_N, int init_bcast_dim, int po_bcast_dim);</span>
+<span id="L213"><span class="lineNum">     213</span>              :     status_t add_brg_kernel(int brg_idx);</span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span>              :     status_t cal_compensation(const char *__restrict weights,</span>
+<span id="L216"><span class="lineNum">     216</span>              :             int32_t *src_zp_buffer, int32_t *s8s8_comp_buffer) const;</span>
+<span id="L217"><span class="lineNum">     217</span>              :     int get_comp_oh(const int oh) const;</span>
+<span id="L218"><span class="lineNum">     218</span>              :     int get_comp_ker_idx(const int kd_b, const int kd_e, const int kh_b,</span>
+<span id="L219"><span class="lineNum">     219</span>              :             const int kh_e, const int kw_b, const int kw_e, const int oh) const;</span>
+<span id="L220"><span class="lineNum">     220</span>              :     int get_comp_offset(const int g, const int ocb, const int oh, const int ow,</span>
+<span id="L221"><span class="lineNum">     221</span>              :             const int kd_b, const int kd_e, const int kh_b, const int kh_e,</span>
+<span id="L222"><span class="lineNum">     222</span>              :             const int kw_b, const int kw_e) const;</span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">  1320231644 :     inline const pd_t *pd() const {</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">  1320231644 :         return static_cast&lt;const pd_t *&gt;(primitive_t::pd().get());</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :     }</span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span>              :     brgemm_containers::brgemm_kernel_container_t brgemm_kernels_;</span>
+<span id="L228"><span class="lineNum">     228</span>              :     brgemm_containers::brgemm_palette_container_t brgemm_palettes_;</span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span>              :     std::vector&lt;std::unique_ptr&lt;jit_brgemm_kernel_post_ops_base_t&gt;&gt; kernels_po_;</span>
+<span id="L231"><span class="lineNum">     231</span>              :     std::unique_ptr&lt;jit_avx512_core_brgemm_conv_trans_kernel::</span>
+<span id="L232"><span class="lineNum">     232</span>              :                     jit_avx512_core_brgemm_conv_trans_kernel_t&gt;</span>
+<span id="L233"><span class="lineNum">     233</span>              :             copy_to_pbuffer_;</span>
+<span id="L234"><span class="lineNum">     234</span>              :     std::unique_ptr&lt;jit_avx512_core_amx_copy_to_pbuffer_t&gt;</span>
+<span id="L235"><span class="lineNum">     235</span>              :             copy_to_relo_pbuffer_;</span>
+<span id="L236"><span class="lineNum">     236</span>              :     std::unique_ptr&lt;jit_brgemm_relo_copy_to_wbuffer_t&gt; copy_to_relo_wbuffer_;</span>
+<span id="L237"><span class="lineNum">     237</span>              : </span>
+<span id="L238"><span class="lineNum">     238</span>              :     std::unique_ptr&lt;jit_generator_t&gt; comp_vpad_pbuffer_;</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span>              :     size_t acc_dsz, bia_dsz, src_dsz, wei_dsz, dst_dsz;</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              :     const memory_desc_wrapper bias_d;</span>
+<span id="L243"><span class="lineNum">     243</span>              : </span>
+<span id="L244"><span class="lineNum">     244</span>              :     // pre - calculated values</span>
+<span id="L245"><span class="lineNum">     245</span>              :     std::vector&lt;dim_t&gt; owb_kw_top_vpads;</span>
+<span id="L246"><span class="lineNum">     246</span>              :     std::vector&lt;dim_t&gt; owb_kw_bottom_vpads;</span>
+<span id="L247"><span class="lineNum">     247</span>              :     std::vector&lt;dim_t&gt; kd_bs, kd_es, kh_bs, kh_es, kw_bs, kw_es, oh_kh_b,</span>
+<span id="L248"><span class="lineNum">     248</span>              :             oh_kh_e, comp_oh, comp_oh_kh_b, comp_oh_kh_e, comp_owb;</span>
+<span id="L249"><span class="lineNum">     249</span>              : </span>
+<span id="L250"><span class="lineNum">     250</span>              :     int KD, KH, KW, EXT_KD, EXT_KH, EXT_KW, KS, KD_BLOCK, KH_BLOCK, KW_BLOCK,</span>
+<span id="L251"><span class="lineNum">     251</span>              :             KD_BLOCK_PAD, KH_BLOCK_PAD, ID, IH, IW, IDP, IHP, IWP, OD, OH, OW,</span>
+<span id="L252"><span class="lineNum">     252</span>              :             SD, SH, SW, FP, TP, LP, DD, DH, DW;</span>
+<span id="L253"><span class="lineNum">     253</span>              :     dim_t src_w_sz, src_h_sz, dst_w_sz, dst_h_sz;</span>
+<span id="L254"><span class="lineNum">     254</span>              :     dim_t ker_vpad_sz, comp_ocb_sz, comp_ker_sz, comp_kw_sz, comp_ow_sz;</span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              :     bool is_relo_with_relo_weights;</span>
+<span id="L257"><span class="lineNum">     257</span>              :     bool need_compensation;</span>
+<span id="L258"><span class="lineNum">     258</span>              :     bool is_amx;</span>
+<span id="L259"><span class="lineNum">     259</span>              : };</span>
+<span id="L260"><span class="lineNum">     260</span>              : </span>
+<span id="L261"><span class="lineNum">     261</span>              : } // namespace x64</span>
+<span id="L262"><span class="lineNum">     262</span>              : } // namespace cpu</span>
+<span id="L263"><span class="lineNum">     263</span>              : } // namespace impl</span>
+<span id="L264"><span class="lineNum">     264</span>              : } // namespace dnnl</span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span>              : #endif</span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

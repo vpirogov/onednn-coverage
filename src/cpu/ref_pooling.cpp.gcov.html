@@ -1,0 +1,454 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/ref_pooling.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu">src/cpu</a> - ref_pooling.cpp<span style="font-size: 80%;"> (source / <a href="ref_pooling.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">99.6&nbsp;%</td>
+            <td class="headerCovTableEntry">247</td>
+            <td class="headerCovTableEntry">246</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2016 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;assert.h&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &lt;math.h&gt;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;common/compiler_workarounds.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/nstl.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;cpu/ref_io_helper.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;cpu/ref_pooling.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/simple_q10n.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace dnnl {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace impl {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace cpu {</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC"> >13877*10^7 : static inline dim_t get_offset(const memory_desc_wrapper &amp;mdw, dim_t n, dim_t c,</span></span>
+<span id="L35"><span class="lineNum">      35</span>              :         dim_t d, dim_t h, dim_t w) {</span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC"> >13877*10^7 :     switch (mdw.ndims()) {</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">   108732292 :         case 3: return mdw.off(n, c, w);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC"> 38823613700 :         case 4: return mdw.off(n, c, h, w);</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC"> 99842784000 :         case 5: return mdw.off(n, c, d, h, w);</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :         default: assert(!&quot;Invalid tensor dimension in pooling&quot;);</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :     }</span>
+<span id="L42"><span class="lineNum">      42</span>              :     return 0;</span>
+<span id="L43"><span class="lineNum">      43</span>              : }</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span>              : using namespace nstl;</span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       48161 : status_t ref_pooling_fwd_t::execute_forward(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       48161 :     status_t status = status::success;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       48161 :     auto src = CTX_IN_MEM(const void *, DNNL_ARG_SRC);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       48161 :     auto dst = CTX_OUT_CLEAN_MEM(void *, DNNL_ARG_DST, status);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       48161 :     CHECK(status);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       48161 :     auto ws = CTX_OUT_CLEAN_MEM(unsigned char *, DNNL_ARG_WORKSPACE, status);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       48161 :     CHECK(status);</span></span>
+<span id="L55"><span class="lineNum">      55</span>              : </span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       48161 :     const memory_desc_wrapper src_d(pd()-&gt;src_md());</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       48161 :     const memory_desc_wrapper dst_d(pd()-&gt;dst_md());</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       48161 :     const memory_desc_wrapper ws_d(pd()-&gt;workspace_md());</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       48161 :     const data_type_t ws_dt = ws ? ws_d.data_type() : data_type::undef;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       48161 :     if (ws) assert(ws_dt == data_type::u8 || ws_dt == data_type::s32);</span></span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       48161 :     const auto alg = pd()-&gt;desc()-&gt;alg_kind;</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       48161 :     const dim_t MB = pd()-&gt;MB();</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       48161 :     const dim_t OC = pd()-&gt;OC();</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       48161 :     const dim_t OD = pd()-&gt;OD();</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       48161 :     const dim_t OH = pd()-&gt;OH();</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       48161 :     const dim_t OW = pd()-&gt;OW();</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       48161 :     const dim_t ID = pd()-&gt;ID();</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       48161 :     const dim_t IH = pd()-&gt;IH();</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       48161 :     const dim_t IW = pd()-&gt;IW();</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       48161 :     const dim_t KD = pd()-&gt;KD();</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       48161 :     const dim_t KH = pd()-&gt;KH();</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">       48161 :     const dim_t KW = pd()-&gt;KW();</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       48161 :     const dim_t SD = pd()-&gt;KSD();</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       48161 :     const dim_t SH = pd()-&gt;KSH();</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       48161 :     const dim_t SW = pd()-&gt;KSW();</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       48161 :     const dim_t padF = pd()-&gt;padFront();</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       48161 :     const dim_t padT = pd()-&gt;padT();</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       48161 :     const dim_t padL = pd()-&gt;padL();</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       48161 :     const dim_t DD = pd()-&gt;KDD();</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       48161 :     const dim_t DH = pd()-&gt;KDH();</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       48161 :     const dim_t DW = pd()-&gt;KDW();</span></span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC"> 10290267100 :     auto set_ws = [=](dim_t mb, dim_t oc, dim_t od, dim_t oh, dim_t ow,</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :                           dim_t value) {</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC"> 10290267100 :         if (ws) {</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">  4488993840 :             const auto off = get_offset(ws_d, mb, oc, od, oh, ow);</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">  4488993840 :             if (ws_dt == data_type::u8) {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">  4466930340 :                 assert(0 &lt;= value</span></span>
+<span id="L91"><span class="lineNum">      91</span>              :                         &amp;&amp; value &lt;= numeric_limits&lt;typename prec_traits_t&lt;</span>
+<span id="L92"><span class="lineNum">      92</span>              :                                         data_type::u8&gt;::type&gt;::max());</span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">  4466930340 :                 ws[off] = value;</span></span>
+<span id="L94"><span class="lineNum">      94</span>              :             } else</span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">    22063570 :                 reinterpret_cast&lt;int *&gt;(ws)[off] = value;</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :         }</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC"> 10290319900 :     };</span></span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span>              :     auto ker_max</span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">  2553692870 :             = [=](float &amp;d, dim_t mb, dim_t oc, dim_t od, dim_t oh, dim_t ow) {</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">  2553692870 :         set_ws(mb, oc, od, oh, ow, 0);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">  7993528700 :         for (dim_t kd = 0; kd &lt; KD; ++kd) {</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">  5439828110 :             const dim_t id = od * SD - padF + kd * (DD + 1);</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">  5439828110 :             if (id &lt; 0 || id &gt;= ID) continue;</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC"> 20639276000 :             for (dim_t kh = 0; kh &lt; KH; ++kh) {</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC"> 15408908200 :                 const dim_t ih = oh * SH - padT + kh * (DH + 1);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC"> 15408908200 :                 if (ih &lt; 0 || ih &gt;= IH) continue;</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC"> 62757594800 :                 for (dim_t kw = 0; kw &lt; KW; ++kw) {</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC"> 47985734600 :                     const dim_t iw = ow * SW - padL + kw * (DW + 1);</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC"> 47985734600 :                     if (iw &lt; 0 || iw &gt;= IW) continue;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC"> 44900491600 :                     const auto off = get_offset(src_d, mb, oc, id, ih, iw);</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC"> 44900491600 :                     float s = io::load_float_value(src_d.data_type(), src, off);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC"> 44900491600 :                     if (s &gt; d) {</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">  7736576890 :                         d = s;</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">  7736576890 :                         set_ws(mb, oc, od, oh, ow, (kd * KH + kh) * KW + kw);</span></span>
+<span id="L117"><span class="lineNum">     117</span>              :                     }</span>
+<span id="L118"><span class="lineNum">     118</span>              :                 }</span>
+<span id="L119"><span class="lineNum">     119</span>              :             }</span>
+<span id="L120"><span class="lineNum">     120</span>              :         }</span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">  2553741250 :     };</span></span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :     auto ker_avg</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">  2954411430 :             = [=](float &amp;d, dim_t mb, dim_t oc, dim_t od, dim_t oh, dim_t ow) {</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">  8671028620 :         for (dim_t kd = 0; kd &lt; KD; ++kd) {</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">  7121067160 :             const dim_t id = od * SD - padF + kd * (DD + 1);</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">  5716608650 :             if (id &lt; 0 || id &gt;= ID) continue;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC"> 21690350180 :             for (dim_t kh = 0; kh &lt; KH; ++kh) {</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC"> 17624182320 :                 const dim_t ih = oh * SH - padT + kh * (DH + 1);</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC"> 16193700920 :                 if (ih &lt; 0 || ih &gt;= IH) continue;</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC"> 63196529560 :                 for (dim_t kw = 0; kw &lt; KW; ++kw) {</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC"> 49233718340 :                     const dim_t iw = ow * SW - padL + kw * (DW + 1);</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC"> 47787001440 :                     if (iw &lt; 0 || iw &gt;= IW) continue;</span></span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC"> 44353007540 :                     const auto off = get_offset(src_d, mb, oc, id, ih, iw);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC"> 88706046280 :                     d += io::load_float_value(src_d.data_type(), src, off);</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :                 }</span>
+<span id="L138"><span class="lineNum">     138</span>              :             }</span>
+<span id="L139"><span class="lineNum">     139</span>              :         }</span>
+<span id="L140"><span class="lineNum">     140</span>              :         int num_summands;</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">  2954411430 :         if (alg == alg_kind::pooling_avg_include_padding)</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">  1593796630 :             num_summands = KW * KH * KD;</span></span>
+<span id="L143"><span class="lineNum">     143</span>              :         else {</span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">  1360615676 :             auto id_start = od * SD - padF;</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">  1360615676 :             auto ih_start = oh * SH - padT;</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">  1360615676 :             auto iw_start = ow * SW - padL;</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">  1360615676 :             auto id_end = od * SD - padF + (KD - 1) * DD + KD;</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">  1360615676 :             auto ih_end = oh * SH - padT + (KH - 1) * DH + KH;</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">  1360615676 :             auto iw_end = ow * SW - padL + (KW - 1) * DW + KW;</span></span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">  1360615676 :             auto id_start_excluded</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">  1360615676 :                     = id_start &lt; 0 ? (0 - id_start - 1) / (DD + 1) + 1 : 0;</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">  1360615676 :             auto ih_start_excluded</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">  1360615676 :                     = ih_start &lt; 0 ? (0 - ih_start - 1) / (DH + 1) + 1 : 0;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">  1360615676 :             auto iw_start_excluded</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">  1360615676 :                     = iw_start &lt; 0 ? (0 - iw_start - 1) / (DW + 1) + 1 : 0;</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">  1360615676 :             auto id_end_excluded</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">  1360615676 :                     = id_end &gt; ID ? (id_end - ID - 1) / (DD + 1) + 1 : 0;</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">  1360615676 :             auto ih_end_excluded</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">  1360615676 :                     = ih_end &gt; IH ? (ih_end - IH - 1) / (DH + 1) + 1 : 0;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">  1360615676 :             auto iw_end_excluded</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">  1360615676 :                     = iw_end &gt; IW ? (iw_end - IW - 1) / (DW + 1) + 1 : 0;</span></span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">  1360615676 :             num_summands = (KD - id_start_excluded - id_end_excluded)</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">  1360615676 :                     * (KH - ih_start_excluded - ih_end_excluded)</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">  1360615676 :                     * (KW - iw_start_excluded - iw_end_excluded);</span></span>
+<span id="L167"><span class="lineNum">     167</span>              :         }</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">  2954411430 :         d /= num_summands;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">  2954457730 :     };</span></span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       48161 :     const bool is_max_pool = alg == alg_kind::pooling_max;</span></span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span>              :     float base_res</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       48161 :             = is_max_pool ? types::lowest_value&lt;float&gt;(dst_d.data_type()) : 0.f;</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :     using ker_t</span>
+<span id="L177"><span class="lineNum">     177</span>              :             = std::function&lt;void(float &amp;, dim_t, dim_t, dim_t, dim_t, dim_t)&gt;;</span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       48161 :     ker_t kernel = is_max_pool ? (ker_t)ker_max : (ker_t)ker_avg;</span></span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       48161 :     parallel_nd(MB, OC, OD, OH, OW,</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">  5508101950 :             [= COMPAT_THIS_CAPTURE](</span></span>
+<span id="L182"><span class="lineNum">     182</span>              :                     dim_t mb, dim_t oc, dim_t od, dim_t oh, dim_t ow) {</span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">  5508101950 :         auto data_p_off = get_offset(dst_d, mb, oc, od, oh, ow);</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">  5508101950 :         auto data_l_off = (((mb * OC + oc) * OD + od) * OH + oh) * OW + ow;</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">  5508101950 :         float res = base_res;</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">  5508101950 :         kernel(res, mb, oc, od, oh, ow);</span></span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">  5508101950 :         ref_post_ops_t::args_t args;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">  5508101950 :         args.ctx = &amp;ctx;</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">  5508101950 :         args.l_offset = data_l_off;</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">  5508101950 :         args.dst_md = pd()-&gt;dst_md();</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">  5508101950 :         ref_post_ops-&gt;execute(res, args);</span></span>
+<span id="L193"><span class="lineNum">     193</span>              : </span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">  5508101950 :         io::store_float_value(dst_d.data_type(), res, dst, data_p_off);</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">  5508101950 :     });</span></span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       48161 :     return status::success;</span></span>
+<span id="L198"><span class="lineNum">     198</span>              : }</span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">        8978 : status_t ref_pooling_bwd_t::execute(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">        8978 :     status_t status = status::success;</span></span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        8978 :     const auto diff_dst = CTX_IN_MEM(const void *, DNNL_ARG_DIFF_DST);</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        8978 :     const auto ws = CTX_IN_MEM(const void *, DNNL_ARG_WORKSPACE);</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">        8978 :     auto diff_src_ptr = CTX_OUT_CLEAN_MEM(void *, DNNL_ARG_DIFF_SRC, status);</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">        8978 :     CHECK(status);</span></span>
+<span id="L207"><span class="lineNum">     207</span>              : </span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        8978 :     const memory_desc_wrapper diff_dst_d(pd()-&gt;diff_dst_md());</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">        8978 :     const memory_desc_wrapper diff_src_d(pd()-&gt;diff_src_md());</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">        8978 :     const memory_desc_wrapper ws_d(pd()-&gt;workspace_md());</span></span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">        8978 :     const auto &amp;scratchpad = ctx.get_scratchpad_grantor();</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       17956 :     float *cvt_src = scratchpad.template get&lt;float&gt;(</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">        8978 :             memory_tracking::names::key_pool_src_bf16cvt);</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">        8978 :     void *diff_src = (diff_src_d.data_type() != data_type::f32)</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">        8978 :             ? cvt_src</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">        8978 :             : reinterpret_cast&lt;float *&gt;(diff_src_ptr);</span></span>
+<span id="L218"><span class="lineNum">     218</span>              : </span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">        8978 :     const auto alg = pd()-&gt;desc()-&gt;alg_kind;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">        8978 :     const dim_t MB = pd()-&gt;MB();</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">        8978 :     const dim_t OC = pd()-&gt;OC();</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">        8978 :     const dim_t OD = pd()-&gt;OD();</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">        8978 :     const dim_t OH = pd()-&gt;OH();</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">        8978 :     const dim_t OW = pd()-&gt;OW();</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">        8978 :     const dim_t ID = pd()-&gt;ID();</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">        8978 :     const dim_t IH = pd()-&gt;IH();</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">        8978 :     const dim_t IW = pd()-&gt;IW();</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">        8978 :     const dim_t KD = pd()-&gt;KD();</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">        8978 :     const dim_t KH = pd()-&gt;KH();</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">        8978 :     const dim_t KW = pd()-&gt;KW();</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">        8978 :     const dim_t SD = pd()-&gt;KSD();</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">        8978 :     const dim_t SH = pd()-&gt;KSH();</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">        8978 :     const dim_t SW = pd()-&gt;KSW();</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">        8978 :     const dim_t padF = pd()-&gt;padFront();</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">        8978 :     const dim_t padT = pd()-&gt;padT();</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">        8978 :     const dim_t padL = pd()-&gt;padL();</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">        8978 :     const dim_t DD = pd()-&gt;KDD();</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">        8978 :     const dim_t DH = pd()-&gt;KDH();</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        8978 :     const dim_t DW = pd()-&gt;KDW();</span></span>
+<span id="L240"><span class="lineNum">     240</span>              : </span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">   652694696 :     auto ker_max = [=](dim_t mb, dim_t oc, dim_t od, dim_t oh, dim_t ow) {</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">   652694696 :         const auto ws_off = get_offset(ws_d, mb, oc, od, oh, ow);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">   652694696 :         const dim_t index = io::load_int_value(ws_d.data_type(), ws, ws_off);</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">   652694696 :         const dim_t kd = (index / KW) / KH;</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">   652694696 :         const dim_t kh = (index / KW) % KH;</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">   652694696 :         const dim_t kw = index % KW;</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">   652694696 :         const dim_t id = od * SD - padF + kd * (DD + 1);</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">   652694696 :         const dim_t ih = oh * SH - padT + kh * (DH + 1);</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">   652694696 :         const dim_t iw = ow * SW - padL + kw * (DW + 1);</span></span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span>              :         // If padding area could fit the kernel,</span>
+<span id="L252"><span class="lineNum">     252</span>              :         // then input displacement would be out of bounds.</span>
+<span id="L253"><span class="lineNum">     253</span>              :         // No need to back propagate there as padding is</span>
+<span id="L254"><span class="lineNum">     254</span>              :         // virtual in pooling_max case.</span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">   652694696 :         if (id &lt; 0 || id &gt;= ID) return;</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">   652694696 :         if (ih &lt; 0 || ih &gt;= IH) return;</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">   652546496 :         if (iw &lt; 0 || iw &gt;= IW) return;</span></span>
+<span id="L258"><span class="lineNum">     258</span>              : </span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">   647946596 :         const auto diff_src_off = get_offset(diff_src_d, mb, oc, id, ih, iw);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">   647946596 :         const auto diff_dst_off = get_offset(diff_dst_d, mb, oc, od, oh, ow);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">  1295893280 :         const float dd = io::load_float_value(</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">   647946596 :                 diff_dst_d.data_type(), diff_dst, diff_dst_off);</span></span>
+<span id="L263"><span class="lineNum">     263</span>              :         const float ds</span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">   647946596 :                 = io::load_float_value(data_type::f32, diff_src, diff_src_off);</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">   647946596 :         io::store_float_value(data_type::f32, ds + dd, diff_src, diff_src_off);</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">        8978 :     };</span></span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">  1327660408 :     auto ker_avg = [=](dim_t mb, dim_t oc, dim_t od, dim_t oh, dim_t ow) {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC"> 42185302200 :         dim_t num_summands = KW * KH * KD;</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">  1327660408 :         if (alg != alg_kind::pooling_avg_include_padding) {</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">  3159861090 :             auto id_start = od * SD - padF;</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">  7553485080 :             auto ih_start = oh * SH - padT;</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC"> 20317410100 :             auto iw_start = ow * SW - padL;</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">  3183305090 :             auto id_end = od * SD - padF + (KD - 1) * DD + KD;</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">  7590271600 :             auto ih_end = oh * SH - padT + (KH - 1) * DH + KH;</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC"> 20365515500 :             auto iw_end = ow * SW - padL + (KW - 1) * DW + KW;</span></span>
+<span id="L277"><span class="lineNum">     277</span>              : </span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">   630991512 :             auto id_start_excluded</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">   630991512 :                     = id_start &lt; 0 ? (0 - id_start - 1) / (DD + 1) + 1 : 0;</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">   630991512 :             auto ih_start_excluded</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">   630991512 :                     = ih_start &lt; 0 ? (0 - ih_start - 1) / (DH + 1) + 1 : 0;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">   630991512 :             auto iw_start_excluded</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">   630991512 :                     = iw_start &lt; 0 ? (0 - iw_start - 1) / (DW + 1) + 1 : 0;</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">   630991512 :             auto id_end_excluded</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">   630991512 :                     = id_end &gt; ID ? (id_end - ID - 1) / (DD + 1) + 1 : 0;</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">   630991512 :             auto ih_end_excluded</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">   630991512 :                     = ih_end &gt; IH ? (ih_end - IH - 1) / (DH + 1) + 1 : 0;</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">   630991512 :             auto iw_end_excluded</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">   630991512 :                     = iw_end &gt; IW ? (iw_end - IW - 1) / (DW + 1) + 1 : 0;</span></span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">   630991512 :             num_summands = (KD - id_start_excluded - id_end_excluded)</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">   630991512 :                     * (KH - ih_start_excluded - ih_end_excluded)</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">   630991512 :                     * (KW - iw_start_excluded - iw_end_excluded);</span></span>
+<span id="L294"><span class="lineNum">     294</span>              :         }</span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">  3856536180 :         for (dim_t kd = 0; kd &lt; KD; ++kd) {</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">  2528865690 :             const dim_t id = od * SD - padF + kd * (DD + 1);</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">  2528865690 :             if (id &lt; 0 || id &gt;= ID) continue;</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">  9372310970 :             for (dim_t kh = 0; kh &lt; KH; ++kh) {</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">  6922494280 :                 const dim_t ih = oh * SH - padT + kh * (DH + 1);</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">  6922494280 :                 if (ih &lt; 0 || ih &gt;= IH) continue;</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC"> 26366873700 :                 for (dim_t kw = 0; kw &lt; KW; ++kw) {</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC"> 19686405300 :                     const dim_t iw = ow * SW - padL + kw * (DW + 1);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC"> 19686405300 :                     if (iw &lt; 0 || iw &gt;= IW) continue;</span></span>
+<span id="L305"><span class="lineNum">     305</span>              : </span>
+<span id="L306"><span class="lineNum">     306</span>              :                     const auto diff_src_off</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC"> 18787952200 :                             = get_offset(diff_src_d, mb, oc, id, ih, iw);</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :                     const auto diff_dst_off</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC"> 18787952200 :                             = get_offset(diff_dst_d, mb, oc, od, oh, ow);</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC"> 37575931100 :                     const float dd = io::load_float_value(</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC"> 18787952200 :                             diff_dst_d.data_type(), diff_dst, diff_dst_off);</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC"> 18787952200 :                     const float ds = io::load_float_value(</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC"> 18787952200 :                             data_type::f32, diff_src, diff_src_off);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC"> 18787952200 :                     io::store_float_value(data_type::f32,</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC"> 18787952200 :                             ds + (dd / num_summands), diff_src, diff_src_off);</span></span>
+<span id="L316"><span class="lineNum">     316</span>              :                 }</span>
+<span id="L317"><span class="lineNum">     317</span>              :             }</span>
+<span id="L318"><span class="lineNum">     318</span>              :         }</span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">  1327669726 :     };</span></span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span>              :     dim_t ow_start</span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">        8978 :             = utils::div_up(max(dim_t(0), padL - ((KW - 1) * DW + KW) + 1), SW);</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">        8978 :     dim_t ow_end = min(OW, 1 + (padL + IW - 1) / SW);</span></span>
+<span id="L324"><span class="lineNum">     324</span>              : </span>
+<span id="L325"><span class="lineNum">     325</span>              :     dim_t oh_start</span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">        8978 :             = utils::div_up(max(dim_t(0), padT - ((KH - 1) * DH + KH) + 1), SH);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        8978 :     dim_t oh_end = min(OH, 1 + (padT + IH - 1) / SH);</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :     dim_t od_start</span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">        8978 :             = utils::div_up(max(dim_t(0), padF - ((KD - 1) * DD + KD) + 1), SD);</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">        8978 :     dim_t od_end = min(OD, 1 + (padF + ID - 1) / SD);</span></span>
+<span id="L332"><span class="lineNum">     332</span>              : </span>
+<span id="L333"><span class="lineNum">     333</span>              :     using ker_t = std::function&lt;void(dim_t, dim_t, dim_t, dim_t, dim_t)&gt;;</span>
+<span id="L334"><span class="lineNum">     334</span>              :     ker_t kernel</span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">        8978 :             = alg == alg_kind::pooling_max ? (ker_t)ker_max : (ker_t)ker_avg;</span></span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">        8978 :     const int nthr = pd()-&gt;nthr_;</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">        8978 :     parallel(nthr, [=](const int ithr, const int nthr) {</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">     1582912 :         dim_t start = 0, end = 0;</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">     1582912 :         balance211(diff_src_d.nelems(true), nthr, ithr, start, end);</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">     1582912 :         if (start == end) return;</span></span>
+<span id="L342"><span class="lineNum">     342</span>              : </span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">  8196724700 :         for (int i = start; i &lt; end; i++)</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">  8195236900 :             io::store_float_value(data_type::f32, 0, diff_src, i);</span></span>
+<span id="L345"><span class="lineNum">     345</span>              :     });</span>
+<span id="L346"><span class="lineNum">     346</span>              : </span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">        8978 :     parallel_nd_ext(nthr, MB, OC, [=](int, int, dim_t mb, dim_t oc) {</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">     6694192 :         for_(dim_t od = od_start; od &lt; od_end; ++od)</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">    83882510 :         for_(dim_t oh = oh_start; oh &lt; oh_end; ++oh)</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">  2059658100 :         for (dim_t ow = ow_start; ow &lt; ow_end; ++ow) {</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">  1980355410 :             kernel(mb, oc, od, oh, ow);</span></span>
+<span id="L352"><span class="lineNum">     352</span>              :         }</span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">     2112456 :     });</span></span>
+<span id="L354"><span class="lineNum">     354</span>              : </span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">        8978 :     if (diff_src_d.data_type() != data_type::f32) {</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">        3966 :         parallel(nthr, [=](const int ithr, const int nthr) {</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">      782024 :             dim_t start = 0, end = 0;</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">      782024 :             balance211(diff_src_d.nelems(true), nthr, ithr, start, end);</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">      782024 :             if (start == end) return;</span></span>
+<span id="L360"><span class="lineNum">     360</span>              : </span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">      746412 :             const auto diff_src_dt_size = diff_src_d.data_type_size();</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">      746412 :             const auto in_ptr = reinterpret_cast&lt;float *&gt;(diff_src) + start;</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">      746412 :             auto out_ptr = reinterpret_cast&lt;char *&gt;(diff_src_ptr)</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">      746412 :                     + start * diff_src_dt_size;</span></span>
+<span id="L365"><span class="lineNum">     365</span>              : </span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">      746412 :             types::cvt_from_float(</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">      746412 :                     diff_src_d.data_type(), out_ptr, in_ptr, end - start);</span></span>
+<span id="L368"><span class="lineNum">     368</span>              :         });</span>
+<span id="L369"><span class="lineNum">     369</span>              :     }</span>
+<span id="L370"><span class="lineNum">     370</span>              : </span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">        8978 :     return status::success;</span></span>
+<span id="L372"><span class="lineNum">     372</span>              : }</span>
+<span id="L373"><span class="lineNum">     373</span>              : </span>
+<span id="L374"><span class="lineNum">     374</span>              : } // namespace cpu</span>
+<span id="L375"><span class="lineNum">     375</span>              : } // namespace impl</span>
+<span id="L376"><span class="lineNum">     376</span>              : } // namespace dnnl</span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

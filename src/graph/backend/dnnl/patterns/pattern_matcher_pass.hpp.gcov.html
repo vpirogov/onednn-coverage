@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/backend/dnnl/patterns/pattern_matcher_pass.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/backend/dnnl/patterns">src/graph/backend/dnnl/patterns</a> - pattern_matcher_pass.hpp<span style="font-size: 80%;"> (source / <a href="pattern_matcher_pass.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">83.7&nbsp;%</td>
+            <td class="headerCovTableEntry">49</td>
+            <td class="headerCovTableEntry">41</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">85.7&nbsp;%</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">6</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GRAPH_BACKEND_DNNL_PATTERNS_PATTERN_MATCHER_PASS_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GRAPH_BACKEND_DNNL_PATTERNS_PATTERN_MATCHER_PASS_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;memory&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;string&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;utility&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;vector&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;unordered_set&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;graph/backend/dnnl/dnnl_partition_impl.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;graph/utils/pm/nested_matcher.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;graph/utils/pm/pass_base.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;graph/utils/pm/pbuilder.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace dnnl {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace impl {</span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace graph {</span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace dnnl_impl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace pattern {</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : class pattern_utils_t {</span>
+<span id="L39"><span class="lineNum">      39</span>              : public:</span>
+<span id="L40"><span class="lineNum">      40</span>              :     inline void match(graph_t &amp;backend_graph,</span>
+<span id="L41"><span class="lineNum">      41</span>              :             std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; pgraph,</span>
+<span id="L42"><span class="lineNum">      42</span>              :             std::vector&lt;std::vector&lt;op_t *&gt;&gt; &amp;fusion_ops);</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              :     inline void init_partition(graph_t &amp;backend_graph,</span>
+<span id="L45"><span class="lineNum">      45</span>              :             std::vector&lt;std::vector&lt;op_t *&gt;&gt; &amp;fusion_ops,</span>
+<span id="L46"><span class="lineNum">      46</span>              :             const FCreateKernel &amp;kernel_creator, partition_kind_t pkind);</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              :     pattern_utils_t() = default;</span>
+<span id="L49"><span class="lineNum">      49</span>              :     pattern_utils_t(const pattern_utils_t &amp;) = delete;</span>
+<span id="L50"><span class="lineNum">      50</span>              :     pattern_utils_t(pattern_utils_t &amp;&amp;) = delete;</span>
+<span id="L51"><span class="lineNum">      51</span>              :     pattern_utils_t &amp;operator=(const pattern_utils_t &amp;) = delete;</span>
+<span id="L52"><span class="lineNum">      52</span>              : };</span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">     1295583 : inline void pattern_utils_t::match(graph_t &amp;backend_graph,</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :         std::shared_ptr&lt;graph::utils::pm::pb_graph_t&gt; pgraph,</span>
+<span id="L56"><span class="lineNum">      56</span>              :         std::vector&lt;std::vector&lt;op_t *&gt;&gt; &amp;fusion_ops) {</span>
+<span id="L57"><span class="lineNum">      57</span>              :     // dfs_visit graph, do pattern matching</span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">     1295583 :     topo_order_visit(backend_graph.get_output_ops(), [&amp;](op_t *cur_op) {</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">     4595096 :         std::vector&lt;op_t *&gt; candidate_fusion;</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">     2297548 :         if (!graph::utils::pm::match_pattern(</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">     2297548 :                     cur_op, pgraph, candidate_fusion)) {</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">     2126682 :             return status::success;</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :         }</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">      170866 :         fusion_ops.emplace_back(candidate_fusion);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">      170866 :         return status::success;</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :     });</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">     1295583 : }</span></span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">      170609 : inline void pattern_utils_t::init_partition(graph_t &amp;backend_graph,</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :         std::vector&lt;std::vector&lt;op_t *&gt;&gt; &amp;fusion_ops,</span>
+<span id="L71"><span class="lineNum">      71</span>              :         const FCreateKernel &amp;kernel_creator, partition_kind_t pkind) {</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">      342832 :     for (auto &amp;pairs : fusion_ops) {</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaUNC">           0 :         std::shared_ptr&lt;dnnl_partition_impl_t&gt; pimpl</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :                 = std::make_shared&lt;dnnl_partition_impl_t&gt;(</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">      172223 :                         backend_graph.get_engine_kind(),</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">      344446 :                         backend_graph.get_fpmath_mode(), pkind);</span></span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              :         // transfer the matched op's ownership from graph to partition</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">      523440 :         for (size_t i = 0; i &lt; pairs.size(); ++i) {</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">      351217 :             pimpl-&gt;add_op(pairs[i]-&gt;shared_from_this());</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :             // claim the op belong to the partition</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">      351217 :             pairs[i]-&gt;set_partition(pimpl.get());</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :         }</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">      172223 :         pimpl-&gt;init(kernel_creator);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">      172223 :         backend_graph.add_partition(pimpl);</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :     }</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      170609 : }</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span>              : /*!</span>
+<span id="L90"><span class="lineNum">      90</span>              :  * \brief pattern_matcher_pass_t generates an optimized graph</span>
+<span id="L91"><span class="lineNum">      91</span>              :  *        when a pre-defined pattern is hit.</span>
+<span id="L92"><span class="lineNum">      92</span>              :  */</span>
+<span id="L93"><span class="lineNum">      93</span>              : class pattern_matcher_pass_t : public graph::pass::pass_base_t {</span>
+<span id="L94"><span class="lineNum">      94</span>              : public:</span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">      852327 :     explicit pattern_matcher_pass_t(std::string pbackend, std::string pname)</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">      852327 :         : graph::pass::pass_base_t(std::move(pbackend), std::move(pname)) {}</span></span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">      852327 :     static graph::pass::pass_base_ptr create(</span></span>
+<span id="L99"><span class="lineNum">      99</span>              :             std::string pbackend, std::string pname) {</span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">     1704654 :         return std::make_shared&lt;pattern_matcher_pass_t&gt;(</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">     1704654 :                 std::move(pbackend), std::move(pname));</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :     }</span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span>              :     // the criteria of pass execution</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">     6204045 :     impl::status_t run(graph_t &amp;agraph) override {</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :         // check if current pattern pass can be run on current graph</span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">     6204045 :         engine_kind_t graph_engine_kind = agraph.get_engine_kind();</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">     6204045 :         if (get_engine_kind() != engine_kind::any_engine</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">     6204045 :                 &amp;&amp; get_engine_kind() != graph_engine_kind)</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">      182292 :             return impl::status::success;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span>              :         // we can have multiply patterns that map to one optimized kernel</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaUNC">           0 :         std::vector&lt;graph::pass::Pattern&gt; pgraphs</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">    18065259 :                 = get_attr&lt;graph::pass::Pattern&gt;(&quot;Pattern&quot;);</span></span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaUNC">           0 :         FCreateKernel kernel_creator</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">    12043506 :                 = get_attr&lt;FCreateKernel&gt;(&quot;FCreateKernel&quot;)[0];</span></span>
+<span id="L118"><span class="lineNum">     118</span>              : </span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaUNC">           0 :         pattern_utils_t pu;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">    12856389 :         for (const auto &amp;pgraph : pgraphs) {</span></span>
+<span id="L121"><span class="lineNum">     121</span>              :             // check if min_op_num in the pattern is larger than</span>
+<span id="L122"><span class="lineNum">     122</span>              :             // num_unpartitioned_ops in the graph, if true,</span>
+<span id="L123"><span class="lineNum">     123</span>              :             // no need to run this pattern any more</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">     6834636 :             if (pgraph-&gt;get_min_op_num() &gt; agraph.num_unpartitioned_ops())</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     5539053 :                 continue;</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :             // for each pattern. match it</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     2591166 :             std::vector&lt;std::vector&lt;op_t *&gt;&gt; fusion_ops;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">     1295583 :             if (get_verbose(verbose_t::create_dispatch, component_t::graph)) {</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaUNC">           0 :                 verbose_printf(</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :                         &quot;graph,create:dispatch,pattern_matcher,%s,dnnl_&quot;</span>
+<span id="L131"><span class="lineNum">     131</span>              :                         &quot;backend\n&quot;,</span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaUNC">           0 :                         get_pass_name().c_str());</span></span>
+<span id="L133"><span class="lineNum">     133</span>              :             }</span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">     1295583 :             pu.match(agraph, pgraph, fusion_ops);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">     1295583 :             if (!fusion_ops.empty()) {</span></span>
+<span id="L136"><span class="lineNum">     136</span>              :                 // temporary solution here for showing which pattern matched</span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">      169986 :                 if (graph::utils::get_graph_dump_mode(</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :                             graph::graph_dump_mode_t::pattern)) {</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :                     verbose_printf(&quot;graph,info,pattern,hit,%s\n&quot;,</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :                             get_pass_name().c_str());</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :                 }</span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      169986 :                 pu.init_partition(</span></span>
+<span id="L144"><span class="lineNum">     144</span>              :                         agraph, fusion_ops, kernel_creator, get_kind());</span>
+<span id="L145"><span class="lineNum">     145</span>              :             }</span>
+<span id="L146"><span class="lineNum">     146</span>              :         }</span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">     6021753 :         return impl::status::success;</span></span>
+<span id="L148"><span class="lineNum">     148</span>              :     }</span>
+<span id="L149"><span class="lineNum">     149</span>              : };</span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span>              : #define DNNL_BACKEND_REGISTER_PATTERN_MATCHER_PASS(backend_name, pattern_name) \</span>
+<span id="L152"><span class="lineNum">     152</span>              :     registry.register_pass( \</span>
+<span id="L153"><span class="lineNum">     153</span>              :             #backend_name, #pattern_name, &amp;pattern_matcher_pass_t::create)</span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span>              : #define DNNL_BACKEND_REGISTER_PATTERN_DEF_BEGIN(pattern_class_) \</span>
+<span id="L156"><span class="lineNum">     156</span>              :     void register_##pattern_class_(graph::pass::pass_registry_t &amp;registry) {</span>
+<span id="L157"><span class="lineNum">     157</span>              : #define DNNL_BACKEND_REGISTER_PATTERN_DEF_END }</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              : #define MAX_REPETITION 20</span>
+<span id="L160"><span class="lineNum">     160</span>              : } // namespace pattern</span>
+<span id="L161"><span class="lineNum">     161</span>              : } // namespace dnnl_impl</span>
+<span id="L162"><span class="lineNum">     162</span>              : } // namespace graph</span>
+<span id="L163"><span class="lineNum">     163</span>              : } // namespace impl</span>
+<span id="L164"><span class="lineNum">     164</span>              : } // namespace dnnl</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

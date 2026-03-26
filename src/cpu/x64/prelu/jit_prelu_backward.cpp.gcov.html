@@ -1,0 +1,389 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/prelu/jit_prelu_backward.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/prelu">src/cpu/x64/prelu</a> - jit_prelu_backward.cpp<span style="font-size: 80%;"> (source / <a href="jit_prelu_backward.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">186</td>
+            <td class="headerCovTableEntry">186</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">15</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2020 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : #include &lt;cmath&gt;</span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/memory_desc_wrapper.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;cpu/x64/cpu_isa_traits.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;cpu/x64/prelu/jit_prelu_backward.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;cpu/x64/prelu/jit_prelu_reduction_kernel.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;cpu/x64/prelu/jit_prelu_utils.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;cpu/x64/prelu/jit_uni_prelu_backward_kernel.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace dnnl {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace impl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace cpu {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace x64 {</span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span>              : static constexpr dim_t alignment = platform::get_cache_line_size()</span>
+<span id="L34"><span class="lineNum">      34</span>              :         / sizeof(float); // align to cache line size to avoid false sharing</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       46477 : status_t jit_prelu_bwd_t::pd_t::init(engine_t *engine) {</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       46477 :     const memory_desc_wrapper src_d {src_md(0)};</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       46477 :     const memory_desc_wrapper weights_d {weights_md(0)};</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       46477 :     const memory_desc_wrapper src_diff_d {diff_src_md(0)};</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       46477 :     const memory_desc_wrapper weights_diff_d {diff_weights_md(0)};</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">       46477 :     const memory_desc_wrapper dst_diff_d {diff_dst_md(0)};</span></span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       46477 :     VDISPATCH_PRELU(!is_fwd(), VERBOSE_BAD_PROPKIND);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       46477 :     VDISPATCH_PRELU(!has_zero_dim_memory(), VERBOSE_EMPTY_TENSOR, &quot;src&quot;);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       46477 :     VDISPATCH_PRELU(</span></span>
+<span id="L46"><span class="lineNum">      46</span>              :             prelu::dt_supported({src_d.data_type(), weights_d.data_type(),</span>
+<span id="L47"><span class="lineNum">      47</span>              :                     src_diff_d.data_type(), weights_diff_d.data_type(),</span>
+<span id="L48"><span class="lineNum">      48</span>              :                     dst_diff_d.data_type()}),</span>
+<span id="L49"><span class="lineNum">      49</span>              :             VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(set_default_formats(), VERBOSE_UNSUPPORTED_TAG);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(src_d.is_dense(true), VERBOSE_UNSUPPORTED_SPARSE_CFG);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(weights_d.is_dense(true), VERBOSE_UNSUPPORTED_SPARSE_CFG);</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(src_diff_d.is_dense(true), VERBOSE_UNSUPPORTED_SPARSE_CFG);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :             weights_diff_d.is_dense(true), VERBOSE_UNSUPPORTED_SPARSE_CFG);</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(dst_diff_d.is_dense(true), VERBOSE_UNSUPPORTED_SPARSE_CFG);</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(attr()-&gt;has_default_values(), VERBOSE_UNSUPPORTED_ATTR);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       24741 :     VDISPATCH_PRELU(utils::one_of(prelu::get_supported_isa(), avx512_core_fp16,</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :                             avx512_core_bf16, avx512_core, avx2, avx, sse41),</span>
+<span id="L60"><span class="lineNum">      60</span>              :             VERBOSE_UNSUPPORTED_ISA);</span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       24583 :     VDISPATCH_PRELU(dst_diff_d == src_diff_d, VERBOSE_INCONSISTENT_MDS,</span></span>
+<span id="L62"><span class="lineNum">      62</span>              :             &quot;diff_dst&quot;, &quot;diff_src&quot;);</span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       24583 :     const auto bcast = prelu::get_bcast_type(src_diff_d, weights_diff_d);</span></span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span>              :     const bool ok = true</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       24583 :             &amp;&amp; bcast_supported(bcast, src_diff_d, weights_diff_d,</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       24583 :                     prelu::get_simd_w({src_d.data_type(), weights_d.data_type(),</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       24583 :                             src_diff_d.data_type(), weights_diff_d.data_type(),</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       24583 :                             dst_diff_d.data_type()}));</span></span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       24583 :     if (ok) {</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        9796 :         nthr_ = dnnl_get_max_threads();</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">        9796 :         if (utils::one_of(bcast, prelu::bcast::per_oc_blocked,</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :                     prelu::bcast::per_oc_n_spatial_c,</span>
+<span id="L76"><span class="lineNum">      76</span>              :                     prelu::bcast::per_oc_n_c_spatial)) {</span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        3014 :             auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">        3014 :             const dim_t C = src_diff_d.ndims() &gt;= 2 ? src_diff_d.dims()[1] : 1;</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">        3014 :             scratchpad.book&lt;float&gt;(memory_tracking::names::key_prelu_reduction,</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">        3014 :                     nthr_ * utils::rnd_up(C, alignment));</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :         }</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        9796 :         return status::success;</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :     }</span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       14787 :     return status::unimplemented;</span></span>
+<span id="L87"><span class="lineNum">      87</span>              : }</span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       24583 : bool jit_prelu_bwd_t::pd_t::bcast_supported(const prelu::bcast &amp;bcast,</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :         const memory_desc_wrapper &amp;src_diff_d,</span>
+<span id="L91"><span class="lineNum">      91</span>              :         const memory_desc_wrapper &amp;weights_diff_d, int simd_w) const {</span>
+<span id="L92"><span class="lineNum">      92</span>              : </span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">       24583 :     if (bcast == prelu::bcast::full)</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">        6782 :         return true;</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">       17801 :     else if (bcast == prelu::bcast::unsupported)</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       13347 :         return false;</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">        4454 :     else if (bcast == prelu::bcast::per_oc_blocked) {</span></span>
+<span id="L98"><span class="lineNum">      98</span>              :         const auto check_block_consistency</span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">        3056 :                 = [&amp;](const memory_desc_wrapper &amp;mdw) {</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">        3056 :             const auto &amp;bd = mdw.blocking_desc();</span></span>
+<span id="L101"><span class="lineNum">     101</span>              : </span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">        2768 :             return bd.inner_nblks == 1 &amp;&amp; bd.inner_blks[0] == simd_w</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">        5824 :                     &amp;&amp; bd.inner_idxs[0] == 1;</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">        2104 :         };</span></span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">        2104 :         return check_block_consistency(src_diff_d)</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">        2104 :                 &amp;&amp; check_block_consistency(weights_diff_d);</span></span>
+<span id="L108"><span class="lineNum">     108</span>              :     } else {</span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">        2350 :         const auto &amp;src_strides = src_diff_d.blocking_desc().strides;</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">        2350 :         const auto &amp;weights_strides = weights_diff_d.blocking_desc().strides;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              :         // C should be on second position in tag (example nchw or ncw) or on</span>
+<span id="L112"><span class="lineNum">     112</span>              :         // last postion (nhwc)</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">        2350 :         return src_strides[0] &gt;= src_strides[1]</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">        2350 :                 &amp;&amp; IMPLICATION(</span></span>
+<span id="L115"><span class="lineNum">     115</span>              :                         src_strides[1] &gt; 1, src_strides[1] &gt;= src_strides[2])</span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">        4700 :                 &amp;&amp; weights_strides[0] &gt;= weights_strides[1];</span></span>
+<span id="L117"><span class="lineNum">     117</span>              :     }</span>
+<span id="L118"><span class="lineNum">     118</span>              : </span>
+<span id="L119"><span class="lineNum">     119</span>              :     return true;</span>
+<span id="L120"><span class="lineNum">     120</span>              : }</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">       99740 : const jit_prelu_bwd_t::pd_t *jit_prelu_bwd_t::pd() const {</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">       99740 :     return static_cast&lt;const pd_t *&gt;(primitive_t::pd().get());</span></span>
+<span id="L124"><span class="lineNum">     124</span>              : }</span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        9568 : jit_prelu_bwd_t::jit_prelu_bwd_t(const pd_t *apd) : primitive_t(apd) {}</span></span>
+<span id="L127"><span class="lineNum">     127</span>              : jit_prelu_bwd_t::~jit_prelu_bwd_t() = default;</span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">        9568 : status_t jit_prelu_bwd_t::init(engine_t *engine) {</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        9568 :     const memory_desc_wrapper weights_diff_d {pd()-&gt;diff_weights_md(0)};</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">        9568 :     const memory_desc_wrapper src_diff_d {pd()-&gt;diff_src_md(0)};</span></span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">        9568 :     const auto bcast = prelu::get_bcast_type(src_diff_d, weights_diff_d);</span></span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        9568 :     CHECK(safe_ptr_assign(kernel_, jit_prelu_backward_kernel_t::create(pd())));</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        9568 :     if (utils::one_of(bcast, prelu::bcast::per_oc_blocked,</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :                 prelu::bcast::per_oc_n_spatial_c,</span>
+<span id="L138"><span class="lineNum">     138</span>              :                 prelu::bcast::per_oc_n_c_spatial)) {</span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">        2924 :         CHECK(safe_ptr_assign(</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :                 reduction_kernel_, jit_prelu_reduction_kernel_t::create(pd())));</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">        2924 :         CHECK(reduction_kernel_-&gt;create_kernel());</span></span>
+<span id="L143"><span class="lineNum">     143</span>              :     }</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        9568 :     return kernel_-&gt;create_kernel();</span></span>
+<span id="L146"><span class="lineNum">     146</span>              : }</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">       11352 : status_t jit_prelu_bwd_t::execute(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">       11352 :     const byte *const src = CTX_IN_MEM(const byte *, DNNL_ARG_SRC);</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       11352 :     const byte *const weights = CTX_IN_MEM(const byte *, DNNL_ARG_WEIGHTS);</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       11352 :     const byte *const dst_diff = CTX_IN_MEM(const byte *, DNNL_ARG_DIFF_DST);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       11352 :     byte *const weights_diff = CTX_OUT_MEM(const byte *, DNNL_ARG_DIFF_WEIGHTS);</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">       11352 :     byte *const src_diff = CTX_OUT_MEM(byte *, DNNL_ARG_DIFF_SRC);</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       11352 :     const memory_desc_wrapper src_d {pd()-&gt;src_md(0)};</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       11352 :     const auto src_dt_size = types::data_type_size(src_d.data_type());</span></span>
+<span id="L156"><span class="lineNum">     156</span>              :     const auto wei_dt_size</span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       11352 :             = types::data_type_size(pd()-&gt;weights_md(0)-&gt;data_type);</span></span>
+<span id="L158"><span class="lineNum">     158</span>              :     const auto diff_wei_dt_size</span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       11352 :             = types::data_type_size(pd()-&gt;diff_weights_md(0)-&gt;data_type);</span></span>
+<span id="L160"><span class="lineNum">     160</span>              :     const auto diff_src_dt_size</span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       11352 :             = types::data_type_size(pd()-&gt;diff_src_md(0)-&gt;data_type);</span></span>
+<span id="L162"><span class="lineNum">     162</span>              :     const auto diff_dst_dt_size</span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       11352 :             = types::data_type_size(pd()-&gt;diff_dst_md(0)-&gt;data_type);</span></span>
+<span id="L164"><span class="lineNum">     164</span>              : </span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       11352 :     const auto kernel = kernel_.get();</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       11352 :     const auto &amp;bcast = kernel-&gt;get_bcast();</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       11352 :     const auto &amp;simd_w = kernel-&gt;simd_w();</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       11352 :     int nthr = pd()-&gt;nthr_;</span></span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       11352 :     if (bcast == prelu::bcast::full) {</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        8056 :         const auto nelems = src_d.nelems(true);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">        8056 :         const auto res = std::div(nelems, simd_w);</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">        8056 :         const auto &amp;nelems_simd = res.quot;</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">        8056 :         const auto &amp;nelems_tail = res.rem;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">        8056 :         const auto nelems_parallel = nelems_simd + (nelems_tail ? 1 : 0);</span></span>
+<span id="L176"><span class="lineNum">     176</span>              : </span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        8056 :         parallel(nthr, [=](const int ithr, const int nthr) {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">     1129472 :             dim_t start = 0, end = 0;</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">     1129472 :             balance211(nelems_parallel, nthr, ithr, start, end);</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">     1129472 :             if (start &gt;= end) return;</span></span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">      563372 :             const bool ithr_process_tail</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">      563372 :                     = nelems_tail &amp;&amp; end == nelems_parallel;</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">      563372 :             const auto n_simd_size = (end - start - ithr_process_tail) * simd_w;</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">      563372 :             const auto offset = start * simd_w;</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">      563372 :             jit_prelu_backward_kernel_t::call_params_t params;</span></span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span>              :             params.compute_data_size</span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">      563372 :                     = (n_simd_size + (nelems_tail ? nelems_tail : 0));</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">      563372 :             params.src = src + offset * src_dt_size;</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">      563372 :             params.weights = weights + offset * wei_dt_size;</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">      563372 :             params.dst_diff = dst_diff + offset * diff_dst_dt_size;</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">      563372 :             params.src_diff = src_diff + offset * diff_src_dt_size;</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">      563372 :             params.weights_diff = weights_diff + offset * diff_wei_dt_size;</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      563372 :             (*kernel)(&amp;params);</span></span>
+<span id="L197"><span class="lineNum">     197</span>              :         });</span>
+<span id="L198"><span class="lineNum">     198</span>              :     } else {</span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">        3296 :         const auto ndims = src_d.ndims();</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">        3296 :         const auto &amp;dims = src_d.dims();</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">        3296 :         const dim_t MB = dims[0];</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        3296 :         const dim_t C = ndims &gt;= 2 ? dims[1] : 1;</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        3296 :         const dim_t D = ndims &gt;= 5 ? dims[ndims - 3] : 1;</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        3296 :         const dim_t H = ndims &gt;= 4 ? dims[ndims - 2] : 1;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">        3296 :         const dim_t W = ndims &gt;= 3 ? dims[ndims - 1] : 1;</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">        3296 :         const dim_t SP = D * H * W;</span></span>
+<span id="L207"><span class="lineNum">     207</span>              :         const dim_t nelems_single_mb</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        3296 :                 = utils::array_product(src_d.padded_dims() + 1, ndims - 1);</span></span>
+<span id="L209"><span class="lineNum">     209</span>              : </span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">        3296 :         const auto &amp;scratchpad = ctx.get_scratchpad_grantor();</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">        6592 :         float *const weights_diff_scratchpad = scratchpad.template get&lt;float&gt;(</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">        3296 :                 memory_tracking::names::key_prelu_reduction);</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">        3296 :         const auto C_cache_line_aligned = utils::rnd_up(C, alignment);</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">        3296 :         size_t work_amount = 0;</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">        3296 :         fill_scratchpad_zeros(</span></span>
+<span id="L217"><span class="lineNum">     217</span>              :                 weights_diff_scratchpad, C_cache_line_aligned, nthr);</span>
+<span id="L218"><span class="lineNum">     218</span>              : </span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">        3296 :         if (bcast == prelu::bcast::per_oc_blocked) {</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">         620 :             const dim_t C_blocks = std::ceil(static_cast&lt;float&gt;(C) / simd_w);</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">         620 :             work_amount = MB * C_blocks;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">         620 :             parallel_nd_ext(nthr, MB, C_blocks,</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">       84176 :                     [=](int ithr, int, dim_t mb, dim_t c_blk) {</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       84176 :                 jit_prelu_backward_kernel_t::call_params_t params;</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       84176 :                 params.compute_data_size = SP * simd_w;</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       84176 :                 const dim_t offset</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">       84176 :                         = (mb * nelems_single_mb + c_blk * SP * simd_w);</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">       84176 :                 params.src = src + offset * src_dt_size;</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       84176 :                 params.dst_diff = dst_diff + offset * diff_dst_dt_size;</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       84176 :                 params.src_diff = src_diff + offset * diff_src_dt_size;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       84176 :                 params.weights = weights + c_blk * simd_w * wei_dt_size;</span></span>
+<span id="L232"><span class="lineNum">     232</span>              :                 params.weights_diff</span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       84176 :                         = reinterpret_cast&lt;void *&gt;(weights_diff_scratchpad</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       84176 :                                 + ithr * C_cache_line_aligned + c_blk * simd_w);</span></span>
+<span id="L235"><span class="lineNum">     235</span>              : </span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       84176 :                 (*kernel)(&amp;params);</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       84176 :             });</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">        2676 :         } else if (bcast == prelu::bcast::per_oc_n_c_spatial) {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        1142 :             work_amount = MB * C;</span></span>
+<span id="L240"><span class="lineNum">     240</span>              : </span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">        1142 :             parallel_nd_ext(nthr, MB, C, [=](int ithr, int, dim_t mb, dim_t c) {</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">     1906422 :                 jit_prelu_backward_kernel_t::call_params_t params;</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">     1906422 :                 const auto offset = (mb * nelems_single_mb + c * SP);</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">     1906422 :                 params.compute_data_size = SP;</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">     1906422 :                 params.src = src + offset * src_dt_size;</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">     1906422 :                 params.dst_diff = dst_diff + offset * diff_dst_dt_size;</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">     1906422 :                 params.src_diff = src_diff + offset * diff_src_dt_size;</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">     1906422 :                 params.weights = weights + c * wei_dt_size;</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :                 params.weights_diff</span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">     1906422 :                         = reinterpret_cast&lt;void *&gt;(weights_diff_scratchpad</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">     1906422 :                                 + ithr * C_cache_line_aligned + c);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">     1906422 :                 (*kernel)(&amp;params);</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">     1906422 :             });</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">        1534 :         } else if (bcast == prelu::bcast::per_oc_n_spatial_c) {</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        1534 :             work_amount = MB * SP;</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">        1534 :             parallel_nd_ext(</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">    44858236 :                     nthr, MB, SP, [=](int ithr, int, dim_t mb, dim_t sp) {</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">    44858236 :                 jit_prelu_backward_kernel_t::call_params_t params;</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">    44858236 :                 const auto offset = (mb * nelems_single_mb + sp * C);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">    44858236 :                 params.compute_data_size = C;</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">    44858236 :                 params.src = src + offset * src_dt_size;</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">    44858236 :                 params.dst_diff = dst_diff + offset * diff_dst_dt_size;</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">    44858236 :                 params.src_diff = src_diff + offset * diff_src_dt_size;</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">    44858236 :                 params.weights = weights;</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">    44858236 :                 params.weights_diff = reinterpret_cast&lt;void *&gt;(</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">    44858236 :                         weights_diff_scratchpad + ithr * C_cache_line_aligned);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">    44858236 :                 (*kernel)(&amp;params);</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">    44858236 :             });</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :         }</span>
+<span id="L271"><span class="lineNum">     271</span>              : </span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">        3296 :         const size_t reduction_blocks = nstl::min(work_amount, (size_t)nthr);</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        3296 :         scratchpad_to_diff_weights_reduction(weights_diff_scratchpad,</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :                 weights_diff, diff_wei_dt_size, C, reduction_blocks);</span>
+<span id="L275"><span class="lineNum">     275</span>              :     }</span>
+<span id="L276"><span class="lineNum">     276</span>              : </span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       11352 :     return status::success;</span></span>
+<span id="L278"><span class="lineNum">     278</span>              : }</span>
+<span id="L279"><span class="lineNum">     279</span>              : </span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        3296 : void jit_prelu_bwd_t::scratchpad_to_diff_weights_reduction(float *scratchpad,</span></span>
+<span id="L281"><span class="lineNum">     281</span>              :         byte *weights_diff, size_t weights_diff_dt, dim_t C,</span>
+<span id="L282"><span class="lineNum">     282</span>              :         size_t reduction_blocks) const {</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">        3296 :     const auto reduction_kernel = reduction_kernel_.get();</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        3296 :     const auto &amp;simd_w = reduction_kernel_-&gt;simd_w();</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        3296 :     const bool tail_exists = C % simd_w;</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        3296 :     const dim_t C_blocks = std::ceil(static_cast&lt;float&gt;(C) / simd_w);</span></span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        3296 :     parallel_nd(C_blocks, [=](dim_t c_blk) {</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">       27672 :         const auto blk_offset = c_blk * simd_w;</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">       27672 :         jit_prelu_reduction_kernel_t::call_params_t params;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">       27672 :         params.reduction_blocks = reduction_blocks;</span></span>
+<span id="L292"><span class="lineNum">     292</span>              :         params.weights_diff_scratch</span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">       27672 :                 = reinterpret_cast&lt;void *&gt;(scratchpad + blk_offset);</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">       27672 :         params.weights_diff = weights_diff + blk_offset * weights_diff_dt;</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">       27672 :         params.tail = tail_exists &amp;&amp; c_blk == C_blocks - 1;</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">       27672 :         params.is_last_c_blk = c_blk == C_blocks - 1;</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       27672 :         (*reduction_kernel)(&amp;params);</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">       27672 :     });</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">        3296 : }</span></span>
+<span id="L300"><span class="lineNum">     300</span>              : </span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">        3296 : void jit_prelu_bwd_t::fill_scratchpad_zeros(float *const scratchpad,</span></span>
+<span id="L302"><span class="lineNum">     302</span>              :         size_t thread_scratchpad_size, int nthr) const {</span>
+<span id="L303"><span class="lineNum">     303</span>              : </span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">        3296 :     parallel(nthr, [=](std::size_t ithr, std::size_t) {</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">      463872 :         float *scratchpad_ithr = scratchpad + ithr * thread_scratchpad_size;</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">      463872 :         std::memset(scratchpad_ithr, 0, thread_scratchpad_size * sizeof(float));</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      463872 :     });</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">        3296 : }</span></span>
+<span id="L309"><span class="lineNum">     309</span>              : </span>
+<span id="L310"><span class="lineNum">     310</span>              : } // namespace x64</span>
+<span id="L311"><span class="lineNum">     311</span>              : } // namespace cpu</span>
+<span id="L312"><span class="lineNum">     312</span>              : } // namespace impl</span>
+<span id="L313"><span class="lineNum">     313</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

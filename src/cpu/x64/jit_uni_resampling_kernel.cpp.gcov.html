@@ -1,0 +1,1004 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_uni_resampling_kernel.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_uni_resampling_kernel.cpp<span style="font-size: 80%;"> (source / <a href="jit_uni_resampling_kernel.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">82.1&nbsp;%</td>
+            <td class="headerCovTableEntry">541</td>
+            <td class="headerCovTableEntry">444</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">71.1&nbsp;%</td>
+            <td class="headerCovTableEntry">232</td>
+            <td class="headerCovTableEntry">165</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2020 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;bitset&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;cpu/x64/jit_avx512_core_bf16cvt.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;cpu/x64/jit_uni_resampling_kernel.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace dnnl {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace impl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace cpu {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace x64 {</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : using namespace Xbyak;</span>
+<span id="L31"><span class="lineNum">      31</span>              : using namespace format_tag;</span>
+<span id="L32"><span class="lineNum">      32</span>              : using tag_kind = jit_memory_tag_kind_t;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : #define GET_OFF(field) offsetof(jit_uni_resampling_args_t, field)</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       22132 : jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::jit_uni_resampling_kernel_t(</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :         const jit_resampling_conf_t &amp;conf, const memory_desc_t *dst_md)</span>
+<span id="L39"><span class="lineNum">      39</span>              :     : jit_uni_resampling_kernel_base_t(conf)</span>
+<span id="L40"><span class="lineNum">      40</span>              :     , tail_size_(calculate_tail_size())</span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">       44264 :     , io_(this, conf_.isa, {conf_.src_data_type, conf_.dst_data_type},</span></span>
+<span id="L42"><span class="lineNum">      42</span>              :               {can_movntps_be_used()},</span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       22132 :               io::io_tail_conf_t {simd_w_, tail_size_, k_tail_mask_,</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       22132 :                       vmm_tail_mask_.getIdx(), reg_tmp_},</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       22132 :               io::io_emu_bf16_conf_t {vmm_bf16_emu_1_, vmm_bf16_emu_2_,</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       22132 :                       vmm_bf16_emu_3_, reg_tmp_, vmm_bf16_emu_4_},</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :               create_saturation_vmm_map(),</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       22132 :               io::io_gather_conf_t {simd_w_, k_full_mask_,</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       22132 :                       vmm_full_mask_.getIdx(), reg_tmp_, reg_tmp1_,</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       22132 :                       vmm_tmp_gather_.getIdx()}) {</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       22132 :     if (conf_.with_postops) {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        3388 :         memory_desc_wrapper dst_d = memory_desc_wrapper(*dst_md);</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              :         static constexpr bool preserve_gpr = true;</span>
+<span id="L55"><span class="lineNum">      55</span>              :         static constexpr bool preserve_vmm = false;</span>
+<span id="L56"><span class="lineNum">      56</span>              :         static constexpr bool use_exact_tail_scalar_bcast = true;</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        3388 :         const binary_injector::rhs_arg_static_params_t rhs_sp {</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        3388 :                 static_cast&lt;size_t&gt;(vmm_post_op_helper_.getIdx()), r14, r15,</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        3388 :                 r13, preserve_gpr, preserve_vmm,</span></span>
+<span id="L61"><span class="lineNum">      61</span>              :                 GET_OFF(post_ops_binary_rhs_arg_vec), GET_OFF(dst_orig), dst_d,</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        3388 :                 tail_size_, k_tail_mask_, use_exact_tail_scalar_bcast};</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        6776 :         const bcast_set_t accepted_broadcasts</span></span>
+<span id="L65"><span class="lineNum">      65</span>              :                 = {broadcasting_strategy_t::scalar,</span>
+<span id="L66"><span class="lineNum">      66</span>              :                         broadcasting_strategy_t::per_oc,</span>
+<span id="L67"><span class="lineNum">      67</span>              :                         broadcasting_strategy_t::per_oc_spatial};</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :         const binary_injector::static_params_t bsp {</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        3388 :                 reg_param, accepted_broadcasts, rhs_sp};</span></span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        3388 :         postops_injector_ = utils::make_unique&lt;</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :                 injector::jit_uni_postops_injector_t&lt;isa, Vmm&gt;&gt;(</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        3388 :                 this, conf_.post_ops, bsp);</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        3388 :         std::tie(any_binary_postop_is_per_oc_bcast_type_,</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">        3388 :                 any_binary_postop_is_per_oc_sp_bcast_type_)</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        3388 :                 = binary_injector_utils::bcast_strategies_present_tup(</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">        3388 :                         conf_.post_ops.entry_, dst_d,</span></span>
+<span id="L79"><span class="lineNum">      79</span>              :                         broadcasting_strategy_t::per_oc,</span>
+<span id="L80"><span class="lineNum">      80</span>              :                         broadcasting_strategy_t::per_oc_spatial);</span>
+<span id="L81"><span class="lineNum">      81</span>              :     }</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       22132 : }</span></span>
+<span id="L83"><span class="lineNum">      83</span>              : </span>
+<span id="L84"><span class="lineNum">      84</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       22132 : bool jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::can_movntps_be_used() const {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       22132 :     const std::size_t alignment = simd_w_ * conf_.dst_dt_size;</span></span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       22132 :     assert(alignment &gt; 0 &amp;&amp; conf_.dst_dt_size &gt; 0</span></span>
+<span id="L89"><span class="lineNum">      89</span>              :             &amp;&amp; &quot;Incorrect output data type size.&quot;);</span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       22132 :     bool are_data_filling_register_fully = false;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       22132 :     switch (conf_.dst_data_type) {</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">       10837 :         case data_type::f32:</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       10837 :         case data_type::s32: are_data_filling_register_fully = true; break;</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">        4591 :         case data_type::f16:</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :         case data_type::bf16:</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">        4591 :             are_data_filling_register_fully = is_xmm_ ? false : true;</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">        4591 :             break;</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">        6704 :         case data_type::s8:</span></span>
+<span id="L100"><span class="lineNum">     100</span>              :         case data_type::u8:</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        6704 :             are_data_filling_register_fully = is_zmm_ ? true : false;</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">        6704 :             break;</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :         default: assert(!&quot;Unsupported data type.&quot;); break;</span></span>
+<span id="L104"><span class="lineNum">     104</span>              :     }</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              :     // When movntps can be used:</span>
+<span id="L107"><span class="lineNum">     107</span>              :     // 1) There is no tail size because movntps has no possibility to store</span>
+<span id="L108"><span class="lineNum">     108</span>              :     // data with a mask. The blocked format is an exception from this rule</span>
+<span id="L109"><span class="lineNum">     109</span>              :     // because there is a padded area and for io operation, there is no use of masks.</span>
+<span id="L110"><span class="lineNum">     110</span>              :     // 2) Data are filling the register fully. Example: Zmm register can hold sixteen</span>
+<span id="L111"><span class="lineNum">     111</span>              :     // f32 values, so there is a possibility to calculate 16 values at the same time,</span>
+<span id="L112"><span class="lineNum">     112</span>              :     // but during store operation of i8 data the same sixteen values can hold only xmm</span>
+<span id="L113"><span class="lineNum">     113</span>              :     // register. If ymm will be used then eight values of f32 can be hold, but neither</span>
+<span id="L114"><span class="lineNum">     114</span>              :     // zmm nor ymm nor xmm can hold i8 data fully because data size is 64 bits only.</span>
+<span id="L115"><span class="lineNum">     115</span>              :     // 3) The memory operand must be aligned on a 16-byte (128-bit version),</span>
+<span id="L116"><span class="lineNum">     116</span>              :     // 32-byte (VEX.256 encoded version) or 64-byte (EVEX.512 encoded version)</span>
+<span id="L117"><span class="lineNum">     117</span>              :     // boundary otherwise a general-protection exception (#GP) will be generated.</span>
+<span id="L118"><span class="lineNum">     118</span>              :     // 4) Instruction is supported and the register is fully filled with data.</span>
+<span id="L119"><span class="lineNum">     119</span>              :     // 5) Data is big enough to see profit from using non-temporal stores.</span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">       22132 :     bool can_use_movntps = false;</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       22132 :     if (is_superset(conf_.isa, avx512_core) || conf_.dst_dt_size % 4 == 0)</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">       19858 :         can_use_movntps = conf_.is_data_size_bigger_than_L3</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaUNC">           0 :                 &amp;&amp; are_data_filling_register_fully</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaUNC">           0 :                 &amp;&amp; conf_.output_data_size % alignment == 0</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       19858 :                 &amp;&amp; (tail_size_ == 0 || conf_.tag_kind == tag_kind::blocked);</span></span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       22132 :     return can_use_movntps;</span></span>
+<span id="L128"><span class="lineNum">     128</span>              : }</span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       22132 : std::size_t jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::calculate_tail_size() const {</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">       22132 :     std::size_t tail_size = 0;</span></span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       22132 :     if (conf_.tag_kind == tag_kind::nspc</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       15649 :             || conf_.tag_kind == tag_kind::blocked) {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       15902 :         tail_size = conf_.c % simd_w_;</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        6230 :     } else if (conf_.tag_kind == tag_kind::ncsp) {</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        6230 :         if (conf_.alg == alg_kind::resampling_nearest)</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">        3058 :             tail_size = conf_.ow % simd_w_;</span></span>
+<span id="L140"><span class="lineNum">     140</span>              :         else</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">        3172 :             tail_size = (conf_.od * conf_.oh * conf_.ow) % simd_w_;</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :     } else</span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaUNC">           0 :         assert(!&quot;Incorrect memory tag passed to resampling primitive.&quot;);</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">       22132 :     return tail_size;</span></span>
+<span id="L146"><span class="lineNum">     146</span>              : }</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">       21461 : int jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::get_channels_to_compute_without_tail(</span></span>
+<span id="L150"><span class="lineNum">     150</span>              :         const bool is_tail_in_blocked_format) const {</span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       21461 :     assert(utils::one_of(conf_.tag_kind, tag_kind::blocked, tag_kind::nspc)</span></span>
+<span id="L152"><span class="lineNum">     152</span>              :             &amp;&amp; &quot;Incorrect memory tag.&quot;);</span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       21461 :     int c_to_compute_without_tail = 0;</span></span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       21461 :     if (conf_.tag_kind == tag_kind::blocked &amp;&amp; is_tail_in_blocked_format) {</span></span>
+<span id="L157"><span class="lineNum">     157</span>              :         // Example:</span>
+<span id="L158"><span class="lineNum">     158</span>              :         // c = 27</span>
+<span id="L159"><span class="lineNum">     159</span>              :         // c_block = 16</span>
+<span id="L160"><span class="lineNum">     160</span>              :         // simd_w = 4</span>
+<span id="L161"><span class="lineNum">     161</span>              :         // result = ((27 % 16) / 4) * 4 = (11 / 4) * 4 = 2 * 4 = 8</span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        5559 :         c_to_compute_without_tail</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">        5559 :                 = ((conf_.c % conf_.inner_stride) / simd_w_) * simd_w_;</span></span>
+<span id="L164"><span class="lineNum">     164</span>              :     } else</span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       15902 :         c_to_compute_without_tail = (conf_.inner_stride / simd_w_) * simd_w_;</span></span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       21461 :     return c_to_compute_without_tail;</span></span>
+<span id="L168"><span class="lineNum">     168</span>              : }</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L171"><span class="lineNum">     171</span>              : std::map&lt;data_type_t, io::io_saturation_conf_t&gt;</span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       22132 : jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::create_saturation_vmm_map() const {</span></span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       22132 :     std::map&lt;data_type_t, io::io_saturation_conf_t&gt; saturation_map {};</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       22132 :     if (conf_.is_saturation_needed)</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       17504 :         saturation_map.emplace(conf_.dst_data_type,</span></span>
+<span id="L178"><span class="lineNum">     178</span>              :                 io::io_saturation_conf_t {vmm_zero_saturation_.getIdx(),</span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">        8752 :                         vmm_saturation_ubound_.getIdx(), reg_tmp_});</span></span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       22132 :     return saturation_map;</span></span>
+<span id="L182"><span class="lineNum">     182</span>              : }</span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">        7825 : void jit_uni_resampling_kernel_t&lt;isa,</span></span>
+<span id="L186"><span class="lineNum">     186</span>              :         Vmm&gt;::get_params_for_linear_in_c_oriented_format() {</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">        7825 :     mov(reg_src_ftl_, ptr[reg_param + GET_OFF(src)]);</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">        7825 :     add(reg_src_ftl_, ptr[reg_param + GET_OFF(src_offset_front)]);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">        7825 :     add(reg_src_ftl_, ptr[reg_param + GET_OFF(src_offset_top)]);</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">        7825 :     mov(reg_src_ftr_, reg_src_ftl_);</span></span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        7825 :     if (conf_.ndims == 4 || conf_.ndims == 5) {</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        5717 :         uni_vbroadcastss(weight_top_, ptr[reg_param + GET_OFF(weight_top)]);</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        5717 :         uni_vbroadcastss(</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">        8527 :                 weight_bottom_, ptr[reg_param + GET_OFF(weight_bottom)]);</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        5717 :         mov(reg_src_fbl_, ptr[reg_param + GET_OFF(src)]);</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">        5717 :         add(reg_src_fbl_, ptr[reg_param + GET_OFF(src_offset_front)]);</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">        5717 :         add(reg_src_fbl_, ptr[reg_param + GET_OFF(src_offset_bottom)]);</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">        5717 :         mov(reg_src_fbr_, reg_src_fbl_);</span></span>
+<span id="L200"><span class="lineNum">     200</span>              :     }</span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">        7825 :     if (conf_.ndims == 5) {</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        3212 :         uni_vbroadcastss(weight_front_, ptr[reg_param + GET_OFF(weight_front)]);</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        3212 :         uni_vbroadcastss(weight_back_, ptr[reg_param + GET_OFF(weight_back)]);</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        3212 :         mov(reg_src_btl_, ptr[reg_param + GET_OFF(src)]);</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">        3212 :         add(reg_src_btl_, ptr[reg_param + GET_OFF(src_offset_back)]);</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">        3212 :         add(reg_src_btl_, ptr[reg_param + GET_OFF(src_offset_top)]);</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">        3212 :         mov(reg_src_btr_, reg_src_btl_);</span></span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">        3212 :         mov(reg_src_bbl_, ptr[reg_param + GET_OFF(src)]);</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">        3212 :         add(reg_src_bbl_, ptr[reg_param + GET_OFF(src_offset_back)]);</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">        3212 :         add(reg_src_bbl_, ptr[reg_param + GET_OFF(src_offset_bottom)]);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">        3212 :         mov(reg_src_bbr_, reg_src_bbl_);</span></span>
+<span id="L213"><span class="lineNum">     213</span>              :     }</span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">        7825 : }</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">         792 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::preserve_zero_padding_in_post_ops(</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :         const int data_idx) {</span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">         792 :     Vmm vmm_data(data_idx);</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">         792 :     const Vmm vmm_zeros(vmm_tmp_.getIdx());</span></span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">         792 :     uni_vxorps(vmm_zeros, vmm_zeros, vmm_zeros);</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">         792 :     if (is_superset(conf_.isa, avx512_core))</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         600 :         vblendmps(vmm_data | k_tail_mask_, vmm_zeros, vmm_data);</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :     else {</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         192 :         std::bitset&lt;8&gt; tail_mask((1 &lt;&lt; tail_size_) - 1);</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         192 :         tail_mask.flip();</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">         192 :         uni_vblendps(vmm_data, vmm_data, vmm_zeros, tail_mask.to_ulong());</span></span>
+<span id="L229"><span class="lineNum">     229</span>              :     }</span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">         792 : }</span></span>
+<span id="L231"><span class="lineNum">     231</span>              : </span>
+<span id="L232"><span class="lineNum">     232</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">        2511 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::apply_sum(</span></span>
+<span id="L234"><span class="lineNum">     234</span>              :         const int data_idx, const bool is_tail, const size_t offset) {</span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">        2511 :     if (conf_.with_sum) {</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">        2511 :         assert(!conf_.sum_scales.empty()</span></span>
+<span id="L237"><span class="lineNum">     237</span>              :                 &amp;&amp; &quot;No scales for sum post operation.&quot;);</span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">        7462 :         const auto sum_injector = [this, data_idx, is_tail, offset]() {</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        4951 :             const Vmm vmm_prev_dst(vmm_tmp_.getIdx());</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">        4951 :             const Vmm vmm_dst(data_idx);</span></span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              :             // Zeroing previous dst is needed to preserve zero padding.</span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">        4951 :             if (is_tail &amp;&amp; conf_.tag_kind == tag_kind::blocked)</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">         592 :                 uni_vxorps(vmm_prev_dst, vmm_prev_dst, vmm_prev_dst);</span></span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">        9902 :             io_.at(conf_.dst_data_type)</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">        9902 :                     -&gt;load(ptr[reg_dst_ + offset], vmm_prev_dst, is_tail);</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        4951 :             const float sum_scale = sum_scales_.front();</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        4951 :             if (sum_scale == 1.f)</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        2511 :                 uni_vaddps(vmm_dst, vmm_dst, vmm_prev_dst);</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :             else {</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        2440 :                 const Xmm xmm_sum_scale = Xmm(vmm_sum_scale_.getIdx());</span></span>
+<span id="L253"><span class="lineNum">     253</span>              : </span>
+<span id="L254"><span class="lineNum">     254</span>              :                 // If the algorithm used is the linear algorithm, and the shape</span>
+<span id="L255"><span class="lineNum">     255</span>              :                 // has 5 dimensions, then we have not enough gpr registers to use</span>
+<span id="L256"><span class="lineNum">     256</span>              :                 // tmp registers. Therefore, if there is a need to use them it is</span>
+<span id="L257"><span class="lineNum">     257</span>              :                 // needed to save their state and restore it after execution of all</span>
+<span id="L258"><span class="lineNum">     258</span>              :                 // needed operations.</span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        2440 :                 if (conf_.alg == alg_kind::resampling_linear</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">        1199 :                         &amp;&amp; conf_.ndims == 5)</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         642 :                     push(reg_tmp1_);</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">        2440 :                 mov(reg_tmp1_.cvt32(), float2int(sum_scale));</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        2440 :                 uni_vmovd(xmm_sum_scale, reg_tmp1_.cvt32());</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        2440 :                 if (conf_.alg == alg_kind::resampling_linear</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">        1199 :                         &amp;&amp; conf_.ndims == 5)</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">         642 :                     pop(reg_tmp1_);</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">        2440 :                 uni_vbroadcastss(vmm_sum_scale_, xmm_sum_scale);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        2440 :                 uni_vfmadd231ps(vmm_dst, vmm_prev_dst, vmm_sum_scale_);</span></span>
+<span id="L269"><span class="lineNum">     269</span>              :             }</span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        4951 :             sum_scales_.push(sum_scale);</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        4951 :             sum_scales_.pop();</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :         };</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        2511 :         postops_injector_-&gt;set_lambda_injector(</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :                 primitive_kind::sum, sum_injector);</span>
+<span id="L275"><span class="lineNum">     275</span>              :     }</span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">        2511 : }</span></span>
+<span id="L277"><span class="lineNum">     277</span>              : </span>
+<span id="L278"><span class="lineNum">     278</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">        8221 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::apply_postops(</span></span>
+<span id="L280"><span class="lineNum">     280</span>              :         const int data_idx, const bool is_tail, const size_t offset) {</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       16442 :     binary_injector::rhs_arg_dynamic_params_t rhs_arg_params;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        8221 :     const bool is_preserving_zero_padding_needed</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">        8221 :             = is_tail &amp;&amp; conf_.tag_kind == tag_kind::blocked;</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">       16442 :     const bool apply_rhs_binary = conf_.with_binary</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">       13514 :             &amp;&amp; (any_binary_postop_is_per_oc_bcast_type_</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        5293 :                     || any_binary_postop_is_per_oc_sp_bcast_type_);</span></span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        8221 :     if (conf_.with_sum) apply_sum(data_idx, is_tail, offset);</span></span>
+<span id="L289"><span class="lineNum">     289</span>              : </span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">        8221 :     if (apply_rhs_binary) {</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">        2464 :         rhs_arg_params.vmm_idx_to_out_reg.emplace(data_idx, reg_dst_);</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">        2464 :         rhs_arg_params.vmm_idx_to_out_elem_off_val.emplace(data_idx, offset);</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">        2464 :         if (is_tail) rhs_arg_params.vmm_tail_idx_.emplace(data_idx);</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">        2464 :         postops_injector_-&gt;compute_vector(data_idx, rhs_arg_params);</span></span>
+<span id="L295"><span class="lineNum">     295</span>              :     } else</span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        5757 :         postops_injector_-&gt;compute_vector(data_idx);</span></span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        8221 :     if (is_preserving_zero_padding_needed)</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">         792 :         preserve_zero_padding_in_post_ops(data_idx);</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        8221 : }</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">        5559 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::preserve_zero_padding(</span></span>
+<span id="L304"><span class="lineNum">     304</span>              :         const int c_to_compute_without_tail, const bool is_tail) {</span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">       11118 :     const int c_to_compute_with_tail</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">        5559 :             = is_tail ? utils::rnd_up(tail_size_, simd_w_) : 0;</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">        5559 :     const int c_to_zeroing = conf_.inner_stride - c_to_compute_without_tail</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">        5559 :             - c_to_compute_with_tail;</span></span>
+<span id="L309"><span class="lineNum">     309</span>              : </span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">        5559 :     if (c_to_zeroing &gt; 0) {</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">        1158 :         assert(c_to_zeroing % simd_w_ == 0);</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">        1158 :         const Vmm vmm_zeros(vmm_tmp_.getIdx());</span></span>
+<span id="L313"><span class="lineNum">     313</span>              : </span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">        2858 :         for (int c = 0; c &lt; c_to_zeroing; c += simd_w_) {</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">        1700 :             uni_vxorps(vmm_zeros, vmm_zeros, vmm_zeros);</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">        1700 :             const auto dst_address = ptr[reg_dst_ + c * conf_.dst_dt_size];</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        1700 :             io_.at(conf_.dst_data_type)-&gt;store(vmm_zeros, dst_address, false);</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :         }</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">        1158 :         add(reg_dst_, c_to_zeroing * conf_.dst_dt_size);</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :     }</span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">        5559 : }</span></span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       15902 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::interpolate_c_oriented_format(</span></span>
+<span id="L326"><span class="lineNum">     326</span>              :         const c_oriented_generation_fn_t &amp;generation_fn) {</span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">       15902 :     const unsigned c_with_padding = utils::rnd_up(conf_.c, conf_.inner_stride);</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">       15902 :     const unsigned padding_size_to_preserve = c_with_padding - conf_.c;</span></span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">       15902 :     if (padding_size_to_preserve &gt; 0 &amp;&amp; conf_.tag_kind == tag_kind::blocked) {</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">       11118 :         Label tail_label;</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">       11118 :         Label end_label;</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">        5559 :         cmp(reg_c_offset, utils::rnd_dn(conf_.c, conf_.inner_stride));</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">        5559 :         je(tail_label, T_NEAR);</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">        5559 :         generation_fn(false /*is_tail_in_blocked_format*/);</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">        5559 :         jmp(end_label, T_NEAR);</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">        5559 :         L(tail_label);</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">        5559 :         generation_fn(true /*is_tail_in_blocked_format*/);</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">       11118 :         L(end_label);</span></span>
+<span id="L340"><span class="lineNum">     340</span>              :     } else {</span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">       10343 :         generation_fn(false /*is_tail_in_blocked_format*/);</span></span>
+<span id="L342"><span class="lineNum">     342</span>              :     }</span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">       15902 : }</span></span>
+<span id="L344"><span class="lineNum">     344</span>              : </span>
+<span id="L345"><span class="lineNum">     345</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">        3058 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::nearest_ncsp_format() {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">        3058 :     const Reg64 &amp;reg_indices_h = reg_aux_src_0_;</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">        3058 :     const Reg64 &amp;reg_indices_w = reg_aux_src_1_;</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">        3058 :     const Reg64 &amp;reg_src_shifted = reg_aux_src_2_;</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">        3058 :     const Reg64 &amp;reg_oh = reg_tmp1_;</span></span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       65874 :     auto nearest_interpolation = ([&amp;](bool is_tail) {</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">        5636 :         uni_vmovdqu(vmm_indices_, ptr[reg_indices_w]);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       11272 :         io_.at(conf_.src_data_type)</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">        5636 :                 -&gt;gather(reg_src_shifted, vmm_indices_, vmm_src_, is_tail);</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">        5636 :         if (conf_.with_postops) apply_postops(vmm_src_.getIdx(), is_tail);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">        5636 :         io_.at(conf_.dst_data_type)-&gt;store(vmm_src_, ptr[reg_dst_], is_tail);</span></span>
+<span id="L358"><span class="lineNum">     358</span>              :     });</span>
+<span id="L359"><span class="lineNum">     359</span>              : </span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">        3058 :     mov(reg_indices_h, reg_indices_);</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">        3058 :     mov(reg_indices_w, reg_indices_);</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">        3058 :     add(reg_indices_w, conf_.oh * conf_.el_size_of_indices);</span></span>
+<span id="L363"><span class="lineNum">     363</span>              : </span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">        6116 :     Label oh_loop_begin, oh_loop_end;</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">        6116 :     Label ow_loop_begin, ow_loop_end;</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">        3058 :     xor_(reg_oh, reg_oh);</span></span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">        3058 :     L(oh_loop_begin);</span></span>
+<span id="L369"><span class="lineNum">     369</span>              :     {</span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">        3058 :         cmp(reg_oh, conf_.oh);</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">        3058 :         jge(oh_loop_end, T_NEAR);</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">        3058 :         push(reg_oh);</span></span>
+<span id="L373"><span class="lineNum">     373</span>              : </span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">        3058 :         mov(reg_work_, conf_.ow);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">        3058 :         mov(reg_src_shifted, reg_src_);</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">        3058 :         xor_(reg_tmp_, reg_tmp_);</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">        3058 :         mov(reg_tmp_.cvt32(), dword[reg_indices_h]);</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">        3058 :         add(reg_src_shifted, reg_tmp_);</span></span>
+<span id="L379"><span class="lineNum">     379</span>              : </span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">        3058 :         push(reg_indices_w);</span></span>
+<span id="L381"><span class="lineNum">     381</span>              : </span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">        3058 :         L(ow_loop_begin);</span></span>
+<span id="L383"><span class="lineNum">     383</span>              :         {</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">        3058 :             cmp(reg_work_, simd_w_);</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">        3058 :             jl(ow_loop_end, T_NEAR);</span></span>
+<span id="L386"><span class="lineNum">     386</span>              : </span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">        3058 :             nearest_interpolation(false);</span></span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">        3058 :             add(reg_dst_, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">        3058 :             add(reg_indices_w, simd_w_ * conf_.el_size_of_indices);</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">        3058 :             sub(reg_work_, simd_w_);</span></span>
+<span id="L392"><span class="lineNum">     392</span>              : </span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">        3058 :             jmp(ow_loop_begin, T_NEAR);</span></span>
+<span id="L394"><span class="lineNum">     394</span>              :         }</span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">        3058 :         L(ow_loop_end);</span></span>
+<span id="L396"><span class="lineNum">     396</span>              : </span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">        3058 :         if (tail_size_ &gt; 0) {</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">        2578 :             nearest_interpolation(true);</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        2578 :             add(reg_dst_, tail_size_ * conf_.dst_dt_size);</span></span>
+<span id="L400"><span class="lineNum">     400</span>              :         }</span>
+<span id="L401"><span class="lineNum">     401</span>              : </span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">        3058 :         add(reg_indices_h, conf_.el_size_of_indices);</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">        3058 :         pop(reg_indices_w);</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">        3058 :         pop(reg_oh);</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">        3058 :         add(reg_oh, 1);</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">        3058 :         jmp(oh_loop_begin);</span></span>
+<span id="L407"><span class="lineNum">     407</span>              :     }</span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">        3058 :     L(oh_loop_end);</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">        3058 : }</span></span>
+<span id="L410"><span class="lineNum">     410</span>              : </span>
+<span id="L411"><span class="lineNum">     411</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">       15785 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::compute_nearest_c_interpolate(</span></span>
+<span id="L413"><span class="lineNum">     413</span>              :         const int c_to_compute_without_tail, const bool is_tail) {</span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">       15785 :     const Reg64 &amp;reg_c = reg_tmp_;</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">       15785 :     const Reg64 &amp;reg_src_shifted = reg_aux_src_0_;</span></span>
+<span id="L416"><span class="lineNum">     416</span>              : </span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">      231572 :     auto nearest_interpolation = [&amp;](const bool is_tail) {</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">       20704 :         const bool load_and_store_with_tail</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">       20704 :                 = is_tail &amp;&amp; conf_.tag_kind == tag_kind::nspc;</span></span>
+<span id="L420"><span class="lineNum">     420</span>              : </span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">       41408 :         io_.at(conf_.src_data_type)</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">       20704 :                 -&gt;load(ptr[reg_src_shifted], vmm_src_,</span></span>
+<span id="L423"><span class="lineNum">     423</span>              :                         load_and_store_with_tail);</span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">       20704 :         if (conf_.with_postops) apply_postops(vmm_src_.getIdx(), is_tail);</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">       41408 :         io_.at(conf_.dst_data_type)</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">       20704 :                 -&gt;store(vmm_src_, ptr[reg_dst_], load_and_store_with_tail);</span></span>
+<span id="L427"><span class="lineNum">     427</span>              :     };</span>
+<span id="L428"><span class="lineNum">     428</span>              : </span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">       31570 :     Label c_loop_begin, c_loop_end;</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">       15785 :     xor_(reg_c, reg_c);</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">       15785 :     L(c_loop_begin);</span></span>
+<span id="L432"><span class="lineNum">     432</span>              :     {</span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">       15785 :         cmp(reg_c, c_to_compute_without_tail);</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">       15785 :         je(c_loop_end, T_NEAR);</span></span>
+<span id="L435"><span class="lineNum">     435</span>              : </span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">       15785 :         nearest_interpolation(false);</span></span>
+<span id="L437"><span class="lineNum">     437</span>              : </span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">       15785 :         add(reg_src_shifted, simd_w_ * conf_.src_dt_size);</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">       15785 :         add(reg_dst_, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L440"><span class="lineNum">     440</span>              : </span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       15785 :         add(reg_c, simd_w_);</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       15785 :         jmp(c_loop_begin, T_NEAR);</span></span>
+<span id="L443"><span class="lineNum">     443</span>              :     }</span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       15785 :     L(c_loop_end);</span></span>
+<span id="L445"><span class="lineNum">     445</span>              : </span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       15785 :     if (is_tail) {</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">        4919 :         nearest_interpolation(true);</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">        4919 :         if (conf_.tag_kind == tag_kind::nspc)</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">        2304 :             add(reg_dst_, tail_size_ * conf_.dst_dt_size);</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">        2615 :         else if (conf_.tag_kind == tag_kind::blocked)</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">        2615 :             add(reg_dst_, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L452"><span class="lineNum">     452</span>              :     }</span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">       15785 : }</span></span>
+<span id="L454"><span class="lineNum">     454</span>              : </span>
+<span id="L455"><span class="lineNum">     455</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaUNC">           0 : void jit_uni_resampling_kernel_t&lt;isa,</span></span>
+<span id="L457"><span class="lineNum">     457</span>              :         Vmm&gt;::compute_ne_xf16_nearest_c_interpolate(const int</span>
+<span id="L458"><span class="lineNum">     458</span>              :                 c_to_compute_without_tail) {</span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaUNC">           0 :     const Reg64 &amp;reg_c = reg_tmp_;</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaUNC">           0 :     const Reg64 &amp;reg_src_shifted = reg_aux_src_0_;</span></span>
+<span id="L461"><span class="lineNum">     461</span>              : </span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaUNC">           0 :     auto nearest_ne_xf16_interpolation = [&amp;](const bool is_tail) {</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaUNC">           0 :         io_.at(conf_.src_data_type)</span></span>
+<span id="L464"><span class="lineNum">     464</span>              :                 -&gt;load_two_simdw_xf16(</span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaUNC">           0 :                         ptr[reg_src_shifted], vmm_src_even_, vmm_src_odd_);</span></span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaUNC">           0 :         io_.at(conf_.src_data_type)</span></span>
+<span id="L467"><span class="lineNum">     467</span>              :                 -&gt;merge_interleaved_to_plain(</span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaUNC">           0 :                         vmm_src_even_, vmm_src_odd_, vmm_tmp_);</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaUNC">           0 :         if (conf_.with_postops) {</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaUNC">           0 :             apply_postops(vmm_src_even_.getIdx(), false);</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaUNC">           0 :             apply_postops(</span></span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaUNC">           0 :                     vmm_src_odd_.getIdx(), false, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L473"><span class="lineNum">     473</span>              :         }</span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaUNC">           0 :         io_.at(conf_.dst_data_type)-&gt;store(vmm_src_even_, ptr[reg_dst_], false);</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaUNC">           0 :         io_.at(conf_.dst_data_type)</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaUNC">           0 :                 -&gt;store(vmm_src_odd_,</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaUNC">           0 :                         ptr[reg_dst_ + simd_w_ * conf_.dst_dt_size], false);</span></span>
+<span id="L478"><span class="lineNum">     478</span>              :     };</span>
+<span id="L479"><span class="lineNum">     479</span>              : </span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaUNC">           0 :     Label c_loop_begin, c_loop_end;</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaUNC">           0 :     xor_(reg_c, reg_c);</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaUNC">           0 :     L(c_loop_begin);</span></span>
+<span id="L483"><span class="lineNum">     483</span>              :     {</span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaUNC">           0 :         cmp(reg_c, c_to_compute_without_tail);</span></span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaUNC">           0 :         je(c_loop_end, T_NEAR);</span></span>
+<span id="L486"><span class="lineNum">     486</span>              : </span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaUNC">           0 :         nearest_ne_xf16_interpolation(false);</span></span>
+<span id="L488"><span class="lineNum">     488</span>              : </span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaUNC">           0 :         add(reg_src_shifted, 2 * simd_w_ * conf_.src_dt_size);</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaUNC">           0 :         add(reg_dst_, 2 * simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L491"><span class="lineNum">     491</span>              : </span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaUNC">           0 :         add(reg_c, 2 * simd_w_);</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaUNC">           0 :         jmp(c_loop_begin, T_NEAR);</span></span>
+<span id="L494"><span class="lineNum">     494</span>              :     }</span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaUNC">           0 :     L(c_loop_end);</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L497"><span class="lineNum">     497</span>              : </span>
+<span id="L498"><span class="lineNum">     498</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">       10866 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::nearest_c_oriented_format(</span></span>
+<span id="L500"><span class="lineNum">     500</span>              :         const bool is_tail_in_blocked_format) {</span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">       10866 :     const bool has_ne_xf16_supported = isa == avx2_vnni_2</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaUNC">           0 :             &amp;&amp; utils::one_of(</span></span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaUNC">           0 :                     conf_.src_data_type, data_type::bf16, data_type::f16);</span></span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">       10866 :     const int total_c_to_compute_without_tail</span></span>
+<span id="L505"><span class="lineNum">     505</span>              :             = get_channels_to_compute_without_tail(is_tail_in_blocked_format);</span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">       10866 :     const int c_to_compute_ne_xf16_without_tail = has_ne_xf16_supported</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaUNC">           0 :             ? utils::rnd_dn(total_c_to_compute_without_tail, 2 * simd_w_)</span></span>
+<span id="L508"><span class="lineNum">     508</span>              :             : 0;</span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">       10866 :     const int c_to_compute_without_tail = total_c_to_compute_without_tail</span></span>
+<span id="L510"><span class="lineNum">     510</span>              :             - c_to_compute_ne_xf16_without_tail;</span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">       10866 :     const bool insert_tail_processsing_code</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">        3358 :             = (conf_.tag_kind == tag_kind::nspc &amp;&amp; tail_size_ &gt; 0)</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">       14224 :             || is_tail_in_blocked_format;</span></span>
+<span id="L514"><span class="lineNum">     514</span>              : </span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">       10866 :     const Reg64 &amp;reg_src_shifted = reg_aux_src_0_;</span></span>
+<span id="L516"><span class="lineNum">     516</span>              : </span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       21732 :     Label loop_begin, loop_end;</span></span>
+<span id="L518"><span class="lineNum">     518</span>              : </span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       10866 :     L(loop_begin);</span></span>
+<span id="L520"><span class="lineNum">     520</span>              :     {</span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       10866 :         cmp(reg_work_, 1);</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       10866 :         jl(loop_end, T_NEAR);</span></span>
+<span id="L523"><span class="lineNum">     523</span>              : </span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">       10866 :         mov(reg_src_shifted, reg_src_);</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaGNC">       10866 :         mov(reg_tmp1_.cvt32(), dword[reg_indices_]);</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">       10866 :         add(reg_src_shifted, reg_tmp1_);</span></span>
+<span id="L527"><span class="lineNum">     527</span>              : </span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaUNC">           0 :         if (has_ne_xf16_supported)</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaUNC">           0 :             compute_ne_xf16_nearest_c_interpolate(</span></span>
+<span id="L530"><span class="lineNum">     530</span>              :                     c_to_compute_ne_xf16_without_tail);</span>
+<span id="L531"><span class="lineNum">     531</span>              : </span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">       10866 :         compute_nearest_c_interpolate(c_to_compute_without_tail, false);</span></span>
+<span id="L533"><span class="lineNum">     533</span>              : </span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">       10866 :         if (insert_tail_processsing_code) {</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">        5093 :             if (tail_size_ &gt; 0) compute_nearest_c_interpolate(0, true);</span></span>
+<span id="L536"><span class="lineNum">     536</span>              : </span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">        5093 :             if (conf_.tag_kind == tag_kind::blocked)</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">        2789 :                 preserve_zero_padding(total_c_to_compute_without_tail,</span></span>
+<span id="L539"><span class="lineNum">     539</span>              :                         is_tail_in_blocked_format);</span>
+<span id="L540"><span class="lineNum">     540</span>              :         }</span>
+<span id="L541"><span class="lineNum">     541</span>              : </span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       10866 :         add(reg_indices_, conf_.el_size_of_indices);</span></span>
+<span id="L543"><span class="lineNum">     543</span>              : </span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">       10866 :         dec(reg_work_);</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">       10866 :         jmp(loop_begin, T_NEAR);</span></span>
+<span id="L546"><span class="lineNum">     546</span>              :     }</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">       10866 :     L(loop_end);</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">       10866 : }</span></span>
+<span id="L549"><span class="lineNum">     549</span>              : </span>
+<span id="L550"><span class="lineNum">     550</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">        3172 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::linear_ncsp_format() {</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">        3172 :     const unsigned indices_stride</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">        3172 :             = conf_.ow * conf_.oh * conf_.od * conf_.el_size_of_indices;</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">        3172 :     const unsigned weights_stride</span></span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">        3172 :             = conf_.ow * conf_.oh * conf_.od * sizeof(float);</span></span>
+<span id="L556"><span class="lineNum">     556</span>              : </span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">      379924 :     auto linear_interpolation = [&amp;](const bool is_tail) {</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">        4956 :         const Vmm vmm_dst(vmm_idx(0));</span></span>
+<span id="L559"><span class="lineNum">     559</span>              : </span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       29166 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i++) {</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       24210 :             uni_vmovdqu(vmm_indices_, ptr[reg_indices_ + i * indices_stride]);</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       48420 :             io_.at(conf_.src_data_type)</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">       24210 :                     -&gt;gather(reg_src_, vmm_indices_, Vmm(vmm_idx(i)), is_tail);</span></span>
+<span id="L564"><span class="lineNum">     564</span>              :         }</span>
+<span id="L565"><span class="lineNum">     565</span>              : </span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">        4956 :         uni_vmovups(vmm_weights_, ptr[reg_weights]);</span></span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">        4956 :         uni_vmulps(vmm_dst, vmm_dst, vmm_weights_);</span></span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">       24210 :         for (unsigned i = 1; i &lt; conf_.number_of_corners; i++) {</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">       19254 :             uni_vmovups(vmm_weights_, ptr[reg_weights + i * weights_stride]);</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">       19254 :             uni_vfmadd231ps(vmm_dst, Vmm(vmm_idx(i)), vmm_weights_);</span></span>
+<span id="L571"><span class="lineNum">     571</span>              :         }</span>
+<span id="L572"><span class="lineNum">     572</span>              : </span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">        4956 :         if (conf_.with_postops) apply_postops(vmm_idx(0), is_tail);</span></span>
+<span id="L574"><span class="lineNum">     574</span>              : </span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">        1672 :         if (conf_.is_saturation_needed &amp;&amp; conf_.ndims == 5</span></span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">        6628 :                 &amp;&amp; !is_superset(conf_.isa, avx512_core)) {</span></span>
+<span id="L577"><span class="lineNum">     577</span>              :             // When saturation is needed, and the shape has</span>
+<span id="L578"><span class="lineNum">     578</span>              :             // 5 dimensions, and we have only 16 Vmm registers,</span>
+<span id="L579"><span class="lineNum">     579</span>              :             // we have no space for holding information for saturation</span>
+<span id="L580"><span class="lineNum">     580</span>              :             // in registers. That is why we need to repeat saturation</span>
+<span id="L581"><span class="lineNum">     581</span>              :             // initialization before every store operation.</span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">         183 :             io_.init_saturate_f32({conf_.dst_data_type});</span></span>
+<span id="L583"><span class="lineNum">     583</span>              :         }</span>
+<span id="L584"><span class="lineNum">     584</span>              : </span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">        4956 :         io_.at(conf_.dst_data_type)-&gt;store(vmm_dst, ptr[reg_dst_], is_tail);</span></span>
+<span id="L586"><span class="lineNum">     586</span>              :     };</span>
+<span id="L587"><span class="lineNum">     587</span>              : </span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">        6344 :     Label loop_begin, loop_end;</span></span>
+<span id="L589"><span class="lineNum">     589</span>              : </span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">        3172 :     L(loop_begin);</span></span>
+<span id="L591"><span class="lineNum">     591</span>              :     {</span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">        3172 :         cmp(reg_work_, simd_w_);</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">        3172 :         jl(loop_end, T_NEAR);</span></span>
+<span id="L594"><span class="lineNum">     594</span>              : </span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">        3172 :         linear_interpolation(false);</span></span>
+<span id="L596"><span class="lineNum">     596</span>              : </span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">        3172 :         add(reg_dst_, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">        3172 :         add(reg_weights, simd_w_ * sizeof(float));</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaGNC">        3172 :         add(reg_indices_, simd_w_ * conf_.el_size_of_indices);</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">        3172 :         sub(reg_work_, simd_w_);</span></span>
+<span id="L601"><span class="lineNum">     601</span>              : </span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">        3172 :         jmp(loop_begin, T_NEAR);</span></span>
+<span id="L603"><span class="lineNum">     603</span>              :     }</span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">        3172 :     L(loop_end);</span></span>
+<span id="L605"><span class="lineNum">     605</span>              : </span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC">        3172 :     if (tail_size_ &gt; 0) linear_interpolation(true);</span></span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">        3172 : }</span></span>
+<span id="L608"><span class="lineNum">     608</span>              : </span>
+<span id="L609"><span class="lineNum">     609</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L610"><span class="lineNum">     610</span> <span class="tlaUNC">           0 : void jit_uni_resampling_kernel_t&lt;isa,</span></span>
+<span id="L611"><span class="lineNum">     611</span>              :         Vmm&gt;::compute_ne_xf16_linear_c_interpolate(const int</span>
+<span id="L612"><span class="lineNum">     612</span>              :                 c_to_compute_without_tail) {</span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaUNC">           0 :     const Reg64 &amp;reg_c = reg_tmp_;</span></span>
+<span id="L614"><span class="lineNum">     614</span>              : </span>
+<span id="L615"><span class="lineNum">     615</span> <span class="tlaUNC">           0 :     const std::vector&lt;std::reference_wrapper&lt;const Vmm&gt;&gt; src_vmms</span></span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaUNC">           0 :             = {src_ftl_even_, src_ftr_even_, src_fbl_even_, src_fbr_even_,</span></span>
+<span id="L617"><span class="lineNum">     617</span> <span class="tlaUNC">           0 :                     src_ftl_odd_, src_ftr_odd_, src_fbl_odd_, src_fbr_odd_};</span></span>
+<span id="L618"><span class="lineNum">     618</span> <span class="tlaUNC">           0 :     assert(src_vmms.size() &gt;= 2 * conf_.number_of_corners);</span></span>
+<span id="L619"><span class="lineNum">     619</span>              : </span>
+<span id="L620"><span class="lineNum">     620</span> <span class="tlaUNC">           0 :     auto linear_interpolation = [&amp;](const Reg64 &amp;reg_c, const bool is_tail) {</span></span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaUNC">           0 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i += 2) {</span></span>
+<span id="L622"><span class="lineNum">     622</span> <span class="tlaUNC">           0 :             const auto src_l_even = src_vmms[i].get();</span></span>
+<span id="L623"><span class="lineNum">     623</span> <span class="tlaUNC">           0 :             const auto src_r_even = src_vmms[i + 1].get();</span></span>
+<span id="L624"><span class="lineNum">     624</span> <span class="tlaUNC">           0 :             const auto src_l_odd = src_vmms[i + 4].get();</span></span>
+<span id="L625"><span class="lineNum">     625</span> <span class="tlaUNC">           0 :             const auto src_r_odd = src_vmms[i + 5].get();</span></span>
+<span id="L626"><span class="lineNum">     626</span>              : </span>
+<span id="L627"><span class="lineNum">     627</span> <span class="tlaUNC">           0 :             io_.at(conf_.src_data_type)</span></span>
+<span id="L628"><span class="lineNum">     628</span>              :                     -&gt;load_two_simdw_xf16(</span>
+<span id="L629"><span class="lineNum">     629</span> <span class="tlaUNC">           0 :                             ptr[src_regs_[i].get()], src_l_even, src_l_odd);</span></span>
+<span id="L630"><span class="lineNum">     630</span> <span class="tlaUNC">           0 :             io_.at(conf_.src_data_type)</span></span>
+<span id="L631"><span class="lineNum">     631</span>              :                     -&gt;merge_interleaved_to_plain(</span>
+<span id="L632"><span class="lineNum">     632</span> <span class="tlaUNC">           0 :                             src_l_even, src_l_odd, vmm_tmp_);</span></span>
+<span id="L633"><span class="lineNum">     633</span> <span class="tlaUNC">           0 :             io_.at(conf_.src_data_type)</span></span>
+<span id="L634"><span class="lineNum">     634</span>              :                     -&gt;load_two_simdw_xf16(</span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaUNC">           0 :                             ptr[src_regs_[i + 1].get()], src_r_even, src_r_odd);</span></span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaUNC">           0 :             io_.at(conf_.src_data_type)</span></span>
+<span id="L637"><span class="lineNum">     637</span>              :                     -&gt;merge_interleaved_to_plain(</span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaUNC">           0 :                             src_r_even, src_r_odd, vmm_tmp_);</span></span>
+<span id="L639"><span class="lineNum">     639</span>              : </span>
+<span id="L640"><span class="lineNum">     640</span> <span class="tlaUNC">           0 :             uni_vmulps(src_l_even, src_l_even, weight_left_);</span></span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaUNC">           0 :             uni_vfmadd231ps(src_l_even, src_r_even, weight_right_);</span></span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaUNC">           0 :             uni_vmulps(src_l_odd, src_l_odd, weight_left_);</span></span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaUNC">           0 :             uni_vfmadd231ps(src_l_odd, src_r_odd, weight_right_);</span></span>
+<span id="L644"><span class="lineNum">     644</span>              :         }</span>
+<span id="L645"><span class="lineNum">     645</span> <span class="tlaUNC">           0 :         if (conf_.ndims == 4) {</span></span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaUNC">           0 :             uni_vmulps(src_ftl_even_, src_ftl_even_, weight_top_);</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaUNC">           0 :             uni_vfmadd231ps(src_ftl_even_, src_fbl_even_, weight_bottom_);</span></span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaUNC">           0 :             uni_vmulps(src_ftl_odd_, src_ftl_odd_, weight_top_);</span></span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaUNC">           0 :             uni_vfmadd231ps(src_ftl_odd_, src_fbl_odd_, weight_bottom_);</span></span>
+<span id="L650"><span class="lineNum">     650</span>              :         }</span>
+<span id="L651"><span class="lineNum">     651</span>              : </span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaUNC">           0 :         if (conf_.with_postops) {</span></span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaUNC">           0 :             apply_postops(src_ftl_even_.getIdx(), false);</span></span>
+<span id="L654"><span class="lineNum">     654</span> <span class="tlaUNC">           0 :             apply_postops(</span></span>
+<span id="L655"><span class="lineNum">     655</span> <span class="tlaUNC">           0 :                     src_ftl_odd_.getIdx(), false, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L656"><span class="lineNum">     656</span>              :         }</span>
+<span id="L657"><span class="lineNum">     657</span>              : </span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaUNC">           0 :         if (conf_.is_saturation_needed &amp;&amp; conf_.ndims &gt;= 4) {</span></span>
+<span id="L659"><span class="lineNum">     659</span>              :             // When saturation is needed, and the shape has larger than</span>
+<span id="L660"><span class="lineNum">     660</span>              :             // 4 dimemsions, we have no space for holding information for</span>
+<span id="L661"><span class="lineNum">     661</span>              :             // saturation in registers when using NE_CONVERT instructions.</span>
+<span id="L662"><span class="lineNum">     662</span>              :             // Therefore, it is needed to repeat resaturation initialization</span>
+<span id="L663"><span class="lineNum">     663</span>              :             // before every store operation</span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaUNC">           0 :             push(reg_tmp_);</span></span>
+<span id="L665"><span class="lineNum">     665</span> <span class="tlaUNC">           0 :             io_.init_saturate_f32({conf_.dst_data_type});</span></span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaUNC">           0 :             pop(reg_tmp_);</span></span>
+<span id="L667"><span class="lineNum">     667</span>              :         }</span>
+<span id="L668"><span class="lineNum">     668</span> <span class="tlaUNC">           0 :         io_.at(conf_.dst_data_type)-&gt;store(src_ftl_even_, ptr[reg_dst_], false);</span></span>
+<span id="L669"><span class="lineNum">     669</span> <span class="tlaUNC">           0 :         io_.at(conf_.dst_data_type)</span></span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaUNC">           0 :                 -&gt;store(src_ftl_odd_,</span></span>
+<span id="L671"><span class="lineNum">     671</span> <span class="tlaUNC">           0 :                         ptr[reg_dst_ + simd_w_ * conf_.dst_dt_size], false);</span></span>
+<span id="L672"><span class="lineNum">     672</span>              :     };</span>
+<span id="L673"><span class="lineNum">     673</span>              : </span>
+<span id="L674"><span class="lineNum">     674</span> <span class="tlaUNC">           0 :     Label c_loop_begin, c_loop_end;</span></span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaUNC">           0 :     xor_(reg_c, reg_c);</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaUNC">           0 :     L(c_loop_begin);</span></span>
+<span id="L677"><span class="lineNum">     677</span>              :     {</span>
+<span id="L678"><span class="lineNum">     678</span> <span class="tlaUNC">           0 :         cmp(reg_c, c_to_compute_without_tail);</span></span>
+<span id="L679"><span class="lineNum">     679</span> <span class="tlaUNC">           0 :         je(c_loop_end, T_NEAR);</span></span>
+<span id="L680"><span class="lineNum">     680</span>              : </span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaUNC">           0 :         linear_interpolation(reg_c, false);</span></span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaUNC">           0 :         add(reg_dst_, 2 * simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L683"><span class="lineNum">     683</span>              : </span>
+<span id="L684"><span class="lineNum">     684</span> <span class="tlaUNC">           0 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i++)</span></span>
+<span id="L685"><span class="lineNum">     685</span> <span class="tlaUNC">           0 :             add(src_regs_[i], 2 * simd_w_ * conf_.src_dt_size);</span></span>
+<span id="L686"><span class="lineNum">     686</span>              : </span>
+<span id="L687"><span class="lineNum">     687</span> <span class="tlaUNC">           0 :         add(reg_c, 2 * simd_w_);</span></span>
+<span id="L688"><span class="lineNum">     688</span> <span class="tlaUNC">           0 :         jmp(c_loop_begin, T_NEAR);</span></span>
+<span id="L689"><span class="lineNum">     689</span>              :     }</span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaUNC">           0 :     L(c_loop_end);</span></span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L692"><span class="lineNum">     692</span>              : </span>
+<span id="L693"><span class="lineNum">     693</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">       15262 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::compute_linear_c_interpolate(</span></span>
+<span id="L695"><span class="lineNum">     695</span>              :         const int c_to_compute_without_tail, const bool is_tail) {</span>
+<span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">       15262 :     const Reg64 &amp;reg_c = reg_tmp_;</span></span>
+<span id="L697"><span class="lineNum">     697</span>              : </span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">       30524 :     const std::vector&lt;std::reference_wrapper&lt;const Vmm&gt;&gt; src_vmms</span></span>
+<span id="L699"><span class="lineNum">     699</span> <span class="tlaGNC">       15262 :             = {src_ftl_, src_ftr_, src_fbl_, src_fbr_, src_btl_, src_btr_,</span></span>
+<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">       15262 :                     src_bbl_, src_bbr_};</span></span>
+<span id="L701"><span class="lineNum">     701</span> <span class="tlaGNC">       15262 :     assert(src_vmms.size() &gt;= conf_.number_of_corners);</span></span>
+<span id="L702"><span class="lineNum">     702</span>              : </span>
+<span id="L703"><span class="lineNum">     703</span> <span class="tlaGNC">      973515 :     auto linear_interpolation = [&amp;](const Reg64 &amp;reg_c, const bool is_tail) {</span></span>
+<span id="L704"><span class="lineNum">     704</span> <span class="tlaGNC">       19929 :         const bool load_and_store_with_tail</span></span>
+<span id="L705"><span class="lineNum">     705</span> <span class="tlaGNC">       19929 :                 = is_tail &amp;&amp; conf_.tag_kind == tag_kind::nspc;</span></span>
+<span id="L706"><span class="lineNum">     706</span>              : </span>
+<span id="L707"><span class="lineNum">     707</span> <span class="tlaGNC">      125791 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i++) {</span></span>
+<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">      317586 :             io_.at(conf_.src_data_type)</span></span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">      211724 :                     -&gt;load(ptr[src_regs_[i].get()], src_vmms[i].get(),</span></span>
+<span id="L710"><span class="lineNum">     710</span>              :                             load_and_store_with_tail);</span>
+<span id="L711"><span class="lineNum">     711</span>              :         }</span>
+<span id="L712"><span class="lineNum">     712</span>              :         // w_d[0]*(w_h[0]*(src[0][0][0]*w_w[0] + src[0][0][1]*w_w[1]) +</span>
+<span id="L713"><span class="lineNum">     713</span>              :         //         w_h[1]*(src[0][1][0]*w_w[0] + src[0][1][1]*w_w[1]))</span>
+<span id="L714"><span class="lineNum">     714</span>              :         // +</span>
+<span id="L715"><span class="lineNum">     715</span>              :         // w_d[1]*(w_h[0]*(src[1][0][0]*w_w[0] + src[1][0][1]*w_w[1]) +</span>
+<span id="L716"><span class="lineNum">     716</span>              :         //         w_h[1]*(src[1][1][0]*w_w[0] + src[1][1][1]*w_w[1]))</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">       19929 :         uni_vmulps(src_ftl_, src_ftl_, weight_left_);</span></span>
+<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">       19929 :         uni_vfmadd231ps(src_ftl_, src_ftr_, weight_right_);</span></span>
+<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">       19929 :         if (conf_.ndims == 4 || conf_.ndims == 5) {</span></span>
+<span id="L720"><span class="lineNum">     720</span> <span class="tlaGNC">       14772 :             uni_vmulps(src_fbl_, src_fbl_, weight_left_);</span></span>
+<span id="L721"><span class="lineNum">     721</span> <span class="tlaGNC">       14772 :             uni_vfmadd231ps(src_fbl_, src_fbr_, weight_right_);</span></span>
+<span id="L722"><span class="lineNum">     722</span> <span class="tlaGNC">       14772 :             uni_vmulps(src_ftl_, src_ftl_, weight_top_);</span></span>
+<span id="L723"><span class="lineNum">     723</span> <span class="tlaGNC">       14772 :             uni_vfmadd231ps(src_ftl_, src_fbl_, weight_bottom_);</span></span>
+<span id="L724"><span class="lineNum">     724</span>              :         }</span>
+<span id="L725"><span class="lineNum">     725</span> <span class="tlaGNC">       19929 :         if (conf_.ndims == 5) {</span></span>
+<span id="L726"><span class="lineNum">     726</span> <span class="tlaGNC">        9115 :             uni_vmulps(src_btl_, src_btl_, weight_left_);</span></span>
+<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">        9115 :             uni_vfmadd231ps(src_btl_, src_btr_, weight_right_);</span></span>
+<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">        9115 :             uni_vmulps(src_bbl_, src_bbl_, weight_left_);</span></span>
+<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">        9115 :             uni_vfmadd231ps(src_bbl_, src_bbr_, weight_right_);</span></span>
+<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">        9115 :             uni_vmulps(src_btl_, src_btl_, weight_top_);</span></span>
+<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">        9115 :             uni_vfmadd231ps(src_btl_, src_bbl_, weight_bottom_);</span></span>
+<span id="L732"><span class="lineNum">     732</span> <span class="tlaGNC">        9115 :             uni_vmulps(src_ftl_, src_ftl_, weight_front_);</span></span>
+<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">        9115 :             uni_vfmadd231ps(src_ftl_, src_btl_, weight_back_);</span></span>
+<span id="L734"><span class="lineNum">     734</span>              :         }</span>
+<span id="L735"><span class="lineNum">     735</span>              : </span>
+<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">       19929 :         if (conf_.with_postops) apply_postops(src_ftl_.getIdx(), is_tail);</span></span>
+<span id="L737"><span class="lineNum">     737</span>              : </span>
+<span id="L738"><span class="lineNum">     738</span> <span class="tlaGNC">        8408 :         if (conf_.is_saturation_needed &amp;&amp; conf_.ndims == 5</span></span>
+<span id="L739"><span class="lineNum">     739</span> <span class="tlaGNC">       28337 :                 &amp;&amp; !is_superset(conf_.isa, avx512_core)) {</span></span>
+<span id="L740"><span class="lineNum">     740</span>              :             // When saturation is needed, and the shape has</span>
+<span id="L741"><span class="lineNum">     741</span>              :             // 5 dimensions, and we have only 16 Vmm registers,</span>
+<span id="L742"><span class="lineNum">     742</span>              :             // we have no space for holding information for saturation</span>
+<span id="L743"><span class="lineNum">     743</span>              :             // in registers. That is why we need to repeat saturation</span>
+<span id="L744"><span class="lineNum">     744</span>              :             // initialization before every store operation.</span>
+<span id="L745"><span class="lineNum">     745</span> <span class="tlaGNC">        1185 :             push(reg_tmp_);</span></span>
+<span id="L746"><span class="lineNum">     746</span> <span class="tlaGNC">        1185 :             io_.init_saturate_f32({conf_.dst_data_type});</span></span>
+<span id="L747"><span class="lineNum">     747</span> <span class="tlaGNC">        1185 :             pop(reg_tmp_);</span></span>
+<span id="L748"><span class="lineNum">     748</span>              :         }</span>
+<span id="L749"><span class="lineNum">     749</span>              : </span>
+<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">       39858 :         io_.at(conf_.dst_data_type)</span></span>
+<span id="L751"><span class="lineNum">     751</span> <span class="tlaGNC">       19929 :                 -&gt;store(src_ftl_, ptr[reg_dst_], load_and_store_with_tail);</span></span>
+<span id="L752"><span class="lineNum">     752</span>              :     };</span>
+<span id="L753"><span class="lineNum">     753</span>              : </span>
+<span id="L754"><span class="lineNum">     754</span> <span class="tlaGNC">       30524 :     Label c_loop_begin, c_loop_end;</span></span>
+<span id="L755"><span class="lineNum">     755</span> <span class="tlaGNC">       15262 :     xor_(reg_c, reg_c);</span></span>
+<span id="L756"><span class="lineNum">     756</span> <span class="tlaGNC">       15262 :     L(c_loop_begin);</span></span>
+<span id="L757"><span class="lineNum">     757</span>              :     {</span>
+<span id="L758"><span class="lineNum">     758</span> <span class="tlaGNC">       15262 :         cmp(reg_c, c_to_compute_without_tail);</span></span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">       15262 :         je(c_loop_end, T_NEAR);</span></span>
+<span id="L760"><span class="lineNum">     760</span>              : </span>
+<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">       15262 :         linear_interpolation(reg_c, false);</span></span>
+<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">       15262 :         add(reg_dst_, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L763"><span class="lineNum">     763</span>              : </span>
+<span id="L764"><span class="lineNum">     764</span> <span class="tlaGNC">       95736 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i++)</span></span>
+<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">       80474 :             add(src_regs_[i], simd_w_ * conf_.src_dt_size);</span></span>
+<span id="L766"><span class="lineNum">     766</span>              : </span>
+<span id="L767"><span class="lineNum">     767</span> <span class="tlaGNC">       15262 :         add(reg_c, simd_w_);</span></span>
+<span id="L768"><span class="lineNum">     768</span> <span class="tlaGNC">       15262 :         jmp(c_loop_begin, T_NEAR);</span></span>
+<span id="L769"><span class="lineNum">     769</span>              :     }</span>
+<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">       15262 :     L(c_loop_end);</span></span>
+<span id="L771"><span class="lineNum">     771</span>              : </span>
+<span id="L772"><span class="lineNum">     772</span> <span class="tlaGNC">       15262 :     if (is_tail) {</span></span>
+<span id="L773"><span class="lineNum">     773</span> <span class="tlaGNC">        4667 :         linear_interpolation(reg_c, true);</span></span>
+<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">        4667 :         if (conf_.tag_kind == tag_kind::nspc)</span></span>
+<span id="L775"><span class="lineNum">     775</span> <span class="tlaGNC">        2071 :             add(reg_dst_, tail_size_ * conf_.dst_dt_size);</span></span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">        2596 :         else if (conf_.tag_kind == tag_kind::blocked)</span></span>
+<span id="L777"><span class="lineNum">     777</span> <span class="tlaGNC">        2596 :             add(reg_dst_, simd_w_ * conf_.dst_dt_size);</span></span>
+<span id="L778"><span class="lineNum">     778</span>              :     }</span>
+<span id="L779"><span class="lineNum">     779</span> <span class="tlaGNC">       15262 : }</span></span>
+<span id="L780"><span class="lineNum">     780</span>              : </span>
+<span id="L781"><span class="lineNum">     781</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L782"><span class="lineNum">     782</span> <span class="tlaGNC">       10595 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::linear_c_oriented_format(</span></span>
+<span id="L783"><span class="lineNum">     783</span>              :         const bool is_tail_in_blocked_format) {</span>
+<span id="L784"><span class="lineNum">     784</span>              :     // Only supports NE_CONVERT instructions for xf16 when ndims &lt;= 4</span>
+<span id="L785"><span class="lineNum">     785</span>              :     // because there are no enough registers to process data</span>
+<span id="L786"><span class="lineNum">     786</span> <span class="tlaGNC">       10595 :     const bool has_ne_xf16_supported = isa == avx2_vnni_2 &amp;&amp; conf_.ndims &lt;= 4</span></span>
+<span id="L787"><span class="lineNum">     787</span> <span class="tlaUNC">           0 :             &amp;&amp; utils::one_of(</span></span>
+<span id="L788"><span class="lineNum">     788</span> <span class="tlaUNC">           0 :                     conf_.src_data_type, data_type::bf16, data_type::f16);</span></span>
+<span id="L789"><span class="lineNum">     789</span> <span class="tlaGNC">       10595 :     const int total_c_to_compute_without_tail</span></span>
+<span id="L790"><span class="lineNum">     790</span>              :             = get_channels_to_compute_without_tail(is_tail_in_blocked_format);</span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">       10595 :     const int c_to_compute_ne_xf16_without_tail = has_ne_xf16_supported</span></span>
+<span id="L792"><span class="lineNum">     792</span> <span class="tlaUNC">           0 :             ? utils::rnd_dn(total_c_to_compute_without_tail, 2 * simd_w_)</span></span>
+<span id="L793"><span class="lineNum">     793</span>              :             : 0;</span>
+<span id="L794"><span class="lineNum">     794</span> <span class="tlaGNC">       10595 :     const int c_to_compute_without_tail = total_c_to_compute_without_tail</span></span>
+<span id="L795"><span class="lineNum">     795</span>              :             - c_to_compute_ne_xf16_without_tail;</span>
+<span id="L796"><span class="lineNum">     796</span> <span class="tlaGNC">       10595 :     const bool insert_tail_processsing_code</span></span>
+<span id="L797"><span class="lineNum">     797</span> <span class="tlaGNC">        3125 :             = (conf_.tag_kind == tag_kind::nspc &amp;&amp; tail_size_ &gt; 0)</span></span>
+<span id="L798"><span class="lineNum">     798</span> <span class="tlaGNC">       13720 :             || is_tail_in_blocked_format;</span></span>
+<span id="L799"><span class="lineNum">     799</span>              : </span>
+<span id="L800"><span class="lineNum">     800</span> <span class="tlaGNC">       10595 :     const Reg64 &amp;reg_index_left = reg_tmp_;</span></span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">       10595 :     const Reg64 &amp;reg_index_right = reg_tmp_;</span></span>
+<span id="L802"><span class="lineNum">     802</span>              : </span>
+<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">       10595 :     assert(src_regs_.size() &gt;= conf_.number_of_corners);</span></span>
+<span id="L804"><span class="lineNum">     804</span>              : </span>
+<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">       10595 :     xor_(reg_index_left, reg_index_left);</span></span>
+<span id="L806"><span class="lineNum">     806</span>              : </span>
+<span id="L807"><span class="lineNum">     807</span> <span class="tlaGNC">       21190 :     Label loop_begin, loop_end;</span></span>
+<span id="L808"><span class="lineNum">     808</span>              : </span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">       10595 :     L(loop_begin);</span></span>
+<span id="L810"><span class="lineNum">     810</span>              :     {</span>
+<span id="L811"><span class="lineNum">     811</span> <span class="tlaGNC">       10595 :         cmp(reg_work_, 1);</span></span>
+<span id="L812"><span class="lineNum">     812</span> <span class="tlaGNC">       10595 :         jl(loop_end, T_NEAR);</span></span>
+<span id="L813"><span class="lineNum">     813</span>              : </span>
+<span id="L814"><span class="lineNum">     814</span> <span class="tlaGNC">       65681 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i++) {</span></span>
+<span id="L815"><span class="lineNum">     815</span> <span class="tlaGNC">       55086 :             push(src_regs_[i]);</span></span>
+<span id="L816"><span class="lineNum">     816</span>              :         }</span>
+<span id="L817"><span class="lineNum">     817</span>              : </span>
+<span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">       10595 :         mov(reg_index_left.cvt32(), dword[reg_indices_]);</span></span>
+<span id="L819"><span class="lineNum">     819</span> <span class="tlaGNC">       38138 :         for (unsigned i = 0; i &lt; conf_.number_of_corners / 2; i++) {</span></span>
+<span id="L820"><span class="lineNum">     820</span> <span class="tlaGNC">       27543 :             add(src_regs_[2 * i], reg_index_left);</span></span>
+<span id="L821"><span class="lineNum">     821</span>              :         }</span>
+<span id="L822"><span class="lineNum">     822</span> <span class="tlaGNC">       10595 :         mov(reg_index_right.cvt32(),</span></span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">       10595 :                 dword[reg_indices_ + conf_.el_size_of_indices]);</span></span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">       38138 :         for (unsigned i = 0; i &lt; conf_.number_of_corners / 2; i++) {</span></span>
+<span id="L825"><span class="lineNum">     825</span> <span class="tlaGNC">       27543 :             add(src_regs_[2 * i + 1], reg_index_right);</span></span>
+<span id="L826"><span class="lineNum">     826</span>              :         }</span>
+<span id="L827"><span class="lineNum">     827</span>              : </span>
+<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">       10595 :         uni_vbroadcastss(weight_left_, ptr[reg_weights]);</span></span>
+<span id="L829"><span class="lineNum">     829</span> <span class="tlaGNC">       10595 :         uni_vbroadcastss(weight_right_, ptr[reg_weights + sizeof(float)]);</span></span>
+<span id="L830"><span class="lineNum">     830</span>              : </span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaUNC">           0 :         if (has_ne_xf16_supported)</span></span>
+<span id="L832"><span class="lineNum">     832</span> <span class="tlaUNC">           0 :             compute_ne_xf16_linear_c_interpolate(</span></span>
+<span id="L833"><span class="lineNum">     833</span>              :                     c_to_compute_ne_xf16_without_tail);</span>
+<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">       10595 :         compute_linear_c_interpolate(c_to_compute_without_tail, false);</span></span>
+<span id="L835"><span class="lineNum">     835</span>              : </span>
+<span id="L836"><span class="lineNum">     836</span> <span class="tlaGNC">       10595 :         if (insert_tail_processsing_code) {</span></span>
+<span id="L837"><span class="lineNum">     837</span> <span class="tlaGNC">        4841 :             if (tail_size_ &gt; 0) compute_linear_c_interpolate(0, true);</span></span>
+<span id="L838"><span class="lineNum">     838</span>              : </span>
+<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">        4841 :             if (conf_.tag_kind == tag_kind::blocked)</span></span>
+<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">        2770 :                 preserve_zero_padding(total_c_to_compute_without_tail,</span></span>
+<span id="L841"><span class="lineNum">     841</span>              :                         is_tail_in_blocked_format);</span>
+<span id="L842"><span class="lineNum">     842</span>              :         }</span>
+<span id="L843"><span class="lineNum">     843</span>              : </span>
+<span id="L844"><span class="lineNum">     844</span>              :         // During one loop cycle are read two values for left and</span>
+<span id="L845"><span class="lineNum">     845</span>              :         // right corners from both the weights and indices tables.</span>
+<span id="L846"><span class="lineNum">     846</span>              :         // These two values occurs one after the other in memory,</span>
+<span id="L847"><span class="lineNum">     847</span>              :         // so the address should be shifted by two elements.</span>
+<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">       10595 :         add(reg_indices_, 2 * conf_.el_size_of_indices);</span></span>
+<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">       10595 :         add(reg_weights, 2 * sizeof(float));</span></span>
+<span id="L850"><span class="lineNum">     850</span>              : </span>
+<span id="L851"><span class="lineNum">     851</span> <span class="tlaGNC">       65681 :         for (unsigned i = 0; i &lt; conf_.number_of_corners; i++) {</span></span>
+<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">       55086 :             pop(src_regs_[(conf_.number_of_corners - 1) - i]);</span></span>
+<span id="L853"><span class="lineNum">     853</span>              :         }</span>
+<span id="L854"><span class="lineNum">     854</span>              : </span>
+<span id="L855"><span class="lineNum">     855</span> <span class="tlaGNC">       10595 :         dec(reg_work_);</span></span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">       10595 :         jmp(loop_begin, T_NEAR);</span></span>
+<span id="L857"><span class="lineNum">     857</span>              :     }</span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">       10595 :     L(loop_end);</span></span>
+<span id="L859"><span class="lineNum">     859</span> <span class="tlaGNC">       10595 : }</span></span>
+<span id="L860"><span class="lineNum">     860</span>              : </span>
+<span id="L861"><span class="lineNum">     861</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">       22132 : void jit_uni_resampling_kernel_t&lt;isa, Vmm&gt;::generate() {</span></span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">       22132 :     preamble();</span></span>
+<span id="L864"><span class="lineNum">     864</span>              : </span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">       22132 :     io_.init_bf16();</span></span>
+<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">       22132 :     if (conf_.is_saturation_needed)</span></span>
+<span id="L867"><span class="lineNum">     867</span> <span class="tlaGNC">        8752 :         io_.init_saturate_f32({conf_.dst_data_type});</span></span>
+<span id="L868"><span class="lineNum">     868</span>              :     // Preparing tail is needed for blocked format, because</span>
+<span id="L869"><span class="lineNum">     869</span>              :     // there is chance that padding will not be preserved when user use</span>
+<span id="L870"><span class="lineNum">     870</span>              :     // post-ops.</span>
+<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">       22132 :     if (tail_size_ &gt; 0</span></span>
+<span id="L872"><span class="lineNum">     872</span> <span class="tlaGNC">       13948 :             &amp;&amp; (conf_.tag_kind != tag_kind::blocked || conf_.with_postops))</span></span>
+<span id="L873"><span class="lineNum">     873</span> <span class="tlaGNC">        9529 :         io_.prepare_tail_mask();</span></span>
+<span id="L874"><span class="lineNum">     874</span> <span class="tlaGNC">       22132 :     if (is_superset(conf_.isa, avx2) &amp;&amp; conf_.tag_kind == tag_kind::ncsp) {</span></span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">        5152 :         io_.init_full_mask();</span></span>
+<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">        5152 :         io_.prepare_full_mask();</span></span>
+<span id="L877"><span class="lineNum">     877</span>              :     }</span>
+<span id="L878"><span class="lineNum">     878</span>              : </span>
+<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">       22132 :     mov(reg_dst_, ptr[reg_param + GET_OFF(dst)]);</span></span>
+<span id="L880"><span class="lineNum">     880</span> <span class="tlaGNC">       22132 :     mov(reg_work_, ptr[reg_param + GET_OFF(batch_of_sp_points_to_process)]);</span></span>
+<span id="L881"><span class="lineNum">     881</span> <span class="tlaGNC">       22132 :     mov(reg_indices_, ptr[reg_param + GET_OFF(indices)]);</span></span>
+<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">       22132 :     mov(reg_c_offset, ptr[reg_param + GET_OFF(c_offset)]);</span></span>
+<span id="L883"><span class="lineNum">     883</span>              : </span>
+<span id="L884"><span class="lineNum">     884</span> <span class="tlaGNC">       22132 :     if (conf_.alg == alg_kind::resampling_nearest) {</span></span>
+<span id="L885"><span class="lineNum">     885</span> <span class="tlaGNC">       11135 :         mov(reg_src_, ptr[reg_param + GET_OFF(src)]);</span></span>
+<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">       11135 :         if (conf_.tag_kind == tag_kind::ncsp) {</span></span>
+<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">        3058 :             nearest_ncsp_format();</span></span>
+<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">        8077 :         } else if (conf_.tag_kind == tag_kind::nspc</span></span>
+<span id="L889"><span class="lineNum">     889</span> <span class="tlaGNC">        4719 :                 || conf_.tag_kind == tag_kind::blocked) {</span></span>
+<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">        8077 :             interpolate_c_oriented_format(</span></span>
+<span id="L891"><span class="lineNum">     891</span> <span class="tlaGNC">       21732 :                     [&amp;](const bool is_tail_in_blocked_format) {</span></span>
+<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">       10866 :                 nearest_c_oriented_format(is_tail_in_blocked_format);</span></span>
+<span id="L893"><span class="lineNum">     893</span>              :             });</span>
+<span id="L894"><span class="lineNum">     894</span>              :         }</span>
+<span id="L895"><span class="lineNum">     895</span> <span class="tlaGNC">       10997 :     } else if (conf_.alg == alg_kind::resampling_linear) {</span></span>
+<span id="L896"><span class="lineNum">     896</span> <span class="tlaGNC">       10997 :         mov(reg_weights, ptr[reg_param + GET_OFF(weights)]);</span></span>
+<span id="L897"><span class="lineNum">     897</span> <span class="tlaGNC">       10997 :         if (conf_.tag_kind == tag_kind::ncsp) {</span></span>
+<span id="L898"><span class="lineNum">     898</span> <span class="tlaGNC">        3172 :             mov(reg_src_, ptr[reg_param + GET_OFF(src)]);</span></span>
+<span id="L899"><span class="lineNum">     899</span> <span class="tlaGNC">        3172 :             linear_ncsp_format();</span></span>
+<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">        7825 :         } else if (conf_.tag_kind == tag_kind::nspc</span></span>
+<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">        4700 :                 || conf_.tag_kind == tag_kind::blocked) {</span></span>
+<span id="L902"><span class="lineNum">     902</span> <span class="tlaGNC">        7825 :             get_params_for_linear_in_c_oriented_format();</span></span>
+<span id="L903"><span class="lineNum">     903</span> <span class="tlaGNC">        7825 :             interpolate_c_oriented_format(</span></span>
+<span id="L904"><span class="lineNum">     904</span> <span class="tlaGNC">       21190 :                     [&amp;](const bool is_tail_in_blocked_format) {</span></span>
+<span id="L905"><span class="lineNum">     905</span> <span class="tlaGNC">       10595 :                 linear_c_oriented_format(is_tail_in_blocked_format);</span></span>
+<span id="L906"><span class="lineNum">     906</span>              :             });</span>
+<span id="L907"><span class="lineNum">     907</span>              :         }</span>
+<span id="L908"><span class="lineNum">     908</span>              :     }</span>
+<span id="L909"><span class="lineNum">     909</span>              : </span>
+<span id="L910"><span class="lineNum">     910</span> <span class="tlaGNC">       22132 :     postamble();</span></span>
+<span id="L911"><span class="lineNum">     911</span>              : </span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC">       22132 :     if (conf_.with_eltwise &amp;&amp; postops_injector_)</span></span>
+<span id="L913"><span class="lineNum">     913</span> <span class="tlaGNC">        1321 :         postops_injector_-&gt;prepare_table(/* generate = */ true);</span></span>
+<span id="L914"><span class="lineNum">     914</span> <span class="tlaGNC">       22132 : }</span></span>
+<span id="L915"><span class="lineNum">     915</span>              : </span>
+<span id="L916"><span class="lineNum">     916</span>              : template struct jit_uni_resampling_kernel_t&lt;avx512_core_fp16, Zmm&gt;;</span>
+<span id="L917"><span class="lineNum">     917</span>              : template struct jit_uni_resampling_kernel_t&lt;avx512_core, Zmm&gt;;</span>
+<span id="L918"><span class="lineNum">     918</span>              : template struct jit_uni_resampling_kernel_t&lt;avx512_core, Ymm&gt;;</span>
+<span id="L919"><span class="lineNum">     919</span>              : template struct jit_uni_resampling_kernel_t&lt;avx2_vnni_2, Ymm&gt;;</span>
+<span id="L920"><span class="lineNum">     920</span>              : template struct jit_uni_resampling_kernel_t&lt;avx2, Ymm&gt;;</span>
+<span id="L921"><span class="lineNum">     921</span>              : template struct jit_uni_resampling_kernel_t&lt;avx, Ymm&gt;;</span>
+<span id="L922"><span class="lineNum">     922</span>              : template struct jit_uni_resampling_kernel_t&lt;avx, Xmm&gt;;</span>
+<span id="L923"><span class="lineNum">     923</span>              : template struct jit_uni_resampling_kernel_t&lt;sse41, Xmm&gt;;</span>
+<span id="L924"><span class="lineNum">     924</span>              : </span>
+<span id="L925"><span class="lineNum">     925</span>              : } // namespace x64</span>
+<span id="L926"><span class="lineNum">     926</span>              : } // namespace cpu</span>
+<span id="L927"><span class="lineNum">     927</span>              : } // namespace impl</span>
+<span id="L928"><span class="lineNum">     928</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

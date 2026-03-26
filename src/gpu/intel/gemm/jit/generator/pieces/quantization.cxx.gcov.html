@@ -1,0 +1,689 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/quantization.cxx</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - quantization.cxx<span style="font-size: 80%;"> (source / <a href="quantization.cxx.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">82.6&nbsp;%</td>
+            <td class="headerCovTableEntry">368</td>
+            <td class="headerCovTableEntry">304</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">26.9&nbsp;%</td>
+            <td class="headerCovTableEntry">171</td>
+            <td class="headerCovTableEntry">46</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;alloc_utils.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;gemmstone/generator.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;hw_utils.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;layout_utils.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;map.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;ngen_object_helpers.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;quantization.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : using namespace ngen;</span>
+<span id="L29"><span class="lineNum">      29</span>              : using std::vector;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : // Prepare 2D dequantization layouts.</span>
+<span id="L33"><span class="lineNum">      33</span>              : template &lt;HW hw&gt;</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       70224 : bool Generator&lt;hw&gt;::gemmMake2DQuantizationLayouts(bool isA, const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state)</span></span>
+<span id="L35"><span class="lineNum">      35</span>              : {</span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">       70224 :     auto lateOffset = isA ? problem.needsBGroupSums() : problem.needsAGroupSums();</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       70224 :     int xoPtrDims = (isA ? problem.aoPtrDims : problem.boPtrDims);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       70224 :     bool xo2D = isA ? problem.aOffset2D()       : problem.bOffset2D();</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       70224 :     bool xs2D = isA ? problem.aScale2D()        : problem.bScale2D();</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       70224 :     bool xg2D = isA ? problem.needsAGroupSums() : problem.needsBGroupSums();</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      105128 :     bool xoTo2D = !xo2D &amp;&amp; (isA ? problem.aOffset == ABOffset::Calc &amp;&amp; (problem.earlyDequantizeA() || lateOffset)</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       34904 :                                 : problem.bOffset == ABOffset::Calc &amp;&amp; (problem.earlyDequantizeB() || lateOffset));</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       70224 :     bool cColMajor = isRegisterColMajor(problem.Tc_ext, problem.C, strategy.C);</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       70224 :     if (!xo2D &amp;&amp; !xoTo2D &amp;&amp; !xs2D &amp;&amp; !xg2D) return true;</span></span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         548 :     auto &amp;X_strategy       = isA ? strategy.A             : strategy.B;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         548 :     auto &amp;X_offsetStrategy = isA ? strategy.AO            : strategy.BO;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">         548 :     auto &amp;X_scaleStrategy  = isA ? strategy.A_scale       : strategy.B_scale;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         548 :     auto &amp;Xg_strategy      = isA ? strategy.Ag            : strategy.Bg;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         548 :     auto &amp;X_offsetLayout   = isA ? state.A_offsetLayout   : state.B_offsetLayout;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         548 :     auto &amp;X_scaleLayout    = isA ? state.A_scaleLayout    : state.B_scaleLayout;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">         548 :     auto &amp;Xg_layout        = isA ? state.Ag_layout        : state.Bg_layout;</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">         548 :     auto &amp;Xr_offsetLayout  = isA ? state.Ar_offsetLayout  : state.Br_offsetLayout;</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">         548 :     auto &amp;Xr_scaleLayout   = isA ? state.Ar_scaleLayout   : state.Br_scaleLayout;</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         548 :     auto &amp;Xgr_layout       = isA ? state.Agr_layout       : state.Bgr_layout;</span></span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         548 :     auto &amp;XO         = isA ? problem.AO         : problem.BO;</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         548 :     auto &amp;XS         = isA ? problem.A_scale    : problem.B_scale;</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         548 :     auto &amp;Xg         = isA ? problem.Ag         : problem.Bg;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">         548 :     auto Tx_ext      = isA ? problem.Ta_ext     : problem.Tb_ext;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">         548 :     auto Tx          = isA ? problem.Ta         : problem.Tb;</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">         548 :     auto Txo         = isA ? problem.Tao        : problem.Tbo;</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">         548 :     auto Txs         = isA ? problem.Ta_scale   : problem.Tb_scale;</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">         548 :     auto Txg         = isA ? problem.Tag        : problem.Tbg;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">         548 :     auto xqGroupK    = isA ? problem.aqGroupK   : problem.bqGroupK;</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">         548 :     auto xqGroupMN   = isA ? problem.aqGroupM   : problem.bqGroupN;</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">         548 :     auto &amp;Txo_int    = isA ? state.Tao_int      : state.Tbo_int;</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         548 :     auto &amp;Txs_int    = isA ? state.Ta_scaleInt  : state.Tb_scaleInt;</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">         548 :     auto &amp;Txg_int    = isA ? state.Tag_int      : state.Tbg_int;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         548 :     auto &amp;lateScale  = isA ? state.lateScale2DA : state.lateScale2DB;</span></span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">         548 :     auto wgTileMN = strategy.wgTile(isA ? LoopM : LoopN);</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         548 :     Txo_int = Txo.isInteger() ? Tx.asSignedInt() : Tx;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">         548 :     Txs_int = Tx;</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">         548 :     if (Tx == Type::bf16)</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaUNC">           0 :         Txs_int = Type::f32;</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">         548 :     Txg_int = Txg;</span></span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">         548 :     int cpoDiv = 1;</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">         548 :     if (Txo_int.isInt8()) Txo_int = Type::s16, cpoDiv = 2;</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :     // Use lateScale for cases of applying scale to inputs that will be natively dpas'd</span>
+<span id="L84"><span class="lineNum">      84</span>              :     // but do not support add/mul.</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">         548 :     if (xs2D &amp;&amp; ((Txs.paddedSize() &gt; Tx.paddedSize() &amp;&amp; Tx.isInteger()) || problem.forceLateQuant(hw, minOuterProductCount(hw, problem, strategy)) || state.useBDPAS)) {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">          32 :         lateScale = true;</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">          32 :         Txs_int = problem.Tc;</span></span>
+<span id="L88"><span class="lineNum">      88</span>              :     }</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">         548 :     bool int4SpecialPath = Tx_ext.isInt4() &amp;&amp; one_of(Tx, {Type::f16, Type::f32});</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">         548 :     if (int4SpecialPath) {</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">           8 :         Txo_int = Type::f16;</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">           8 :         Txs_int = Tx;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">           8 :         if (Tx == Type::bf16) Txs_int = Type::f16;</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :     }</span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">         548 :     if (lateOffset &amp;&amp; (Txo.isInt4() || Txo.isInt8()))</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">          32 :         Txo_int = Type::s32;</span></span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">         548 :     if (Txs == Type::f8_e8m0 &amp;&amp; state.useBDPAS)</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :         Txs_int = Type::f8_e8m0;</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :     // Get tile sizes, depending on whether A/B are copied to SLM.</span>
+<span id="L103"><span class="lineNum">     103</span>              :     // For late scaling (after compute), scales are always applied to the whole tile.</span>
+<span id="L104"><span class="lineNum">     104</span>              :     int r, c, k, rNoSLM, cNoSLM;</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">         548 :     int tileR = 0, tileC = 0;</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">         548 :     bool remR = false, remC = false;</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">         548 :     if (isA) {</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">         282 :         bool slmA = strategy.slmA;</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">         282 :         rNoSLM = strategy.unroll[LoopM];</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">         282 :         cNoSLM = strategy.ka_load;</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">         282 :         r = slmA ? state.ma_slm : rNoSLM;</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">         282 :         c = slmA ? state.ka_slm : cNoSLM;</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">         282 :         k = slmA ? strategy.unrollKSLM : cNoSLM;</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">         282 :         r = std::max(1, r / xqGroupMN);</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         282 :         c = state.kaq = std::max(1, c % xqGroupK == 0 ? c / xqGroupK : 1);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">         282 :         state.kaqStride = std::max(1, k % xqGroupK == 0 ? k /  xqGroupK : 1);</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">         282 :         rNoSLM = std::max(1, rNoSLM / xqGroupMN);</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">         282 :         cNoSLM = state.kaqLate = std::max(1, cNoSLM % xqGroupK == 0 ? cNoSLM /  xqGroupK: 1);</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         282 :         remR = (strategy.remHandling[LoopM] != RemainderHandling::Ignore);</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         282 :         if (xqGroupMN &lt;= 1 &amp;&amp; xqGroupK &gt; 1) tileC = 1;</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">         282 :         if (xqGroupMN &gt; 1 &amp;&amp; (xqGroupMN % strategy.unroll[LoopM] &amp;&amp; strategy.unroll[LoopM] % xqGroupMN))</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaUNC">           0 :             stub(&quot;Tile size not compatible with group size in m dimension&quot;);</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :     } else {</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">         266 :         bool slmB = strategy.slmB;</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">         266 :         cNoSLM = strategy.unroll[LoopN];</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">         266 :         rNoSLM = strategy.kb_load;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">         266 :         c = slmB ? state.nb_slm : cNoSLM;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">         266 :         r = slmB ? state.kb_slm : rNoSLM;</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">         266 :         k = slmB ? strategy.unrollKSLM : rNoSLM;</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">         266 :         c = std::max(1, c / xqGroupMN);</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">         266 :         r = state.kbq = std::max(1, r % xqGroupK == 0 ? r / xqGroupK : 1);</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         266 :         state.kbqStride = std::max(1, k % xqGroupK == 0 ?  k / xqGroupK : 1);</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">         266 :         cNoSLM = std::max(1, cNoSLM / xqGroupMN);</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">         266 :         rNoSLM = state.kbqLate = std::max(1, rNoSLM % xqGroupK == 0 ?  rNoSLM / xqGroupK : 1);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         266 :         remC = (strategy.remHandling[LoopN] != RemainderHandling::Ignore);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         266 :         if (xqGroupMN &lt;= 1 &amp;&amp; xqGroupK &gt; 1) tileR = 1;</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">         266 :         if (xqGroupMN &gt; 1 &amp;&amp; (xqGroupMN % strategy.unroll[LoopN] &amp;&amp; strategy.unroll[LoopN] % xqGroupMN))</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaUNC">           0 :             stub(&quot;Tile size not compatible with group size in n dimension&quot;);</span></span>
+<span id="L139"><span class="lineNum">     139</span>              :     }</span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         548 :     int ro = lateOffset ? rNoSLM : r;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">         548 :     int co = lateOffset ? cNoSLM : c;</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">         548 :     int rs = lateScale  ? rNoSLM : r;</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">         548 :     int cs = lateScale  ? cNoSLM : c;</span></span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">         548 :     if (X_strategy.padded) {</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">          32 :         X_offsetStrategy.padded = X_scaleStrategy.padded = Xg_strategy.padded = true;</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">          32 :         remR = remC = false;</span></span>
+<span id="L149"><span class="lineNum">     149</span>              :     }</span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">         548 :     bool wantCM = isA ^ (xqGroupMN &gt; 1);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        3836 :     auto chooseAccess = [=](const MatrixAddressing &amp;Xq) {</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        1644 :         return (wantCM == isColMajor(Xq.layout)) ? AccessType::Block : AccessType::Scattered;</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :     };</span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">         548 :     X_offsetStrategy.accessType = chooseAccess(XO);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">         548 :     X_scaleStrategy.accessType  = chooseAccess(XS);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">         548 :     Xg_strategy.accessType      = chooseAccess(Xg);</span></span>
+<span id="L159"><span class="lineNum">     159</span>              : </span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">         548 :     if (xo2D &amp;&amp; !(X_offsetLayout = RegisterLayout::tryCreate(hw, Txo, ro,     co,     XO, X_offsetStrategy, remR, remC))) return false;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">         548 :     if (xs2D &amp;&amp;  !(X_scaleLayout = RegisterLayout::tryCreate(hw, Txs, rs,     cs,     XS, X_scaleStrategy,  remR, remC))) return false;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">         548 :     if (xg2D &amp;&amp;      !(Xg_layout = RegisterLayout::tryCreate(hw, Txg, rNoSLM, cNoSLM, Xg, Xg_strategy,      remR, remC))) return false;</span></span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              :     // Adjust masks for m/n grouping.</span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">        3398 :     auto adjustMask = [=](MaskInfo &amp;mask) {</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">        2008 :         if (!mask || xqGroupMN &lt;= 1) return;</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">         184 :         if (!is_zero_or_pow2(xqGroupMN)) {</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :             if (xqGroupMN &lt; wgTileMN) stub();</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaUNC">           0 :             return;</span></span>
+<span id="L170"><span class="lineNum">     170</span>              :         }</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">         184 :         if (mask.fixed.isFixed) stub();</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">         184 :         mask.variable.rshift += ilog2(xqGroupMN);</span></span>
+<span id="L173"><span class="lineNum">     173</span>              :     };</span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">        2192 :     for (auto *Xq_layout: {&amp;X_offsetLayout, &amp;X_scaleLayout, &amp;Xg_layout}) {</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">        2648 :         for (auto &amp;block: *Xq_layout) {</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        1004 :             adjustMask(block.rowMask);</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">        1004 :             adjustMask(block.colMask);</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :         }</span>
+<span id="L180"><span class="lineNum">     180</span>              :     }</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span>              :     // Quantization parameters will be upconverted to the size of A/B and duplicated to match crosspack.</span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">         814 :     auto &amp;lsrc = isA ? (strategy.slmA ? state.Ao_layout : !state.Ar_layout.empty() ? state.Ar_layout : state.A_layout)</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">         266 :                      : (strategy.slmB ? state.Bo_layout : !state.Br_layout.empty() ? state.Br_layout : state.B_layout);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         548 :     if (lsrc.empty()) stub();</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">         548 :     int crosspack = lsrc[0].crosspack;</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">         548 :     if (xqGroupMN &gt; 1)</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         184 :         crosspack = 1;</span></span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">         548 :     int cpo = lateOffset ? 1 : div_up(crosspack, cpoDiv);</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">         548 :     int cps = lateScale  ? 1 : crosspack;</span></span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        4784 :     auto makeQRepack = [&amp;, tileR, tileC](Type Txq, Type Txq_int, RegisterLayout &amp;repack, const RegisterLayout &amp;src,</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :                                          int m, int n, int cp, bool forceRepack) mutable {</span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">         920 :         if (cp &gt; 1 || (cColMajor &amp;&amp; (cp != src[0].crosspack)) || Txq != Txq_int || forceRepack) {</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">         756 :             bool allowPartialRegs = false;</span></span>
+<span id="L197"><span class="lineNum">     197</span>              :             // Native MXFP DPAS support</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">         756 :             if (state.useBDPAS) {</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaUNC">           0 :                 allowPartialRegs = true;</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaUNC">           0 :                 cp = 1;</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaUNC">           0 :                 if (isA) {</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0 :                     tileR = problem.aqGroupK;</span></span>
+<span id="L203"><span class="lineNum">     203</span>              :                 } else {</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :                     tileC = problem.bqGroupK;</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :                 }</span>
+<span id="L206"><span class="lineNum">     206</span>              :             }</span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">         756 :             repack = RegisterLayout(hw, Txq_int, m, n, wantCM, cp, tileR, tileC, allowPartialRegs);</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :         }</span>
+<span id="L209"><span class="lineNum">     209</span>              :     };</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">         548 :     if (xo2D) makeQRepack(Txo, Txo_int, Xr_offsetLayout, X_offsetLayout, ro,     co,     cpo, false);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">         548 :     if (xs2D) makeQRepack(Txs, Txs_int, Xr_scaleLayout,  X_scaleLayout,  rs,     cs,     cps, lateScale);</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">         548 :     if (xg2D) makeQRepack(Txg, Txg_int, Xgr_layout,      Xg_layout,      rNoSLM, cNoSLM, 1,   true);</span></span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">         548 :     if (xoTo2D) {</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">          20 :         if (xoPtrDims &lt;= 0)</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">          13 :             Xr_offsetLayout = RegisterLayout(hw, Txo_int, 1, 1, isA);</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">           7 :         else if (xoPtrDims == 1)</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">           7 :             Xr_offsetLayout = RegisterLayout(hw, Txo_int, ro, co, isA, cpo, tileR, tileC, false);</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaUNC">           0 :         else stub();</span></span>
+<span id="L221"><span class="lineNum">     221</span>              :     }</span>
+<span id="L222"><span class="lineNum">     222</span>              : </span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">         548 :     return true;</span></span>
+<span id="L224"><span class="lineNum">     224</span>              : }</span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span>              : // Convert and repack 2D grouped quantization data in preparation for dequantization.</span>
+<span id="L227"><span class="lineNum">     227</span>              : template &lt;HW hw&gt;</span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">        9836 : void Generator&lt;hw&gt;::gemmRepack2DQuantizationData(Type Ts, Type Td, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst,</span></span>
+<span id="L229"><span class="lineNum">     229</span>              :                                                  const GRFMultirange &amp;src, const GRFMultirange &amp;dst,</span>
+<span id="L230"><span class="lineNum">     230</span>              :                                                  const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span>
+<span id="L231"><span class="lineNum">     231</span>              : {</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">        9836 :     if (layoutDst.empty()) return;</span></span>
+<span id="L233"><span class="lineNum">     233</span>              : </span>
+<span id="L234"><span class="lineNum">     234</span>              :     // Copy, broadcasting 1D to 2D data as needed.</span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       18152 :     for (int doffR = 0; doffR &lt; layoutDst.rows(); doffR += layoutSrc.rows())</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">       18152 :         for (int doffC = 0; doffC &lt; layoutDst.cols(); doffC += layoutSrc.cols())</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">        9076 :             copyRegisters(Ts, Td, layoutSrc, layoutDst, src, dst, doffR, doffC, false, strategy, state);</span></span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        9076 :     int r = layoutDst.rows();</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">        9076 :     int c = layoutDst.cols();</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :     // FP4 bdpas with group &gt; 32 requires duplicating scales into upper half of registers.</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">        9076 :     if(state.useBDPAS &amp;&amp; r * c &lt; minOuterProductCount(hw, problem, strategy)){</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaUNC">           0 :         int halfRegElems = elementsPerGRF(hw, Td) / 2;</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaUNC">           0 :         if(r * c &gt; halfRegElems) stub();</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaUNC">           0 :         RegisterLayout offsetLayout(layoutDst);</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaUNC">           0 :         for( auto &amp;b : offsetLayout){</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0 :             if(b.nr * b.nc &gt; halfRegElems) stub();</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0 :             b.offsetBytes += (b.nr * b.nc);</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :         }</span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaUNC">           0 :         copyRegisters(Td, Td, layoutDst, offsetLayout, dst, dst, 0, 0, false, strategy, state); </span></span>
+<span id="L251"><span class="lineNum">     251</span>              :     }</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span>              :     // Duplicate data in padded region. TODO: do this as part of the copy.</span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">        9076 :     int cp = layoutDst[0].crosspack;</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        9076 :     int p0 = layoutDst[0].colMajor ? layoutDst[0].nc : layoutDst[0].nr;</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">        9487 :     if (cp &gt; 1) map(hw, Td, dst, layoutDst, strategy, [&amp;](int simd, RegData r) {</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">         411 :         Subregister r0 = GRF(r.getBase()).sub(r.getOffset(), r.getType());</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">         411 :         moveToIntPipe(r0);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">         411 :         auto r1 = r0;</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         822 :         for (int i = p0; i &lt; cp; i++) {</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">         411 :             r1.setOffset(r1.getOffset() + 1);</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">         411 :             mov(simd / cp, r1(cp), r0(cp));</span></span>
+<span id="L264"><span class="lineNum">     264</span>              :         }</span>
+<span id="L265"><span class="lineNum">     265</span>              :     });</span>
+<span id="L266"><span class="lineNum">     266</span>              : }</span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span>              : template &lt;HW hw&gt;</span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        5324 : void Generator&lt;hw&gt;::gemmRepack2DQuantizationData(const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst,</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :                                                  const GRFMultirange &amp;src, const GRFMultirange &amp;dst,</span>
+<span id="L271"><span class="lineNum">     271</span>              :                                                  const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span>
+<span id="L272"><span class="lineNum">     272</span>              : {</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        5324 :     gemmRepack2DQuantizationData(layoutSrc.type(), layoutDst.type(), layoutSrc, layoutDst,</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :                                  src, dst, problem, strategy, state);</span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">        5324 : }</span></span>
+<span id="L276"><span class="lineNum">     276</span>              : </span>
+<span id="L277"><span class="lineNum">     277</span>              : template &lt;HW hw&gt;</span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">        4512 : void Generator&lt;hw&gt;::gemmRepack2DOffsetData(Type Text, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst,</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :                                            const GRFMultirange &amp;src, const GRFMultirange &amp;dst,</span>
+<span id="L280"><span class="lineNum">     280</span>              :                                            const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span>
+<span id="L281"><span class="lineNum">     281</span>              : {</span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        4512 :     auto Ts = layoutSrc.type(), Td = layoutDst.type();</span></span>
+<span id="L283"><span class="lineNum">     283</span>              : </span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        4512 :     bool s4 = (Text == Type::s4);</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        4512 :     bool s8 = (Ts == Type::s8);</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        4512 :     bool u8 = (Ts == Type::u8);</span></span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        4512 :     bool int4SpecialPath = Text.isInt4() &amp;&amp; Td == Type::f16;</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        4512 :     auto tmpType = Td;</span></span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">        4512 :     if (int4SpecialPath) {</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">         100 :         if (u8) tmpType = Type::u16;</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">         100 :         if (s8) tmpType = Type::s16;</span></span>
+<span id="L294"><span class="lineNum">     294</span>              :     }</span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        4512 :     gemmRepack2DQuantizationData(Ts, tmpType, layoutSrc, layoutDst, src, dst, problem, strategy, state);</span></span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        4512 :     if (int4SpecialPath) {</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">         100 :         if (s8 || u8) {</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaUNC">           0 :             int off = s4 ? 8 : 0;</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span>              :             // Shift s8 -&gt; u8 data.</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaUNC">           0 :             if (s8) {</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaUNC">           0 :                 map(hw, Type::s16, dst, dst, strategy, [&amp;](int esize, RegData r, RegData _) {</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaUNC">           0 :                     add(esize, r, r, 0x80);</span></span>
+<span id="L306"><span class="lineNum">     306</span>              :                 });</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaUNC">           0 :                 off -= 0x80;</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :             }</span>
+<span id="L309"><span class="lineNum">     309</span>              : </span>
+<span id="L310"><span class="lineNum">     310</span>              :             // Reinterpret as f16 and undo offsets.</span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaUNC">           0 :             if (off != 0) map(hw, Type::f16, dst, dst, strategy, [&amp;](int esize, RegData r, RegData _) {</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaUNC">           0 :                 uint16_t offF16 = std::abs(off);</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaUNC">           0 :                 if (off &lt; 0) offF16 |= 0x8000;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaUNC">           0 :                 add(esize, r, r, Immediate::hf(offF16));</span></span>
+<span id="L315"><span class="lineNum">     315</span>              :             });</span>
+<span id="L316"><span class="lineNum">     316</span>              : </span>
+<span id="L317"><span class="lineNum">     317</span>              :             // Rescale into normal range. End result is 2^(-12) * intended offset.</span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaUNC">           0 :             map(hw, Type::f16, dst, dst, strategy, [&amp;](int esize, RegData r, RegData _) {</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaUNC">           0 :                 mul(esize, r, r, Immediate::hf(0x6C00));</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaUNC">           0 :             });</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :         } else {</span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">         100 :             map(hw, Type::f16, dst, dst, strategy, [&amp;](int esize, RegData r, RegData _) {</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">         124 :                 s4 ? mad(esize, r, Immediate::hf(0x1800), r, Immediate::hf(0x0C00))     // 0x1800 = 8 * 2^(-12)</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">         124 :                    : mul(esize, r,                        r, Immediate::hf(0x0C00));    // 0x0C00 = 2^(-12)</span></span>
+<span id="L325"><span class="lineNum">     325</span>              :             });</span>
+<span id="L326"><span class="lineNum">     326</span>              :         }</span>
+<span id="L327"><span class="lineNum">     327</span>              :     }</span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">        4512 : }</span></span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span>              : // Apply a single 2D group dequantize operation (scale/multiply).</span>
+<span id="L331"><span class="lineNum">     331</span>              : template &lt;HW hw&gt;</span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">       10492 : void Generator&lt;hw&gt;::gemmDequantizeOperation(bool doA, Type T, Type Tq, BinaryOp op,</span></span>
+<span id="L333"><span class="lineNum">     333</span>              :                                             const RegisterLayout &amp;layout, const RegisterLayout &amp;qlayout,</span>
+<span id="L334"><span class="lineNum">     334</span>              :                                             const GRFMultirange &amp;regs, const GRFMultirange &amp;qregs,</span>
+<span id="L335"><span class="lineNum">     335</span>              :                                             int h, int kab_load, int kq_load, const GEMMProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state)</span>
+<span id="L336"><span class="lineNum">     336</span>              : {</span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">       10492 :     int xqGroupK  = doA ? problem.aqGroupK : problem.bqGroupK;</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">       10492 :     int xqGroupMN = doA ? problem.aqGroupM : problem.bqGroupN;</span></span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">       10492 :     bool common = (qlayout.rows() * qlayout.cols()) == 1;</span></span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">       10492 :     bool bfSpecialPath = (T == Type::bf16) &amp;&amp; (Tq == Type::f32) &amp;&amp; (xqGroupMN &gt; 1) &amp;&amp; layout.hasFullCrosspack(2);</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">       20984 :     GRFMultirange qPairs;</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">       10492 :     int npairs = 0;</span></span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">       10492 :     if (bfSpecialPath) {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaUNC">           0 :         for (npairs = 8; npairs &gt; 0; npairs &gt;&gt;= 1) {</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaUNC">           0 :             qPairs = tryChunkAlloc(npairs, 1, Bundle(), BundleGroup::AllBundles(), state);</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaUNC">           0 :             if (!qPairs.empty()) break;</span></span>
+<span id="L350"><span class="lineNum">     350</span>              :         }</span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaUNC">           0 :         if (qPairs.empty()) throw out_of_registers_exception();</span></span>
+<span id="L352"><span class="lineNum">     352</span>              :     }</span>
+<span id="L353"><span class="lineNum">     353</span>              : </span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">       27588 :     for (auto &amp;block: layout) {</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">       17096 :         auto crosspack = block.crosspack;</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">       17096 :         bool colMajor = block.colMajor;</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">       17096 :         int nx = colMajor ? block.nr : block.nc;</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">       17096 :         int ny = colMajor ? block.nc : block.nr;</span></span>
+<span id="L359"><span class="lineNum">     359</span>              : </span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">       17096 :         int xqGroupX = colMajor == doA ? xqGroupMN : xqGroupK;</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       17096 :         int xqGroupY = colMajor == doA ? xqGroupK : xqGroupMN;</span></span>
+<span id="L362"><span class="lineNum">     362</span>              : </span>
+<span id="L363"><span class="lineNum">     363</span>              :         // If crosspack spans multiple groups, use a stride to restrict to one group</span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">       17096 :         bool qbroadcastY = (xqGroupY % crosspack == 0) || common || bfSpecialPath;</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">       17096 :         int strided = 1;</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       17096 :         if (!qbroadcastY) {</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">        4832 :             strided = crosspack;</span></span>
+<span id="L368"><span class="lineNum">     368</span>              :         }</span>
+<span id="L369"><span class="lineNum">     369</span>              : </span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">       17096 :         bool qbroadcastX = xqGroupX &gt; 1 || common;</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">       17096 :         int strideq = qbroadcastX ? 0 : 1;</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       17096 :         if (bfSpecialPath)</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaUNC">           0 :             strideq = 1;</span></span>
+<span id="L374"><span class="lineNum">     374</span>              : </span>
+<span id="L375"><span class="lineNum">     375</span>              :         // Unpack iteration # and block offsets into MNK indices</span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">       17096 :         auto h_block = align_down(h, kab_load) + (doA ? block.offsetC : block.offsetR);</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       17096 :         auto mn_block = doA ? block.offsetR : block.offsetC;</span></span>
+<span id="L378"><span class="lineNum">     378</span>              : </span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">      194632 :         for(int y0 = 0; y0 &lt; ny; y0 += qbroadcastY ? crosspack : 1) {</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">      355072 :         for(int x0 = 0; x0 &lt; nx; ) {</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">      177536 :             auto ii0 = colMajor ? x0 : y0;</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">      177536 :             auto jj0 = colMajor ? y0 : x0;</span></span>
+<span id="L383"><span class="lineNum">     383</span>              : </span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">      177536 :             auto h_final = h_block + (doA ? jj0 : ii0);</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">      177536 :             auto mn_final = mn_block + (doA ? ii0 : jj0);</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">      177536 :             auto mnq = mn_final / xqGroupMN;</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">      177536 :             auto hq = (h_final % kq_load) / xqGroupK;</span></span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">      177536 :             auto io0 = doA ? mnq : hq;</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">      177536 :             auto jo0 = doA ? hq : mnq;</span></span>
+<span id="L391"><span class="lineNum">     391</span>              : </span>
+<span id="L392"><span class="lineNum">     392</span>              :             // Common scales always load the first element</span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      177536 :             if (common) io0 = jo0 = 0;</span></span>
+<span id="L394"><span class="lineNum">     394</span>              : </span>
+<span id="L395"><span class="lineNum">     395</span>              :             int ne, neq;</span>
+<span id="L396"><span class="lineNum">     396</span>              :             const RegisterBlock *qblock;</span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">      177536 :             auto data = block.find(T, ii0, jj0, regs, &amp;ne);</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">      177536 :             auto qdata = qlayout.find(io0, jo0, qregs, &amp;neq, &amp;qblock);</span></span>
+<span id="L399"><span class="lineNum">     399</span>              : </span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">      177536 :             if (!qbroadcastX) ne = std::min(ne, neq);</span></span>
+<span id="L401"><span class="lineNum">     401</span>              : </span>
+<span id="L402"><span class="lineNum">     402</span>              :             // If a group lies along the X-direction, limit ne to the end of the current group</span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">      177536 :             if (xqGroupX &gt; 1) ne = std::min(ne, xqGroupX - x0 % xqGroupX);</span></span>
+<span id="L404"><span class="lineNum">     404</span>              : </span>
+<span id="L405"><span class="lineNum">     405</span>              :             // Broadcast pairs of scales, in case of stride-2 bfloat16 data.</span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">      177536 :             if (bfSpecialPath) {</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaUNC">           0 :                 int npair = (qdata.getOffset() / 2) % npairs;</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaUNC">           0 :                 if (x0 == 0 &amp;&amp; npair == 0)</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaUNC">           0 :                     for (int p = 0; p &lt; npairs; p++)</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaUNC">           0 :                         mov(elementsPerGRF(hw, Tq), qPairs[p].ud(), qdata.ud(2*p)(0,2,1));</span></span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaUNC">           0 :                 qdata = qPairs[npair].sub(0, Tq.ngen());</span></span>
+<span id="L412"><span class="lineNum">     412</span>              :             }</span>
+<span id="L413"><span class="lineNum">     413</span>              : </span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">      177536 :             int maxSIMD = (op == BinaryOp::Sub &amp;&amp; T.isInt8()) ? 64 : 32;</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">      177536 :             if (Tq == Type::f32) maxSIMD = elementsPerGRF(hw, Tq);</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">      177536 :             int simd = std::min({ne * crosspack / strided, 2 * elementsPerGRF(hw, T) / strided, maxSIMD});</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">      177536 :             switch (op) {</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">       88064 :                 case BinaryOp::Sub:</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">       88064 :                     if (T.isInt8() &amp;&amp; strided == 1) {</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaUNC">           0 :                         add(simd / 2, data(2), data(2), -qdata(strideq * 2 / Tq));</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaUNC">           0 :                         data.setOffset(data.getOffset() + 1);</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaUNC">           0 :                         qdata.setOffset(qdata.getOffset() + strideq / Tq);</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaUNC">           0 :                         add(simd / 2, data(2), data(2), -qdata(strideq * 2 / Tq));</span></span>
+<span id="L424"><span class="lineNum">     424</span>              :                     } else</span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">       88064 :                         add(simd, data(strided), data(strided), -qdata(strideq));</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">       88064 :                     break;</span></span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">       88256 :                 case BinaryOp::Mul:</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">       88256 :                     emul(simd, data(strided), data(strided), qdata(strideq), strategy, state);</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">       88256 :                     break;</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">        1216 :                 case BinaryOp::ScaleSub:</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">        1216 :                     if (T != Type::f16) stub();</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">        1216 :                     mad(simd, data(strided), -qdata(strideq), data(strided), Immediate::hf(0x6C00));  /* 0x6C00 = 2^12 */</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">        1216 :                     break;</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaUNC">           0 :                 default: stub();</span></span>
+<span id="L435"><span class="lineNum">     435</span>              :             }</span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">      177536 :             x0 += simd * strided / crosspack;</span></span>
+<span id="L437"><span class="lineNum">     437</span>              :         }</span>
+<span id="L438"><span class="lineNum">     438</span>              :         }</span>
+<span id="L439"><span class="lineNum">     439</span>              :     }</span>
+<span id="L440"><span class="lineNum">     440</span>              : </span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">       10492 :     safeReleaseRanges(qPairs, state);</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       10492 : }</span></span>
+<span id="L443"><span class="lineNum">     443</span>              : </span>
+<span id="L444"><span class="lineNum">     444</span>              : // Shift s4 data by 8 to transfrom it into u4 data.</span>
+<span id="L445"><span class="lineNum">     445</span>              : template &lt;HW hw&gt;</span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">         112 : void Generator&lt;hw&gt;::dequantizeInt4Shift(Type Tsrc, GRFMultirange src, const CommonStrategy &amp;strategy)</span></span>
+<span id="L447"><span class="lineNum">     447</span>              : {</span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">         112 :     if (Tsrc != Type::s4) return;</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">         112 :     map(hw, Type::u16, src, src, strategy, [&amp;](int esize, RegData r, RegData _) {</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">         400 :         xor_(esize, r, r, 0x8888);</span></span>
+<span id="L451"><span class="lineNum">     451</span>              :     });</span>
+<span id="L452"><span class="lineNum">     452</span>              : }</span>
+<span id="L453"><span class="lineNum">     453</span>              : </span>
+<span id="L454"><span class="lineNum">     454</span>              : // Optimized int4 -&gt; f16/bf16/f32 dequantization sequence.</span>
+<span id="L455"><span class="lineNum">     455</span>              : template &lt;HW hw&gt;</span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">         136 : void Generator&lt;hw&gt;::dequantizeInt4(bool doA, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst,</span></span>
+<span id="L457"><span class="lineNum">     457</span>              :                                    const RegisterLayout &amp;layoutOffset, const RegisterLayout &amp;layoutScale,</span>
+<span id="L458"><span class="lineNum">     458</span>              :                                    const GRFMultirange &amp;src, const GRFMultirange &amp;dst, const GRFMultirange &amp;offset, const GRFMultirange &amp;scale,</span>
+<span id="L459"><span class="lineNum">     459</span>              :                                    int offR, int offC, int h, int kab_load, int kq_load,</span>
+<span id="L460"><span class="lineNum">     460</span>              :                                    const GEMMProblem *problem, const CommonStrategy &amp;strategy, CommonState &amp;state, bool s4Shift)</span>
+<span id="L461"><span class="lineNum">     461</span>              : {</span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">         136 :     auto Tsrc = layoutSrc.type(), Tdst = layoutDst.type();</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">         136 :     if (!canDequantizeInt4(layoutSrc, layoutDst, layoutOffset, layoutScale))</span></span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaUNC">           0 :         stub(&quot;Cannot perform dequantizeInt4&quot;);</span></span>
+<span id="L465"><span class="lineNum">     465</span>              : </span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">         136 :     bool s4 = Tsrc.isSigned();</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">         136 :     bool f32 = (Tdst == Type::f32);</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">         136 :     bool bf16 = (Tdst == Type::bf16);</span></span>
+<span id="L469"><span class="lineNum">     469</span>              : </span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">         272 :     RegisterLayout layoutDstF16;</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">         136 :     const RegisterLayout *effLayoutDst = &amp;layoutDst;</span></span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">         272 :     GRFMultirange dstF16;</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">         136 :     const GRFMultirange *effDst = &amp;dst;</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">         136 :     if (f32 || bf16) {</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaUNC">           0 :         layoutDstF16 = RegisterLayout(hw, Type::f16, layoutSrc.rows(), layoutSrc.cols(), layoutDst.colMajor(), layoutDst.crosspack(), 0, 0, (hw &lt; HW::XeHP));</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaUNC">           0 :         for (auto &amp;block: layoutDstF16) {</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaUNC">           0 :             block.offsetR += layoutDst[0].offsetR;</span></span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaUNC">           0 :             block.offsetC += layoutDst[0].offsetC;</span></span>
+<span id="L479"><span class="lineNum">     479</span>              :         }</span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaUNC">           0 :         dstF16 = chunkAlloc(layoutDstF16.regs(), 2, state);</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaUNC">           0 :         effLayoutDst = &amp;layoutDstF16;</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaUNC">           0 :         effDst = &amp;dstF16;</span></span>
+<span id="L483"><span class="lineNum">     483</span>              :     }</span>
+<span id="L484"><span class="lineNum">     484</span>              : </span>
+<span id="L485"><span class="lineNum">     485</span>              :     // 1) Shift s4 data to u4 data by adding 8.</span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">         136 :     if (s4 &amp;&amp; s4Shift)</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">          64 :         dequantizeInt4Shift(Tsrc, src, strategy);</span></span>
+<span id="L488"><span class="lineNum">     488</span>              : </span>
+<span id="L489"><span class="lineNum">     489</span>              :     // 2) Copy u4 -&gt; u16 data.</span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">         136 :     copyRegisters(Type::u4, Type::u16, layoutSrc, *effLayoutDst, src, *effDst, offR, offC, false, strategy, state);</span></span>
+<span id="L491"><span class="lineNum">     491</span>              : </span>
+<span id="L492"><span class="lineNum">     492</span>              :     // 3) Reinterpret u16 data as denormal f16, scale into normal range and subtract (rescaled) offsets if available.</span>
+<span id="L493"><span class="lineNum">     493</span>              :     //     The required rescaling factor (2^24) is necessarily outside f16 range,</span>
+<span id="L494"><span class="lineNum">     494</span>              :     //     so two multiplications are needed.</span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">         136 :     if (!layoutOffset.empty()) {</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">         136 :         if (!problem) stub();</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">         136 :         gemmDequantizeOperation(doA, Type::f16, Type::f16, BinaryOp::ScaleSub, *effLayoutDst, layoutOffset, *effDst, offset, h, kab_load, kq_load, *problem, strategy, state);</span></span>
+<span id="L498"><span class="lineNum">     498</span>              :     } else {</span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaUNC">           0 :         map(hw, Type::f16, *effDst, *effLayoutDst, strategy, [&amp;](int esize, RegData r) {</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaUNC">           0 :             s4 ? mad(esize, r, Immediate::hf(0x9800), r, Immediate::hf(0x6C00)) /* 0x9800 = -8*2^(-12), 0x6C00 = 2^12 */</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaUNC">           0 :                : mul(esize, r, r, Immediate::hf(0x6C00));</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :         });</span>
+<span id="L503"><span class="lineNum">     503</span>              :     }</span>
+<span id="L504"><span class="lineNum">     504</span>              : </span>
+<span id="L505"><span class="lineNum">     505</span>              :     // 4) Finish rescaling -- remaining factor is 2^12.</span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">         136 :     map(hw, Type::f16, *effDst, *effLayoutDst, strategy, [&amp;](int esize, RegData r) {</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">        1216 :         mul(esize, r, r, Immediate::hf(0x6C00));</span></span>
+<span id="L508"><span class="lineNum">     508</span>              :     });</span>
+<span id="L509"><span class="lineNum">     509</span>              : </span>
+<span id="L510"><span class="lineNum">     510</span>              :     // 5) Apply scales if present. If the scales are not too large (absolute value &lt; 128),</span>
+<span id="L511"><span class="lineNum">     511</span>              :     //      this could be merged into the previous multiplication.</span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">         136 :     if (!f32 &amp;&amp; !layoutScale.empty()) {</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">         136 :         if (!problem) stub();</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">         136 :         gemmDequantizeOperation(doA, Type::f16, Type::f16, BinaryOp::Mul, *effLayoutDst, layoutScale, *effDst, scale, h, kab_load, kq_load, *problem, strategy, state);</span></span>
+<span id="L515"><span class="lineNum">     515</span>              :     }</span>
+<span id="L516"><span class="lineNum">     516</span>              : </span>
+<span id="L517"><span class="lineNum">     517</span>              :     // 6) Convert to dst type if needed.</span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">         136 :     if (f32 || bf16) {</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaUNC">           0 :         copyRegisters(Type::f16, Tdst, layoutDstF16, layoutDst, dstF16, dst, offR, offC, false, strategy, state);</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaUNC">           0 :         safeReleaseRanges(dstF16, state);</span></span>
+<span id="L521"><span class="lineNum">     521</span>              :     }</span>
+<span id="L522"><span class="lineNum">     522</span>              : </span>
+<span id="L523"><span class="lineNum">     523</span>              :     // 7) Apply scales for f32 after f16-&gt;f32 upconversion.</span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">         136 :     if (f32 &amp;&amp; !layoutScale.empty()) {</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaUNC">           0 :         if (!problem) stub();</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaUNC">           0 :         gemmDequantizeOperation(doA, Type::f32, Type::f32, BinaryOp::Mul, layoutDst, layoutScale, dst, scale, h, kab_load, kq_load, *problem, strategy, state);</span></span>
+<span id="L527"><span class="lineNum">     527</span>              :     }</span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">         136 : }</span></span>
+<span id="L529"><span class="lineNum">     529</span>              : </span>
+<span id="L530"><span class="lineNum">     530</span>              : // Dequantize A/B, given 2D grouped quantization data.</span>
+<span id="L531"><span class="lineNum">     531</span>              : template &lt;HW hw&gt;</span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">        5604 : void Generator&lt;hw&gt;::gemmDequantizeAB(bool doA, const RegisterLayout &amp;layoutSrc, const RegisterLayout &amp;layoutDst0,</span></span>
+<span id="L533"><span class="lineNum">     533</span>              :                                      const GRFMultirange &amp;src, const GRFMultirange &amp;dst0, int h, int kab_load, int kab_repack, int kq_load,</span>
+<span id="L534"><span class="lineNum">     534</span>              :                                      const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state,</span>
+<span id="L535"><span class="lineNum">     535</span>              :                                      bool s4Shift)</span>
+<span id="L536"><span class="lineNum">     536</span>              : {</span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">        5604 :     auto Tsrc = layoutSrc.type(), Tdst = layoutDst0.type();</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">        5604 :     auto Txo_int     = doA ? state.Tao_int             : state.Tbo_int;</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">        5604 :     auto Txs_int     = doA ? state.Ta_scaleInt         : state.Tb_scaleInt;</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">        5604 :     auto &amp;oiLayout   = doA ? state.A_offsetLayout      : state.B_offsetLayout;</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">        5604 :     auto &amp;orLayout   = doA ? state.Ar_offsetLayout     : state.Br_offsetLayout;</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">        5604 :     auto &amp;oiRegs     = doA ? state.A_offsetRegs        : state.B_offsetRegs;</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">        5604 :     auto &amp;orRegs     = doA ? state.Ar_offsetRegs       : state.Br_offsetRegs;</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">        5604 :     auto &amp;siLayout   = doA ? state.A_scaleLayout       : state.B_scaleLayout;</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">        5604 :     auto &amp;srLayout   = doA ? state.Ar_scaleLayout      : state.Br_scaleLayout;</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">        5604 :     auto &amp;siRegs     = doA ? state.A_scaleRegs         : state.B_scaleRegs;</span></span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        5604 :     auto &amp;srRegs     = doA ? state.Ar_scaleRegs        : state.Br_scaleRegs;</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">        5604 :     bool lateOffset  = doA ? problem.needsBGroupSums() : problem.needsAGroupSums();</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">        5604 :     bool lateScale   = doA ? state.lateScale2DA        : state.lateScale2DB;</span></span>
+<span id="L550"><span class="lineNum">     550</span>              : </span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">        5604 :     auto &amp;oLayout = orLayout.empty() ? oiLayout : orLayout;</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaGNC">        5604 :     auto &amp;oRegs   = orLayout.empty() ? oiRegs   : orRegs;</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">        5604 :     auto &amp;sLayout = srLayout.empty() ? siLayout : srLayout;</span></span>
+<span id="L554"><span class="lineNum">     554</span> <span class="tlaGNC">        5604 :     auto &amp;sRegs   = srLayout.empty() ? siRegs   : srRegs;</span></span>
+<span id="L555"><span class="lineNum">     555</span>              : </span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">        5604 :     bool xo2D = !oLayout.empty() &amp;&amp; !lateOffset;</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">        5604 :     bool xs2D = !sLayout.empty() &amp;&amp; !lateScale;</span></span>
+<span id="L558"><span class="lineNum">     558</span>              : </span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">        5604 :     bool copy = !layoutDst0.empty();</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       11208 :     auto layoutDst = copy ? layoutDst0 : layoutSrc;</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       11208 :     auto dst       = copy ? dst0 : src;</span></span>
+<span id="L562"><span class="lineNum">     562</span>              : </span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">        5604 :     auto Tx_int = xo2D ? Txo_int : Tdst;</span></span>
+<span id="L564"><span class="lineNum">     564</span>              : </span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">        5604 :     if (xo2D &amp;&amp; !xs2D &amp;&amp; (Txo_int.bits() &gt; Tdst.bits()))</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaUNC">           0 :         Tx_int = Tdst;</span></span>
+<span id="L567"><span class="lineNum">     567</span>              : </span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">        5604 :     int offR = doA ? 0 : h % kab_repack;</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">        5604 :     int offC = doA ? h % kab_repack : 0;</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">        5604 :     int offR0 = offR, offC0 = offC;</span></span>
+<span id="L571"><span class="lineNum">     571</span>              : </span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaGNC">        5604 :     int ms = layoutSrc.rows(), ns = layoutSrc.cols();</span></span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">        5604 :     int md = layoutDst.rows(), nd = layoutDst.cols();</span></span>
+<span id="L574"><span class="lineNum">     574</span>              : </span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">        5604 :     if (ms &lt; md || ns &lt; nd) {</span></span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">         576 :         if (!copy) stub();</span></span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">         576 :         layoutDst = RegisterLayout(hw, Tdst, ms, ns, layoutDst0.colMajor(), layoutDst[0].crosspack);</span></span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">         576 :         dst = chunkAlloc(layoutDst.regs(), 2, state);</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">         576 :         offR = offC = 0;</span></span>
+<span id="L580"><span class="lineNum">     580</span>              :     }</span>
+<span id="L581"><span class="lineNum">     581</span>              : </span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">        5604 :     if (canDequantizeInt4(layoutSrc, layoutDst, oLayout, sLayout)) {</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaGNC">         136 :         dequantizeInt4(doA, layoutSrc, layoutDst, oLayout, sLayout,</span></span>
+<span id="L584"><span class="lineNum">     584</span>              :                        src, dst, oRegs, sRegs, offR, offC, h, kab_load, kq_load, &amp;problem,</span>
+<span id="L585"><span class="lineNum">     585</span>              :                        strategy, state, s4Shift);</span>
+<span id="L586"><span class="lineNum">     586</span>              :     } else {</span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaGNC">        5468 :         if (copy)</span></span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">        5468 :             copyRegisters(Tsrc, Tx_int, layoutSrc, layoutDst, src, dst, offR, offC, false, strategy, state);</span></span>
+<span id="L589"><span class="lineNum">     589</span> <span class="tlaUNC">           0 :         else if (Tsrc.asSigned() != Tx_int.asSigned())</span></span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaUNC">           0 :             convert(src, Tsrc, Tx_int, strategy, state);</span></span>
+<span id="L591"><span class="lineNum">     591</span>              : </span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">        5468 :         if (xo2D) {</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">        5372 :             if (!state.useBDPAS)</span></span>
+<span id="L594"><span class="lineNum">     594</span>              :             {</span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaGNC">        5372 :             gemmDequantizeOperation(doA, Tx_int, Txo_int, BinaryOp::Sub, layoutDst, oLayout, dst, oRegs, h, kab_load, kq_load, problem, strategy, state);</span></span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">        5372 :             convert(dst, Tx_int, Tdst, strategy, state);</span></span>
+<span id="L597"><span class="lineNum">     597</span>              :             }</span>
+<span id="L598"><span class="lineNum">     598</span>              :         }</span>
+<span id="L599"><span class="lineNum">     599</span>              : </span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaGNC">        5468 :         if (xs2D)</span></span>
+<span id="L601"><span class="lineNum">     601</span> <span class="tlaGNC">        4848 :             if (!state.useBDPAS)</span></span>
+<span id="L602"><span class="lineNum">     602</span>              :             {</span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC">        4848 :             gemmDequantizeOperation(doA, Tdst, Txs_int, BinaryOp::Mul, layoutDst, sLayout, dst, sRegs, h, kab_load, kq_load, problem, strategy, state);</span></span>
+<span id="L604"><span class="lineNum">     604</span>              :             }</span>
+<span id="L605"><span class="lineNum">     605</span>              :     }</span>
+<span id="L606"><span class="lineNum">     606</span>              : </span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">        5604 :     if (ms &lt; md || ns &lt; nd) {</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC">         576 :         copyRegisters(Tdst, Tdst, layoutDst, layoutDst0, dst, dst0, offR0, offC0, false, strategy, state);</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">         576 :         safeReleaseRanges(dst, state);</span></span>
+<span id="L610"><span class="lineNum">     610</span>              :     }</span>
+<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">        5604 : }</span></span>
+<span id="L612"><span class="lineNum">     612</span>              : </span>
+<span id="L613"><span class="lineNum">     613</span>              : GEMMSTONE_NAMESPACE_END</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,1212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/copy_plan.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - copy_plan.cpp<span style="font-size: 80%;"> (<a href="copy_plan.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">78.0&nbsp;%</td>
+            <td class="headerCovTableEntry">2491</td>
+            <td class="headerCovTableEntry">1944</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">85.7&nbsp;%</td>
+            <td class="headerCovTableEntry">140</td>
+            <td class="headerCovTableEntry">120</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="copy_plan.cpp.func-c.html"><img src="../../../../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3430">gemmstone::AllocationManager::AllocationManager(ngen::Core, std::function&lt;void (int, ngen::GRFRange&amp;)&gt; const&amp;, std::function&lt;void (int, ngen::FlagRegister&amp;)&gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3444">gemmstone::AllocationManager::allocate(gemmstone::CopyTemporary&amp;)</a></td>
+              
+              <td class="coverFnHi">658681</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3483">gemmstone::AllocationManager::allocateFlag(gemmstone::CopyTemporary&amp;)</a></td>
+              
+              <td class="coverFnHi">42953</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3492">gemmstone::AllocationManager::allocateRange(gemmstone::CopyTemporary&amp;)</a></td>
+              
+              <td class="coverFnHi">615728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3481">gemmstone::AllocationManager::dealloc(gemmstone::AllocationManager::FlagAllocation&amp;)</a></td>
+              
+              <td class="coverFnHi">36401</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3480">gemmstone::AllocationManager::dealloc(gemmstone::AllocationManager::GRFAllocation&amp;)</a></td>
+              
+              <td class="coverFnHi">614780</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3450">gemmstone::AllocationManager::release(int)</a></td>
+              
+              <td class="coverFnHi">168654</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3439">gemmstone::AllocationManager::reserve(unsigned long)</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3432">gemmstone::AllocationManager::~AllocationManager()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3706">gemmstone::CopyInstruction::dump(gemmstone::CopyPlan const&amp;) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L197">gemmstone::CopyInstruction::moveToIntegerPipe()</a></td>
+              
+              <td class="coverFnHi">46576255</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L224">gemmstone::CopyInstruction::ngenModifiers() const</a></td>
+              
+              <td class="coverFnHi">28057452</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L117">gemmstone::CopyOperand::CopyOperand(ngen::RegData)</a></td>
+              
+              <td class="coverFnHi">26598382</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3751">gemmstone::CopyOperand::dump() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3753">gemmstone::CopyOperand::dump() const::{lambda(ngen::DataType)#1}::operator()(ngen::DataType) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L155">gemmstone::CopyOperand::ngen() const</a></td>
+              
+              <td class="coverFnHi">56161206</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L183">gemmstone::CopyOperand::ngenFlag() const</a></td>
+              
+              <td class="coverFnHi">112933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L174">gemmstone::CopyOperand::ngenImmediate() const</a></td>
+              
+              <td class="coverFnHi">597011</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L128">gemmstone::CopyOperand::operator-() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L135">gemmstone::CopyOperand::operator==(gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnHi">10374</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L298">gemmstone::CopyPlan::append(gemmstone::CopyInstruction&amp;&amp;)</a></td>
+              
+              <td class="coverFnHi">26980317</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L326">gemmstone::CopyPlan::append(int, ngen::Opcode, int, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L305">gemmstone::CopyPlan::append(int, ngen::Opcode, int, ngen::InstructionModifier, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">26980317</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L331">gemmstone::CopyPlan::append(ngen::Opcode, int, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L336">gemmstone::CopyPlan::append(ngen::Opcode, int, ngen::InstructionModifier, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">11757488</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L341">gemmstone::CopyPlan::appendDestructiveMov(int, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, bool)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L346">gemmstone::CopyPlan::appendDestructiveMov(int, ngen::InstructionModifier, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, bool)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1222">gemmstone::CopyPlan::bfArithmeticOK(gemmstone::CopyInstruction const&amp;) const</a></td>
+              
+              <td class="coverFnHi">19535</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1227">gemmstone::CopyPlan::bfImmediate(unsigned short, bool)</a></td>
+              
+              <td class="coverFnHi">14160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2403">gemmstone::CopyPlan::checkNoSubbytes()</a></td>
+              
+              <td class="coverFnHi">14172368</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2411">gemmstone::CopyPlan::collapseCNums()</a></td>
+              
+              <td class="coverFnHi">8958772</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L555">gemmstone::CopyPlan::copyThrough(gemmstone::CopyInstruction&amp;, ngen::DataType, int, bool, bool)</a></td>
+              
+              <td class="coverFnHi">754194</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L604">gemmstone::CopyPlan::copyThrough(gemmstone::CopyInstruction&amp;, ngen::DataType, int, bool, bool)::{lambda(gemmstone::CopyOperand const&amp;)#1}::operator()(gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnHi">729813</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L634">gemmstone::CopyPlan::copyThrough(gemmstone::CopyInstruction&amp;, ngen::DataType, int, bool, bool)::{lambda(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)#2}::operator()(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnHi">1508388</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3690">gemmstone::CopyPlan::cycleCount() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L762">gemmstone::CopyPlan::distributePhases()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3698">gemmstone::CopyPlan::dump(int) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L410">gemmstone::CopyPlan::getResource(gemmstone::CopyResource::Kind)</a></td>
+              
+              <td class="coverFnHi">14519</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L476">gemmstone::CopyPlan::join(gemmstone::CopyInstruction&amp;, gemmstone::CopyInstruction&amp;, int)</a></td>
+              
+              <td class="coverFnHi">3464438</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1289">gemmstone::CopyPlan::legalizeBfImmediate(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2946">gemmstone::CopyPlan::legalizeImmediateTypes()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2936">gemmstone::CopyPlan::legalizeNegation()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2613">gemmstone::CopyPlan::legalizeRegions()</a></td>
+              
+              <td class="coverFnHi">9693097</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2745">gemmstone::CopyPlan::legalizeRegions()::{lambda(gemmstone::CopyOperand const&amp;)#1}::operator()(gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2916">gemmstone::CopyPlan::legalizeRegions()::{lambda(gemmstone::CopyOperand&amp;)#4}::operator()(gemmstone::CopyOperand&amp;) const</a></td>
+              
+              <td class="coverFnHi">12363612</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2777">gemmstone::CopyPlan::legalizeRegions()::{lambda(int)#2}::operator()(int) const</a></td>
+              
+              <td class="coverFnHi">3688995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2781">gemmstone::CopyPlan::legalizeRegions()::{lambda(int, ngen::DataType)#3}::operator()(int, ngen::DataType) const</a></td>
+              
+              <td class="coverFnHi">87856</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2442">gemmstone::CopyPlan::legalizeSIMD(bool)</a></td>
+              
+              <td class="coverFnHi">8958772</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2447">gemmstone::CopyPlan::legalizeSIMD(bool)::{lambda(gemmstone::CopyInstruction const&amp;)#1}::operator()(gemmstone::CopyInstruction const&amp;) const</a></td>
+              
+              <td class="coverFnHi">28592422</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2466">gemmstone::CopyPlan::legalizeSIMD(bool)::{lambda(gemmstone::CopyOperand const&amp;, bool)#2}::operator()(gemmstone::CopyOperand const&amp;, bool) const</a></td>
+              
+              <td class="coverFnHi">114369728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2520">gemmstone::CopyPlan::legalizeSIMD(bool)::{lambda(gemmstone::CopyOperand&amp;, int)#3}::operator()(gemmstone::CopyOperand&amp;, int) const</a></td>
+              
+              <td class="coverFnHi">24917625</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1049">gemmstone::CopyPlan::legalizeShfl()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3510">gemmstone::CopyPlan::materializeTemps(std::function&lt;void (int, ngen::GRFRange&amp;)&gt; const&amp;, std::function&lt;void (int, ngen::FlagRegister&amp;)&gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3555">gemmstone::CopyPlan::materializeTemps(std::function&lt;void (int, ngen::GRFRange&amp;)&gt; const&amp;, std::function&lt;void (int, ngen::FlagRegister&amp;)&gt; const&amp;)::{lambda(int, int, unsigned short, unsigned short)#2}::operator()(int, int, unsigned short, unsigned short) const</a></td>
+              
+              <td class="coverFnHi">9118176</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3535">gemmstone::CopyPlan::materializeTemps(std::function&lt;void (int, ngen::GRFRange&amp;)&gt; const&amp;, std::function&lt;void (int, ngen::FlagRegister&amp;)&gt; const&amp;)::{lambda(std::vector&lt;bool, std::allocator&lt;bool&gt; &gt;&amp;, bool)#1}::operator()(std::vector&lt;bool, std::allocator&lt;bool&gt; &gt;&amp;, bool) const</a></td>
+              
+              <td class="coverFnHi">4474863</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L539">gemmstone::CopyPlan::mergeChanges()</a></td>
+              
+              <td class="coverFnHi">61670533</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L379">gemmstone::CopyPlan::newFlag(int)</a></td>
+              
+              <td class="coverFnHi">36401</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L354">gemmstone::CopyPlan::newTemp(ngen::DataType, int, int, int, int)</a></td>
+              
+              <td class="coverFnHi">620966</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3232">gemmstone::CopyPlan::optimizeConcatenate(bool)</a></td>
+              
+              <td class="coverFnHi">8949722</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3244">gemmstone::CopyPlan::optimizeConcatenate(bool)::{lambda(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, bool*)#1}::operator()(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, bool*) const</a></td>
+              
+              <td class="coverFnHi">131419684</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3389">gemmstone::CopyPlan::optimizeIntegerDownconvert()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3415">gemmstone::CopyPlan::optimizeMoveToIntPipe()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3406">gemmstone::CopyPlan::optimizeSaturate()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3196">gemmstone::CopyPlan::optimizeWidenIntegers()</a></td>
+              
+              <td class="coverFnHi">8949722</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3302">gemmstone::CopyPlan::optimizeWriteCombine()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3311">gemmstone::CopyPlan::optimizeWriteCombine()::{lambda(ngen::Core, gemmstone::CopyInstruction&amp;)#1}::operator()(ngen::Core, gemmstone::CopyInstruction&amp;) const</a></td>
+              
+              <td class="coverFnHi">16452540</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3364">gemmstone::CopyPlan::optimizeWriteSpread()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3005">gemmstone::CopyPlan::optimizeZip(bool)</a></td>
+              
+              <td class="coverFnHi">13429231</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3019">gemmstone::CopyPlan::optimizeZip(bool)::{lambda(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, bool, bool)#1}::operator()(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, bool, bool) const</a></td>
+              
+              <td class="coverFnHi">228075118</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3138">gemmstone::CopyPlan::optimizeZipAdjacent()</a></td>
+              
+              <td class="coverFnHi">8949722</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3151">gemmstone::CopyPlan::optimizeZipAdjacent()::{lambda(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)#1}::operator()(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnHi">26097937</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1545">gemmstone::CopyPlan::plan4BitShifts(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">9056</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1093">gemmstone::CopyPlan::planBFNEmulation()</a></td>
+              
+              <td class="coverFnHi">4475293</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1124">gemmstone::CopyPlan::planBFNEmulation()::{lambda(gemmstone::CopyInstruction&amp;)#3}::operator()(gemmstone::CopyInstruction&amp;) const</a></td>
+              
+              <td class="coverFnHi">4838</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1099">gemmstone::CopyPlan::planBFNEmulation()::{lambda(gemmstone::CopyOperand)#1}::operator()(gemmstone::CopyOperand) const</a></td>
+              
+              <td class="coverFnHi">1505</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1112">gemmstone::CopyPlan::planBFNEmulation()::{lambda(unsigned char, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)#2}::operator()(unsigned char, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnHi">6987</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1811">gemmstone::CopyPlan::planE8M0ToF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">64</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1401">gemmstone::CopyPlan::planEarlyInt4Upconversions()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1846">gemmstone::CopyPlan::planEmulatedBF8ToBF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">84</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2002">gemmstone::CopyPlan::planEmulatedF4ToBF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1969">gemmstone::CopyPlan::planEmulatedF4ToHF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">1372</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1918">gemmstone::CopyPlan::planEmulatedHF8ToBF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">36</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1878">gemmstone::CopyPlan::planEmulatedHF8ToHF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">15278</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2212">gemmstone::CopyPlan::planEmulatedHFToF4(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">1944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2115">gemmstone::CopyPlan::planEmulatedHFToHF8(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">3994</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1345">gemmstone::CopyPlan::planEmulatedHalveFloat(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">26965</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2036">gemmstone::CopyPlan::planEmulatedNF4ToHF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2596">gemmstone::CopyPlan::planEmulatedSIMD1(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">62</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1575">gemmstone::CopyPlan::planInt4Downconversion(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">4268</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1311">gemmstone::CopyPlan::planInt4ToF16(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">9148</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1424">gemmstone::CopyPlan::planInt4Upconversion(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">16582</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1244">gemmstone::CopyPlan::planInt8ToBF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">11387</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1201">gemmstone::CopyPlan::planInt8ToHF(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">13911</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L968">gemmstone::CopyPlan::planShflUpconvertXe3p(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L777">gemmstone::CopyPlan::planTypeConversions()</a></td>
+              
+              <td class="coverFnHi">4494605</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1067">gemmstone::CopyPlan::planUnpack4To16(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L1079">gemmstone::CopyPlan::planUnpack8To16High(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">17862</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L706">gemmstone::CopyPlan::repositionDst(gemmstone::CopyInstruction&amp;, int, int)</a></td>
+              
+              <td class="coverFnHi">76777</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L662">gemmstone::CopyPlan::repositionSrc(gemmstone::CopyInstruction&amp;, int, int, int)</a></td>
+              
+              <td class="coverFnHi">92910</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L656">gemmstone::CopyPlan::restrideDst(gemmstone::CopyInstruction&amp;, int, bool)</a></td>
+              
+              <td class="coverFnHi">596911</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L650">gemmstone::CopyPlan::restrideSrc0(gemmstone::CopyInstruction&amp;, int, bool)</a></td>
+              
+              <td class="coverFnHi">110819</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2967">gemmstone::CopyPlan::sort(gemmstone::CopyPlan::SortType)</a></td>
+              
+              <td class="coverFnHi">22378940</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2969">gemmstone::CopyPlan::sort(gemmstone::CopyPlan::SortType)::{lambda(gemmstone::CopyInstruction const&amp;)#1}::operator()(gemmstone::CopyInstruction const&amp;) const</a></td>
+              
+              <td class="coverFnHi">828825106</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2982">gemmstone::CopyPlan::sort(gemmstone::CopyPlan::SortType)::{lambda(gemmstone::CopyInstruction const&amp;, gemmstone::CopyInstruction const&amp;)#2}::operator()(gemmstone::CopyInstruction const&amp;, gemmstone::CopyInstruction const&amp;) const</a></td>
+              
+              <td class="coverFnHi">414412282</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L435">gemmstone::CopyPlan::split(gemmstone::CopyInstruction&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">6259845</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L722">gemmstone::CopyPlan::split2DRegions()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L724">gemmstone::CopyPlan::split2DRegions()::{lambda(gemmstone::CopyOperand const&amp;)#1}::operator()(gemmstone::CopyOperand const&amp;) const</a></td>
+              
+              <td class="coverFnHi">107921308</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L401">gemmstone::CopyPlan::tempFlagBytes() const</a></td>
+              
+              <td class="coverFnHi">2933236</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L242">gemmstone::CopyPlan::transform()</a></td>
+              
+              <td class="coverFnHi">4474861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L502">gemmstone::CopyPlan::trySwapCNumRanges(short, short, short)</a></td>
+              
+              <td class="coverFnHi">3455275</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L526">gemmstone::CopyPlan::trySwapCNumRanges(short, short, short)::{lambda(gemmstone::CopyInstruction&amp;)#2}::operator()(gemmstone::CopyInstruction&amp;) const</a></td>
+              
+              <td class="coverFnHi">2999463</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L508">gemmstone::CopyPlan::trySwapCNumRanges(short, short, short)::{lambda(gemmstone::CopyInstruction&amp;, short, short)#1}::operator()(gemmstone::CopyInstruction&amp;, short, short) const</a></td>
+              
+              <td class="coverFnHi">6014482</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3079">gemmstone::CopyPlan::zipImmediates(gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">9183</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3679">gemmstone::CopyResource::decodeShflLUT(ngen::DataType&amp;, ngen::DataType&amp;) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3640">gemmstone::CopyResource::getData(std::array&lt;unsigned char, 64ul&gt;&amp;) const</a></td>
+              
+              <td class="coverFnHi">6064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3635">gemmstone::CopyResource::makeConstant32(unsigned int)</a></td>
+              
+              <td class="coverFnHi">14519</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3674">gemmstone::CopyResource::makeShflLUT(ngen::DataType, ngen::DataType)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L392">gemmstone::CopyTemporary::createFlag(int)</a></td>
+              
+              <td class="coverFnHi">36401</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L93">gemmstone::conversionRange(ngen::DataType, ngen::DataType)</a></td>
+              
+              <td class="coverFnHi">754194</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L41">gemmstone::isBitwise(ngen::Opcode)</a></td>
+              
+              <td class="coverFnHi">75036587</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L44">gemmstone::isBroadcast(gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">3908270</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2584">gemmstone::isCommutative(ngen::Opcode)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L99">gemmstone::isSubsetOf(ngen::DataType, ngen::DataType)</a></td>
+              
+              <td class="coverFnHi">28566354</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L2574">gemmstone::legalPackedBF(ngen::Core, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">2978330</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L56">gemmstone::mayOverlap(ngen::Core, gemmstone::CopyInstruction const&amp;, gemmstone::CopyOperand const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">8355276</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L49">gemmstone::multiGRF(ngen::Core, gemmstone::CopyInstruction const&amp;, gemmstone::CopyOperand const&amp;)</a></td>
+              
+              <td class="coverFnHi">8424856</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L35">gemmstone::ngen_b16()</a></td>
+              
+              <td class="coverFnHi">100098852</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L34">gemmstone::ngen_b16_h4x()</a></td>
+              
+              <td class="coverFnHi">50002132</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L33">gemmstone::ngen_b16_l4x()</a></td>
+              
+              <td class="coverFnHi">25587802</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3095">gemmstone::widen(gemmstone::CopyOperand&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">9471494</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3118">gemmstone::widenable(gemmstone::CopyOperand const&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">86595190</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 2&gt; gemmstone::CopyPlan::splitMultiple&lt;2&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnHi">63319</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 11&gt; gemmstone::CopyPlan::splitMultiple&lt;11&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3994</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 13&gt; gemmstone::CopyPlan::splitMultiple&lt;13&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1412</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 2&gt; gemmstone::CopyPlan::splitMultiple&lt;2&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">62</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 3&gt; gemmstone::CopyPlan::splitMultiple&lt;3&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">12034</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 4&gt; gemmstone::CopyPlan::splitMultiple&lt;4&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">26965</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 5&gt; gemmstone::CopyPlan::splitMultiple&lt;5&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">18852</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L454">std::array&lt;gemmstone::CopyInstruction*, 8&gt; gemmstone::CopyPlan::splitMultiple&lt;8&gt;(gemmstone::CopyInstruction&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="copy_plan.cpp.gcov.html#L3457">void gemmstone::AllocationManager::release&lt;gemmstone::AllocationManager::GRFAllocation&gt;(int, std::vector&lt;gemmstone::AllocationManager::GRFAllocation, std::allocator&lt;gemmstone::AllocationManager::GRFAllocation&gt; &gt;&amp;)</a></td>
+              
+              <td class="coverFnHi">337308</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L3457">void gemmstone::AllocationManager::release&lt;gemmstone::AllocationManager::FlagAllocation&gt;(int, std::vector&lt;gemmstone::AllocationManager::FlagAllocation, std::allocator&lt;gemmstone::AllocationManager::FlagAllocation&gt; &gt;&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">168654</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="copy_plan.cpp.gcov.html#L3457">void gemmstone::AllocationManager::release&lt;gemmstone::AllocationManager::GRFAllocation&gt;(int, std::vector&lt;gemmstone::AllocationManager::GRFAllocation, std::allocator&lt;gemmstone::AllocationManager::GRFAllocation&gt; &gt;&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">168654</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

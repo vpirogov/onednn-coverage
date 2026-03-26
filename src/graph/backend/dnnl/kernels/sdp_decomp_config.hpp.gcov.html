@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/backend/dnnl/kernels/sdp_decomp_config.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/backend/dnnl/kernels">src/graph/backend/dnnl/kernels</a> - sdp_decomp_config.hpp<span style="font-size: 80%;"> (source / <a href="sdp_decomp_config.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">19</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2024 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GRAPH_BACKEND_DNNL_KERNELS_SDP_DECOMP_CONFIG_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GRAPH_BACKEND_DNNL_KERNELS_SDP_DECOMP_CONFIG_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;algorithm&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;functional&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;memory&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;string&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;utility&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;vector&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;oneapi/dnnl/dnnl.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &quot;graph/interface/c_types_map.hpp&quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &quot;graph/backend/dnnl/scratchpad.hpp&quot;</span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &quot;graph/backend/dnnl/subgraph.hpp&quot;</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace dnnl {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace impl {</span>
+<span id="L38"><span class="lineNum">      38</span>              : namespace graph {</span>
+<span id="L39"><span class="lineNum">      39</span>              : namespace dnnl_impl {</span>
+<span id="L40"><span class="lineNum">      40</span>              : using ltw = logical_tensor_wrapper_t;</span>
+<span id="L41"><span class="lineNum">      41</span>              : using op_ptr = std::shared_ptr&lt;op_t&gt;;</span>
+<span id="L42"><span class="lineNum">      42</span>              : using registry_key = size_t;</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : // TODO: merge with mqa_reorder_t</span>
+<span id="L45"><span class="lineNum">      45</span>              : struct sdp_reorder_t {</span>
+<span id="L46"><span class="lineNum">      46</span>              : public:</span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">        1580 :     status_t init(const dnnl::reorder::primitive_desc &amp;pd) {</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">        3160 :         auto src_desc = pd.src_desc();</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">        1580 :         auto dst_desc = pd.dst_desc();</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        1580 :         if (src_desc == dst_desc) is_inplace_ = true;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        1580 :         reorder_prim_ = reorder(pd);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">        3160 :         return status::success;</span></span>
+<span id="L53"><span class="lineNum">      53</span>              :     }</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">      616704 :     bool get_inplace() const { return is_inplace_; }</span></span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">     2466816 :     status_t execute(const dnnl::stream &amp;astream,</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :             const std::unordered_map&lt;int, dnnl::memory&gt; &amp;args) const {</span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">     2466816 :         if (is_inplace_) {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">      766208 :             void *handle = args.at(DNNL_ARG_SRC).get_data_handle();</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">      766208 :             args.at(DNNL_ARG_DST).set_data_handle(handle);</span></span>
+<span id="L62"><span class="lineNum">      62</span>              :         } else</span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">     1700608 :             dnnl_primitive_execute_without_tp_hook(</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">     1700608 :                     reorder_prim_, astream, args);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">     2466816 :         return status::success;</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :     }</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              : private:</span>
+<span id="L69"><span class="lineNum">      69</span>              :     dnnl::primitive reorder_prim_;</span>
+<span id="L70"><span class="lineNum">      70</span>              :     bool is_inplace_ = false;</span>
+<span id="L71"><span class="lineNum">      71</span>              : };</span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span>              : struct sdp_decomp_config_t {</span>
+<span id="L74"><span class="lineNum">      74</span>              : public:</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         662 :     sdp_decomp_config_t() = default;</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              :     // SDP input dimension</span>
+<span id="L78"><span class="lineNum">      78</span>              :     dim_t ndims, batch_size, num_head_q, num_head_kv, seq_len_q, seq_len_kv;</span>
+<span id="L79"><span class="lineNum">      79</span>              :     dim_t head_size_qk, head_size_v;</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              :     // SDP input and output strides</span>
+<span id="L82"><span class="lineNum">      82</span>              :     dims src1_strides, wei1_strides, wei2_strides, dst_strides,</span>
+<span id="L83"><span class="lineNum">      83</span>              :             post_add_strides;</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span>              :     // Thread nums during the workflow</span>
+<span id="L86"><span class="lineNum">      86</span>              :     int nthr;</span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span>              :     // Used to record the exact input offset in subgraph</span>
+<span id="L89"><span class="lineNum">      89</span>              :     // [mm1_src,mm1_wei,mm2_wei,mm1_scale,mm1_soft_capping,mm1_add,select_condition,select_other_input]</span>
+<span id="L90"><span class="lineNum">      90</span>              :     std::vector&lt;int&gt; graph_inport;</span>
+<span id="L91"><span class="lineNum">      91</span>              :     enum input_index_t {</span>
+<span id="L92"><span class="lineNum">      92</span>              :         mm1_src = 0,</span>
+<span id="L93"><span class="lineNum">      93</span>              :         mm1_wei,</span>
+<span id="L94"><span class="lineNum">      94</span>              :         mm2_wei,</span>
+<span id="L95"><span class="lineNum">      95</span>              :         mm1_scale,</span>
+<span id="L96"><span class="lineNum">      96</span>              :         mm1_soft_capping,</span>
+<span id="L97"><span class="lineNum">      97</span>              :         mm1_add,</span>
+<span id="L98"><span class="lineNum">      98</span>              :         select_condition,</span>
+<span id="L99"><span class="lineNum">      99</span>              :         select_other_input</span>
+<span id="L100"><span class="lineNum">     100</span>              :     };</span>
+<span id="L101"><span class="lineNum">     101</span>              : </span>
+<span id="L102"><span class="lineNum">     102</span>              :     // Primitives that actually perform calculations</span>
+<span id="L103"><span class="lineNum">     103</span>              :     primitive sub_mm1_prim, sub_softmax_prim, sub_mm2_prim, sub_select_prim;</span>
+<span id="L104"><span class="lineNum">     104</span>              :     sdp_reorder_t sub_reorder0, sub_reorder1, sub_reorder2, sub_reorder3;</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              :     // Args used in the execution of primitives</span>
+<span id="L107"><span class="lineNum">     107</span>              :     std::unordered_map&lt;int, memory&gt; sub_reorder0_args, sub_reorder1_args,</span>
+<span id="L108"><span class="lineNum">     108</span>              :             sub_mm1_args, sub_softmax_args, sub_reorder2_args, sub_mm2_args,</span>
+<span id="L109"><span class="lineNum">     109</span>              :             sub_reorder3_args, sub_select_args;</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :     // A map from memory to registry key, used to record the internal memories</span>
+<span id="L112"><span class="lineNum">     112</span>              :     // location inside of the whole buffer.</span>
+<span id="L113"><span class="lineNum">     113</span>              :     std::unordered_map&lt;dnnl_memory_t, registry_key&gt; mem_key_map;</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :     // Internal memory objects for each primitive in each threads.</span>
+<span id="L116"><span class="lineNum">     116</span>              :     // reorder0</span>
+<span id="L117"><span class="lineNum">     117</span>              :     memory sub_src1;</span>
+<span id="L118"><span class="lineNum">     118</span>              :     // reorder1</span>
+<span id="L119"><span class="lineNum">     119</span>              :     memory sub_wei1_user, sub_wei1_zp;</span>
+<span id="L120"><span class="lineNum">     120</span>              :     //mm1</span>
+<span id="L121"><span class="lineNum">     121</span>              :     memory sub_mm1_src, sub_mm1_wei, sub_mm1_dst;</span>
+<span id="L122"><span class="lineNum">     122</span>              :     // sub_mm1_post_mem contains [post_scale, attn_mask(optional)]</span>
+<span id="L123"><span class="lineNum">     123</span>              :     std::vector&lt;memory&gt; sub_mm1_post_mem, sub_softmax_post_mem;</span>
+<span id="L124"><span class="lineNum">     124</span>              :     //select binary</span>
+<span id="L125"><span class="lineNum">     125</span>              :     memory sub_select_cond, sub_select_src, sub_select_dst;</span>
+<span id="L126"><span class="lineNum">     126</span>              :     //softmax</span>
+<span id="L127"><span class="lineNum">     127</span>              :     memory sub_softmax_dst;</span>
+<span id="L128"><span class="lineNum">     128</span>              :     //reorder2</span>
+<span id="L129"><span class="lineNum">     129</span>              :     memory sub_wei2_user, sub_wei2_zp;</span>
+<span id="L130"><span class="lineNum">     130</span>              :     //mm2</span>
+<span id="L131"><span class="lineNum">     131</span>              :     memory sub_mm2_wei, sub_mm2_dst;</span>
+<span id="L132"><span class="lineNum">     132</span>              :     //reorder3</span>
+<span id="L133"><span class="lineNum">     133</span>              :     memory sub_dst_user;</span>
+<span id="L134"><span class="lineNum">     134</span>              :     //scratchpad</span>
+<span id="L135"><span class="lineNum">     135</span>              :     memory sub_scratchpad;</span>
+<span id="L136"><span class="lineNum">     136</span>              :     // shared memory</span>
+<span id="L137"><span class="lineNum">     137</span>              :     memory sub_max_src1_src2, sub_max_dst1_wei2;</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              :     bool has_scale = false, has_attention_mask = false, has_select = false,</span>
+<span id="L140"><span class="lineNum">     140</span>              :          has_soft_capping = false;</span>
+<span id="L141"><span class="lineNum">     141</span>              :     // Record if select can be fused into previous matmul. It can be true when</span>
+<span id="L142"><span class="lineNum">     142</span>              :     // select's 1st input connected to previous matmul.</span>
+<span id="L143"><span class="lineNum">     143</span>              :     bool select_fusiable = false;</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              : private:</span>
+<span id="L146"><span class="lineNum">     146</span>              :     // Used to record the ops contained in SDP</span>
+<span id="L147"><span class="lineNum">     147</span>              :     // sdp_op = [reorder1, mm1, softmax, reorder2, mm2, binary_select]</span>
+<span id="L148"><span class="lineNum">     148</span>              :     // reorder1 is using mm1 weight u8-&gt;s8</span>
+<span id="L149"><span class="lineNum">     149</span>              :     // reorder2 is using mm2 weight u8-&gt;s8</span>
+<span id="L150"><span class="lineNum">     150</span>              :     std::vector&lt;op_ptr&gt; sdp_op;</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              : public:</span>
+<span id="L153"><span class="lineNum">     153</span>              :     // The function is used to check if the configuration of SDP is supported by</span>
+<span id="L154"><span class="lineNum">     154</span>              :     // current implementation of decomp kernel. Currently, this implementation</span>
+<span id="L155"><span class="lineNum">     155</span>              :     // can handle 4-dims tensor and limits the numerical relationship between</span>
+<span id="L156"><span class="lineNum">     156</span>              :     // batch_size, num_head and thread num.</span>
+<span id="L157"><span class="lineNum">     157</span>              :     // If the check passes, initialize few members according to inputs</span>
+<span id="L158"><span class="lineNum">     158</span>              :     // If no, return unimplemented status directly and fallback to large kernel</span>
+<span id="L159"><span class="lineNum">     159</span>              :     bool initial_check(const std::shared_ptr&lt;subgraph_t&gt; &amp;sg,</span>
+<span id="L160"><span class="lineNum">     160</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;inputs,</span>
+<span id="L161"><span class="lineNum">     161</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;outputs);</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span>              :     // Used to construct all params that SDP need</span>
+<span id="L164"><span class="lineNum">     164</span>              :     template &lt;bool quantized = false,</span>
+<span id="L165"><span class="lineNum">     165</span>              :             memory::data_type dt = memory::data_type::f32&gt;</span>
+<span id="L166"><span class="lineNum">     166</span>              :     impl::status_t construct_params(std::shared_ptr&lt;subgraph_t&gt; &amp;sg,</span>
+<span id="L167"><span class="lineNum">     167</span>              :             registry_t &amp;sdp_registry, const dnnl::engine &amp;p_engine,</span>
+<span id="L168"><span class="lineNum">     168</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;inputs);</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              : private:</span>
+<span id="L171"><span class="lineNum">     171</span>              :     op_ptr get_post_op(const op_ptr &amp;op) const;</span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span>              :     impl::status_t record_input_offset(const std::shared_ptr&lt;subgraph_t&gt; &amp;sg,</span>
+<span id="L174"><span class="lineNum">     174</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;inputs);</span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :     impl::status_t record_sdp_ops(</span>
+<span id="L177"><span class="lineNum">     177</span>              :             std::shared_ptr&lt;subgraph_t&gt; &amp;sg, bool is_quantize);</span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span>              :     void memory_planning(registry_t &amp;sdp_registry);</span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span>              :     impl::status_t prepare_sdp_scales_zps(std::shared_ptr&lt;op_t&gt; &amp;op, int index,</span>
+<span id="L182"><span class="lineNum">     182</span>              :             std::unordered_map&lt;int, memory&gt; &amp;args,</span>
+<span id="L183"><span class="lineNum">     183</span>              :             const dnnl::engine &amp;p_engine);</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span>              :     template &lt;typename attr_dt, typename target_dt&gt;</span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">        2015 :     target_dt get_attr_value(</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :             std::shared_ptr&lt;op_t&gt; &amp;op, int i, op_attr_t attr_name) {</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">        2015 :         const auto in_val = op-&gt;get_input_value(i);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">        2015 :         auto &amp;producer = in_val-&gt;get_producer();</span></span>
+<span id="L190"><span class="lineNum">     190</span>              :         return static_cast&lt;target_dt&gt;(</span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        4030 :                 producer.get_attr&lt;std::vector&lt;attr_dt&gt;&gt;(attr_name)[0]);</span></span>
+<span id="L192"><span class="lineNum">     192</span>              :     }</span>
+<span id="L193"><span class="lineNum">     193</span>              : </span>
+<span id="L194"><span class="lineNum">     194</span>              :     dnnl::primitive_attr make_primitive_attr(std::shared_ptr&lt;op_t&gt; &amp;op);</span>
+<span id="L195"><span class="lineNum">     195</span>              : };</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              : } // namespace dnnl_impl</span>
+<span id="L198"><span class="lineNum">     198</span>              : } // namespace graph</span>
+<span id="L199"><span class="lineNum">     199</span>              : } // namespace impl</span>
+<span id="L200"><span class="lineNum">     200</span>              : } // namespace dnnl</span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

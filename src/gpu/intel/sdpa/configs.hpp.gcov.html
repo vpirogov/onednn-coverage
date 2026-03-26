@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/sdpa/configs.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/sdpa">src/gpu/intel/sdpa</a> - configs.hpp<span style="font-size: 80%;"> (source / <a href="configs.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">53</td>
+            <td class="headerCovTableEntry">53</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">13</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2025 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GPU_INTEL_SDPA_CONFIGS_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GPU_INTEL_SDPA_CONFIGS_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;iostream&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;gemmstone/microkernel_selector.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;gpu/intel/compute/device_info.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace dnnl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace impl {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace gpu {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace intel {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace sdpa {</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace micro = gemmstone::microkernel;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : struct config_t {</span>
+<span id="L35"><span class="lineNum">      35</span>              :     int unroll_m_kq, unroll_n_kq; // Subgroup tile sizes for K*Q GEMM</span>
+<span id="L36"><span class="lineNum">      36</span>              :     int unroll_m_vs, unroll_n_vs; // Subgroup tile sizes for V*S GEMM</span>
+<span id="L37"><span class="lineNum">      37</span>              :     int wg_m_kq, wg_n_kq; // Workgroup configuration for K*Q GEMM</span>
+<span id="L38"><span class="lineNum">      38</span>              :     int wg_m_vs, wg_n_vs; // Workgroup configuration for V*S GEMM</span>
+<span id="L39"><span class="lineNum">      39</span>              : };</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : enum class property : int {</span>
+<span id="L42"><span class="lineNum">      42</span>              :     none = 0x0,</span>
+<span id="L43"><span class="lineNum">      43</span>              :     second_token = 0x1,</span>
+<span id="L44"><span class="lineNum">      44</span>              :     quantized = 0x2,</span>
+<span id="L45"><span class="lineNum">      45</span>              :     integrated = 0x4,</span>
+<span id="L46"><span class="lineNum">      46</span>              :     fma = 0x8,</span>
+<span id="L47"><span class="lineNum">      47</span>              :     f32 = 0x10,</span>
+<span id="L48"><span class="lineNum">      48</span>              :     f16_accumulate = 0x20,</span>
+<span id="L49"><span class="lineNum">      49</span>              : };</span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span>              : property operator|(property a, property b);</span>
+<span id="L52"><span class="lineNum">      52</span>              : property operator&amp;(property a, property b);</span>
+<span id="L53"><span class="lineNum">      53</span>              : property operator^(property a, property b);</span>
+<span id="L54"><span class="lineNum">      54</span>              : property &amp;operator|=(property &amp;a, property b);</span>
+<span id="L55"><span class="lineNum">      55</span>              : property &amp;operator&amp;=(property &amp;a, property b);</span>
+<span id="L56"><span class="lineNum">      56</span>              : property &amp;operator^=(property &amp;a, property b);</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              : struct config_query_t {</span>
+<span id="L59"><span class="lineNum">      59</span>              :     static constexpr int any = -1;</span>
+<span id="L60"><span class="lineNum">      60</span>              :     compute::gpu_arch_t arch;</span>
+<span id="L61"><span class="lineNum">      61</span>              :     int head_size;</span>
+<span id="L62"><span class="lineNum">      62</span>              :     int seq_len = any;</span>
+<span id="L63"><span class="lineNum">      63</span>              :     property prop = property::none;</span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1076 :     config_query_t(compute::gpu_arch_t arch_, int head_size_,</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :             int seq_len_ = any, property property_ = property::none)</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">        1076 :         : arch(arch_)</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :         , head_size(head_size_)</span>
+<span id="L69"><span class="lineNum">      69</span>              :         , seq_len(seq_len_)</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        1076 :         , prop(property_) {}</span></span>
+<span id="L71"><span class="lineNum">      71</span>              : };</span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span>              : struct config_criteria_t {</span>
+<span id="L74"><span class="lineNum">      74</span>              :     static constexpr int any = -1;</span>
+<span id="L75"><span class="lineNum">      75</span>              :     compute::gpu_arch_t arch;</span>
+<span id="L76"><span class="lineNum">      76</span>              :     int head_size;</span>
+<span id="L77"><span class="lineNum">      77</span>              :     int seq_len = any;</span>
+<span id="L78"><span class="lineNum">      78</span>              :     property prop = property::none;</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       24633 :     config_criteria_t(compute::gpu_arch_t a, int hs)</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       24633 :         : arch(a), head_size(hs), seq_len(any), prop(property::none) {}</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       33327 :     config_criteria_t(compute::gpu_arch_t a, int hs, int sq)</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       33327 :         : arch(a), head_size(hs), seq_len(sq), prop(property::none) {}</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">      181125 :     config_criteria_t(compute::gpu_arch_t a, int hs, property prop)</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">      181125 :         : arch(a), head_size(hs), seq_len(any), prop(prop) {}</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">      194166 :     config_criteria_t(compute::gpu_arch_t a, int hs, int sq, property prop)</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      194166 :         : arch(a), head_size(hs), seq_len(sq), prop(prop) {}</span></span>
+<span id="L87"><span class="lineNum">      87</span>              : };</span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span>              : struct config_record_t {</span>
+<span id="L90"><span class="lineNum">      90</span>              :     config_criteria_t criteria;</span>
+<span id="L91"><span class="lineNum">      91</span>              :     config_t config;</span>
+<span id="L92"><span class="lineNum">      92</span>              : };</span>
+<span id="L93"><span class="lineNum">      93</span>              : </span>
+<span id="L94"><span class="lineNum">      94</span>              : std::ostream &amp;operator&lt;&lt;(std::ostream &amp;s, const config_query_t &amp;q);</span>
+<span id="L95"><span class="lineNum">      95</span>              : std::ostream &amp;operator&lt;&lt;(std::ostream &amp;s, const config_criteria_t &amp;c);</span>
+<span id="L96"><span class="lineNum">      96</span>              : std::ostream &amp;operator&lt;&lt;(std::ostream &amp;s, const config_t &amp;c);</span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span>              : bool operator==(const config_record_t &amp;key, const config_query_t &amp;query);</span>
+<span id="L99"><span class="lineNum">      99</span>              : bool operator&lt;(const config_criteria_t &amp;lhs, const config_criteria_t &amp;rhs);</span>
+<span id="L100"><span class="lineNum">     100</span>              : bool operator&lt;(const config_record_t &amp;lhs, const config_record_t &amp;rhs);</span>
+<span id="L101"><span class="lineNum">     101</span>              : </span>
+<span id="L102"><span class="lineNum">     102</span>              : config_t *choose_config(compute::gpu_arch_t arch, dim_t head_size, dim_t seq,</span>
+<span id="L103"><span class="lineNum">     103</span>              :         bool is_thin_q, bool is_quantized, bool is_integrated, bool is_fma,</span>
+<span id="L104"><span class="lineNum">     104</span>              :         bool is_f32, bool is_f16_accumulate);</span>
+<span id="L105"><span class="lineNum">     105</span>              : dim_t round_up_seq_interval(dim_t seq, compute::gpu_arch_t arch);</span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span>              : dim_t nearest_conf_seq_interval(compute::gpu_arch_t arch, dim_t head_size,</span>
+<span id="L108"><span class="lineNum">     108</span>              :         dim_t seq, bool is_thin_q, bool is_quantized, bool is_integrated,</span>
+<span id="L109"><span class="lineNum">     109</span>              :         bool is_fma, bool is_f32, bool is_f16_accumulate);</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              : // serializable options for microkernel configuration</span>
+<span id="L112"><span class="lineNum">     112</span>              : // follows reduced subset of structs from gemmstone that</span>
+<span id="L113"><span class="lineNum">     113</span>              : // are used for ukernel generation</span>
+<span id="L114"><span class="lineNum">     114</span>              : struct ukernel_serialized_opts_t</span>
+<span id="L115"><span class="lineNum">     115</span>              :     : trivially_serializable_t&lt;ukernel_serialized_opts_t&gt; {</span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        2248 :     ukernel_serialized_opts_t() = default;</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">         952 :     ukernel_serialized_opts_t(micro::GEMMOptions opts)</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         952 :         : localB(opts.localB)</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">         952 :         , slmPtr(opts.slmPtr)</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">         952 :         , scaleA(opts.scaleA)</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">         952 :         , offsetA(opts.offsetA) {}</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :     bool localB, slmPtr, scaleA, offsetA;</span>
+<span id="L124"><span class="lineNum">     124</span>              :     uint8_t padding[4] = {0};</span>
+<span id="L125"><span class="lineNum">     125</span>              : };</span>
+<span id="L126"><span class="lineNum">     126</span>              : DNNL_ASSERT_TRIVIALLY_SERIALIZABLE(ukernel_serialized_opts_t);</span>
+<span id="L127"><span class="lineNum">     127</span>              : static_assert(sizeof(ukernel_serialized_opts_t) == 8,</span>
+<span id="L128"><span class="lineNum">     128</span>              :         &quot;Expected sizeof(ukernel_serialized_opts_t) == 8&quot;);</span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span>              : struct ukernel_serialized_hwinfo_t</span>
+<span id="L131"><span class="lineNum">     131</span>              :     : trivially_serializable_t&lt;ukernel_serialized_hwinfo_t&gt; {</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">        1124 :     ukernel_serialized_hwinfo_t() = default;</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">         476 :     ukernel_serialized_hwinfo_t(micro::HWInformation &amp;hwInfo)</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         476 :         : gmdid(static_cast&lt;uint32_t&gt;(hwInfo.gmdid))</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         476 :         , euCount(static_cast&lt;uint32_t&gt;(hwInfo.euCount))</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">         476 :         , systolicAvailable(hwInfo.systolicAvailable) {}</span></span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              :     uint32_t gmdid;</span>
+<span id="L140"><span class="lineNum">     140</span>              :     uint32_t euCount;</span>
+<span id="L141"><span class="lineNum">     141</span>              :     bool systolicAvailable;</span>
+<span id="L142"><span class="lineNum">     142</span>              :     uint8_t padding[7] = {0};</span>
+<span id="L143"><span class="lineNum">     143</span>              : };</span>
+<span id="L144"><span class="lineNum">     144</span>              : DNNL_ASSERT_TRIVIALLY_SERIALIZABLE(ukernel_serialized_hwinfo_t);</span>
+<span id="L145"><span class="lineNum">     145</span>              : static_assert(sizeof(ukernel_serialized_hwinfo_t) == 16,</span>
+<span id="L146"><span class="lineNum">     146</span>              :         &quot;Expected sizeof(ukernel_serialized_hwinfo_t) == 16&quot;);</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              : struct ukernel_serialized_sizes_t</span>
+<span id="L149"><span class="lineNum">     149</span>              :     : trivially_serializable_t&lt;ukernel_serialized_sizes_t&gt; {</span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        2248 :     ukernel_serialized_sizes_t() = default;</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">         952 :     ukernel_serialized_sizes_t(gemmstone::SizeParams &amp;sizes)</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">         952 :         : batch(sizes.batch), m(sizes.m), n(sizes.n), k(sizes.k) {}</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :     int64_t batch = 0;</span>
+<span id="L155"><span class="lineNum">     155</span>              :     int64_t m = 0, n = 0, k = 0;</span>
+<span id="L156"><span class="lineNum">     156</span>              : };</span>
+<span id="L157"><span class="lineNum">     157</span>              : DNNL_ASSERT_TRIVIALLY_SERIALIZABLE(ukernel_serialized_sizes_t);</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              : struct ukernel_serialized_problem_t</span>
+<span id="L160"><span class="lineNum">     160</span>              :     : trivially_serializable_t&lt;ukernel_serialized_problem_t&gt; {</span>
+<span id="L161"><span class="lineNum">     161</span>              : </span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        2248 :     ukernel_serialized_problem_t() = default;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">         952 :     ukernel_serialized_problem_t(gemmstone::GEMMProblem &amp;problem)</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">         952 :         : Ta_ext(static_cast&lt;uint32_t&gt;(problem.Ta_ext))</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">         952 :         , Tb_ext(static_cast&lt;uint32_t&gt;(problem.Tb_ext))</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">         952 :         , Tc_ext(static_cast&lt;uint32_t&gt;(problem.Tc_ext))</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">         952 :         , Ta(static_cast&lt;uint32_t&gt;(problem.Ta))</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">         952 :         , Tb(static_cast&lt;uint32_t&gt;(problem.Tb))</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">         952 :         , Tc(static_cast&lt;uint32_t&gt;(problem.Tc))</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">         952 :         , Ts(static_cast&lt;uint32_t&gt;(problem.Ts))</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">         952 :         , A_layout(static_cast&lt;int&gt;(problem.A.layout))</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">         952 :         , B_layout(static_cast&lt;int&gt;(problem.B.layout))</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">         952 :         , C_layout(static_cast&lt;int&gt;(problem.C.layout))</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">         952 :         , B_tileR(problem.B.tileR)</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         952 :         , B_tileC(problem.B.tileC)</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">         952 :         , B_crosspack(problem.B.crosspack)</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         952 :         , A_alignment(problem.A.alignment)</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">         952 :         , A_scale_alignment(problem.A_scale.alignment)</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">         952 :         , AO_alignment(problem.AO.alignment)</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">         952 :         , B_alignment(problem.B.alignment)</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">         952 :         , asPtrDims(problem.asPtrDims)</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">         952 :         , aOffset(static_cast&lt;int&gt;(problem.aOffset))</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">         952 :         , Ta_scale(static_cast&lt;uint32_t&gt;(problem.Ta_scale))</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">         952 :         , A_scale_layout(static_cast&lt;int&gt;(problem.A_scale.layout))</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         952 :         , Tao(static_cast&lt;uint32_t&gt;(problem.Tao))</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">         952 :         , AO_layout(static_cast&lt;int&gt;(problem.AO.layout))</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">         952 :         , aoPtrDims(problem.aoPtrDims)</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         952 :         , aqGroupM(problem.aqGroupM)</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">         952 :         , aqGroupK(problem.aqGroupK) {}</span></span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span>              :     uint32_t Ta_ext, Tb_ext, Tc_ext;</span>
+<span id="L192"><span class="lineNum">     192</span>              :     uint32_t Ta, Tb, Tc, Ts;</span>
+<span id="L193"><span class="lineNum">     193</span>              : </span>
+<span id="L194"><span class="lineNum">     194</span>              :     int A_layout;</span>
+<span id="L195"><span class="lineNum">     195</span>              :     int B_layout;</span>
+<span id="L196"><span class="lineNum">     196</span>              :     int C_layout;</span>
+<span id="L197"><span class="lineNum">     197</span>              : </span>
+<span id="L198"><span class="lineNum">     198</span>              :     uint16_t B_tileR;</span>
+<span id="L199"><span class="lineNum">     199</span>              :     uint16_t B_tileC;</span>
+<span id="L200"><span class="lineNum">     200</span>              :     uint8_t B_crosspack;</span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span>              :     uint8_t A_alignment;</span>
+<span id="L203"><span class="lineNum">     203</span>              :     uint8_t A_scale_alignment;</span>
+<span id="L204"><span class="lineNum">     204</span>              :     uint8_t AO_alignment;</span>
+<span id="L205"><span class="lineNum">     205</span>              :     uint8_t B_alignment;</span>
+<span id="L206"><span class="lineNum">     206</span>              :     // trivially serializable classes require alignment to 8-byte boundaries</span>
+<span id="L207"><span class="lineNum">     207</span>              :     // padding0 bumps class size from 49-&gt;56 bytes so uint8_t arguments</span>
+<span id="L208"><span class="lineNum">     208</span>              :     // related to alignment can be grouped together rather than placed at the end of the struct</span>
+<span id="L209"><span class="lineNum">     209</span>              :     uint8_t padding0[7] = {0};</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              :     int asPtrDims;</span>
+<span id="L212"><span class="lineNum">     212</span>              :     int aOffset;</span>
+<span id="L213"><span class="lineNum">     213</span>              : </span>
+<span id="L214"><span class="lineNum">     214</span>              :     uint32_t Ta_scale;</span>
+<span id="L215"><span class="lineNum">     215</span>              :     int A_scale_layout;</span>
+<span id="L216"><span class="lineNum">     216</span>              :     uint32_t Tao;</span>
+<span id="L217"><span class="lineNum">     217</span>              : </span>
+<span id="L218"><span class="lineNum">     218</span>              :     int AO_layout;</span>
+<span id="L219"><span class="lineNum">     219</span>              :     int aoPtrDims;</span>
+<span id="L220"><span class="lineNum">     220</span>              :     int aqGroupM;</span>
+<span id="L221"><span class="lineNum">     221</span>              :     int aqGroupK;</span>
+<span id="L222"><span class="lineNum">     222</span>              : };</span>
+<span id="L223"><span class="lineNum">     223</span>              : DNNL_ASSERT_TRIVIALLY_SERIALIZABLE(ukernel_serialized_problem_t);</span>
+<span id="L224"><span class="lineNum">     224</span>              : static_assert(sizeof(ukernel_serialized_problem_t) == 92,</span>
+<span id="L225"><span class="lineNum">     225</span>              :         &quot;Expected sizeof(ukernel_serialized_problem_t) == 92&quot;);</span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span>              : struct micro_ukernel_params_t</span>
+<span id="L228"><span class="lineNum">     228</span>              :     : trivially_serializable_t&lt;micro_ukernel_params_t&gt; {</span>
+<span id="L229"><span class="lineNum">     229</span>              :     int unroll_m_kq, unroll_n_kq;</span>
+<span id="L230"><span class="lineNum">     230</span>              :     int unroll_m_vs, unroll_n_vs;</span>
+<span id="L231"><span class="lineNum">     231</span>              :     int wg_m_kq, wg_n_kq;</span>
+<span id="L232"><span class="lineNum">     232</span>              :     int wg_m_vs, wg_n_vs;</span>
+<span id="L233"><span class="lineNum">     233</span>              : </span>
+<span id="L234"><span class="lineNum">     234</span>              :     ukernel_serialized_hwinfo_t hwinfo;</span>
+<span id="L235"><span class="lineNum">     235</span>              :     ukernel_serialized_problem_t problem_kq;</span>
+<span id="L236"><span class="lineNum">     236</span>              :     ukernel_serialized_problem_t problem_vs;</span>
+<span id="L237"><span class="lineNum">     237</span>              :     ukernel_serialized_opts_t opts_kq;</span>
+<span id="L238"><span class="lineNum">     238</span>              :     ukernel_serialized_opts_t opts_vs;</span>
+<span id="L239"><span class="lineNum">     239</span>              :     ukernel_serialized_sizes_t sizes_kq, sizes_vs;</span>
+<span id="L240"><span class="lineNum">     240</span>              : };</span>
+<span id="L241"><span class="lineNum">     241</span>              : DNNL_ASSERT_TRIVIALLY_SERIALIZABLE(micro_ukernel_params_t);</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              : void deserialize_config_to_gemmstone(micro::HWInformation &amp;hwInfo,</span>
+<span id="L244"><span class="lineNum">     244</span>              :         gemmstone::GEMMProblem &amp;problem_kq, gemmstone::GEMMProblem &amp;problem_vs,</span>
+<span id="L245"><span class="lineNum">     245</span>              :         micro::GEMMOptions &amp;opts_kq, micro::GEMMOptions &amp;opts_vs,</span>
+<span id="L246"><span class="lineNum">     246</span>              :         gemmstone::SizeParams &amp;sizes_kq, gemmstone::SizeParams &amp;sizes_vs,</span>
+<span id="L247"><span class="lineNum">     247</span>              :         const micro_ukernel_params_t &amp;ukernel_config);</span>
+<span id="L248"><span class="lineNum">     248</span>              : </span>
+<span id="L249"><span class="lineNum">     249</span>              : } // namespace sdpa</span>
+<span id="L250"><span class="lineNum">     250</span>              : } // namespace intel</span>
+<span id="L251"><span class="lineNum">     251</span>              : } // namespace gpu</span>
+<span id="L252"><span class="lineNum">     252</span>              : } // namespace impl</span>
+<span id="L253"><span class="lineNum">     253</span>              : } // namespace dnnl</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

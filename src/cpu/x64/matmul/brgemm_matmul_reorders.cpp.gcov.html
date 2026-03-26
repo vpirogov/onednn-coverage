@@ -1,0 +1,590 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/matmul/brgemm_matmul_reorders.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/matmul">src/cpu/x64/matmul</a> - brgemm_matmul_reorders.cpp<span style="font-size: 80%;"> (source / <a href="brgemm_matmul_reorders.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">66.1&nbsp;%</td>
+            <td class="headerCovTableEntry">257</td>
+            <td class="headerCovTableEntry">170</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">72.7&nbsp;%</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">8</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/reorder_pd.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;cpu/x64/matmul/brgemm_matmul_reorders.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace dnnl {</span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace impl {</span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace cpu {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace x64 {</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : using namespace format_tag;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">       18401 : format_tag_t get_blocked_otag(const memory_desc_t &amp;dst_md) {</span></span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">       18401 :     const memory_desc_wrapper od(dst_md);</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">       18401 :     const auto vnni_granularity = data_type_vnni_granularity(od.data_type());</span></span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       18401 :     format_tag_t otag = format_tag::undef;</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       18401 :     switch (vnni_granularity) {</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">         949 :         case 4:</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">         949 :             otag = od.matches_one_of_tag(aCB16b64c4b, BA16a64b4a, aCB16b48c4b,</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :                     BA16a48b4a, aCB16b32c4b, BA16a32b4a, aCB16b16c4b,</span>
+<span id="L39"><span class="lineNum">      39</span>              :                     BA16a16b4a);</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">         949 :             break;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         224 :         case 2:</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         224 :             otag = od.matches_one_of_tag(aCB16b64c2b, BA16a64b2a, aCB16b48c2b,</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :                     BA16a48b2a, aCB16b32c2b, BA16a32b2a, aCB16b16c2b,</span>
+<span id="L44"><span class="lineNum">      44</span>              :                     BA16a16b2a);</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         224 :             break;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       17228 :         case 1:</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       17228 :             otag = od.matches_one_of_tag(aCB16b64c, BA16a64b, aCB16b48c,</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :                     BA16a48b, aCB16b32c, BA16a32b, aCB16b16c, BA16a16b);</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       17228 :             break;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :         default: otag = format_tag::undef;</span></span>
+<span id="L51"><span class="lineNum">      51</span>              :     }</span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       18401 :     return otag;</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : }</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              : // If two shapes are plain transposes of each other, then</span>
+<span id="L56"><span class="lineNum">      56</span>              : // src.strides / dst.strides (or dst.strides / src.strides) will look like:</span>
+<span id="L57"><span class="lineNum">      57</span>              : // index:   0, 1, 2, ..., l-1, l,   l+1, ..., l+m-1, l+m, l+m+1, ..., l+m+n</span>
+<span id="L58"><span class="lineNum">      58</span>              : // src/dst: 1, 1, 1, ..., 1,   M,   M,   ..., M,     1/K, 1/K,   ..., 1/K</span>
+<span id="L59"><span class="lineNum">      59</span>              : // dst/src: 1, 1, 1, ..., 1,   1/M, 1/M, ..., 1/M,   K,   K,     ..., K</span>
+<span id="L60"><span class="lineNum">      60</span>              : //</span>
+<span id="L61"><span class="lineNum">      61</span>              : // where the first k dimensions are batch dimensions, M is stride of</span>
+<span id="L62"><span class="lineNum">      62</span>              : // first dimesions squashed, K is stride of the second dimension squashed.</span>
+<span id="L63"><span class="lineNum">      63</span>              : //</span>
+<span id="L64"><span class="lineNum">      64</span>              : // therefore M = M, K = K, batch = product of first k dimensions.</span>
+<span id="L65"><span class="lineNum">      65</span>              : //</span>
+<span id="L66"><span class="lineNum">      66</span>              : // Note: Assuming src strides are sorted and dst and dims are sorted</span>
+<span id="L67"><span class="lineNum">      67</span>              : // in the same order. This done first thing in the</span>
+<span id="L68"><span class="lineNum">      68</span>              : // function.</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">      217911 : status_t calculate_plain_transpose_blocks(dim_t &amp;batch, dim_t &amp;M, dim_t &amp;K,</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :         const memory_desc_t &amp;src_md, const memory_desc_t &amp;dst_md) {</span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span>              :     // drop all unit dims as they they will break the calculations. Removing</span>
+<span id="L73"><span class="lineNum">      73</span>              :     // unit dims will not change the physical memory reorder problem.</span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">      217911 :     dims_t non_unit_dims {};</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">      217911 :     dim_t non_unit_dim = 0;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">     1118020 :     for (dim_t i = 0; i &lt; src_md.ndims; i++) {</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">      900109 :         if (src_md.dims[i] == 1) continue;</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">      678142 :         non_unit_dims[non_unit_dim++] = src_md.dims[i];</span></span>
+<span id="L79"><span class="lineNum">      79</span>              :     }</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      217911 :     memory_desc_t src_md_reduced, dst_md_reduced;</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">      217911 :     VDISPATCH_REORDER_IC(memory_desc_reshape(src_md_reduced, src_md,</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :                                  non_unit_dim, non_unit_dims),</span>
+<span id="L84"><span class="lineNum">      84</span>              :             VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;src&quot;);</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 :     VDISPATCH_REORDER_IC(memory_desc_reshape(dst_md_reduced, dst_md,</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :                                  non_unit_dim, non_unit_dims),</span>
+<span id="L87"><span class="lineNum">      87</span>              :             VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;dst&quot;);</span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaUNC">           0 :     const memory_desc_wrapper id(src_md_reduced), od(dst_md_reduced);</span></span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaUNC">           0 :     dims_t sort_src_indices {};</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaUNC">           0 :     dims_t sort_dst_indices {};</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 :     for (dim_t i = 0; i &lt; id.ndims(); i++) {</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaUNC">           0 :         sort_src_indices[i] = i;</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :         sort_dst_indices[i] = i;</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :     }</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaUNC">           0 :     std::sort(sort_src_indices, sort_src_indices + id.ndims(),</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaUNC">           0 :             [id](int a, int b) { return id.strides()[a] &gt; id.strides()[b]; });</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :     std::sort(sort_dst_indices, sort_dst_indices + od.ndims(),</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :             [od](int a, int b) { return od.strides()[a] &gt; od.strides()[b]; });</span></span>
+<span id="L101"><span class="lineNum">     101</span>              :     // make sure physical layout is dense and there is no magical</span>
+<span id="L102"><span class="lineNum">     102</span>              :     // padding.</span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :     for (dim_t i = id.ndims() - 1; i &gt; 0; i--)</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :         VDISPATCH_REORDER_IC((id.strides()[sort_src_indices[i]]</span></span>
+<span id="L105"><span class="lineNum">     105</span>              :                                              * id.dims()[sort_src_indices[i]]</span>
+<span id="L106"><span class="lineNum">     106</span>              :                                      == id.strides()[sort_src_indices[i - 1]])</span>
+<span id="L107"><span class="lineNum">     107</span>              :                         &amp;&amp; (od.strides()[sort_dst_indices[i]]</span>
+<span id="L108"><span class="lineNum">     108</span>              :                                         * od.dims()[sort_dst_indices[i]]</span>
+<span id="L109"><span class="lineNum">     109</span>              :                                 == od.strides()[sort_dst_indices[i - 1]]),</span>
+<span id="L110"><span class="lineNum">     110</span>              :                 VERBOSE_UNSUPPORTED_MEM_STRIDE);</span>
+<span id="L111"><span class="lineNum">     111</span>              :     // sort the arrays by src strides.</span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaUNC">           0 :     dims_t src_sorted_strides {};</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaUNC">           0 :     dims_t dst_sorted_strides {};</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaUNC">           0 :     dims_t sorted_dims {};</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaUNC">           0 :     for (dim_t i = 0; i &lt; id.ndims(); i++) {</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaUNC">           0 :         src_sorted_strides[i] = id.strides()[sort_src_indices[i]];</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaUNC">           0 :         dst_sorted_strides[i] = od.strides()[sort_src_indices[i]];</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaUNC">           0 :         sorted_dims[i] = id.dims()[sort_src_indices[i]];</span></span>
+<span id="L119"><span class="lineNum">     119</span>              :     }</span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span>              :     // find first unmatching stride</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaUNC">           0 :     dim_t l_idx = -1;</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaUNC">           0 :     for (dim_t s_idx = 0; s_idx &lt; id.ndims(); s_idx++) {</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaUNC">           0 :         if (src_sorted_strides[s_idx] != dst_sorted_strides[s_idx]) {</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaUNC">           0 :             l_idx = s_idx;</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L127"><span class="lineNum">     127</span>              :         }</span>
+<span id="L128"><span class="lineNum">     128</span>              :     }</span>
+<span id="L129"><span class="lineNum">     129</span>              :     // if all strides are the same, then this is a direct copy</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaUNC">           0 :     VDISPATCH_REORDER_IC(l_idx != -1, VERBOSE_UNSUPPORTED_MEM_STRIDE);</span></span>
+<span id="L131"><span class="lineNum">     131</span>              :     // batch is product of first k dimensions.</span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaUNC">           0 :     batch = 1;</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaUNC">           0 :     for (dim_t d_idx = 0; d_idx &lt; l_idx; d_idx++)</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaUNC">           0 :         batch *= sorted_dims[d_idx];</span></span>
+<span id="L135"><span class="lineNum">     135</span>              :     // create the src/dst and dst/src arrays.</span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaUNC">           0 :     dims_t src_over_dst {}, dst_over_src {};</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaUNC">           0 :     for (dim_t s_idx = l_idx; s_idx &lt; id.ndims(); s_idx++) {</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :         src_over_dst[s_idx]</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :                 = src_sorted_strides[s_idx] / dst_sorted_strides[s_idx];</span></span>
+<span id="L140"><span class="lineNum">     140</span>              :         dst_over_src[s_idx]</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaUNC">           0 :                 = dst_sorted_strides[s_idx] / src_sorted_strides[s_idx];</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span>              :     // check if src and dst are transposes of each other</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span>              :     // find first umatching stride by division</span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaUNC">           0 :     dim_t lm_idx = -1;</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaUNC">           0 :     int prev_M_src = src_over_dst[l_idx],</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaUNC">           0 :         prev_1_over_M_dst = dst_over_src[l_idx];</span></span>
+<span id="L150"><span class="lineNum">     150</span>              :     // here we are checking to make sure all indexes are the same in src/dst</span>
+<span id="L151"><span class="lineNum">     151</span>              :     // and dst/src arrays (comparing with prev_h_src and prev_h_dst). If its</span>
+<span id="L152"><span class="lineNum">     152</span>              :     // different, then both src/dst and dst/src arrays should be different. In</span>
+<span id="L153"><span class="lineNum">     153</span>              :     // which case we have found the l+m index (lm_idx). If one is different</span>
+<span id="L154"><span class="lineNum">     154</span>              :     // while the other is not then this is not a plain transpose (return</span>
+<span id="L155"><span class="lineNum">     155</span>              :     // status::unimplemented).</span>
+<span id="L156"><span class="lineNum">     156</span>              :     //                             ^^^^^^^^^^^^^^^^^^^^</span>
+<span id="L157"><span class="lineNum">     157</span>              :     // index:   0, 1, 2, ..., l-1, l,   l+1, ..., l+m-1, l+m, l+m+1, ..., l+m+n</span>
+<span id="L158"><span class="lineNum">     158</span>              :     // src/dst: 1, 1, 1, ..., 1,   M,   M,   ..., M,     1/K, 1/K,   ..., 1/K</span>
+<span id="L159"><span class="lineNum">     159</span>              :     // dst/src: 1, 1, 1, ..., 1,   1/M, 1/M, ..., 1/M,   K,   K,     ..., K</span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaUNC">           0 :     for (dim_t s_idx = l_idx + 1; s_idx &lt; id.ndims(); s_idx++) {</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaUNC">           0 :         const bool cond_ok</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaUNC">           0 :                 = (src_over_dst[s_idx] == prev_M_src</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaUNC">           0 :                           &amp;&amp; dst_over_src[s_idx] == prev_1_over_M_dst)</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaUNC">           0 :                 || (src_over_dst[s_idx] != prev_M_src</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaUNC">           0 :                         &amp;&amp; dst_over_src[s_idx] != prev_1_over_M_dst);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaUNC">           0 :         VDISPATCH_REORDER_IC(cond_ok, VERBOSE_UNSUPPORTED_MEM_STRIDE);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaUNC">           0 :         if (src_over_dst[s_idx] != prev_M_src) {</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :             lm_idx = s_idx;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L170"><span class="lineNum">     170</span>              :         }</span>
+<span id="L171"><span class="lineNum">     171</span>              :     }</span>
+<span id="L172"><span class="lineNum">     172</span>              :     // This means all strides are the same. In this case its a direct copy.</span>
+<span id="L173"><span class="lineNum">     173</span>              :     // Only case this might be possible is unit strides after batch.</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaUNC">           0 :     VDISPATCH_REORDER_IC(lm_idx != -1, VERBOSE_UNSUPPORTED_MEM_STRIDE);</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaUNC">           0 :     int prev_1_over_K_src = src_over_dst[lm_idx],</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaUNC">           0 :         prev_K_dst = dst_over_src[lm_idx];</span></span>
+<span id="L178"><span class="lineNum">     178</span>              :     // Here we make sure the last strides divs are the same. If not, then this</span>
+<span id="L179"><span class="lineNum">     179</span>              :     // means that one of the l+m, l+m+1, ..., l+m+n indexes is not in the same</span>
+<span id="L180"><span class="lineNum">     180</span>              :     // order as in src. For example in src, looking at memory view, it can be</span>
+<span id="L181"><span class="lineNum">     181</span>              :     // 1, 2, 3, 4, 5, 6, 7, 8 while in dst it is 1, 2, 3, 6, 8, 7, 4, 5 (1,2 are</span>
+<span id="L182"><span class="lineNum">     182</span>              :     // batch dims). While the global ordering is the transposed (4,5 come after</span>
+<span id="L183"><span class="lineNum">     183</span>              :     // 6, 7, 9 indicating possible transpose) the local ordering is different</span>
+<span id="L184"><span class="lineNum">     184</span>              :     // (8 and 7 swapped meaning 6,7,8 squashed is not the same as 6,8,7</span>
+<span id="L185"><span class="lineNum">     185</span>              :     // squashed).</span>
+<span id="L186"><span class="lineNum">     186</span>              :     //                                                   ^^^^^^^^^^^^^^^^^^^^^^</span>
+<span id="L187"><span class="lineNum">     187</span>              :     // index:   0, 1, 2, ..., l-1, l,   l+1, ..., l+m-1, l+m, l+m+1, ..., l+m+n</span>
+<span id="L188"><span class="lineNum">     188</span>              :     // src/dst: 1, 1, 1, ..., 1,   M,   M,   ..., M,     1/K, 1/K,   ..., 1/K</span>
+<span id="L189"><span class="lineNum">     189</span>              :     // dst/src: 1, 1, 1, ..., 1,   1/M, 1/M, ..., 1/M,   K,   K,     ..., K</span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0 :     for (dim_t s_idx = lm_idx + 1; s_idx &lt; id.ndims(); s_idx++) {</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaUNC">           0 :         const bool cond_ok = dst_over_src[s_idx] == prev_K_dst</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaUNC">           0 :                 &amp;&amp; src_over_dst[s_idx] == prev_1_over_K_src;</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaUNC">           0 :         VDISPATCH_REORDER_IC(cond_ok, VERBOSE_UNSUPPORTED_MEM_STRIDE);</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :     }</span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span>              :     // set block sizes with contiguous dimensions squashed.</span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaUNC">           0 :     M = prev_M_src;</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaUNC">           0 :     K = prev_K_dst;</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaUNC">           0 :     return status::success;</span></span>
+<span id="L201"><span class="lineNum">     201</span>              : }</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              : // This function initializes all required fields in the conf object to generate</span>
+<span id="L204"><span class="lineNum">     204</span>              : // copy_b kernel.</span>
+<span id="L205"><span class="lineNum">     205</span>              : // This particular call relies on memory descriptors and used in this</span>
+<span id="L206"><span class="lineNum">     206</span>              : // implementation. The sub-call is reduced to simplified objects and used in</span>
+<span id="L207"><span class="lineNum">     207</span>              : // BRGeMM public API implementation for copy routines.</span>
+<span id="L208"><span class="lineNum">     208</span>              : //</span>
+<span id="L209"><span class="lineNum">     209</span>              : // Note: this version has some extra definitions that are available in memory</span>
+<span id="L210"><span class="lineNum">     210</span>              : // descriptors only.</span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      236312 : status_t init_conf(matmul::brgemm_matmul_conf_t &amp;conf,</span></span>
+<span id="L212"><span class="lineNum">     212</span>              :         const memory_desc_t &amp;src_md, const memory_desc_t &amp;dst_md) {</span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      236312 :     const memory_desc_wrapper id(src_md), od(dst_md);</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      236312 :     const int ndims = id.ndims();</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      236312 :     const auto &amp;dims = id.dims();</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">      236312 :     const auto type_i = id.data_type();</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      236312 :     const auto type_o = od.data_type();</span></span>
+<span id="L218"><span class="lineNum">     218</span>              : </span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">      236312 :     const bool is_plain = id.is_plain() &amp;&amp; od.is_plain();</span></span>
+<span id="L220"><span class="lineNum">     220</span>              :     dim_t M, K, batch, in_ld, N;</span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">      236312 :     format_tag_t itag = format_tag::undef, otag = format_tag::undef;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">      236312 :     if (is_plain) {</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">      217911 :         CHECK(calculate_plain_transpose_blocks(batch, M, K, src_md, dst_md));</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaUNC">           0 :         N = 0;</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaUNC">           0 :         in_ld = M;</span></span>
+<span id="L226"><span class="lineNum">     226</span>              :         // The heuristic value is empirical</span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0 :         const bool is_small_shape = batch * M * K &lt; 49152;</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaUNC">           0 :         VDISPATCH_REORDER_IC(!is_small_shape, VERBOSE_SMALL_SHAPES);</span></span>
+<span id="L229"><span class="lineNum">     229</span>              :     } else {</span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       18401 :         batch = ndims &gt; 2 ? dims[ndims - 3] : 1;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       18401 :         M = 0;</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">       18401 :         K = dims[ndims - 2];</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       18401 :         N = dims[ndims - 1];</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       18401 :         in_ld = ndims &gt;= 2 ? id.strides()[ndims - 2] : 1;</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       18401 :         const bool int4_ok = IMPLICATION(</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :                 utils::one_of(type_i, data_type::s4, data_type::u4),</span>
+<span id="L237"><span class="lineNum">     237</span>              :                 N % 2 == 0);</span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       18401 :         VDISPATCH_REORDER_IC(int4_ok, VERBOSE_BAD_DIM, &quot;N&quot;, ndims - 1);</span></span>
+<span id="L239"><span class="lineNum">     239</span>              :         const bool is_bf16_with_int_wei = type_o == data_type::bf16</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       18401 :                 &amp;&amp; utils::one_of(type_i, data_type::s8, data_type::u8,</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">       18401 :                         data_type::s4, data_type::u4);</span></span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">       18401 :         otag = get_blocked_otag(dst_md);</span></span>
+<span id="L244"><span class="lineNum">     244</span>              :         // TODO: enable for itag = {ba, acb}</span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       18497 :         itag = id.matches_one_of_tag(</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">          96 :                 ab, abc, is_bf16_with_int_wei ? otag : format_tag::undef);</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">       18401 :         VDISPATCH_REORDER_IC(!utils::one_of(format_tag::undef, itag, otag),</span></span>
+<span id="L248"><span class="lineNum">     248</span>              :                 VERBOSE_UNSUPPORTED_TAG);</span>
+<span id="L249"><span class="lineNum">     249</span>              :     }</span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">         486 :     CHECK(matmul::init_conf(conf, batch, M, K, N, in_ld,</span></span>
+<span id="L252"><span class="lineNum">     252</span>              :             is_plain ? 0 : matmul::get_n_block_from_tag(otag), type_i, type_o,</span>
+<span id="L253"><span class="lineNum">     253</span>              :             itag));</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span>              :     conf.s8s8_compensation_required</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">         486 :             = od.extra().flags &amp; memory_extra_flags::compensation_conv_s8s8;</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">         486 :     const bool req_asymmetric_comp = od.extra().flags</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">         486 :             &amp; memory_extra_flags::compensation_conv_asymmetric_src;</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">         486 :     conf.src_zp_type = req_asymmetric_comp ? brgemm_broadcast_t::per_tensor</span></span>
+<span id="L260"><span class="lineNum">     260</span>              :                                            : brgemm_broadcast_t::none;</span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         486 :     conf.has_zero_point_a = conf.src_zp_type != brgemm_broadcast_t::none;</span></span>
+<span id="L262"><span class="lineNum">     262</span>              : </span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">         486 :     return status::success;</span></span>
+<span id="L264"><span class="lineNum">     264</span>              : }</span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">     1028202 : status_t brgemm_matmul_copy_reorder_t::pd_t::init(</span></span>
+<span id="L267"><span class="lineNum">     267</span>              :         engine_t *engine, engine_t *src_engine, engine_t *dst_engine) {</span>
+<span id="L268"><span class="lineNum">     268</span>              :     using namespace status;</span>
+<span id="L269"><span class="lineNum">     269</span>              : </span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">     1028202 :     CHECK(cpu_reorder_pd_t::init(engine, src_engine, dst_engine));</span></span>
+<span id="L271"><span class="lineNum">     271</span>              : </span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">     1028202 :     const memory_desc_wrapper id(src_md_), od(dst_md_);</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     1028202 :     const int ndims = id.ndims();</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">     1028202 :     const auto type_i = id.data_type();</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">     1028202 :     const auto type_o = od.data_type();</span></span>
+<span id="L277"><span class="lineNum">     277</span>              : </span>
+<span id="L278"><span class="lineNum">     278</span>              :     // TODO: enable support for type_i != type_o cases</span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">     1028202 :     const bool is_int_weights = utils::one_of(</span></span>
+<span id="L280"><span class="lineNum">     280</span>              :             type_i, data_type::s8, data_type::u8, data_type::s4, data_type::u4);</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">     1028202 :     const bool is_plain = id.is_plain() &amp;&amp; od.is_plain();</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :     const bool dt_ok</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">      722450 :             = IMPLICATION(type_i == type_o,</span></span>
+<span id="L284"><span class="lineNum">     284</span>              :                       utils::one_of(type_o, data_type::s8, data_type::bf16,</span>
+<span id="L285"><span class="lineNum">     285</span>              :                               data_type::f16, data_type::f32))</span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">     1018044 :             &amp;&amp; IMPLICATION(type_i != type_o,</span></span>
+<span id="L287"><span class="lineNum">     287</span>              :                     utils::one_of(type_o, data_type::f32, data_type::f16,</span>
+<span id="L288"><span class="lineNum">     288</span>              :                             data_type::bf16)</span>
+<span id="L289"><span class="lineNum">     289</span>              :                             &amp;&amp; is_int_weights)</span>
+<span id="L290"><span class="lineNum">     290</span>              :             // Plain transpose is supported only for f32. Consider</span>
+<span id="L291"><span class="lineNum">     291</span>              :             // adding other datatypes for potential performance improvement.</span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">     2056404 :             &amp;&amp; IMPLICATION(is_plain,</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :                     type_i == data_type::f32 &amp;&amp; type_o == data_type::f32);</span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">     1028202 :     VDISPATCH_REORDER_IC(dt_ok, VERBOSE_UNSUPPORTED_DT);</span></span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">      757243 :     VDISPATCH_REORDER_IC(</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :             id.is_dense(), VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;src&quot;);</span>
+<span id="L298"><span class="lineNum">     298</span>              : </span>
+<span id="L299"><span class="lineNum">     299</span>              :     // plain transpose reorder works for all shapes.</span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">      675805 :     VDISPATCH_REORDER_IC(is_plain ? ndims &gt;= 2 : utils::one_of(ndims, 2, 3),</span></span>
+<span id="L301"><span class="lineNum">     301</span>              :             VERBOSE_BAD_NDIMS, &quot;src&quot;, ndims);</span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span>              :     // plain transpose does not support postops</span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">      340762 :     VDISPATCH_REORDER_IC(IMPLICATION(is_plain, attr()-&gt;post_ops_.len() == 0),</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :             VERBOSE_UNSUPPORTED_POSTOP);</span>
+<span id="L306"><span class="lineNum">     306</span>              : </span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      334766 :     const bool is_f16 = utils::one_of(data_type::f16, type_i, type_o);</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">      334766 :     const bool is_s8s8 = type_i == data_type::s8 &amp;&amp; type_o == data_type::s8;</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">      334766 :     const bool is_bf16_with_int_wei</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">      334766 :             = type_o == data_type::bf16 &amp;&amp; is_int_weights;</span></span>
+<span id="L311"><span class="lineNum">     311</span>              :     const bool isa_ok</span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">         256 :             = IMPLICATION(is_bf16_with_int_wei, mayiuse(avx512_core_bf16))</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">      334606 :             &amp;&amp; IMPLICATION(is_f16, mayiuse(avx512_core_fp16))</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">      334526 :             &amp;&amp; IMPLICATION(!is_f16, mayiuse(avx512_core))</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">      669532 :             &amp;&amp; IMPLICATION(is_s8s8, mayiuse(avx512_core_vnni));</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">      334766 :     VDISPATCH_REORDER_IC(isa_ok, VERBOSE_UNSUPPORTED_ISA);</span></span>
+<span id="L317"><span class="lineNum">     317</span>              : </span>
+<span id="L318"><span class="lineNum">     318</span>              :     const bool has_adj_scale</span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">      238607 :             = od.extra().flags &amp; memory_extra_flags::scale_adjust;</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">      238607 :     VDISPATCH_REORDER_IC(</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :             !has_adj_scale, VERBOSE_UNSUPPORTED_MD_FLAG, &quot;dst:scale_adjust&quot;);</span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">      238607 :     VDISPATCH_REORDER_IC(</span></span>
+<span id="L324"><span class="lineNum">     324</span>              :             attr()-&gt;has_default_values(), VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">      236439 :     VDISPATCH_REORDER_IC(</span></span>
+<span id="L327"><span class="lineNum">     327</span>              :             od.is_blocking_desc(), VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;dst&quot;);</span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">      236439 :     VDISPATCH_REORDER_IC(</span></span>
+<span id="L330"><span class="lineNum">     330</span>              :             !od.has_runtime_dims_or_strides(), VERBOSE_RUNTIMEDIM_UNSUPPORTED);</span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">      236439 :     VDISPATCH_REORDER_IC(!od.has_zero_dim(), VERBOSE_BAD_DIM, &quot;dst&quot;, 0);</span></span>
+<span id="L333"><span class="lineNum">     333</span>              : </span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">      236312 :     CHECK(init_conf(matmul_conf_for_reorder_, src_md_, dst_md_));</span></span>
+<span id="L335"><span class="lineNum">     335</span>              : </span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">         972 :     auto mask_ok = [&amp;](bool check, int mask) {</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">         972 :         return IMPLICATION(</span></span>
+<span id="L338"><span class="lineNum">     338</span>              :                 check, mask == (1 &lt;&lt; ndims) - 1 - (1 &lt;&lt; (ndims - 2)));</span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">         486 :     };</span></span>
+<span id="L340"><span class="lineNum">     340</span>              : </span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">         486 :     const bool req_asymmetric_comp = od.extra().flags</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">         486 :             &amp; memory_extra_flags::compensation_conv_asymmetric_src;</span></span>
+<span id="L343"><span class="lineNum">     343</span>              :     const bool comp_masks_ok = true</span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">         486 :             &amp;&amp; mask_ok(matmul_conf_for_reorder_.s8s8_compensation_required,</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">         486 :                     od.extra().compensation_mask)</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">         486 :             &amp;&amp; mask_ok(req_asymmetric_comp, od.extra().asymm_compensation_mask);</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">         486 :     if (!comp_masks_ok) return invalid_arguments;</span></span>
+<span id="L348"><span class="lineNum">     348</span>              : </span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">         486 :     init_scratchpad();</span></span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">         486 :     return status::success;</span></span>
+<span id="L352"><span class="lineNum">     352</span>              : }</span>
+<span id="L353"><span class="lineNum">     353</span>              : </span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">     1028202 : status_t brgemm_matmul_copy_reorder_t::pd_t::create(reorder_pd_t **reorder_pd,</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :         engine_t *engine, const primitive_attr_t *attr, engine_t *src_engine,</span>
+<span id="L356"><span class="lineNum">     356</span>              :         const memory_desc_t *src_md, engine_t *dst_engine,</span>
+<span id="L357"><span class="lineNum">     357</span>              :         const memory_desc_t *dst_md) {</span>
+<span id="L358"><span class="lineNum">     358</span>              :     using namespace status;</span>
+<span id="L359"><span class="lineNum">     359</span>              : </span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     1028202 :     VDISPATCH_REORDER_IC(impl::is_dense_format_kind({src_md, dst_md}),</span></span>
+<span id="L361"><span class="lineNum">     361</span>              :             VERBOSE_UNSUPPORTED_SPARSE_CFG);</span>
+<span id="L362"><span class="lineNum">     362</span>              :     auto _pd = make_unique_pd&lt;pd_t&gt;(</span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">     2056404 :             attr, src_engine-&gt;kind(), src_md, dst_engine-&gt;kind(), dst_md);</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">     1028202 :     if (_pd == nullptr) return out_of_memory;</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">     1028202 :     CHECK(_pd-&gt;init(engine, src_engine, dst_engine));</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">         486 :     CHECK(_pd-&gt;init_scratchpad_md());</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">         486 :     return safe_ptr_assign&lt;reorder_pd_t&gt;(*reorder_pd, _pd.release());</span></span>
+<span id="L368"><span class="lineNum">     368</span>              : }</span>
+<span id="L369"><span class="lineNum">     369</span>              : </span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">        8693 : status_t brgemm_matmul_copy_reorder_t::execute_body(</span></span>
+<span id="L371"><span class="lineNum">     371</span>              :         const exec_ctx_t &amp;ctx) const {</span>
+<span id="L372"><span class="lineNum">     372</span>              :     using namespace utils;</span>
+<span id="L373"><span class="lineNum">     373</span>              : </span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">        8693 :     const auto src = CTX_IN_MEM(const char *, DNNL_ARG_FROM);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">        8693 :     auto dst = CTX_OUT_MEM(char *, DNNL_ARG_TO);</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">        8693 :     const memory_desc_wrapper &amp;src_d = pd()-&gt;src_md();</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">        8693 :     const memory_desc_wrapper &amp;dst_d = pd()-&gt;dst_md();</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">        8693 :     const auto sdt_sz = types::data_type_size(src_d.data_type());</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">        8693 :     const auto type_o = dst_d.data_type();</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">        8693 :     const auto ddt_sz = types::data_type_size(type_o);</span></span>
+<span id="L381"><span class="lineNum">     381</span>              :     const auto src_typesz_scale</span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">        8693 :             = utils::one_of(src_d.data_type(), data_type::s4, data_type::u4)</span></span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">        8693 :             ? 2</span></span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">        8693 :             : 1;</span></span>
+<span id="L385"><span class="lineNum">     385</span>              : </span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">        8693 :     const auto &amp;kernel_conf = pd()-&gt;matmul_conf_for_reorder_;</span></span>
+<span id="L387"><span class="lineNum">     387</span>              :     const size_t comp_offset_bytes</span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">        8693 :             = dst_d.size() - dst_d.additional_buffer_size();</span></span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">        8693 :     const size_t s8s8_comp_size_bytes = kernel_conf.s8s8_compensation_required</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">        8693 :             ? dst_d.additional_buffer_size(</span></span>
+<span id="L391"><span class="lineNum">     391</span>              :                       memory_extra_flags::compensation_conv_s8s8)</span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">        8693 :             : 0;</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">        8693 :     const size_t zp_comp_offset_bytes</span></span>
+<span id="L394"><span class="lineNum">     394</span>              :             = comp_offset_bytes + s8s8_comp_size_bytes;</span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">       17386 :     int32_t *cp = kernel_conf.s8s8_compensation_required</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">        8693 :             ? reinterpret_cast&lt;int32_t *&gt;(dst + comp_offset_bytes)</span></span>
+<span id="L397"><span class="lineNum">     397</span>              :             : nullptr;</span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">       17386 :     int32_t *zp = kernel_conf.has_zero_point_a</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        8693 :             ? reinterpret_cast&lt;int32_t *&gt;(dst + zp_comp_offset_bytes)</span></span>
+<span id="L400"><span class="lineNum">     400</span>              :             : nullptr;</span>
+<span id="L401"><span class="lineNum">     401</span>              : </span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">        8693 :     const int ndims = src_d.ndims();</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">        8693 :     if (kernel_conf.N &lt;= 0) {</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaUNC">           0 :         parallel_nd(kernel_conf.batch,</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaUNC">           0 :                 utils::div_up(kernel_conf.K, kernel_conf.K_blk),</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaUNC">           0 :                 utils::div_up(kernel_conf.M, kernel_conf.M_blk),</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaUNC">           0 :                 [= COMPAT_THIS_CAPTURE](const dim_t batch, const dim_t k_blk,</span></span>
+<span id="L408"><span class="lineNum">     408</span>              :                         const dim_t m_blk) {</span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaUNC">           0 :             auto ker_exec_ctx = matmul::jit_brgemm_matmul_copy_a_t::ctx_t();</span></span>
+<span id="L410"><span class="lineNum">     410</span>              :             ker_exec_ctx.current_K_blk</span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaUNC">           0 :                     = kernel_conf.K_blk * (k_blk + 1) &gt; kernel_conf.K</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaUNC">           0 :                     ? kernel_conf.K % kernel_conf.K_blk</span></span>
+<span id="L413"><span class="lineNum">     413</span>              :                     : kernel_conf.K_blk;</span>
+<span id="L414"><span class="lineNum">     414</span>              :             ker_exec_ctx.current_M_blk</span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaUNC">           0 :                     = kernel_conf.M_blk * (m_blk + 1) &gt; kernel_conf.M</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaUNC">           0 :                     ? kernel_conf.M % kernel_conf.M_blk</span></span>
+<span id="L417"><span class="lineNum">     417</span>              :                     : kernel_conf.M_blk;</span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaUNC">           0 :             ker_exec_ctx.src = (void *)(src</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaUNC">           0 :                     + m_blk * kernel_conf.M_blk * kernel_conf.a_dt_sz</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaUNC">           0 :                     + k_blk * kernel_conf.K_blk * kernel_conf.M</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaUNC">           0 :                             * kernel_conf.a_dt_sz</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaUNC">           0 :                     + batch * kernel_conf.K * kernel_conf.M</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaUNC">           0 :                             * kernel_conf.a_dt_sz</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaUNC">           0 :                     + src_d.offset0() * kernel_conf.a_dt_sz);</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaUNC">           0 :             ker_exec_ctx.tr_src = (void *)(dst</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaUNC">           0 :                     + m_blk * kernel_conf.M_blk * kernel_conf.K</span></span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaUNC">           0 :                             * kernel_conf.tr_a_dt_sz</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaUNC">           0 :                     + k_blk * kernel_conf.K_blk * kernel_conf.tr_a_dt_sz</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaUNC">           0 :                     + batch * kernel_conf.K * kernel_conf.M</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaUNC">           0 :                             * kernel_conf.tr_a_dt_sz</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaUNC">           0 :                     + dst_d.offset0() * kernel_conf.tr_a_dt_sz);</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaUNC">           0 :             (*a_kernel_)(&amp;ker_exec_ctx);</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaUNC">           0 :         });</span></span>
+<span id="L434"><span class="lineNum">     434</span>              : </span>
+<span id="L435"><span class="lineNum">     435</span>              :     } else {</span>
+<span id="L436"><span class="lineNum">     436</span>              : </span>
+<span id="L437"><span class="lineNum">     437</span>              : #define get_blk_off(md, dt_sz, batch, d0, d1) \</span>
+<span id="L438"><span class="lineNum">     438</span>              :     (ndims == 3 ? (dt_sz) * (md).blk_off((batch), (d0), (d1)) \</span>
+<span id="L439"><span class="lineNum">     439</span>              :                 : (dt_sz) * (md).blk_off((d0), (d1)))</span>
+<span id="L440"><span class="lineNum">     440</span>              : </span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">        8693 :         parallel_nd(kernel_conf.batch, div_up(kernel_conf.N, kernel_conf.N_blk),</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       52615 :                 [= COMPAT_THIS_CAPTURE](dim_t batch, dim_t n_blk_idx) {</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">       52615 :             const auto n = n_blk_idx * kernel_conf.N_blk;</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       52615 :             const bool is_N_tail = (kernel_conf.N - n) &lt; kernel_conf.N_blk;</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       52615 :             auto ker_exec_ctx = matmul::jit_brgemm_matmul_copy_b_t::ctx_t();</span></span>
+<span id="L446"><span class="lineNum">     446</span>              :             ker_exec_ctx.current_N_blk</span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">       52615 :                     = is_N_tail ? kernel_conf.N_tail : kernel_conf.N_blk;</span></span>
+<span id="L448"><span class="lineNum">     448</span>              : </span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">       52615 :             assert(!is_runtime_value(kernel_conf.s8s8_comp_b_str));</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       52615 :             const auto comp_offset = batch * kernel_conf.s8s8_comp_b_str</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">       52615 :                     + n_blk_idx * kernel_conf.s8s8_comp_n_str;</span></span>
+<span id="L452"><span class="lineNum">     452</span>              : </span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">      105230 :             ker_exec_ctx.zp_a_compensation_ptr = kernel_conf.has_zero_point_a</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">       52615 :                     ? (void *)&amp;zp[comp_offset]</span></span>
+<span id="L455"><span class="lineNum">     455</span>              :                     : nullptr;</span>
+<span id="L456"><span class="lineNum">     456</span>              :             ker_exec_ctx.compensation_ptr</span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">      105230 :                     = kernel_conf.s8s8_compensation_required</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">       52615 :                     ? (void *)&amp;cp[comp_offset]</span></span>
+<span id="L459"><span class="lineNum">     459</span>              :                     : nullptr;</span>
+<span id="L460"><span class="lineNum">     460</span>              : </span>
+<span id="L461"><span class="lineNum">     461</span>              :             // required to compute zp compensation</span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">       52615 :             int tmp_neg_a_zp_val = -1;</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">       52615 :             ker_exec_ctx.zp_a_neg_value_ptr = &amp;tmp_neg_a_zp_val;</span></span>
+<span id="L464"><span class="lineNum">     464</span>              : </span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">       52615 :             int k_blk_idx = 0;</span></span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">      900448 :             for (; k_blk_idx &lt; kernel_conf.K / kernel_conf.K_blk; k_blk_idx++) {</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">      847833 :                 const auto k = k_blk_idx * kernel_conf.K_blk;</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">      847833 :                 const auto src_offset = !kernel_conf.blocked_B</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">      851901 :                         ? get_blk_off(src_d, sdt_sz, batch, k, n)</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">        4068 :                         : get_blk_off(</span></span>
+<span id="L471"><span class="lineNum">     471</span>              :                                   src_d, sdt_sz, batch, k_blk_idx, n_blk_idx);</span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">      888460 :                 ker_exec_ctx.src = (void *)&amp;src[src_offset / src_typesz_scale];</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">      847833 :                 ker_exec_ctx.tr_src = (void *)&amp;dst[get_blk_off(</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">     1695666 :                         dst_d, ddt_sz, batch, k_blk_idx, n_blk_idx)];</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">      847833 :                 ker_exec_ctx.current_K_start = k;</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">      847833 :                 ker_exec_ctx.current_K_iters = kernel_conf.K_blk;</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC">      847833 :                 (*b_kernel_)(&amp;ker_exec_ctx);</span></span>
+<span id="L478"><span class="lineNum">     478</span>              :             }</span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">       52615 :             if (kernel_conf.K_tail &gt; 0) {</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">       40627 :                 const auto k = k_blk_idx * kernel_conf.K_blk;</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">       40627 :                 const auto src_offset = !kernel_conf.blocked_B</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">       40627 :                         ? get_blk_off(src_d, sdt_sz, batch, k, n)</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaUNC">           0 :                         : get_blk_off(</span></span>
+<span id="L484"><span class="lineNum">     484</span>              :                                   src_d, sdt_sz, batch, k_blk_idx, n_blk_idx);</span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaGNC">       40627 :                 ker_exec_ctx.src = (void *)&amp;src[src_offset / src_typesz_scale];</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">       40627 :                 const auto dst_offset = get_blk_off(</span></span>
+<span id="L487"><span class="lineNum">     487</span>              :                         dst_d, ddt_sz, batch, k_blk_idx, n_blk_idx);</span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">       40627 :                 ker_exec_ctx.tr_src = (void *)&amp;dst[dst_offset];</span></span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">       40627 :                 ker_exec_ctx.current_K_start = k;</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">       40627 :                 ker_exec_ctx.current_K_iters = kernel_conf.K_tail;</span></span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">       40627 :                 (*b_kernel_)(&amp;ker_exec_ctx);</span></span>
+<span id="L492"><span class="lineNum">     492</span>              :                 const auto vnni_granularity</span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">       40627 :                         = data_type_vnni_granularity(type_o);</span></span>
+<span id="L494"><span class="lineNum">     494</span>              :                 const auto dst_zero_out_offset</span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">       40627 :                         = rnd_up(kernel_conf.K_tail, vnni_granularity)</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">       40627 :                         * kernel_conf.N_blk * ddt_sz;</span></span>
+<span id="L497"><span class="lineNum">     497</span>              :                 const auto elems_to_zero</span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">       40627 :                         = rnd_dn(kernel_conf.K_blk - kernel_conf.K_tail,</span></span>
+<span id="L499"><span class="lineNum">     499</span>              :                                   vnni_granularity)</span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">       40627 :                         * kernel_conf.N_blk * ddt_sz;</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">       40627 :                 array_set(&amp;dst[dst_offset + dst_zero_out_offset], 0,</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :                         elems_to_zero);</span>
+<span id="L503"><span class="lineNum">     503</span>              :             }</span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">       52615 :         });</span></span>
+<span id="L505"><span class="lineNum">     505</span>              : </span>
+<span id="L506"><span class="lineNum">     506</span>              : #undef get_blk_off</span>
+<span id="L507"><span class="lineNum">     507</span>              :     }</span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">        8693 :     return status::success;</span></span>
+<span id="L509"><span class="lineNum">     509</span>              : }</span>
+<span id="L510"><span class="lineNum">     510</span>              : </span>
+<span id="L511"><span class="lineNum">     511</span>              : } // namespace x64</span>
+<span id="L512"><span class="lineNum">     512</span>              : } // namespace cpu</span>
+<span id="L513"><span class="lineNum">     513</span>              : } // namespace impl</span>
+<span id="L514"><span class="lineNum">     514</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

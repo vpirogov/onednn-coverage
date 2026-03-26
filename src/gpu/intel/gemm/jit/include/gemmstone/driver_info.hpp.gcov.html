@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/include/gemmstone/driver_info.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/include/gemmstone">src/gpu/intel/gemm/jit/include/gemmstone</a> - driver_info.hpp<span style="font-size: 80%;"> (source / <a href="driver_info.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">93.1&nbsp;%</td>
+            <td class="headerCovTableEntry">29</td>
+            <td class="headerCovTableEntry">27</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">92.0&nbsp;%</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">23</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GEMMSTONE_INCLUDE_GEMMSTONE_DRIVER_INFO_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GEMMSTONE_INCLUDE_GEMMSTONE_DRIVER_INFO_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;cstdint&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;string&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;gemmstone/config.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : // Loop identifiers.</span>
+<span id="L28"><span class="lineNum">      28</span>              : enum LoopType : uint8_t {</span>
+<span id="L29"><span class="lineNum">      29</span>              :     LoopM = 0,</span>
+<span id="L30"><span class="lineNum">      30</span>              :     LoopN = 1,</span>
+<span id="L31"><span class="lineNum">      31</span>              :     LoopK = 2,</span>
+<span id="L32"><span class="lineNum">      32</span>              :     LoopPersistent = 0x40,          // Flag OR'ed with other loop types, indicating persistent threads.</span>
+<span id="L33"><span class="lineNum">      33</span>              :     LoopMNBoustrophedonMNK = 0x80,  // Fused m/n indices (boustrophedon ordering), with MNK nested inside</span>
+<span id="L34"><span class="lineNum">      34</span>              :     LoopMNBoustrophedonNMK = 0x81,  // Fused n/m indices (boustrophedon ordering), with NMK nested inside</span>
+<span id="L35"><span class="lineNum">      35</span>              :     LoopMNHilbertMNK = 0x90,        // Fused m/n indices (Hilbert ordering), with MNK nested inside</span>
+<span id="L36"><span class="lineNum">      36</span>              :     LoopMNHilbertNMK = 0x91,        // Fused n/m indices (Hilbert ordering), with NMK nested inside</span>
+<span id="L37"><span class="lineNum">      37</span>              :     LoopMNLinearMNK = 0xA0,         // Fused m/n indices (simple linear ordering), with MNK nested inside</span>
+<span id="L38"><span class="lineNum">      38</span>              :     LoopMNLinearNMK = 0xA1,         // Fused n/m indices (simple linear ordering), with NMK nested inside</span>
+<span id="L39"><span class="lineNum">      39</span>              :     LoopMNNestedLinearMNK = 0xB0,   // Fused m/n indices (nested linear ordering), with MNK nested inside</span>
+<span id="L40"><span class="lineNum">      40</span>              :     LoopMNNestedLinearNMK = 0xB1,   // Fused n/m indices (nested linear ordering), with NMK nested inside</span>
+<span id="L41"><span class="lineNum">      41</span>              :     LoopAny = 0xFF,</span>
+<span id="L42"><span class="lineNum">      42</span>              :     LoopNone = 0xFF</span>
+<span id="L43"><span class="lineNum">      43</span>              : };</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span>              : // Workgroup sizing options.</span>
+<span id="L46"><span class="lineNum">      46</span>              : enum WGType : uint8_t {</span>
+<span id="L47"><span class="lineNum">      47</span>              :     WGDynamic = 0,                  // Dynamic m/n work group size (can shrink or expand)</span>
+<span id="L48"><span class="lineNum">      48</span>              :     WGFixed = 1,                    // Fixed m/n work group size</span>
+<span id="L49"><span class="lineNum">      49</span>              :     WGShrinkable = 2,               // m/n work group size can shrink but not expand</span>
+<span id="L50"><span class="lineNum">      50</span>              : };</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              : // Flags.</span>
+<span id="L53"><span class="lineNum">      53</span>              : enum DriverInfoFlags : uint64_t {</span>
+<span id="L54"><span class="lineNum">      54</span>              :     FlagKRemainderHandling = 1,        // GEMM kernel performs k remainder handling</span>
+<span id="L55"><span class="lineNum">      55</span>              :     FlagKParallel = 2,                 // GEMM kernel is parallelized in the k dimension.</span>
+<span id="L56"><span class="lineNum">      56</span>              :     FlagZParallel = 2,                 // Copy kernel is parallelized in the z dimension.</span>
+<span id="L57"><span class="lineNum">      57</span>              :     FlagKParallelLocal = 4,            // GEMM kernel is parallelized in the k dimension inside a workgroup.</span>
+<span id="L58"><span class="lineNum">      58</span>              :     FlagKParallelVariable = 8,         // GEMM kernel uses variable k-parallelization (see GEMMStrategy::kParallelVariable).</span>
+<span id="L59"><span class="lineNum">      59</span>              :     FlagFusedBeta = 0x10,              // GEMM kernel does fused beta scaling + atomics.</span>
+<span id="L60"><span class="lineNum">      60</span>              :     FlagFusedPostOps = 0x20,           // GEMM kernel does fused atomics + post-ops.</span>
+<span id="L61"><span class="lineNum">      61</span>              :     FlagTempC = 0x40,                  // GEMM kernel needs temporary C buffer.</span>
+<span id="L62"><span class="lineNum">      62</span>              :     FlagAltFusedBeta = 0x80,           // GEMM kernel uses alternate fused beta scaling + atomics logic.</span>
+<span id="L63"><span class="lineNum">      63</span>              :     FlagAutoAtomic = 0x100,            // GEMM kernel may use atomic C accesses automatically for beta = 1.</span>
+<span id="L64"><span class="lineNum">      64</span>              :     FlagShrinkWGK = 0x200,             // With local k-parallelization, automatically shrink wgK to fit dispatch to GPU.</span>
+<span id="L65"><span class="lineNum">      65</span>              :     FlagAlphaPtr = 0x400,              // Pass alpha by pointer.</span>
+<span id="L66"><span class="lineNum">      66</span>              :     FlagBetaPtr = 0x800,               // Pass beta by pointer.</span>
+<span id="L67"><span class="lineNum">      67</span>              :     FlagFixedWGK = 0x1000,             // With local k-parallelization, wgK is fixed</span>
+<span id="L68"><span class="lineNum">      68</span>              :     FlagZeroTempC = 0x2000,            // GEMM kernel expects temporary C buffer to be pre-zeroed and will leave zeros there.</span>
+<span id="L69"><span class="lineNum">      69</span>              :     FlagNondeterministic = 0x4000,     // Kernel produces nondeterministic results.</span>
+<span id="L70"><span class="lineNum">      70</span>              :     FlagMaskFillGoal = 0xF0000,        // Fraction of available thread slots to fill, in sixteenths</span>
+<span id="L71"><span class="lineNum">      71</span>              :     FlagShiftFillGoal = 16,            //   (starting bit)</span>
+<span id="L72"><span class="lineNum">      72</span>              :     FlagScrambleM = 0x100000,          // Scramble WGs in m dimension.</span>
+<span id="L73"><span class="lineNum">      73</span>              :     FlagScrambleN = 0x200000,          // Scramble WGs in n dimension.</span>
+<span id="L74"><span class="lineNum">      74</span>              :     FlagExtraWG = 0x400000,            // Add an additional workgroup.</span>
+<span id="L75"><span class="lineNum">      75</span>              :     FlagAGroupSums = 0x1000000,        // Kernel needs A group sums.</span>
+<span id="L76"><span class="lineNum">      76</span>              :     FlagBGroupSums = 0x2000000,        // Kernel needs B group sums.</span>
+<span id="L77"><span class="lineNum">      77</span>              :     FlagMaskCInterleave = 0x3F0000000, // C interleave chunk size</span>
+<span id="L78"><span class="lineNum">      78</span>              :     FlagShiftCInterleave = 28,         //   (starting bit)</span>
+<span id="L79"><span class="lineNum">      79</span>              : };</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              : // Driver information, shared by all kernel types.</span>
+<span id="L82"><span class="lineNum">      82</span>              : struct CommonDriverInfo {</span>
+<span id="L83"><span class="lineNum">      83</span>              :     int subgroupSize;               // Declared subgroup size (unrelated to actual SIMD lengths in kernel)</span>
+<span id="L84"><span class="lineNum">      84</span>              :     LoopType fusedLoop;             // Loop dimension in which EUs are fused (if any).</span>
+<span id="L85"><span class="lineNum">      85</span>              :     int grfCount;                   // # of GRFs used by kernel.</span>
+<span id="L86"><span class="lineNum">      86</span>              :     LoopType loopOrder[3];          // Loops corresponding to x/y/z dimensions of kernel dispatch.</span>
+<span id="L87"><span class="lineNum">      87</span>              :     int blocking[3];                // Standard blocking sizes in m/n/k dimensions.</span>
+<span id="L88"><span class="lineNum">      88</span>              :     int blockingAlt[3];             // Alternative blocking sizes in m/n/k dimensions.</span>
+<span id="L89"><span class="lineNum">      89</span>              :     int unroll[3];                  // m/n/k unrolls.</span>
+<span id="L90"><span class="lineNum">      90</span>              :     int wg[3];                      // HW threads per workgroup in m/n/k dimensions.</span>
+<span id="L91"><span class="lineNum">      91</span>              :     int wgExpand;                   // If &gt; 1, workgroup size needs to be scaled by this factor.</span>
+<span id="L92"><span class="lineNum">      92</span>              :     WGType wgUpdate;                // Work group type showing how/if work group sizes can be updated.</span>
+<span id="L93"><span class="lineNum">      93</span>              :     uint64_t flags;                 // Bitfield with additional boolean kernel attributes (see DriverInfoFlags enum).</span>
+<span id="L94"><span class="lineNum">      94</span>              :     int slm;                        // Minimum SLM allocation.</span>
+<span id="L95"><span class="lineNum">      95</span>              :     int perKSLM;                    // If &gt; 0, dynamically allocate at least perKSLM * wg[LoopK] bytes of SLM.</span>
+<span id="L96"><span class="lineNum">      96</span>              :     int alignment[3];               // Address alignment requirements for A,B,C (gemm) or S,D (copy).</span>
+<span id="L97"><span class="lineNum">      97</span>              :     bool support4GB[3];             // True if &gt;4GB buffers allowed for A,B,C (gemm) or S,D (copy).</span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">      917786 :     bool fusedEUs()           const { return (fusedLoop != LoopNone); }</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       69086 :     bool isMNK()              const { auto l = loopOrder[0] &amp; ~LoopPersistent; return l == LoopM || l == LoopMNHilbertMNK || l == LoopMNBoustrophedonMNK || l == LoopMNLinearMNK || l == LoopMNNestedLinearMNK; }</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">     1076026 :     bool isNMK()              const { auto l = loopOrder[0] &amp; ~LoopPersistent; return l == LoopN || l == LoopMNHilbertNMK || l == LoopMNBoustrophedonNMK || l == LoopMNLinearNMK || l == LoopMNNestedLinearNMK; }</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">      309233 :     bool isHilbert()          const { auto l = loopOrder[0] &amp; ~LoopPersistent; return l == LoopMNHilbertMNK || l == LoopMNHilbertNMK; }</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">        5189 :     bool isBoustrophedon()    const { auto l = loopOrder[0] &amp; ~LoopPersistent; return l == LoopMNBoustrophedonMNK || l == LoopMNBoustrophedonNMK; }</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">       76626 :     bool isSimpleLinear()     const { auto l = loopOrder[0] &amp; ~LoopPersistent; return l == LoopMNLinearMNK || l == LoopMNLinearNMK; }</span></span>
+<span id="L105"><span class="lineNum">     105</span>              :     bool isNestedLinear()     const { auto l = loopOrder[0] &amp; ~LoopPersistent; return l == LoopMNNestedLinearMNK || l == LoopMNNestedLinearNMK; }</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      922774 :     bool isLinearOrder()      const { return (loopOrder[0] != LoopNone) &amp;&amp; (loopOrder[0] &amp; 0x80); }</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">       76626 :     bool isPersistent()       const { return (loopOrder[0] != LoopNone) &amp;&amp; (loopOrder[0] &amp; LoopPersistent); }</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">     7984453 :     bool fixedWG()            const { return wgUpdate == WGFixed; }</span></span>
+<span id="L109"><span class="lineNum">     109</span>              :     int  threadsPerWG()       const { return wg[LoopM] * wg[LoopN] * wg[LoopK] * wgExpand; }</span>
+<span id="L110"><span class="lineNum">     110</span>              :     bool kRemainderHandling() const { return flags &amp; FlagKRemainderHandling; }</span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">    16299319 :     bool kParallel()          const { return flags &amp; FlagKParallel; }</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :     bool zParallel()          const { return flags &amp; FlagZParallel; }</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">    18472375 :     bool kParallelLocal()     const { return flags &amp; FlagKParallelLocal; }</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">    30958423 :     bool kParallelVariable()  const { return flags &amp; FlagKParallelVariable; }</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">     4219959 :     bool fusedBeta()          const { return flags &amp; FlagFusedBeta; }</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">     3975202 :     bool fusedPostOps()       const { return flags &amp; FlagFusedPostOps; }</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">     1940568 :     bool needsTempC()         const { return flags &amp; FlagTempC; }</span></span>
+<span id="L118"><span class="lineNum">     118</span>              :     bool zeroTempC()          const { return flags &amp; FlagZeroTempC; }</span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">     3513725 :     bool altFusedBeta()       const { return flags &amp; FlagAltFusedBeta; }</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaUNC">           0 :     bool mayUseAutoAtomic()   const { return flags &amp; FlagAutoAtomic; }</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">     3341907 :     bool shrinkWGK()          const { return flags &amp; FlagShrinkWGK; }</span></span>
+<span id="L122"><span class="lineNum">     122</span>              :     bool alphaPtr()           const { return flags &amp; FlagAlphaPtr; }</span>
+<span id="L123"><span class="lineNum">     123</span>              :     bool betaPtr()            const { return flags &amp; FlagBetaPtr; }</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">     8390478 :     bool fixedWGK()           const { return flags &amp; FlagFixedWGK; }</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaUNC">           0 :     bool nondeterministic()   const { return flags &amp; FlagNondeterministic; }</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :     bool scrambleM()          const { return flags &amp; FlagScrambleM; }</span>
+<span id="L127"><span class="lineNum">     127</span>              :     bool scrambleN()          const { return flags &amp; FlagScrambleN; }</span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       76626 :     int extraWGs()            const { return (flags &amp; FlagExtraWG) ? 1 : 0; }</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :     bool needsAGroupSums()    const { return flags &amp; FlagAGroupSums; }</span>
+<span id="L130"><span class="lineNum">     130</span>              :     bool needsBGroupSums()    const { return flags &amp; FlagBGroupSums; }</span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">     1829058 :     int wgTile(LoopType l)    const { return unroll[l] * wg[l]; }</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">      232623 :     int kPadding()            const { return (kParallel() || kParallelVariable()) ? blockingAlt[LoopK] : 0; }</span></span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">         252 :     float fillGoal() const {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         252 :         auto sixteenths = (flags &amp; FlagMaskFillGoal) &gt;&gt; FlagShiftFillGoal;</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">         252 :         return (sixteenths &gt; 0) ? (sixteenths / 16.0f) : 1.0f;</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :     }</span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">    15491861 :     int cInterleaveChunk() const {</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">    15491861 :         int chunk = (flags &amp; FlagMaskCInterleave) &gt;&gt; FlagShiftCInterleave;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">    15491861 :         return chunk ? chunk : 1;</span></span>
+<span id="L143"><span class="lineNum">     143</span>              :     }</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              : };</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              : // Definitions for flag arguments to kernels.</span>
+<span id="L148"><span class="lineNum">     148</span>              : enum {</span>
+<span id="L149"><span class="lineNum">     149</span>              :     FlagCOColumn = 0x4,</span>
+<span id="L150"><span class="lineNum">     150</span>              :     FlagCORow = 0x8,</span>
+<span id="L151"><span class="lineNum">     151</span>              :     FlagNonfinalKBlock = 0x10,</span>
+<span id="L152"><span class="lineNum">     152</span>              :     FlagNoninitialKBlock = 0x80,</span>
+<span id="L153"><span class="lineNum">     153</span>              :     FlagLateFusedGEMMDone = 0x100,</span>
+<span id="L154"><span class="lineNum">     154</span>              :     FlagEarlyFusedGEMMDone = 0x200,</span>
+<span id="L155"><span class="lineNum">     155</span>              :     FlagStoreSums = 0x400,</span>
+<span id="L156"><span class="lineNum">     156</span>              :     FlagKSlicing = 0x1000,</span>
+<span id="L157"><span class="lineNum">     157</span>              :     FlagLeader = 0x2000,</span>
+<span id="L158"><span class="lineNum">     158</span>              :     FlagKPartitioned = 0x4000,</span>
+<span id="L159"><span class="lineNum">     159</span>              :     FlagDidBeta = 0x100,</span>
+<span id="L160"><span class="lineNum">     160</span>              :     FlagSkipBetaCheck = 0x200,</span>
+<span id="L161"><span class="lineNum">     161</span>              :     FlagKSlice2 = 0x10000,</span>
+<span id="L162"><span class="lineNum">     162</span>              : };</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span>              : GEMMSTONE_NAMESPACE_END</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span>              : #endif /* header guard */</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

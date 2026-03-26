@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/jit/binary_format.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/jit">src/gpu/intel/jit</a> - binary_format.cpp<span style="font-size: 80%;"> (source / <a href="binary_format.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">55.8&nbsp;%</td>
+            <td class="headerCovTableEntry">197</td>
+            <td class="headerCovTableEntry">110</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">43.0&nbsp;%</td>
+            <td class="headerCovTableEntry">286</td>
+            <td class="headerCovTableEntry">123</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifdef ENABLE_LLVM_WCONVERSION</span>
+<span id="L18"><span class="lineNum">      18</span>              : #pragma clang diagnostic push</span>
+<span id="L19"><span class="lineNum">      19</span>              : #pragma clang diagnostic ignored &quot;-Wimplicit-int-conversion&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #endif</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;gpu/intel/jit/binary_format.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;gpu/intel/compute/utils.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;gpu/intel/engine.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;gpu/intel/jit/generator.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;gpu/intel/stream.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : #define MAGIC0 0xBEEFCAFEu</span>
+<span id="L31"><span class="lineNum">      31</span>              : #define MAGIC1 0x3141592653589793ull</span>
+<span id="L32"><span class="lineNum">      32</span>              : #define MAGIC2 0xBEAD</span>
+<span id="L33"><span class="lineNum">      33</span>              : #define MAGIC3 0xFACE</span>
+<span id="L34"><span class="lineNum">      34</span>              : #define MAGIC4 0x0123456789ABCDEFull</span>
+<span id="L35"><span class="lineNum">      35</span>              : #define MAGIC5 0xFEDCBA9876543210ull</span>
+<span id="L36"><span class="lineNum">      36</span>              : #define MAGICPTR 0xABADFEEDu</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : #define MAGICSIZEX 4</span>
+<span id="L39"><span class="lineNum">      39</span>              : #define MAGICSIZEY 2</span>
+<span id="L40"><span class="lineNum">      40</span>              : #define MAGICSIZEZ 1</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_SYCL</span>
+<span id="L43"><span class="lineNum">      43</span>              : #define FORWARD(hw) NGEN_FORWARD_SYCL(hw)</span>
+<span id="L44"><span class="lineNum">      44</span>              : #endif</span>
+<span id="L45"><span class="lineNum">      45</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL</span>
+<span id="L46"><span class="lineNum">      46</span>              : #define FORWARD(hw) NGEN_FORWARD_OPENCL(hw)</span>
+<span id="L47"><span class="lineNum">      47</span>              : #endif</span>
+<span id="L48"><span class="lineNum">      48</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_ZE</span>
+<span id="L49"><span class="lineNum">      49</span>              : #define FORWARD(hw) NGEN_FORWARD_LEVEL_ZERO(hw)</span>
+<span id="L50"><span class="lineNum">      50</span>              : #endif</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              : namespace dnnl {</span>
+<span id="L53"><span class="lineNum">      53</span>              : namespace impl {</span>
+<span id="L54"><span class="lineNum">      54</span>              : namespace gpu {</span>
+<span id="L55"><span class="lineNum">      55</span>              : namespace intel {</span>
+<span id="L56"><span class="lineNum">      56</span>              : namespace jit {</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              : using namespace ngen;</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              : template &lt;HW hw&gt;</span>
+<span id="L61"><span class="lineNum">      61</span>              : class binary_format_kernel_t : public generator_t&lt;hw&gt; {</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       79188 :     FORWARD(hw);</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span>              : public:</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1294 :     binary_format_kernel_t(const engine_t *engine)</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1294 :         : generator_t&lt;hw&gt;(debug_config_t {GENERATOR_NAME, GENERATOR_LINE}) {</span></span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        3882 :         auto low_half = [](uint64_t q) -&gt; uint32_t { return q &amp; 0xFFFFFFFF; };</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        3882 :         auto high_half = [](uint64_t q) -&gt; uint32_t { return q &gt;&gt; 32; };</span></span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src0&quot;, DataType::ud); // r5.4:ud</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src1&quot;, DataType::uq); // r5.3:uq</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src2&quot;, DataType::uw); // r6.0:uw</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src3&quot;, DataType::uw); // r6.2:uw</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src4&quot;, DataType::uq); // r6.1:uq</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src5&quot;, DataType::uq); // r6.2:uq</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        1294 :         newArgument(&quot;src_ptr&quot;, ExternalArgumentType::GlobalPtr);</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">        1294 :         newArgument(&quot;ok&quot;, ExternalArgumentType::GlobalPtr);</span></span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">        1294 :         setDefaultAutoSWSB();</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">        1294 :         requireSIMD((GRF::bytes(hw) == 64) ? 16 : 8);</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">        1294 :         requireLocalID(3); // r1-r3</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        1294 :         requireLocalSize(); // r7.0-2:ud</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        1294 :         if (utils::one_of(hw, ngen::HW::XE3P_35_10, ngen::HW::XE3P_35_11,</span></span>
+<span id="L85"><span class="lineNum">      85</span>              :                     ngen::HW::XE3P_UNKNOWN))</span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaUNC">           0 :             setEfficient64Bit(engine-&gt;device_info()-&gt;is_efficient_64bit());</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        1294 :         finalizeInterface();</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        1294 :         Label doWrite;</span></span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        1294 :         auto src0 = getArgument(&quot;src0&quot;);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">        1294 :         auto src1 = getArgument(&quot;src1&quot;);</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        1294 :         auto src2 = getArgument(&quot;src2&quot;);</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">        1294 :         auto src3 = getArgument(&quot;src3&quot;);</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">        1294 :         auto src4 = getArgument(&quot;src4&quot;);</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">        1294 :         auto src5 = getArgument(&quot;src5&quot;);</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">        1294 :         auto src_ptr = getArgument(&quot;src_ptr&quot;);</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">        1294 :         auto ok_surface = Surface(getArgumentSurfaceIfExists(&quot;ok&quot;));</span></span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">        1294 :         auto data = r30;</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        1294 :         auto data2 = r31;</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">        1294 :         auto ok = data.ud(0);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">        1294 :         auto header = r64;</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">        1294 :         prologue();</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">        1294 :         setDefaultNoMask();</span></span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span>              :         // Default: test failure.</span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">        1294 :         mov(1, ok, uint16_t(0));</span></span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :         // Validate scalar arguments</span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src0, uint32_t(MAGIC0));</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src1.ud(0), low_half(MAGIC1));</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src1.ud(1), high_half(MAGIC1));</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.uw(), src2, uint16_t(MAGIC2));</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.uw(), src3, uint16_t(MAGIC3));</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src4.ud(0), low_half(MAGIC4));</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src4.ud(1), high_half(MAGIC4));</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src5.ud(0), low_half(MAGIC5));</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), src5.ud(1), high_half(MAGIC5));</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :         // Validate A64 pointer argument.</span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">        1294 :         mov&lt;uint32_t&gt;(2, header[0](1), src_ptr.ud(0)(1));</span></span>
+<span id="L133"><span class="lineNum">     133</span>              :         if (hw &gt;= HW::XeHPC)</span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">         519 :             load(1 | SWSB(sb0, 1), data2, D64, A64, header);</span></span>
+<span id="L135"><span class="lineNum">     135</span>              :         else</span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">         775 :             load(1 | SWSB(sb0, 1), data2, scattered_dword(), A64, header);</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0] | sb0.dst, null.ud(), data2.ud(0),</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        1294 :                 uint32_t(MAGICPTR));</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span>              :         // Validate OCL local size arguments</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), getLocalSize(0), uint32_t(MAGICSIZEX));</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), getLocalSize(1), uint32_t(MAGICSIZEY));</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        1294 :         cmp(1 | eq | f0[0], null.ud(), getLocalSize(2), uint32_t(MAGICSIZEZ));</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        1294 :         jmpi(1 | ~f0[0], doWrite);</span></span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              :         // Test passed.</span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        1294 :         mov(1, ok, uint16_t(1));</span></span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        1294 :         mark(doWrite);</span></span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span>              :         // Write out results.</span>
+<span id="L155"><span class="lineNum">     155</span>              :         if (hw &gt;= HW::XeHPC) {</span>
+<span id="L156"><span class="lineNum">     156</span>              :             // stateless</span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">         519 :             mov&lt;uint32_t&gt;(2, header, getArgument(&quot;ok&quot;).d(0)(1));</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">         519 :             store.ugm(1 | SWSB(sb2, 1), D32(1), A64, header, data);</span></span>
+<span id="L159"><span class="lineNum">     159</span>              :         } else {</span>
+<span id="L160"><span class="lineNum">     160</span>              :             // bti surface</span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">         775 :             mov&lt;uint32_t&gt;(1, header, uint16_t(0));</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">         775 :             store(1 | SWSB(sb2, 1), scattered_dword(), ok_surface, header,</span></span>
+<span id="L163"><span class="lineNum">     163</span>              :                     data);</span>
+<span id="L164"><span class="lineNum">     164</span>              :         }</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">        1029 :         if (hw &gt;= HW::XeHP) memfence(sb2, header);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">        1294 :         mov&lt;uint32_t&gt;(8, r127, r0);</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        1294 :         threadend(SWSB(sb2, 1), r127);</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">        1294 :     }</span></span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        2588 :     static compute::kernel_t make_kernel(engine_t *engine, bool *skip_check) {</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">        2588 :         compute::kernel_t kernel;</span></span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">        2588 :         *skip_check = false;</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :         if (hw != HW::Unknown) {</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        1294 :             binary_format_kernel_t&lt;hw&gt; binary_format_kernel(engine);</span></span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">        1294 :             auto status = engine-&gt;create_kernel(&amp;kernel, &amp;binary_format_kernel);</span></span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">        1294 :             if (status != status::success) return nullptr;</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">        1294 :             *skip_check = binary_format_kernel.binaryIsZebin();</span></span>
+<span id="L183"><span class="lineNum">     183</span>              :         } else {</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">        1294 :             switch (engine-&gt;device_info()-&gt;gpu_arch()) {</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         265 :                 case compute::gpu_arch_t::xe_lp:</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">         265 :                     kernel = binary_format_kernel_t&lt;HW::XeLP&gt;::make_kernel(</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :                             engine, skip_check);</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         265 :                     break;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaUNC">           0 :                 case compute::gpu_arch_t::xe_hp:</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0 :                     kernel = binary_format_kernel_t&lt;HW::XeHP&gt;::make_kernel(</span></span>
+<span id="L191"><span class="lineNum">     191</span>              :                             engine, skip_check);</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">         510 :                 case compute::gpu_arch_t::xe_hpg:</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">         510 :                     kernel = binary_format_kernel_t&lt;HW::XeHPG&gt;::make_kernel(</span></span>
+<span id="L195"><span class="lineNum">     195</span>              :                             engine, skip_check);</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">         510 :                     break;</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">         254 :                 case compute::gpu_arch_t::xe_hpc:</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">         254 :                     kernel = binary_format_kernel_t&lt;HW::XeHPC&gt;::make_kernel(</span></span>
+<span id="L199"><span class="lineNum">     199</span>              :                             engine, skip_check);</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">         254 :                     break;</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">         265 :                 case compute::gpu_arch_t::xe2:</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">         265 :                     kernel = binary_format_kernel_t&lt;HW::Xe2&gt;::make_kernel(</span></span>
+<span id="L203"><span class="lineNum">     203</span>              :                             engine, skip_check);</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">         265 :                     break;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaUNC">           0 :                 case compute::gpu_arch_t::xe3:</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaUNC">           0 :                     kernel = binary_format_kernel_t&lt;HW::Xe3&gt;::make_kernel(</span></span>
+<span id="L207"><span class="lineNum">     207</span>              :                             engine, skip_check);</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaUNC">           0 :                 case compute::gpu_arch_t::xe3p_35_10:</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaUNC">           0 :                     kernel = binary_format_kernel_t&lt;</span></span>
+<span id="L211"><span class="lineNum">     211</span>              :                             HW::XE3P_35_10&gt;::make_kernel(engine, skip_check);</span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaUNC">           0 :                 case compute::gpu_arch_t::xe3p_35_11:</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaUNC">           0 :                     kernel = binary_format_kernel_t&lt;</span></span>
+<span id="L215"><span class="lineNum">     215</span>              :                             HW::XE3P_35_11&gt;::make_kernel(engine, skip_check);</span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaUNC">           0 :                 case compute::gpu_arch_t::xe3p_35_unknown:</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaUNC">           0 :                     kernel = binary_format_kernel_t&lt;</span></span>
+<span id="L219"><span class="lineNum">     219</span>              :                             HW::XE3P_UNKNOWN&gt;::make_kernel(engine, skip_check);</span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaUNC">           0 :                 case compute::gpu_arch_t::unknown:</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaUNC">           0 :                     VWARN(common, runtime,</span></span>
+<span id="L224"><span class="lineNum">     224</span>              :                             &quot;unknown gpu platform - optimizations are disabled &quot;</span>
+<span id="L225"><span class="lineNum">     225</span>              :                             &quot;for binary format kernel&quot;);</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :                     kernel = nullptr;</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :             }</span>
+<span id="L229"><span class="lineNum">     229</span>              :         }</span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">        2588 :         return kernel;</span></span>
+<span id="L231"><span class="lineNum">     231</span>              :     }</span>
+<span id="L232"><span class="lineNum">     232</span>              : };</span>
+<span id="L233"><span class="lineNum">     233</span>              : </span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">        1294 : status_t gpu_supports_binary_format(bool *ok, impl::engine_t *engine) {</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">        1294 :     *ok = false;</span></span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">        1294 :     auto gpu_engine = utils::downcast&lt;engine_t *&gt;(engine);</span></span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        1294 :     if (!gpu_engine) {</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaUNC">           0 :         VERROR(common, runtime, &quot;bad engine kind, expected a gpu engine&quot;);</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaUNC">           0 :         return status::invalid_arguments;</span></span>
+<span id="L242"><span class="lineNum">     242</span>              :     }</span>
+<span id="L243"><span class="lineNum">     243</span>              : </span>
+<span id="L244"><span class="lineNum">     244</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_SYCL</span>
+<span id="L245"><span class="lineNum">     245</span>              :     if (engine-&gt;runtime_kind() == runtime_kind::ocl) {</span>
+<span id="L246"><span class="lineNum">     246</span>              :         // Here we are doing a check for a temporary OpenCL engine while the</span>
+<span id="L247"><span class="lineNum">     247</span>              :         // GPU runtime is SYCL. nGEN-based kernels are all SYCL based in the</span>
+<span id="L248"><span class="lineNum">     248</span>              :         // current build so just exit here.</span>
+<span id="L249"><span class="lineNum">     249</span>              :         // This check should be already done for the &quot;parent&quot; SYCL engine so</span>
+<span id="L250"><span class="lineNum">     250</span>              :         // any potential errors should have been caught before this point.</span>
+<span id="L251"><span class="lineNum">     251</span>              :         *ok = true;</span>
+<span id="L252"><span class="lineNum">     252</span>              :         return status::success;</span>
+<span id="L253"><span class="lineNum">     253</span>              :     }</span>
+<span id="L254"><span class="lineNum">     254</span>              : #endif</span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              :     impl::stream_t *stream_generic;</span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">        1294 :     auto status = gpu_engine-&gt;get_service_stream(stream_generic);</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">        1294 :     if (status != status::success) return status::runtime_error;</span></span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">        1294 :     auto stream = utils::downcast&lt;intel::stream_t *&gt;(stream_generic);</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">        1294 :     if (!stream) return status::invalid_arguments;</span></span>
+<span id="L262"><span class="lineNum">     262</span>              : </span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        1294 :     bool skip_check = false;</span></span>
+<span id="L264"><span class="lineNum">     264</span>              :     auto kernel = binary_format_kernel_t&lt;HW::Unknown&gt;::make_kernel(</span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">        2588 :             gpu_engine, &amp;skip_check);</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">        1294 :     if (!kernel) return status::success;</span></span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        1294 :     if (skip_check) {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        1294 :         *ok = true;</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        1294 :         return status::success;</span></span>
+<span id="L271"><span class="lineNum">     271</span>              :     }</span>
+<span id="L272"><span class="lineNum">     272</span>              : </span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaUNC">           0 :     VWARN(common, runtime, &quot;binary kernel is not in zebin format&quot;);</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span>              :     // Binary kernel check.</span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaUNC">           0 :     uint32_t magic0 = MAGIC0;</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaUNC">           0 :     uint64_t magic1 = MAGIC1;</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaUNC">           0 :     uint16_t magic2 = MAGIC2;</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaUNC">           0 :     uint16_t magic3 = MAGIC3;</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaUNC">           0 :     uint64_t magic4 = MAGIC4;</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaUNC">           0 :     uint64_t magic5 = MAGIC5;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaUNC">           0 :     uint32_t magic_ptr = MAGICPTR;</span></span>
+<span id="L283"><span class="lineNum">     283</span>              : </span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaUNC">           0 :     memory_storage_t *storage = nullptr;</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaUNC">           0 :     std::unique_ptr&lt;memory_storage_t&gt; magic_buf, result_buf;</span></span>
+<span id="L286"><span class="lineNum">     286</span>              : </span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaUNC">           0 :     status = engine-&gt;create_memory_storage(&amp;storage, sizeof(int32_t));</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaUNC">           0 :     if (status != status::success) {</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :                 &quot;failed to create memory storage during binary kernel check&quot;);</span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L292"><span class="lineNum">     292</span>              :     }</span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaUNC">           0 :     magic_buf.reset(storage);</span></span>
+<span id="L294"><span class="lineNum">     294</span>              : </span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaUNC">           0 :     status = engine-&gt;create_memory_storage(&amp;storage, sizeof(int32_t));</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaUNC">           0 :     if (status != status::success) {</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L298"><span class="lineNum">     298</span>              :                 &quot;failed to create memory storage during binary kernel check&quot;);</span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L300"><span class="lineNum">     300</span>              :     }</span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaUNC">           0 :     result_buf.reset(storage);</span></span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaUNC">           0 :     void *magic_host = nullptr;</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaUNC">           0 :     status = magic_buf-&gt;map_data(&amp;magic_host, nullptr, sizeof(int32_t));</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaUNC">           0 :     if (!magic_host || status != status::success) {</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :                 &quot;failed to map data during binary kernel check&quot;);</span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L309"><span class="lineNum">     309</span>              :     }</span>
+<span id="L310"><span class="lineNum">     310</span>              : </span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaUNC">           0 :     *reinterpret_cast&lt;uint32_t *&gt;(magic_host) = magic_ptr;</span></span>
+<span id="L312"><span class="lineNum">     312</span>              : </span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaUNC">           0 :     CHECK(magic_buf-&gt;unmap_data(magic_host, nullptr));</span></span>
+<span id="L314"><span class="lineNum">     314</span>              : </span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaUNC">           0 :     void *result_host = nullptr;</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaUNC">           0 :     status = result_buf-&gt;map_data(&amp;result_host, nullptr, sizeof(int32_t));</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaUNC">           0 :     if (!result_host || status != status::success) {</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L319"><span class="lineNum">     319</span>              :                 &quot;failed to map data during binary kernel check&quot;);</span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :     }</span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaUNC">           0 :     *reinterpret_cast&lt;uint32_t *&gt;(result_host) = 0;</span></span>
+<span id="L324"><span class="lineNum">     324</span>              : </span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaUNC">           0 :     CHECK(result_buf-&gt;unmap_data(result_host, nullptr));</span></span>
+<span id="L326"><span class="lineNum">     326</span>              : </span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaUNC">           0 :     compute::kernel_arg_list_t arg_list;</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaUNC">           0 :     arg_list.set(0, magic0);</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 :     arg_list.set(1, magic1);</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaUNC">           0 :     arg_list.set(2, magic2);</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0 :     arg_list.set(3, magic3);</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0 :     arg_list.set(4, magic4);</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaUNC">           0 :     arg_list.set(5, magic5);</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0 :     arg_list.set(6, *magic_buf);</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaUNC">           0 :     arg_list.set(7, *result_buf);</span></span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaUNC">           0 :     compute::range_t gws = {MAGICSIZEX, MAGICSIZEY, MAGICSIZEZ};</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaUNC">           0 :     compute::range_t lws = {MAGICSIZEX, MAGICSIZEY, MAGICSIZEZ};</span></span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaUNC">           0 :     auto nd_range = compute::nd_range_t(gws, lws);</span></span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaUNC">           0 :     auto compute_stream = utils::downcast&lt;intel::stream_t *&gt;(stream);</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaUNC">           0 :     status = kernel.parallel_for(*stream, nd_range, arg_list,</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaUNC">           0 :             compute_stream-&gt;ctx().get_deps(), compute_stream-&gt;ctx().get_deps());</span></span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaUNC">           0 :     if (status != status::success) {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L348"><span class="lineNum">     348</span>              :                 &quot;failed to execute kernel during binary kernel check&quot;);</span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L350"><span class="lineNum">     350</span>              :     }</span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaUNC">           0 :     status = stream-&gt;wait();</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaUNC">           0 :     if (status != status::success) {</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :                 &quot;failed to execute stream during binary kernel check&quot;);</span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L357"><span class="lineNum">     357</span>              :     }</span>
+<span id="L358"><span class="lineNum">     358</span>              : </span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaUNC">           0 :     result_host = nullptr;</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaUNC">           0 :     status = result_buf-&gt;map_data(&amp;result_host, nullptr, sizeof(int32_t));</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaUNC">           0 :     if (!result_host || status != status::success) {</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaUNC">           0 :         VERROR(common, runtime,</span></span>
+<span id="L363"><span class="lineNum">     363</span>              :                 &quot;failed to map data during binary kernel check&quot;);</span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L365"><span class="lineNum">     365</span>              :     }</span>
+<span id="L366"><span class="lineNum">     366</span>              : </span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaUNC">           0 :     auto result = *reinterpret_cast&lt;uint32_t *&gt;(result_host);</span></span>
+<span id="L368"><span class="lineNum">     368</span>              : </span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaUNC">           0 :     CHECK(result_buf-&gt;unmap_data(result_host, nullptr));</span></span>
+<span id="L370"><span class="lineNum">     370</span>              : </span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaUNC">           0 :     *ok = (result != 0);</span></span>
+<span id="L372"><span class="lineNum">     372</span>              : </span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaUNC">           0 :     return status::success;</span></span>
+<span id="L374"><span class="lineNum">     374</span>              : }</span>
+<span id="L375"><span class="lineNum">     375</span>              : </span>
+<span id="L376"><span class="lineNum">     376</span>              : } // namespace jit</span>
+<span id="L377"><span class="lineNum">     377</span>              : } // namespace intel</span>
+<span id="L378"><span class="lineNum">     378</span>              : } // namespace gpu</span>
+<span id="L379"><span class="lineNum">     379</span>              : } // namespace impl</span>
+<span id="L380"><span class="lineNum">     380</span>              : } // namespace dnnl</span>
+<span id="L381"><span class="lineNum">     381</span>              : </span>
+<span id="L382"><span class="lineNum">     382</span>              : #ifdef ENABLE_LLVM_WCONVERSION</span>
+<span id="L383"><span class="lineNum">     383</span>              : #pragma clang diagnostic pop</span>
+<span id="L384"><span class="lineNum">     384</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

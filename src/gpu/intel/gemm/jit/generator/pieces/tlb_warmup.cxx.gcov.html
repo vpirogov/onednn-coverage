@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/tlb_warmup.cxx</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - tlb_warmup.cxx<span style="font-size: 80%;"> (source / <a href="tlb_warmup.cxx.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
+            <td class="headerCovTableEntry">94</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">0.0&nbsp;%</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">0</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2025 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;gemmstone/generator.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;hw_utils.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;layout_utils.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;state_utils.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;ngen_object_helpers.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : using namespace ngen;</span>
+<span id="L27"><span class="lineNum">      27</span>              : using namespace ngen::utils;</span>
+<span id="L28"><span class="lineNum">      28</span>              : using std::vector;</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : template &lt;HW hw&gt;</span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaUNC">           0 : void Generator&lt;hw&gt;::gemmTLBWarmup(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span></span>
+<span id="L34"><span class="lineNum">      34</span>              : {</span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaUNC">           0 :     auto lid = state.ra.allocSub&lt;uint32_t&gt;();</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaUNC">           0 :     int whose = 0;</span></span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :     emad(1, lid, state.inputs.localIDM, state.inputs.localIDN, strategy.wg[LoopM], strategy, state);</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :     if (strategy.kParallelLocal)</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :         emad(1, lid, lid, state.inputs.localIDK, strategy.wg[LoopM] * strategy.wg[LoopN], strategy, state);</span></span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC">           0 :     if (problem.quantized2DA()) {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :         auto mq = state.ra.allocSub&lt;uint32_t&gt;();</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :         auto kq = state.ra.allocSub&lt;uint32_t&gt;();</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :         divDown(mq, state.inputs.m, problem.aqGroupM, strategy, state);</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :         divDown(kq, state.inputs.k, problem.aqGroupK, strategy, state);</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaUNC">           0 :         if (problem.aScale2D()) {</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaUNC">           0 :             tlbWarmup(problem.A_scale, strategy.A_scale, state.inputs.aScalePtr,</span></span>
+<span id="L49"><span class="lineNum">      49</span>              :                       mq, kq, state.ldaScale, lid, whose++, problem, strategy, state);</span>
+<span id="L50"><span class="lineNum">      50</span>              :         }</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 :         if (problem.aOffset2D()) {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :             tlbWarmup(problem.AO, strategy.AO, state.inputs.aoPtr,</span></span>
+<span id="L53"><span class="lineNum">      53</span>              :                       mq, kq, state.ldao, lid, whose++, problem, strategy, state);</span>
+<span id="L54"><span class="lineNum">      54</span>              :         }</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC">           0 :         state.ra.safeRelease(mq);</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC">           0 :         state.ra.safeRelease(kq);</span></span>
+<span id="L57"><span class="lineNum">      57</span>              :     }</span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :     if (problem.quantized2DB()) {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :         auto kq = state.ra.allocSub&lt;uint32_t&gt;();</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :         auto nq = state.ra.allocSub&lt;uint32_t&gt;();</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :         divDown(kq, state.inputs.k, problem.bqGroupK, strategy, state);</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC">           0 :         divDown(nq, state.inputs.n, problem.bqGroupN, strategy, state);</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :         if (problem.bScale2D()) {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :             tlbWarmup(problem.B_scale, strategy.B_scale, state.inputs.bScalePtr,</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :                       kq, nq, state.ldbScale, lid, whose++, problem, strategy, state);</span>
+<span id="L67"><span class="lineNum">      67</span>              :         }</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :         if (problem.bOffset2D()) {</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :             tlbWarmup(problem.BO, strategy.BO, state.inputs.boPtr,</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :                       kq, nq, state.ldbo, lid, whose++, problem, strategy, state);</span>
+<span id="L71"><span class="lineNum">      71</span>              :         }</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :         state.ra.safeRelease(kq);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaUNC">           0 :         state.ra.safeRelease(nq);</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :     }</span>
+<span id="L75"><span class="lineNum">      75</span>              : </span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaUNC">           0 :     tlbWarmup(problem.A, strategy.A, state.effA,</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaUNC">           0 :               state.inputs.m, state.inputs.k, state.inputs.lda, lid, whose++,</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :               problem, strategy, state);</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 :     tlbWarmup(problem.B, strategy.B, state.effB,</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaUNC">           0 :               state.inputs.k, state.inputs.n, state.inputs.ldb, lid, whose++,</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :               problem, strategy, state);</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(lid);</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span>              : template &lt;HW hw&gt;</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0 : void Generator&lt;hw&gt;::tlbWarmup(const MatrixAddressing &amp;atype, const MatrixAddressingStrategy &amp;astrategy,</span></span>
+<span id="L88"><span class="lineNum">      88</span>              :                               const Subregister &amp;ptr, const Subregister &amp;r, const Subregister &amp;c,</span>
+<span id="L89"><span class="lineNum">      89</span>              :                               const Subregister &amp;ld, const Subregister &amp;lid, int whose,</span>
+<span id="L90"><span class="lineNum">      90</span>              :                               const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state)</span>
+<span id="L91"><span class="lineNum">      91</span>              : {</span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaUNC">           0 :     auto flag = state.raVFlag.alloc();</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 :     const uint32_t byteLimit = 256 * 1024 * 1024;</span></span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :     auto bytes = state.ra.allocSub&lt;uint64_t&gt;();</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaUNC">           0 :     emul(1, bytes, ld, isColMajor(atype.layout) ? c : r, strategy, state);</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaUNC">           0 :     cmp(1 | nz | flag, bytes.ud(1), 0);</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaUNC">           0 :     min_(1, bytes.ud(), bytes.ud(), byteLimit);</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :     mov(1 | flag, bytes.ud(), byteLimit);</span></span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :     state.raVFlag.safeRelease(flag);</span></span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :     tlbWarmup(astrategy.base, ptr, bytes.ud(), lid, whose, problem, strategy, state);</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(bytes);</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span>              : template &lt;HW hw&gt;</span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaUNC">           0 : void Generator&lt;hw&gt;::tlbWarmup(AddressBase base, const Subregister &amp;ptr, const Subregister &amp;bytes,</span></span>
+<span id="L110"><span class="lineNum">     110</span>              :                               const Subregister &amp;lid, int whose,</span>
+<span id="L111"><span class="lineNum">     111</span>              :                               const CommonProblem &amp;problem, const CommonStrategy &amp;strategy, CommonState &amp;state)</span>
+<span id="L112"><span class="lineNum">     112</span>              : {</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaUNC">           0 :     bool a64 = base.isA64();</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaUNC">           0 :     auto Taddr = a64 ? DataType::uq : DataType::ud;</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaUNC">           0 :     const int simd = elementsPerGRF&lt;uint32_t&gt;(hw);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaUNC">           0 :     const int log2Stride = 16;      // 64kb stride.</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaUNC">           0 :     const int log2TwiddleStride = 6;</span></span>
+<span id="L118"><span class="lineNum">     118</span>              : </span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaUNC">           0 :     int udStride = a64 ? 2 : 1;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaUNC">           0 :     auto addr = state.ra.allocRange(udStride);</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaUNC">           0 :     auto addr0 = addr[0].retype(Taddr);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaUNC">           0 :     auto addrLo = addr0.ud(0)(udStride);</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaUNC">           0 :     auto off = state.ra.allocRange(udStride);</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaUNC">           0 :     auto off0 = off[0].ud(0)(udStride);</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaUNC">           0 :     auto twiddle = state.ra.alloc().ud();</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaUNC">           0 :     auto data = state.ra.alloc().ud();</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaUNC">           0 :     auto count = state.ra.alloc().d();</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaUNC">           0 :     auto flag = state.raVFlag.alloc();</span></span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaUNC">           0 :     extendIndexVec(simd, state);</span></span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaUNC">           0 :     auto iv = accessIndexVec(0, state)(1);</span></span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaUNC">           0 :     cmp(1 | nz | flag, lid, whose);         /* Check if we are responsible thread */</span></span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaUNC">           0 :     shl(simd, off0, iv, log2Stride);</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaUNC">           0 :     shl(simd, twiddle, iv, log2TwiddleStride);</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaUNC">           0 :     eadd(simd, addr0, ptr, off0, strategy, state);</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :     xor_(simd, addrLo, addrLo, twiddle);    /* Perturb low bits to avoid cache hotspotting */</span></span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaUNC">           0 :     add(1, count, bytes, ((simd + 1) &lt;&lt; log2Stride) - 1);</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaUNC">           0 :     shr(1, count, count, log2Stride);</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaUNC">           0 :     add(simd, count, count[0], -iv);</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaUNC">           0 :     Label lTop, lSkip;</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaUNC">           0 :     jmpi(1 | flag, lSkip);</span></span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaUNC">           0 :     mark(lTop);</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaUNC">           0 :     add(simd | gt | flag, count, count, -simd);</span></span>
+<span id="L150"><span class="lineNum">     150</span>              :     if (hw &gt;= HW::XeHPC)</span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaUNC">           0 :         load(simd | flag, null, D8U32 | L1C_L3C, base, addr);</span></span>
+<span id="L152"><span class="lineNum">     152</span>              :     else if (hw &gt;= HW::XeHPG)</span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0 :         load(simd | flag, data, D8U32 | L1C_L3C, base, addr);</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :     else</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaUNC">           0 :         load(simd | flag, data, scattered_byte(), base, addr);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaUNC">           0 :     xor_(simd, addrLo, addrLo, twiddle);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaUNC">           0 :     add(simd, twiddle, twiddle, simd &lt;&lt; log2TwiddleStride);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaUNC">           0 :     and_(simd, twiddle, twiddle, 0xFFF);    /* Don't cross 4K page boundaries */</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaUNC">           0 :     eadd(simd, addr0, addr0, simd &lt;&lt; log2Stride, strategy, state);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaUNC">           0 :     xor_(simd, addrLo, addrLo, twiddle);</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaUNC">           0 :     jmpi(1 | flag, lTop);</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaUNC">           0 :     mark(lSkip);</span></span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaUNC">           0 :     releaseIndexVec(state);</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaUNC">           0 :     state.raVFlag.safeRelease(flag);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(off);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(twiddle);</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(addr);</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(data);</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaUNC">           0 :     state.ra.safeRelease(count);</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span>              : GEMMSTONE_NAMESPACE_END</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

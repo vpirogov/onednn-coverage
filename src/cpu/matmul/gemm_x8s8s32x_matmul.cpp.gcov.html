@@ -1,0 +1,605 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/matmul/gemm_x8s8s32x_matmul.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/matmul">src/cpu/matmul</a> - gemm_x8s8s32x_matmul.cpp<span style="font-size: 80%;"> (source / <a href="gemm_x8s8s32x_matmul.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">95.4&nbsp;%</td>
+            <td class="headerCovTableEntry">304</td>
+            <td class="headerCovTableEntry">290</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">81.8&nbsp;%</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">9</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;atomic&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &lt;assert.h&gt;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;float.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;math.h&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/compiler_workarounds.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/memory_tracking.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;cpu/cpu_primitive.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/gemm/gemm.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &quot;cpu/binary_injector_utils.hpp&quot;</span>
+<span id="L35"><span class="lineNum">      35</span>              : #include &quot;cpu/matmul/gemm_x8s8s32x_matmul.hpp&quot;</span>
+<span id="L36"><span class="lineNum">      36</span>              : #include &quot;cpu/matmul/matmul_utils.hpp&quot;</span>
+<span id="L37"><span class="lineNum">      37</span>              : #include &quot;cpu/scale_utils.hpp&quot;</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span>              : namespace dnnl {</span>
+<span id="L40"><span class="lineNum">      40</span>              : namespace impl {</span>
+<span id="L41"><span class="lineNum">      41</span>              : namespace cpu {</span>
+<span id="L42"><span class="lineNum">      42</span>              : namespace matmul {</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : using namespace data_type;</span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span>              : namespace {</span>
+<span id="L47"><span class="lineNum">      47</span>              : template &lt;typename pd_t&gt;</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">      101168 : bool need_post_processing(const pd_t *pd, float runtime_dst_zero_point = 0.f) {</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">      175254 :     return pd-&gt;with_bias() || pd-&gt;dst_md()-&gt;data_type != s32</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">        6297 :             || !pd-&gt;params().dst_is_acc_</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        5107 :             || !pd-&gt;params().pp_attr_.has_default_values()</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :             || !pd-&gt;params().pp_attr_.zero_points_.has_default_values(</span></span>
+<span id="L53"><span class="lineNum">      53</span>              :                     DNNL_ARG_DST)</span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">      175254 :             || runtime_dst_zero_point != 0.f;</span></span>
+<span id="L55"><span class="lineNum">      55</span>              : }</span>
+<span id="L56"><span class="lineNum">      56</span>              : } // namespace</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">      394174 : status_t gemm_x8s8s32x_matmul_t::pd_t::init(engine_t *engine) {</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :     using namespace utils;</span>
+<span id="L60"><span class="lineNum">      60</span>              :     using namespace data_type;</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       29400 :     auto check_attr_scales = [&amp;]() -&gt; bool {</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       29400 :         bool ok = attr_scales_ok();</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       29400 :         if (!attr()-&gt;scales_.has_default_values(DNNL_ARG_SRC)</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       16061 :                 &amp;&amp; !attr()-&gt;scales_.has_default_values(DNNL_ARG_WEIGHTS)</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       45461 :                 &amp;&amp; attr()-&gt;scales_.get_mask(DNNL_ARG_WEIGHTS) &gt; 0) {</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :             // This case requires scratchpad with unknown size</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">       10065 :             if (is_runtime_value(N())) ok = false;</span></span>
+<span id="L69"><span class="lineNum">      69</span>              :         }</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       29400 :         return ok;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">      394174 :     };</span></span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       29381 :     auto check_attr_zero_points = [&amp;]() -&gt; bool {</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">       29381 :         const auto &amp;zp = attr()-&gt;zero_points_;</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :         static const std::vector&lt;int&gt; supported_args {</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       29381 :                 DNNL_ARG_SRC, DNNL_ARG_WEIGHTS, DNNL_ARG_DST};</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">      115778 :         for (int arg : supported_args) {</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       87313 :             if (!zp.has_default_values(arg)) {</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">        4042 :                 const int mask = zp.get_mask(arg);</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">        4042 :                 if (mask &gt; 0) return false;</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :             }</span>
+<span id="L82"><span class="lineNum">      82</span>              :         }</span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       28465 :         return true;</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">      394174 :     };</span></span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       28383 :     auto check_attr_post_ops = [&amp;]() -&gt; bool {</span></span>
+<span id="L87"><span class="lineNum">      87</span>              :         using namespace primitive_kind;</span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       28383 :         const auto &amp;post_ops = attr()-&gt;post_ops_;</span></span>
+<span id="L89"><span class="lineNum">      89</span>              :         static const bcast_set_t enabled_bcast_strategy {</span>
+<span id="L90"><span class="lineNum">      90</span>              :                 broadcasting_strategy_t::scalar,</span>
+<span id="L91"><span class="lineNum">      91</span>              :                 broadcasting_strategy_t::per_oc,</span>
+<span id="L92"><span class="lineNum">      92</span>              :                 broadcasting_strategy_t::per_oc_spatial,</span>
+<span id="L93"><span class="lineNum">      93</span>              :                 broadcasting_strategy_t::per_mb_spatial,</span>
+<span id="L94"><span class="lineNum">      94</span>              :                 broadcasting_strategy_t::per_mb_w,</span>
+<span id="L95"><span class="lineNum">      95</span>              :                 broadcasting_strategy_t::per_w,</span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       28383 :                 broadcasting_strategy_t::no_broadcast};</span></span>
+<span id="L97"><span class="lineNum">      97</span>              :         const bool is_binary_po_per_oc</span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">       28383 :                 = binary_injector_utils::bcast_strategy_present(</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       56766 :                         binary_injector_utils::extract_bcast_strategies(</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       56766 :                                 post_ops.entry_, dst_md()),</span></span>
+<span id="L101"><span class="lineNum">     101</span>              :                         broadcasting_strategy_t::per_oc);</span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       28383 :         const bool has_prelu = post_ops.find(prelu) != -1;</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">       28383 :         return cpu::inner_product_utils::post_ops_ok(</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">       28383 :                        post_ops, dst_md(), enabled_bcast_strategy)</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">       21863 :                 &amp;&amp; IMPLICATION(is_binary_po_per_oc,</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :                         gemm_based::check_gemm_binary_per_oc_compatible_formats(</span>
+<span id="L107"><span class="lineNum">     107</span>              :                                 *this))</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">       50246 :                 &amp;&amp; IMPLICATION(is_runtime_value(N()), !has_prelu);</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">      394174 :     };</span></span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :     VDISPATCH_MATMUL(DNNL_CPU_THREADING_RUNTIME != DNNL_RUNTIME_THREADPOOL,</span>
+<span id="L112"><span class="lineNum">     112</span>              :             VERBOSE_UNSUPPORTED_THREADPOOL_RUNTIME);</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">      394174 :     VDISPATCH_MATMUL(is_dense_format_kind(), VERBOSE_UNSUPPORTED_SPARSE_CFG);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">      392165 :     VDISPATCH_MATMUL(!has_zero_dim_memory(), VERBOSE_EMPTY_TENSOR, &quot;&quot;);</span></span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">      391367 :     const bool problem_dt_correct = one_of(src_md()-&gt;data_type, s8, u8)</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">       60124 :             &amp;&amp; weights_md()-&gt;data_type == s8 &amp;&amp; desc()-&gt;accum_data_type == s32</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">       60088 :             &amp;&amp; one_of(dst_md()-&gt;data_type, f32, s32, s8, u8)</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">      451491 :             &amp;&amp; IMPLICATION(with_bias(),</span></span>
+<span id="L120"><span class="lineNum">     120</span>              :                     one_of(weights_md(1)-&gt;data_type, f32, s32, s8, u8)</span>
+<span id="L121"><span class="lineNum">     121</span>              :                             &amp;&amp; is_bias_1xN());</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      391367 :     VDISPATCH_MATMUL(problem_dt_correct, VERBOSE_UNSUPPORTED_DT_CFG);</span></span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">       29400 :     VDISPATCH_MATMUL(</span></span>
+<span id="L125"><span class="lineNum">     125</span>              :             attr()-&gt;post_ops_.check_sum_consistency(dst_md()-&gt;data_type,</span>
+<span id="L126"><span class="lineNum">     126</span>              :                     /* is_int8 */ true),</span>
+<span id="L127"><span class="lineNum">     127</span>              :             VERBOSE_UNSUPPORTED_POSTOP);</span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       29400 :     VDISPATCH_MATMUL(set_default_formats(), VERBOSE_UNSUPPORTED_TAG);</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       29400 :     VDISPATCH_MATMUL(check_attr_scales(), VERBOSE_UNSUPPORTED_SCALES_CFG);</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">       29381 :     VDISPATCH_MATMUL(check_attr_zero_points(), VERBOSE_UNSUPPORTED_ATTR);</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       28465 :     VDISPATCH_MATMUL(</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :             attr()-&gt;has_default_values(primitive_attr_t::skip_mask_t::scales</span>
+<span id="L133"><span class="lineNum">     133</span>              :                             | primitive_attr_t::skip_mask_t::zero_points</span>
+<span id="L134"><span class="lineNum">     134</span>              :                             | primitive_attr_t::skip_mask_t::post_ops</span>
+<span id="L135"><span class="lineNum">     135</span>              :                             | primitive_attr_t::skip_mask_t::sum_dt,</span>
+<span id="L136"><span class="lineNum">     136</span>              :                     dst_md()-&gt;data_type),</span>
+<span id="L137"><span class="lineNum">     137</span>              :             VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       28383 :     VDISPATCH_MATMUL(check_attr_post_ops(), VERBOSE_UNSUPPORTED_POSTOP);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       21799 :     VDISPATCH_MATMUL(gemm_based::check_gemm_compatible_formats(*this),</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :             VERBOSE_INCOMPATIBLE_GEMM_FMT);</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       21787 :     bool po_format_ok = attr_.set_default_formats(dst_md(0)) == status::success;</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       21787 :     VDISPATCH_MATMUL(po_format_ok, VERBOSE_UNSUPPORTED_POSTOP);</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              :     // copy attributes and drop src and weights zero points</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">       21787 :     CHECK(params_.pp_attr_.copy_from(*attr()));</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">       21787 :     params_.pp_attr_.zero_points_.set(DNNL_ARG_SRC, 0);</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">       21787 :     params_.pp_attr_.zero_points_.set(DNNL_ARG_WEIGHTS, 0);</span></span>
+<span id="L149"><span class="lineNum">     149</span>              : </span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       21787 :     params_.gemm_applies_output_scales_ = false;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       21787 :     params_.gemm_beta_ = 0.f;</span></span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">       21787 :     bool do_sum = params_.pp_attr_.post_ops_.find(primitive_kind::sum) &gt;= 0;</span></span>
+<span id="L154"><span class="lineNum">     154</span>              :     params_.dst_is_acc_</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       21787 :             = utils::one_of(dst_md()-&gt;data_type, s32, f32) &amp;&amp; !do_sum;</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : </span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       21787 :     params_.has_pp_kernel_ = need_post_processing(this);</span></span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       21787 :     nthr_ = dnnl_get_max_threads();</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       21787 :     gemm_based::book_acc_scratchpad(*this, params_, sizeof(int32_t), nthr_);</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       21787 :     auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">       21787 :     book_precomputed_scales(scratchpad, attr()-&gt;scales_, N());</span></span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       21787 :     return status::success;</span></span>
+<span id="L165"><span class="lineNum">     165</span>              : }</span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span>              : template &lt;typename src_dt&gt;</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        3904 : void pp_src_and_weights_zero_points(std::vector&lt;int32_t&gt; &amp;src_comp,</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :         std::vector&lt;int32_t&gt; &amp;wei_comp, dim_t M, dim_t N, dim_t K,</span>
+<span id="L170"><span class="lineNum">     170</span>              :         const src_dt *src, dim_t src_s0, dim_t src_s1, const int8_t *wei,</span>
+<span id="L171"><span class="lineNum">     171</span>              :         dim_t wei_s0, dim_t wei_s1, int32_t *acc, int ldc,</span>
+<span id="L172"><span class="lineNum">     172</span>              :         int32_t src_zero_point, int32_t wei_zero_point) {</span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">        3904 :     if (wei_zero_point) {</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">        4304 :         for_(dim_t m = 0; m &lt; M; ++m)</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">        6456 :         for (dim_t k = 0; k &lt; K; ++k) {</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">        4304 :             if (k == 0) src_comp[m] = int32_t(0);</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        4304 :             src_comp[m] += src[src_s0 * m + src_s1 * k];</span></span>
+<span id="L178"><span class="lineNum">     178</span>              :         }</span>
+<span id="L179"><span class="lineNum">     179</span>              :     }</span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">        3904 :     if (src_zero_point) {</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       11036 :         for_(dim_t k = 0; k &lt; K; ++k)</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       17932 :         for (dim_t n = 0; n &lt; N; ++n) {</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       10800 :             if (k == 0) wei_comp[n] = int32_t(0);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">       10800 :             wei_comp[n] += wei[wei_s0 * k + wei_s1 * n];</span></span>
+<span id="L186"><span class="lineNum">     186</span>              :         }</span>
+<span id="L187"><span class="lineNum">     187</span>              :     }</span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">        7808 :     for_(dim_t m = 0; m &lt; M; ++m)</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">        9904 :     for (dim_t n = 0; n &lt; N; ++n)</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        6000 :         acc[m * ldc + n] += 0 - src_zero_point * wei_comp[n]</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        6000 :                 - wei_zero_point * src_comp[m]</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        6000 :                 + src_zero_point * wei_zero_point * (int)K;</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        3904 : }</span></span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">       79381 : status_t gemm_x8s8s32x_matmul_t::execute_ref(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L197"><span class="lineNum">     197</span>              :     using namespace binary_injector_utils;</span>
+<span id="L198"><span class="lineNum">     198</span>              : </span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       79381 :     auto src = CTX_IN_MEM(const char *, DNNL_ARG_SRC);</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">       79381 :     auto weights = CTX_IN_MEM(const int8_t *, DNNL_ARG_WEIGHTS);</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       79381 :     auto bias = CTX_IN_MEM(const char *, DNNL_ARG_BIAS);</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">       79381 :     auto dst = CTX_OUT_MEM(char *, DNNL_ARG_DST);</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       79381 :     const auto &amp;po = this-&gt;pd()-&gt;attr()-&gt;post_ops_;</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      158762 :     const auto post_ops_binary_rhs_arg_vec = prepare_binary_args(po, ctx);</span></span>
+<span id="L205"><span class="lineNum">     205</span>              : </span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">       79381 :     const auto src_d = ctx.memory_mdw(DNNL_ARG_SRC, pd()-&gt;src_md());</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       79381 :     const auto weights_d = ctx.memory_mdw(DNNL_ARG_WEIGHTS, pd()-&gt;weights_md());</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">       79381 :     const auto dst_d = ctx.memory_mdw(DNNL_ARG_DST, pd()-&gt;dst_md());</span></span>
+<span id="L209"><span class="lineNum">     209</span>              : </span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">       79381 :     const int ndims = pd()-&gt;ndims();</span></span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      142787 :     DEFINE_ARG_SCALES_BUFFER(src_scales, DNNL_ARG_SRC);</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      134230 :     DEFINE_ARG_SCALES_BUFFER(wei_scales, DNNL_ARG_WEIGHTS);</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      115994 :     DEFINE_ARG_SCALES_BUFFER(dst_scales, DNNL_ARG_DST);</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       79381 :     const auto &amp;scratchpad = ctx.get_scratchpad_grantor();</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">       79381 :     const int wei_scale_mask = pd()-&gt;attr()-&gt;scales_.get_mask(DNNL_ARG_WEIGHTS);</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       79381 :     const float *scales = precompute_scales(scratchpad, src_scales, wei_scales,</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       79381 :             src_d.dims()[ndims - 1], dst_d.dims()[ndims - 1], false,</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       79381 :             wei_scale_mask &gt; 0, pd()-&gt;attr());</span></span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       79381 :     const int32_t *src_zero_points = CTX_IN_MEM(</span></span>
+<span id="L223"><span class="lineNum">     223</span>              :             const int32_t *, DNNL_ARG_ATTR_ZERO_POINTS | DNNL_ARG_SRC);</span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       79381 :     const int32_t *wei_zero_points = CTX_IN_MEM(</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :             const int32_t *, DNNL_ARG_ATTR_ZERO_POINTS | DNNL_ARG_WEIGHTS);</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       79381 :     const int32_t *dst_zero_points = CTX_IN_MEM(</span></span>
+<span id="L227"><span class="lineNum">     227</span>              :             const int32_t *, DNNL_ARG_ATTR_ZERO_POINTS | DNNL_ARG_DST);</span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       79381 :     const int32_t src_zero_point = src_zero_points ? src_zero_points[0] : 0;</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       79381 :     const int32_t wei_zero_point = wei_zero_points ? wei_zero_points[0] : 0;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       79381 :     const int32_t dst_zero_point = dst_zero_points ? dst_zero_points[0] : 0;</span></span>
+<span id="L232"><span class="lineNum">     232</span>              : </span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">      158762 :     if (src_d.has_zero_dim() || weights_d.has_zero_dim()</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">      158762 :             || dst_d.has_zero_dim())</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaUNC">           0 :         return status::success;</span></span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">       79381 :     int8_t gemm_off_a_int8 = static_cast&lt;int8_t&gt;(src_zero_point);</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       79381 :     uint8_t gemm_off_a_uint8 = static_cast&lt;uint8_t&gt;(src_zero_point);</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">       79381 :     int8_t gemm_off_b = static_cast&lt;int8_t&gt;(wei_zero_point);</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       91040 :     const bool ok = IMPLICATION(src_d.data_type() == data_type::s8,</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :                             gemm_off_a_int8 == src_zero_point)</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       79381 :             &amp;&amp; IMPLICATION(src_d.data_type() == data_type::u8,</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :                     gemm_off_a_uint8 == src_zero_point)</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">      158762 :             &amp;&amp; gemm_off_b == wei_zero_point;</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       79381 :     const bool pp_src_and_weights_zero_points_outside_of_gemm = !ok;</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">       79381 :     if (pp_src_and_weights_zero_points_outside_of_gemm) {</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">          30 :         gemm_off_a_int8 = gemm_off_a_uint8 = gemm_off_b = 0;</span></span>
+<span id="L248"><span class="lineNum">     248</span>              :     }</span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       79381 :     const float dst_zero_point_f32 = static_cast&lt;float&gt;(dst_zero_point);</span></span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">       79381 :     matmul_helper_t helper(src_d, weights_d, dst_d);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">       79381 :     const int batch_ndims = ndims - 2;</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       79381 :     dim_t M = helper.M();</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">       79381 :     const dim_t N = helper.N();</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">       79381 :     const dim_t K = helper.K();</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       79381 :     const dim_t batch = helper.batch();</span></span>
+<span id="L257"><span class="lineNum">     257</span>              :     const dim_t batch_without_dim0</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       79381 :             = helper.ndims() &gt; 3 ? batch / dst_d.dims()[0] : 0;</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :     const dim_t batch_without_dim01</span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       79381 :             = helper.ndims() &gt; 4 ? batch_without_dim0 / dst_d.dims()[1] : 1;</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       79381 :     const char transA = helper.transA();</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       79381 :     const char transB = helper.transB();</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       79381 :     const dim_t lda = helper.lda();</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">       79381 :     const dim_t ldb = helper.ldb();</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">      158022 :     const dim_t ldc = dst_d.ndims() == 2 &amp;&amp; dst_d.count_non_unit_dims(1)</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">       82827 :             ? N</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">       75935 :             : helper.ldc();</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">       79381 :     const int ldx_dim_idx = pd()-&gt;ndims() - 2;</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">       79381 :     const dim_t *src_strides = &amp;src_d.blocking_desc().strides[ldx_dim_idx];</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :     const dim_t *weights_strides</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       79381 :             = &amp;weights_d.blocking_desc().strides[ldx_dim_idx];</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">       79381 :     const int nthr = pd()-&gt;nthr_;</span></span>
+<span id="L273"><span class="lineNum">     273</span>              : </span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">       79381 :     const gemm_based::params_t &amp;params = pd()-&gt;params();</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">       79381 :     const bool use_single_gemm_call = pd()-&gt;has_runtime_dims_or_strides()</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      156244 :             ? helper.use_single_gemm_call_optimization(po)</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       76863 :             : ((platform::is_ppc64() &amp;&amp; ndims == 2)</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       76863 :                       || params.use_single_gemm_call_optimization_);</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       79381 :     bool dst_is_acc = params.dst_is_acc_;</span></span>
+<span id="L280"><span class="lineNum">     280</span>              :     int32_t *acc = dst_is_acc</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       79381 :             ? reinterpret_cast&lt;int32_t *&gt;(dst)</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">       80520 :             : ctx.get_scratchpad_grantor().template get&lt;int32_t&gt;(</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">       40260 :                       memory_tracking::names::key_matmul_dst_in_acc_dt);</span></span>
+<span id="L284"><span class="lineNum">     284</span>              :     // case: dynamic sizes</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">       79381 :     bool need_free_acc = false;</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">       79381 :     if (acc == nullptr) {</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">        1838 :         const size_t buf_elements = gemm_based::get_scratchpad_num_elements(</span></span>
+<span id="L288"><span class="lineNum">     288</span>              :                 batch, M, N, use_single_gemm_call, nthr);</span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        1838 :         acc = (int32_t *)malloc(sizeof(int32_t) * buf_elements, 64);</span></span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">        1838 :         if (acc == nullptr) return status::out_of_memory;</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">        1838 :         need_free_acc = true;</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :     }</span>
+<span id="L294"><span class="lineNum">     294</span>              : </span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">       79381 :     const float alpha = params.get_gemm_alpha(scales);</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">       79381 :     const float beta = params.gemm_beta_;</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">       79381 :     const dim_t acc_ldc = dst_is_acc ? ldc : N;</span></span>
+<span id="L298"><span class="lineNum">     298</span>              :     const int scale_idx_mult</span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">       79381 :             = this-&gt;pd()-&gt;attr()-&gt;scales_.get_mask(DNNL_ARG_WEIGHTS)</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">       79381 :             == (1 &lt;&lt; (ndims - 1));</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">       79381 :     std::atomic&lt;status_t&gt; st(status::success);</span></span>
+<span id="L303"><span class="lineNum">     303</span>              : </span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       79381 :     if (!use_single_gemm_call) {</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :         const int src_mask</span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       77279 :                 = utils::get_dims_mask(dst_d.dims(), src_d.dims(), ndims);</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :         const int wei_mask</span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">       77279 :                 = utils::get_dims_mask(dst_d.dims(), weights_d.dims(), ndims);</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">       77279 :         const size_t bia_dt_size = !pd()-&gt;with_bias()</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">       77279 :                 ? 0</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">       14514 :                 : types::data_type_size(pd()-&gt;weights_md(1)-&gt;data_type);</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">       77279 :         const size_t dst_dt_size = types::data_type_size(dst_d.data_type());</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">       77279 :         const size_t work_amount = (size_t)batch * M * N;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       77279 :         const size_t work_per_batch = (size_t)M * N;</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">       77279 :         const dim_t acc_stride = gemm_based::get_scratchpad_block_elements(</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">       77279 :                 batch, M, N, use_single_gemm_call, nthr);</span></span>
+<span id="L317"><span class="lineNum">     317</span>              : </span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">       77279 :         bool postops_in_matmul = need_post_processing(pd(), dst_zero_point_f32);</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">       77279 :         assert(IMPLICATION(postops_in_matmul, params.has_pp_kernel_));</span></span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">       77279 :         parallel(nthr, [&amp;](int ithr, int nthr) {</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">     1657916 :             size_t t_work_start {0}, t_work_end {0};</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">     1657916 :             balance211(work_amount, nthr, ithr, t_work_start, t_work_end);</span></span>
+<span id="L324"><span class="lineNum">     324</span>              : </span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">     1657916 :             dim_t cur_b {0}, cur_m {0}, cur_n {0};</span></span>
+<span id="L326"><span class="lineNum">     326</span>              :             dims_t s_dims_idx, w_dims_idx, d_dims_idx;</span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">     1657916 :             size_t i_work = t_work_start;</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">     6277584 :             const bool reuse_acc = acc != (int32_t *)dst;</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">     1657916 :             int32_t *curr_acc = reuse_acc ? acc + ithr * acc_stride : nullptr;</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">     1657916 :             std::vector&lt;int32_t&gt; src_compensation(M, 0);</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">     1657916 :             std::vector&lt;int32_t&gt; weights_compensation(N, 0);</span></span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span>              :             // icc 17.0 has a bug with capturing const variables with value known</span>
+<span id="L336"><span class="lineNum">     336</span>              :             // at compilation time in lambdas</span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">     1657916 :             const int32_t gemm_off_c = 0;</span></span>
+<span id="L338"><span class="lineNum">     338</span>              : </span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">     3143800 :             while (i_work &lt; t_work_end) {</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">     1485883 :                 utils::nd_iterator_init(</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">     1485883 :                         i_work, cur_b, batch, cur_m, M, cur_n, N);</span></span>
+<span id="L342"><span class="lineNum">     342</span>              : </span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">     1485883 :                 utils::l_dims_by_l_offset(</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">     1485883 :                         d_dims_idx, i_work, dst_d.dims(), ndims);</span></span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">     1485883 :                 utils::copy_dims_with_mask(</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">     1485883 :                         s_dims_idx, d_dims_idx, batch_ndims, src_mask);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">     1485883 :                 s_dims_idx[ndims - 2] = cur_m;</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">     1485883 :                 s_dims_idx[ndims - 1] = 0; // k idx is always 0</span></span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">     1485883 :                 utils::copy_dims_with_mask(</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">     1485883 :                         w_dims_idx, d_dims_idx, batch_ndims, wei_mask);</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">     1485883 :                 w_dims_idx[ndims - 2] = 0; // k idx is always 0</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">     1485883 :                 w_dims_idx[ndims - 1] = cur_n;</span></span>
+<span id="L355"><span class="lineNum">     355</span>              : </span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">     1485883 :                 const char *curr_src = src + src_d.off_v(s_dims_idx);</span></span>
+<span id="L357"><span class="lineNum">     357</span>              :                 const int8_t *curr_weights</span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     1485883 :                         = weights + weights_d.off_v(w_dims_idx);</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">     1485883 :                 const dim_t dst_off = dst_d.off_v(d_dims_idx);</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">     1485883 :                 char *curr_dst = dst + dst_dt_size * dst_off;</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">     1485883 :                 if (!reuse_acc) curr_acc = acc + dst_off;</span></span>
+<span id="L362"><span class="lineNum">     362</span>              : </span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">     1485883 :                 dim_t gemm_M {0}, gemm_N {0};</span></span>
+<span id="L364"><span class="lineNum">     364</span>              :                 size_t matrix_offset;</span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">     1485883 :                 const size_t rem_work = t_work_end - i_work;</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">     1485883 :                 if (rem_work &gt;= work_per_batch &amp;&amp; cur_m == 0 &amp;&amp; cur_n == 0) {</span></span>
+<span id="L367"><span class="lineNum">     367</span>              :                     // parallel over batch</span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">       78085 :                     gemm_M = M;</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">       78085 :                     gemm_N = N;</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">       78085 :                     matrix_offset = 0;</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">     1407798 :                 } else if (rem_work &gt;= (size_t)N &amp;&amp; cur_n == 0) {</span></span>
+<span id="L372"><span class="lineNum">     372</span>              :                     // parallel over M</span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">      202912 :                     gemm_M = nstl::min(</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      202912 :                             (size_t)(M - cur_m), (size_t)(rem_work / N));</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">      202912 :                     gemm_N = N;</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">      202912 :                     matrix_offset = cur_n + cur_m * N;</span></span>
+<span id="L377"><span class="lineNum">     377</span>              :                 } else {</span>
+<span id="L378"><span class="lineNum">     378</span>              :                     // parallel over N</span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">     1204886 :                     gemm_M = 1;</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">     1204886 :                     gemm_N = nstl::min((size_t)(N - cur_n), rem_work);</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">     1204886 :                     matrix_offset = cur_n + cur_m * N;</span></span>
+<span id="L382"><span class="lineNum">     382</span>              :                 }</span>
+<span id="L383"><span class="lineNum">     383</span>              : </span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">     1485883 :                 status_t st_thr = status::runtime_error;</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">     1485883 :                 switch (src_d.data_type()) {</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">      473359 :                     case data_type::s8: {</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">      473359 :                         const int8_t *curr_src_ptr</span></span>
+<span id="L388"><span class="lineNum">     388</span>              :                                 = reinterpret_cast&lt;const int8_t *&gt;(curr_src);</span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">     1959242 :                         st_thr = gemm_s8s8s32(&amp;transB, &amp;transA, &quot;F&quot;, &amp;gemm_N,</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">     1489787 :                                 &amp;gemm_M, &amp;K, &amp;alpha, curr_weights, &amp;ldb,</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">     1485883 :                                 &amp;gemm_off_b, curr_src_ptr, &amp;lda,</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">      473359 :                                 &amp;gemm_off_a_int8, &amp;beta, curr_acc, &amp;acc_ldc,</span></span>
+<span id="L393"><span class="lineNum">     393</span>              :                                 &amp;gemm_off_c);</span>
+<span id="L394"><span class="lineNum">     394</span>              : </span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">      473359 :                         if (st_thr != status::success) {</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaUNC">           0 :                             st = st_thr;</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaUNC">           0 :                             return;</span></span>
+<span id="L398"><span class="lineNum">     398</span>              :                         }</span>
+<span id="L399"><span class="lineNum">     399</span>              : </span>
+<span id="L400"><span class="lineNum">     400</span>              :                         // if igemm cannot handle src and weights zero points</span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">      473359 :                         if (pp_src_and_weights_zero_points_outside_of_gemm) {</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaUNC">           0 :                             pp_src_and_weights_zero_points(src_compensation,</span></span>
+<span id="L403"><span class="lineNum">     403</span>              :                                     weights_compensation, gemm_M, gemm_N, K,</span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">        3904 :                                     curr_src_ptr, src_strides[0],</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaUNC">           0 :                                     src_strides[1], curr_weights,</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">        3904 :                                     weights_strides[0], weights_strides[1],</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">        3904 :                                     curr_acc, acc_ldc, src_zero_point,</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaUNC">           0 :                                     wei_zero_point);</span></span>
+<span id="L409"><span class="lineNum">     409</span>              :                         }</span>
+<span id="L410"><span class="lineNum">     410</span>              : </span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">      473359 :                     } break;</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">     1012524 :                     case data_type::u8: {</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">     1012524 :                         const uint8_t *curr_src_ptr</span></span>
+<span id="L414"><span class="lineNum">     414</span>              :                                 = reinterpret_cast&lt;const uint8_t *&gt;(curr_src);</span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">     2025048 :                         st_thr = gemm_s8u8s32(&amp;transB, &amp;transA, &quot;F&quot;, &amp;gemm_N,</span></span>
+<span id="L416"><span class="lineNum">     416</span>              :                                 &amp;gemm_M, &amp;K, &amp;alpha, curr_weights, &amp;ldb,</span>
+<span id="L417"><span class="lineNum">     417</span>              :                                 &amp;gemm_off_b, curr_src_ptr, &amp;lda,</span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">     1012524 :                                 &amp;gemm_off_a_uint8, &amp;beta, curr_acc, &amp;acc_ldc,</span></span>
+<span id="L419"><span class="lineNum">     419</span>              :                                 &amp;gemm_off_c);</span>
+<span id="L420"><span class="lineNum">     420</span>              : </span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">     1012524 :                         if (st_thr != status::success) {</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaUNC">           0 :                             st = st_thr;</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaUNC">           0 :                             return;</span></span>
+<span id="L424"><span class="lineNum">     424</span>              :                         }</span>
+<span id="L425"><span class="lineNum">     425</span>              : </span>
+<span id="L426"><span class="lineNum">     426</span>              :                         // if igemm cannot handle src and weights zero points</span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">     1012524 :                         if (pp_src_and_weights_zero_points_outside_of_gemm) {</span></span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">        3904 :                             pp_src_and_weights_zero_points(src_compensation,</span></span>
+<span id="L429"><span class="lineNum">     429</span>              :                                     weights_compensation, gemm_M, gemm_N, K,</span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">        3904 :                                     curr_src_ptr, src_strides[0],</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">        3904 :                                     src_strides[1], curr_weights,</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">        3904 :                                     weights_strides[0], weights_strides[1],</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">        3904 :                                     curr_acc, acc_ldc, src_zero_point,</span></span>
+<span id="L434"><span class="lineNum">     434</span>              :                                     wei_zero_point);</span>
+<span id="L435"><span class="lineNum">     435</span>              :                         }</span>
+<span id="L436"><span class="lineNum">     436</span>              : </span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">     1012524 :                     } break;</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaUNC">           0 :                     default: assert(!&quot;unsupported data type&quot;); break;</span></span>
+<span id="L439"><span class="lineNum">     439</span>              :                 }</span>
+<span id="L440"><span class="lineNum">     440</span>              : </span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">     1485883 :                 if (postops_in_matmul) {</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">     1485883 :                     const size_t dst_logical_off = i_work;</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">     1485883 :                     const size_t dim1_off = helper.ndims() &gt; 3</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">     1485883 :                             ? ((cur_b % batch_without_dim0)</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       51840 :                                       / batch_without_dim01)</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">     1485883 :                             : cur_m;</span></span>
+<span id="L447"><span class="lineNum">     447</span>              :                     // offset for case with post-op broadcast_channel</span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">     1485883 :                     const size_t matrix_per_first_batch_off = helper.ndims() &gt; 3</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">     1485883 :                             ? M * N * (cur_b / batch_without_dim0)</span></span>
+<span id="L450"><span class="lineNum">     450</span>              :                                     + matrix_offset</span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">     1485883 :                             : 0;</span></span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">     1485883 :                     const ptrdiff_t oc_off = i_work % N;</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">     1485883 :                     (*pp_kernel_)(curr_dst, curr_acc,</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">     1485883 :                             bias + oc_off * bia_dt_size,</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">     1485883 :                             scales + oc_off * scale_idx_mult, dst_scales[0], 0,</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">     1485883 :                             dst_logical_off, dim1_off, gemm_M * gemm_N,</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">     1485883 :                             static_cast&lt;size_t&gt;(N), ldc, &amp;dst_zero_point_f32,</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">     1485883 :                             post_ops_binary_rhs_arg_vec.data(), dst,</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">     1485883 :                             matrix_per_first_batch_off, ctx, *pd()-&gt;dst_md());</span></span>
+<span id="L460"><span class="lineNum">     460</span>              :                 }</span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">     1485883 :                 i_work += gemm_M * gemm_N;</span></span>
+<span id="L462"><span class="lineNum">     462</span>              :             }</span>
+<span id="L463"><span class="lineNum">     463</span>              :         });</span>
+<span id="L464"><span class="lineNum">     464</span>              :     } else {</span>
+<span id="L465"><span class="lineNum">     465</span>              :         // icc 17.0 has a bug with capturing const variables with value known</span>
+<span id="L466"><span class="lineNum">     466</span>              :         // at compilation time in lambdas</span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">        2102 :         const int32_t gemm_off_c = 0;</span></span>
+<span id="L468"><span class="lineNum">     468</span>              : </span>
+<span id="L469"><span class="lineNum">     469</span>              :         // collapse batch into M, if weights batch dimensions are broadcasted.</span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">        2102 :         M = batch * M;</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">        2102 :         status_t st = status::runtime_error;</span></span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">        2102 :         switch (src_d.data_type()) {</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">         960 :             case data_type::s8: {</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">         960 :                 const int8_t *src_ = reinterpret_cast&lt;const int8_t *&gt;(src);</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">         960 :                 st = gemm_s8s8s32(&amp;transB, &amp;transA, &quot;F&quot;, &amp;N, &amp;M, &amp;K, &amp;alpha,</span></span>
+<span id="L476"><span class="lineNum">     476</span>              :                         weights, &amp;ldb, &amp;gemm_off_b, src_, &amp;lda,</span>
+<span id="L477"><span class="lineNum">     477</span>              :                         &amp;gemm_off_a_int8, &amp;beta, acc, &amp;acc_ldc, &amp;gemm_off_c);</span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">         960 :             } break;</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">        1142 :             case data_type::u8: {</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">        1142 :                 const uint8_t *src_ = reinterpret_cast&lt;const uint8_t *&gt;(src);</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">        1142 :                 st = gemm_s8u8s32(&amp;transB, &amp;transA, &quot;F&quot;, &amp;N, &amp;M, &amp;K, &amp;alpha,</span></span>
+<span id="L482"><span class="lineNum">     482</span>              :                         weights, &amp;ldb, &amp;gemm_off_b, src_, &amp;lda,</span>
+<span id="L483"><span class="lineNum">     483</span>              :                         &amp;gemm_off_a_uint8, &amp;beta, acc, &amp;acc_ldc, &amp;gemm_off_c);</span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">        1142 :             } break;</span></span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaUNC">           0 :             default: assert(!&quot;unsupported data type&quot;); break;</span></span>
+<span id="L486"><span class="lineNum">     486</span>              :         }</span>
+<span id="L487"><span class="lineNum">     487</span>              : </span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">        2102 :         if (st == status::success) {</span></span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">        4204 :             std::vector&lt;int32_t&gt; src_compensation(M, 0);</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">        4204 :             std::vector&lt;int32_t&gt; weights_compensation(N, 0);</span></span>
+<span id="L491"><span class="lineNum">     491</span>              : </span>
+<span id="L492"><span class="lineNum">     492</span>              :             // if igemm cannot handle src and weights zero points</span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">        2102 :             if (pp_src_and_weights_zero_points_outside_of_gemm) {</span></span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaUNC">           0 :                 pp_src_and_weights_zero_points(src_compensation,</span></span>
+<span id="L495"><span class="lineNum">     495</span>              :                         weights_compensation, M, N, K, src, src_strides[0],</span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaUNC">           0 :                         src_strides[1], weights, weights_strides[0],</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaUNC">           0 :                         weights_strides[1], acc, acc_ldc, src_zero_point,</span></span>
+<span id="L498"><span class="lineNum">     498</span>              :                         wei_zero_point);</span>
+<span id="L499"><span class="lineNum">     499</span>              :             }</span>
+<span id="L500"><span class="lineNum">     500</span>              : </span>
+<span id="L501"><span class="lineNum">     501</span>              :             bool postops_in_matmul</span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">        2102 :                     = need_post_processing(pd(), dst_zero_point_f32);</span></span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">        2102 :             assert(IMPLICATION(postops_in_matmul, params.has_pp_kernel_));</span></span>
+<span id="L504"><span class="lineNum">     504</span>              : </span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">        2102 :             if (postops_in_matmul) {</span></span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">        2102 :                 const bool force_sequential = pp_kernel_-&gt;sequential_kernel();</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">        2102 :                 parallel(force_sequential ? 1 : nthr, [&amp;](int ithr, int nthr) {</span></span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">      202944 :                     size_t start {}, end {};</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">      202944 :                     balance211((size_t)(M * N), nthr, ithr, start, end);</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">      202944 :                     const size_t dst_logical_off = start;</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">      202944 :                     const size_t dim1_off = start % N;</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">      202944 :                     (*pp_kernel_)(dst, acc, bias, scales, dst_scales[0], start,</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">      202944 :                             dst_logical_off, dim1_off, end, (size_t)N, ldc,</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">      202944 :                             &amp;dst_zero_point_f32,</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaGNC">      202944 :                             post_ops_binary_rhs_arg_vec.data(), dst, 0, ctx,</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">      202944 :                             *pd()-&gt;dst_md());</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">      202944 :                 });</span></span>
+<span id="L518"><span class="lineNum">     518</span>              :             }</span>
+<span id="L519"><span class="lineNum">     519</span>              :         }</span>
+<span id="L520"><span class="lineNum">     520</span>              :     }</span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">       79381 :     if (need_free_acc) free(acc);</span></span>
+<span id="L522"><span class="lineNum">     522</span>              : </span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       79381 :     return st;</span></span>
+<span id="L524"><span class="lineNum">     524</span>              : }</span>
+<span id="L525"><span class="lineNum">     525</span>              : </span>
+<span id="L526"><span class="lineNum">     526</span>              : } // namespace matmul</span>
+<span id="L527"><span class="lineNum">     527</span>              : } // namespace cpu</span>
+<span id="L528"><span class="lineNum">     528</span>              : } // namespace impl</span>
+<span id="L529"><span class="lineNum">     529</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

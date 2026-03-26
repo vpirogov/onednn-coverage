@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/rnn/jit_uni_gru_cell_postgemm_2_fwd.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/rnn">src/cpu/x64/rnn</a> - jit_uni_gru_cell_postgemm_2_fwd.hpp<span style="font-size: 80%;"> (source / <a href="jit_uni_gru_cell_postgemm_2_fwd.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">146</td>
+            <td class="headerCovTableEntry">146</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">36.5&nbsp;%</td>
+            <td class="headerCovTableEntry">252</td>
+            <td class="headerCovTableEntry">92</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_RNN_JIT_UNI_GRU_CELL_POSTGEMM_2_FWD_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_RNN_JIT_UNI_GRU_CELL_POSTGEMM_2_FWD_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;cpu/x64/rnn/jit_uni_rnn_common_postgemm.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace dnnl {</span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace impl {</span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace cpu {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace x64 {</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : template &lt;cpu_isa_t isa, impl::data_type_t src_data_t,</span>
+<span id="L28"><span class="lineNum">      28</span>              :         impl::data_type_t scratch_data_t&gt;</span>
+<span id="L29"><span class="lineNum">      29</span>              : struct jit_uni_gru_cell_postgemm_part2_fwd : public jit_uni_rnn_postgemm_t {</span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">       18006 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_gru_cell_postgemm_part2_fwd)</span></span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              :     using injector_t = typename utils::conditional&lt;isa == avx512_core,</span>
+<span id="L33"><span class="lineNum">      33</span>              :             jit_uni_eltwise_injector_t&lt;avx512_core&gt;,</span>
+<span id="L34"><span class="lineNum">      34</span>              :             jit_uni_eltwise_injector_t&lt;isa&gt;&gt;::type;</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        6002 :     jit_uni_gru_cell_postgemm_part2_fwd(</span></span>
+<span id="L37"><span class="lineNum">      37</span>              :             const rnn_utils::rnn_conf_t &amp;rnn, const rnn_pd_t *pd)</span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        6002 :         : jit_uni_rnn_postgemm_t(rnn, pd, jit_name()) {}</span></span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        6002 :     status_t init(data_type_t sdt) override {</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        6002 :         CHECK(jit_uni_rnn_postgemm_t::init(src_data_t));</span></span>
+<span id="L42"><span class="lineNum">      42</span>              :         // no need to save state of registers</span>
+<span id="L43"><span class="lineNum">      43</span>              :         // (unless emulating bf16 support or using pre-avx2 isa)</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">        6002 :         const bool save_state = (isa == sse41 || isa == avx)</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :                 || (src_data_t == data_type::bf16</span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">        1884 :                         &amp;&amp; !mayiuse(avx512_core_bf16));</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :         // we use rax for both constant tables as they use the same table</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">        6002 :         CHECK(safe_ptr_assign(tanh_injector_,</span></span>
+<span id="L49"><span class="lineNum">      49</span>              :                 new injector_t(this, alg_kind::eltwise_tanh, 0.0f, 0.0f, 1.0f,</span>
+<span id="L50"><span class="lineNum">      50</span>              :                         data_type::f32, save_state, rax)));</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        6002 :         return create_kernel();</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :     }</span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              : protected:</span>
+<span id="L55"><span class="lineNum">      55</span>              :     std::unique_ptr&lt;injector_t&gt; tanh_injector_;</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span>              :     // register size in bytes</span>
+<span id="L58"><span class="lineNum">      58</span>              :     using Vmm = typename jit_uni_eltwise_injector_t&lt;isa&gt;::Vmm;</span>
+<span id="L59"><span class="lineNum">      59</span>              :     static constexpr size_t vlen = cpu_isa_traits_t&lt;isa&gt;::vlen;</span>
+<span id="L60"><span class="lineNum">      60</span>              :     static constexpr size_t qscale_dt_size = sizeof(float);</span>
+<span id="L61"><span class="lineNum">      61</span>              :     const size_t vlen_dst</span>
+<span id="L62"><span class="lineNum">      62</span>              :             = vlen / (sizeof(float) / types::data_type_size(src_data_t));</span>
+<span id="L63"><span class="lineNum">      63</span>              :     const size_t vlen_bias = vlen / (sizeof(float) / bias_dt_size_);</span>
+<span id="L64"><span class="lineNum">      64</span>              :     const size_t hstate_dt_size = types::data_type_size(src_data_t);</span>
+<span id="L65"><span class="lineNum">      65</span>              :     const size_t gate_dt_size = types::data_type_size(src_data_t);</span>
+<span id="L66"><span class="lineNum">      66</span>              :     const size_t scratch_dt_size = types::data_type_size(scratch_data_t);</span>
+<span id="L67"><span class="lineNum">      67</span>              :     const size_t vlen_qscale = vlen / qscale_dt_size;</span>
+<span id="L68"><span class="lineNum">      68</span>              :     const size_t vlen_elems = vlen / scratch_dt_size;</span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span>              :     const int loop_ur_max = 4;</span>
+<span id="L71"><span class="lineNum">      71</span>              :     // We skip vmm0 as it can be used by the injector for masks on sse4.1</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       78729 :     Vmm G0(int i) {</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       78729 :         const int idx = 1 + i;</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">       78729 :         assert(idx &lt; loop_ur_max + 1);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       78729 :         return Vmm(idx); // max of vmm4</span></span>
+<span id="L76"><span class="lineNum">      76</span>              :     }</span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       71861 :     Vmm G2(int i) {</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       71861 :         const int idx = loop_ur_max + 1 + i;</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       71861 :         assert(idx &lt; 2 * loop_ur_max + 1);</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       71861 :         return Vmm(idx); // max of vmm8</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :     }</span>
+<span id="L82"><span class="lineNum">      82</span>              :     const Vmm tmp1_vmm = Vmm(9);</span>
+<span id="L83"><span class="lineNum">      83</span>              :     const Vmm tmp2_vmm = Vmm(10);</span>
+<span id="L84"><span class="lineNum">      84</span>              :     const Vmm tmp3_vmm = Vmm(11);</span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">        6002 :     void generate() override {</span></span>
+<span id="L87"><span class="lineNum">      87</span>              :         using namespace Xbyak;</span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        6002 :         const auto is_training</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">        6002 :                 = pd_-&gt;desc()-&gt;prop_kind == prop_kind::forward_training;</span></span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">        6002 :         const bool is_augru = pd_-&gt;cell_kind() == alg_kind::vanilla_augru;</span></span>
+<span id="L92"><span class="lineNum">      92</span>              : </span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        6002 :         const int mask = pd_-&gt;attr()-&gt;rnn_weights_qparams_.mask_;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">        6002 :         float *weights_scales = pd_-&gt;attr()-&gt;rnn_weights_qparams_.scales_;</span></span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span>              :         // Labels declaration</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       12004 :         Label table_label;</span></span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span>              :         // Register map</span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">        6002 :         const Reg64 loop_cnt(r10); // loop counter</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        6002 :         const Reg64 table_reg(rbx); // table is used for data scale and shifts</span></span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span>              :         // constant table map</span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">        6002 :         const Address one_addr = ptr[table_reg];</span></span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              :         // We start code generations here</span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">        6002 :         preamble();</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span>              :         // extract addresses passed as parameter</span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">        6002 :         const auto addr_ws_gates_reg = abi_param1;</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">        6002 :         const auto addr_scratch_gates_reg = abi_param2;</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">        6002 :         const auto addr_bias_reg = abi_param3;</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">        6002 :         const auto addr_states_t_l_reg = abi_param4;</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">        6002 :         const auto addr_attn_reg = r15;</span></span>
+<span id="L115"><span class="lineNum">     115</span>              : #ifdef _WIN32</span>
+<span id="L116"><span class="lineNum">     116</span>              :         const auto addr_states_t_l_copy_reg = r11;</span>
+<span id="L117"><span class="lineNum">     117</span>              :         const auto addr_states_tm1_l_reg = r12;</span>
+<span id="L118"><span class="lineNum">     118</span>              :         // Here we cannot use rbp to have initial stack pointer so we</span>
+<span id="L119"><span class="lineNum">     119</span>              :         // use rsp and offset it with the size of pushed registers in</span>
+<span id="L120"><span class="lineNum">     120</span>              :         // preamble</span>
+<span id="L121"><span class="lineNum">     121</span>              :         const auto base_args = get_stack_params_address();</span>
+<span id="L122"><span class="lineNum">     122</span>              :         mov(addr_states_t_l_copy_reg, ptr[base_args]);</span>
+<span id="L123"><span class="lineNum">     123</span>              :         mov(addr_states_tm1_l_reg, ptr[base_args + 8]);</span>
+<span id="L124"><span class="lineNum">     124</span>              :         if (is_augru) mov(addr_attn_reg, ptr[base_args + 48]);</span>
+<span id="L125"><span class="lineNum">     125</span>              : #else</span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        6002 :         const auto addr_states_t_l_copy_reg = abi_param5;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">        6002 :         const auto addr_states_tm1_l_reg = abi_param6;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">        6002 :         const auto base_args = get_stack_params_address();</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">        6002 :         if (is_augru) mov(addr_attn_reg, ptr[base_args + 32]);</span></span>
+<span id="L130"><span class="lineNum">     130</span>              : #endif</span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span>              :         // helper lambda to address the gates and biases</span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       95978 :         const auto sg_addr = [&amp;](int i, int j) {</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       22494 :             return ptr[addr_scratch_gates_reg + i * rnn_.dhc * scratch_dt_size</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       67482 :                     + j * vlen];</span></span>
+<span id="L136"><span class="lineNum">     136</span>              :         };</span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       23518 :         const auto wg_addr = [&amp;](int i, int j) {</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        4379 :             return ptr[addr_ws_gates_reg + i * rnn_.dhc * gate_dt_size</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       13137 :                     + j * vlen_dst];</span></span>
+<span id="L140"><span class="lineNum">     140</span>              :         };</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       50990 :         const auto B_addr = [&amp;](int i, int j) {</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       11247 :             return ptr[addr_bias_reg + i * rnn_.dhc * bias_dt_size_</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">       33741 :                     + j * vlen_bias];</span></span>
+<span id="L144"><span class="lineNum">     144</span>              :         };</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        6002 :         const size_t loop_len = rnn_.dhc;</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        6002 :         const size_t loop_tail = loop_len % vlen_elems;</span></span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              :         // initialize registers with addresses and constants</span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        6002 :         mov(table_reg, table_label);</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        6002 :         tanh_injector_-&gt;load_table_addr();</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        6002 :         init_regs(weights_scales, vlen, loop_tail);</span></span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        6002 :         const size_t nb_loop_len = loop_len / vlen_elems;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">        6002 :         size_t loop_ur_val = 1;</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        6002 :         const bool is_brgemm = rnn_.is_brgemm &amp;&amp; !rnn_.unfused_post_gemm;</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">        6002 :         if (is_brgemm) {</span></span>
+<span id="L158"><span class="lineNum">     158</span>              : #ifdef _WIN32</span>
+<span id="L159"><span class="lineNum">     159</span>              :             mov(loop_cnt, ptr[base_args + 40]);</span>
+<span id="L160"><span class="lineNum">     160</span>              : #else</span>
+<span id="L161"><span class="lineNum">     161</span>              :             // Here we cannot use rbp to have initial stack pointer so we</span>
+<span id="L162"><span class="lineNum">     162</span>              :             // use rsp and offset it with the size of pushed registers in</span>
+<span id="L163"><span class="lineNum">     163</span>              :             // preamble</span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        1643 :             const auto base_args = get_stack_params_address();</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">        1643 :             mov(loop_cnt, ptr[base_args + 24]);</span></span>
+<span id="L166"><span class="lineNum">     166</span>              : #endif</span>
+<span id="L167"><span class="lineNum">     167</span>              :         } else {</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       13354 :             for (loop_ur_val = loop_ur_max; loop_ur_val &gt; 1; --loop_ur_val)</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       11189 :                 if (nb_loop_len % loop_ur_val == 0) break;</span></span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        4359 :             mov(loop_cnt, loop_len);</span></span>
+<span id="L172"><span class="lineNum">     172</span>              :         }</span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">        6002 :         const size_t loop_ur = loop_ur_val;</span></span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">        6002 :         auto compute_loop</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">        7558 :                 = [&amp;](size_t current_vlen_elem, size_t current_loop_unroll) {</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">        7558 :             const auto current_vlen = current_vlen_elem * scratch_dt_size;</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       15116 :             Label loop_start_label;</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">        7558 :             L(loop_start_label);</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :             {</span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       18805 :                 for (size_t loop_ur_idx = 0; loop_ur_idx &lt; current_loop_unroll;</span></span>
+<span id="L182"><span class="lineNum">     182</span>              :                         ++loop_ur_idx) {</span>
+<span id="L183"><span class="lineNum">     183</span>              :                     // Compute gate 2: G2 = tanh(G2 + b2)</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       11247 :                     load(G2(loop_ur_idx), sg_addr(2, loop_ur_idx),</span></span>
+<span id="L185"><span class="lineNum">     185</span>              :                             scratch_data_t, current_vlen);</span>
+<span id="L186"><span class="lineNum">     186</span>              :                     // dequantize gate from s32 to f32 if needed</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       11247 :                     deq_w(src_data_t, G2(loop_ur_idx), tmp1_vmm, tmp2_vmm,</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">       11247 :                             2 * rnn_.dhc + loop_ur_idx * vlen_qscale, mask,</span></span>
+<span id="L189"><span class="lineNum">     189</span>              :                             current_vlen);</span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">       11247 :                     to_float(tmp1_vmm, B_addr(2, loop_ur_idx), rnn_.bias_dt,</span></span>
+<span id="L191"><span class="lineNum">     191</span>              :                             current_vlen);</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       11247 :                     compute_vaddps(G2(loop_ur_idx), G2(loop_ur_idx), tmp1_vmm,</span></span>
+<span id="L193"><span class="lineNum">     193</span>              :                             current_vlen);</span>
+<span id="L194"><span class="lineNum">     194</span>              :                 }</span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span>              :                 // Compute tanh of unrolled G2 regs together</span>
+<span id="L197"><span class="lineNum">     197</span>              :                 // (this allows to not save any registers during eltwise)</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       15116 :                 injector_utils::vmm_index_set_t vmm_idxs;</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       18805 :                 for (size_t loop_ur_idx = 0; loop_ur_idx &lt; current_loop_unroll;</span></span>
+<span id="L200"><span class="lineNum">     200</span>              :                         ++loop_ur_idx) {</span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       11247 :                     vmm_idxs.emplace(G2(loop_ur_idx).getIdx());</span></span>
+<span id="L202"><span class="lineNum">     202</span>              :                 }</span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        7558 :                 tanh_injector_-&gt;compute_vector_range(vmm_idxs);</span></span>
+<span id="L204"><span class="lineNum">     204</span>              : </span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       18805 :                 for (size_t loop_ur_idx = 0; loop_ur_idx &lt; current_loop_unroll;</span></span>
+<span id="L206"><span class="lineNum">     206</span>              :                         ++loop_ur_idx) {</span>
+<span id="L207"><span class="lineNum">     207</span>              :                     // if training we write back the gates</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">       11247 :                     if (is_training)</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">        4379 :                         to_src(wg_addr(2, loop_ur_idx), G2(loop_ur_idx),</span></span>
+<span id="L210"><span class="lineNum">     210</span>              :                                 src_data_t, current_vlen);</span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">       11247 :                     load(G0(loop_ur_idx), sg_addr(0, loop_ur_idx),</span></span>
+<span id="L213"><span class="lineNum">     213</span>              :                             scratch_data_t, current_vlen);</span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       11247 :                     load(tmp1_vmm, one_addr, scratch_data_t, current_vlen);</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       11247 :                     if (is_augru) {</span></span>
+<span id="L216"><span class="lineNum">     216</span>              :                         // for augru there is additional step G01 = (1 - a) * G0</span>
+<span id="L217"><span class="lineNum">     217</span>              :                         // states_t_l = states_tm1_l * G01 + (1 - G01) * G2</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">         552 :                         const Xmm tmp2s_vmm(tmp2_vmm.getIdx());</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">         552 :                         to_float(tmp2s_vmm, ptr[addr_attn_reg], src_data_t,</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">         552 :                                 scratch_dt_size);</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">         552 :                         uni_vbroadcastss(tmp2_vmm, tmp2s_vmm);</span></span>
+<span id="L222"><span class="lineNum">     222</span>              :                         // G01 = (1 - a) * G0</span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">         552 :                         compute_vsubps(tmp2_vmm, tmp1_vmm, tmp2_vmm, tmp3_vmm,</span></span>
+<span id="L224"><span class="lineNum">     224</span>              :                                 current_vlen);</span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         552 :                         compute_vmulps(G0(loop_ur_idx), G0(loop_ur_idx),</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         552 :                                 tmp2_vmm, current_vlen);</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         552 :                         to_float(tmp2_vmm,</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :                                 ptr[addr_states_tm1_l_reg</span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">         552 :                                         + loop_ur_idx * vlen_dst],</span></span>
+<span id="L230"><span class="lineNum">     230</span>              :                                 src_data_t, current_vlen);</span>
+<span id="L231"><span class="lineNum">     231</span>              :                         // tmp1 = 1 - G01</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">         552 :                         compute_vsubps(tmp1_vmm, tmp1_vmm, G0(loop_ur_idx),</span></span>
+<span id="L233"><span class="lineNum">     233</span>              :                                 current_vlen);</span>
+<span id="L234"><span class="lineNum">     234</span>              :                         // tmp1 = G2 * tmp1</span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">         552 :                         compute_vmulps(tmp1_vmm, G2(loop_ur_idx), tmp1_vmm,</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">         552 :                                 tmp3_vmm, current_vlen);</span></span>
+<span id="L237"><span class="lineNum">     237</span>              :                         // states_t_l = G01 * states_tm1_l + tmp1</span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">         552 :                         compute_vfmadd213ps(G0(loop_ur_idx), tmp2_vmm, tmp1_vmm,</span></span>
+<span id="L239"><span class="lineNum">     239</span>              :                                 current_vlen);</span>
+<span id="L240"><span class="lineNum">     240</span>              :                     } else {</span>
+<span id="L241"><span class="lineNum">     241</span>              :                         // states_t_l = states_tm1_l * G0 + (1 - G0) * G2</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       10695 :                         compute_vsubps(tmp1_vmm, tmp1_vmm, G0(loop_ur_idx),</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :                                 current_vlen);</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">       10695 :                         to_float(tmp2_vmm,</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :                                 ptr[addr_states_tm1_l_reg</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">       10695 :                                         + loop_ur_idx * vlen_dst],</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :                                 src_data_t, current_vlen);</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       10695 :                         compute_vmulps(G0(loop_ur_idx), G0(loop_ur_idx),</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       10695 :                                 tmp2_vmm, current_vlen);</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       10695 :                         compute_vfmadd231ps(G0(loop_ur_idx), tmp1_vmm,</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :                                 G2(loop_ur_idx), current_vlen);</span>
+<span id="L252"><span class="lineNum">     252</span>              :                     }</span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       11247 :                     to_src(ptr[addr_states_t_l_reg + loop_ur_idx * vlen_dst],</span></span>
+<span id="L254"><span class="lineNum">     254</span>              :                             G0(loop_ur_idx), src_data_t, current_vlen);</span>
+<span id="L255"><span class="lineNum">     255</span>              :                     // if states_t_l_copy is a non null ptr, we write the output</span>
+<span id="L256"><span class="lineNum">     256</span>              :                     // to both tensors</span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       22494 :                     Label loop_inc_regs;</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       11247 :                     cmp(addr_states_t_l_copy_reg, rnn_.dhc * hstate_dt_size);</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       11247 :                     jle(loop_inc_regs);</span></span>
+<span id="L260"><span class="lineNum">     260</span>              :                     // As to_src is called with write_only=true it's important</span>
+<span id="L261"><span class="lineNum">     261</span>              :                     // for xf16 src_dt to execute just after to_src method with</span>
+<span id="L262"><span class="lineNum">     262</span>              :                     // write_only=false for the same Vmm</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       22494 :                     to_src(ptr[addr_states_t_l_copy_reg</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">       11247 :                                    + loop_ur_idx * vlen_dst],</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :                             G0(loop_ur_idx), src_data_t, current_vlen, true);</span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">       11247 :                     L(loop_inc_regs);</span></span>
+<span id="L267"><span class="lineNum">     267</span>              :                 }</span>
+<span id="L268"><span class="lineNum">     268</span>              : </span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">        7558 :                 if (current_vlen_elem != loop_tail) {</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :                     // increment address pointers</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        6003 :                     const auto current_gate_size = current_vlen == vlen</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">        5871 :                             ? vlen_dst * current_loop_unroll</span></span>
+<span id="L273"><span class="lineNum">     273</span>              :                             : gate_dt_size;</span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">        6003 :                     const auto current_states_size = current_vlen == vlen</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">        5871 :                             ? vlen_dst * current_loop_unroll</span></span>
+<span id="L276"><span class="lineNum">     276</span>              :                             : hstate_dt_size;</span>
+<span id="L277"><span class="lineNum">     277</span>              : </span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">        6003 :                     add(addr_scratch_gates_reg,</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :                             current_vlen * current_loop_unroll);</span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">       12006 :                     add(addr_bias_reg,</span></span>
+<span id="L281"><span class="lineNum">     281</span>              :                             current_vlen == vlen</span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        5871 :                                     ? vlen_bias * current_loop_unroll</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">         132 :                                     : bias_dt_size_);</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">        6003 :                     add(addr_states_t_l_reg, current_states_size);</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        6003 :                     add(addr_states_t_l_copy_reg, current_states_size);</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        6003 :                     add(addr_states_tm1_l_reg, current_states_size);</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">        6003 :                     if (is_training) add(addr_ws_gates_reg, current_gate_size);</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        6003 :                     inc_regs(mask,</span></span>
+<span id="L289"><span class="lineNum">     289</span>              :                             current_vlen == vlen</span>
+<span id="L290"><span class="lineNum">     290</span>              :                                     ? current_vlen * current_loop_unroll</span>
+<span id="L291"><span class="lineNum">     291</span>              :                                     : qscale_dt_size);</span>
+<span id="L292"><span class="lineNum">     292</span>              : </span>
+<span id="L293"><span class="lineNum">     293</span>              :                     // increment loop counter</span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">        6003 :                     sub(loop_cnt, current_vlen_elem * current_loop_unroll);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">        6003 :                     cmp(loop_cnt, current_vlen_elem * current_loop_unroll);</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">        6003 :                     jge(loop_start_label);</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :                 }</span>
+<span id="L298"><span class="lineNum">     298</span>              :             }</span>
+<span id="L299"><span class="lineNum">     299</span>              :         };</span>
+<span id="L300"><span class="lineNum">     300</span>              : </span>
+<span id="L301"><span class="lineNum">     301</span>              :         // vector processing</span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        6002 :         if (loop_len &gt;= vlen_elems) {</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">       11742 :             Label tail_processing_or_exit_label;</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">        5871 :             if (is_brgemm) {</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">        1643 :                 cmp(loop_cnt, vlen_elems * loop_ur);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">        1643 :                 jl(tail_processing_or_exit_label, T_NEAR);</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :             }</span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">        5871 :             compute_loop(vlen_elems, loop_ur);</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">        5871 :             L(tail_processing_or_exit_label);</span></span>
+<span id="L310"><span class="lineNum">     310</span>              :         }</span>
+<span id="L311"><span class="lineNum">     311</span>              : </span>
+<span id="L312"><span class="lineNum">     312</span>              :         // tail processing</span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">        6002 :         if (loop_tail &gt; 0) {</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">        3374 :             Label exit_label;</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">        1687 :             if (is_brgemm) {</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">         512 :                 cmp(loop_cnt, 0);</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">         512 :                 jle(exit_label, T_NEAR);</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :             }</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">        1687 :             compute_loop(is_avx512 ? loop_tail : 1, 1);</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">        1687 :             L(exit_label);</span></span>
+<span id="L322"><span class="lineNum">     322</span>              :         }</span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">        6002 :         postamble();</span></span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">        6002 :         tanh_injector_-&gt;prepare_table(true);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        6002 :         init_table(vlen);</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">        6002 :         L(table_label);</span></span>
+<span id="L329"><span class="lineNum">     329</span>              :         {</span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">       88182 :             for (size_t i = 0; i &lt; vlen / sizeof(float); i++)</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">       82180 :                 dd(float2int(1.0f));</span></span>
+<span id="L332"><span class="lineNum">     332</span>              :         }</span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">        6002 :     }</span></span>
+<span id="L334"><span class="lineNum">     334</span>              : };</span>
+<span id="L335"><span class="lineNum">     335</span>              : </span>
+<span id="L336"><span class="lineNum">     336</span>              : } // namespace x64</span>
+<span id="L337"><span class="lineNum">     337</span>              : } // namespace cpu</span>
+<span id="L338"><span class="lineNum">     338</span>              : } // namespace impl</span>
+<span id="L339"><span class="lineNum">     339</span>              : } // namespace dnnl</span>
+<span id="L340"><span class="lineNum">     340</span>              : </span>
+<span id="L341"><span class="lineNum">     341</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

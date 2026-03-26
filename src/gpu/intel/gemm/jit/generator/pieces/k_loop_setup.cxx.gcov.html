@@ -1,0 +1,673 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/k_loop_setup.cxx</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - k_loop_setup.cxx<span style="font-size: 80%;"> (source / <a href="k_loop_setup.cxx.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">84.8&nbsp;%</td>
+            <td class="headerCovTableEntry">374</td>
+            <td class="headerCovTableEntry">317</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">43.8&nbsp;%</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntry">28</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;alloc_utils.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;compute_utils.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;gemmstone/generator.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;kernel_queries.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;layout_utils.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;state_utils.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : using namespace ngen;</span>
+<span id="L28"><span class="lineNum">      28</span>              : using namespace ngen::utils;</span>
+<span id="L29"><span class="lineNum">      29</span>              : using std::vector;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : static void makeAiBiKCloneLayout(HW hw, bool isA, RegisterLayout &amp;Xi_layout, vector&lt;RegisterLayout&gt; &amp;Xi_layoutK,</span>
+<span id="L33"><span class="lineNum">      33</span>              :                                  vector&lt;GRFMultirange&gt; &amp;Xi_regsRem, int kx_slm,</span>
+<span id="L34"><span class="lineNum">      34</span>              :                                  const GEMMStrategy &amp;strategy, GEMMState &amp;state);</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : // Prepare for inner loop. Returns true on success.</span>
+<span id="L37"><span class="lineNum">      37</span>              : template &lt;HW hw&gt;</span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       46893 : bool Generator&lt;hw&gt;::kLoopSetup(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span></span>
+<span id="L39"><span class="lineNum">      39</span>              : {</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       46893 :     auto Ta = problem.Ta, Tb = problem.Tb;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">       46893 :     auto Ta_ext = problem.Ta_ext, Tb_ext = problem.Tb_ext;</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       46893 :     auto Ta_load = state.Ta_load, Tb_load = state.Tb_load;</span></span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       46893 :     auto minOPCount = minOuterProductCount(hw, problem, strategy);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       46893 :     auto unrollM = strategy.unroll[LoopM];</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       46893 :     auto unrollN = strategy.unroll[LoopN];</span></span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       46893 :     state.barrierReady = false;</span></span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span>              :     // Get A/B named barrier IDs and prepare barrier message headers.</span>
+<span id="L51"><span class="lineNum">      51</span>              :     // Flag registers have already been allocated.</span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       46893 :     auto &amp;barrierHeaderM = state.barrierHeaderM;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       46893 :     auto &amp;barrierHeaderN = state.barrierHeaderN;</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       46893 :     auto &amp;barrierM = state.barrierM;</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       46893 :     auto &amp;barrierN = state.barrierN;</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       46893 :     bool nbM = strategy.needsNamedBarriersM(problem);</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       46893 :     bool nbN = strategy.needsNamedBarriersN(problem);</span></span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">       46893 :     if (nbM) {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        1834 :         barrierHeaderM = state.ra.alloc();</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        1834 :         if (!is_zero_or_pow2(strategy.wg[LoopM]) || !is_zero_or_pow2(strategy.namedBarriers[LoopM])) stub();</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        1834 :         shr(1, barrierHeaderM.uw(4), state.lidM, ilog2(strategy.wg[LoopM]) - ilog2(strategy.namedBarriers[LoopM]));</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :     }</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       46893 :     if (nbN) {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        1843 :         barrierHeaderN = state.ra.alloc();</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        1843 :         if (!is_zero_or_pow2(strategy.wg[LoopN]) || !is_zero_or_pow2(strategy.namedBarriers[LoopN])) stub();</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">        1843 :         shr(1, barrierHeaderN.uw(4), state.lidN, ilog2(strategy.wg[LoopN]) - ilog2(strategy.namedBarriers[LoopN]));</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :     }</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       46893 :     if (nbM) {</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        1834 :         int threadsPerMBar = strategy.wg[LoopM] * strategy.wg[LoopN] / strategy.namedBarriers[LoopM];</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        1834 :         mov(1, barrierHeaderM.uw(5), threadsPerMBar | (threadsPerMBar &lt;&lt; 8));</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :     }</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       46893 :     if (nbN) {</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">        1843 :         int threadsPerNBar = strategy.wg[LoopM] * strategy.wg[LoopN] / strategy.namedBarriers[LoopN];</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        1843 :         mov(1, barrierHeaderN.uw(5), threadsPerNBar | (threadsPerNBar &lt;&lt; 8));</span></span>
+<span id="L76"><span class="lineNum">      76</span>              :     }</span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       46893 :     if (strategy.kParallelLocal) {</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       22227 :         if (nbM) emad(1, barrierHeaderM.uw(4), barrierHeaderM.uw(4), state.lidK, strategy.namedBarriers[LoopM], strategy, state);</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       22227 :         if (nbN) emad(1, barrierHeaderN.uw(4), barrierHeaderN.uw(4), state.lidK, strategy.namedBarriers[LoopN], strategy, state);</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :     }</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       46893 :     int offNBM = 0, offNBN = 0;</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       46893 :     if (strategy.needsUnnamedBarrier(problem))</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       38512 :         offNBM++, offNBN++;</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       46893 :     if (nbM &amp;&amp; nbN)</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">        1824 :         offNBN += strategy.namedBarriers[LoopM] * strategy.wg[LoopK];</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       46893 :     if (nbM &amp;&amp; offNBM) add(1, barrierHeaderM.uw(4), barrierHeaderM.uw(4), offNBM);</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       46893 :     if (nbN &amp;&amp; offNBN) add(1, barrierHeaderN.uw(4), barrierHeaderN.uw(4), offNBN);</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       46893 :     if (nbM) mov(1, barrierM, barrierHeaderM.uw(4));</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       46893 :     if (nbN) mov(1, barrierN, barrierHeaderN.uw(4));</span></span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span>              :     // Get tokens for barriers/fences.</span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">      140679 :     for (int q = 0; q &lt; 2; q++) {</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">       93786 :         state.tokenBarrierFence[q] = -1;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       93786 :         state.modBarrierFence[q] = InstructionModifier{};</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :     }</span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       46893 :     if (strategy.needsKLoopBarrier() || strategy.xParallel)</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">       28733 :         state.tokenBarrierFence[0] = state.tokenAllocator.tryAlloc();</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       46893 :     if (nbM &amp;&amp; nbN)</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">        1824 :         state.tokenBarrierFence[1] = state.tokenAllocator.tryAlloc();</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">      140679 :     for (int q = 0; q &lt; 2; q++)</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       93786 :         if (state.tokenBarrierFence[q] &gt;= 0)</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">       28697 :             state.modBarrierFence[q] = SBID(state.tokenBarrierFence[q]);</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              :     // Update L3 prefetch enable flags.</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">       46893 :     if (strategy.l3PrefetchA)</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 :         mov(1, state.flagL3PFA, state.nextFlagL3PFA);</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">       46893 :     if (strategy.l3PrefetchB)</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaUNC">           0 :         mov(1, state.flagL3PFB, state.nextFlagL3PFB);</span></span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :     // Remainder load preparations.</span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">       46893 :     auto &amp;ka_loadRem = state.ka_loadRem, &amp;kb_loadRem = state.kb_loadRem;</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">       46893 :     ka_loadRem = 1, kb_loadRem = 1;</span></span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :     // For packed layouts, extend remainder loads to encompass a full logical block.</span>
+<span id="L116"><span class="lineNum">     116</span>              :     int ignore;</span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">       46893 :     getGranularities(problem.A, ignore, ka_loadRem);</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">       46893 :     getGranularities(problem.B, kb_loadRem, ignore);</span></span>
+<span id="L119"><span class="lineNum">     119</span>              : </span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">       46893 :     ka_loadRem = std::min(ka_loadRem, strategy.ka_load);</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">       46893 :     kb_loadRem = std::min(kb_loadRem, strategy.kb_load);</span></span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :     // With 2D block loads, extend k unroll to at least a full block (array).</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">       46893 :     bool a2D = isBlock2D(strategy.A.accessType);</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       46893 :     bool b2D = isBlock2D(strategy.B.accessType);</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">       46893 :     bool ai2D = strategy.slmA &amp;&amp; isBlock2D(state.Ai_strategy.accessType);</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       46893 :     bool bi2D = strategy.slmB &amp;&amp; isBlock2D(state.Bi_strategy.accessType);</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       46893 :     if (a2D || ai2D) {                              // TODO: logic doesn't look right for ai2D case</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">        8862 :         ka_loadRem = state.A_layout[0].nc;</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">        8862 :         if (!isColMajor(problem.A.layout))</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">        7427 :             ka_loadRem *= state.A_layout[0].count;</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :     }</span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">       46893 :     if (b2D || bi2D) {</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">        7527 :         kb_loadRem = state.B_layout[0].nr;</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        7527 :         if (isColMajor(problem.B.layout))</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        7209 :             kb_loadRem *= state.B_layout[0].count;</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :     }</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              :     // With regular block loads oriented in the k dimension, do the same, unless it would</span>
+<span id="L140"><span class="lineNum">     140</span>              :     //   involve downgrading to a padded message (scattered byte/D8U32/D16U32).</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       46893 :     auto &amp;A_lateKRem = state.A_lateKRem, &amp;B_lateKRem = state.B_lateKRem;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       46893 :     A_lateKRem = B_lateKRem = false;</span></span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">       46893 :     if (!strategy.slmA &amp;&amp; isBlocklike(strategy.A.accessType) &amp;&amp; problem.A.layout == MatrixLayout::T &amp;&amp; problem.A.alignment &gt;= 4) {</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">          62 :         A_lateKRem = true;</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">          62 :         ka_loadRem = state.A_layout[0].nc;</span></span>
+<span id="L147"><span class="lineNum">     147</span>              :     }</span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">       46893 :     if (!strategy.slmB &amp;&amp; isBlocklike(strategy.B.accessType) &amp;&amp; problem.B.layout == MatrixLayout::N &amp;&amp; problem.B.alignment &gt;= 4) {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">       11000 :         B_lateKRem = true;</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       11000 :         kb_loadRem = state.B_layout[0].nr;</span></span>
+<span id="L151"><span class="lineNum">     151</span>              :     }</span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span>              :     // Try to use descriptor-based remainders if possible.</span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       46893 :     auto &amp;A_descRem = state.A_descRem, &amp;B_descRem = state.B_descRem;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       46893 :     A_descRem = B_descRem = false;</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : </span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       46893 :     if (strategy.kDescRem) {</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       13048 :         if (ka_loadRem == 1) {</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       12812 :             int frag = checkDescriptorRemainder(hw, Ta_load, unrollM, strategy.ka_load, true, false, problem.A, strategy.A);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       12812 :             if (frag &gt; 1) {</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        5814 :                 ka_loadRem = frag;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        5814 :                 A_lateKRem = A_descRem = true;</span></span>
+<span id="L163"><span class="lineNum">     163</span>              :             }</span>
+<span id="L164"><span class="lineNum">     164</span>              :         }</span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       13048 :         if (kb_loadRem == 1 &amp;&amp; !A_descRem) {</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">        5806 :             int frag = checkDescriptorRemainder(hw, Tb_load, strategy.kb_load, unrollN, false, false, problem.B, strategy.B);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">        5806 :             if (frag &gt; 1) {</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :                 kb_loadRem = frag;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaUNC">           0 :                 B_lateKRem = B_descRem = true;</span></span>
+<span id="L170"><span class="lineNum">     170</span>              :             }</span>
+<span id="L171"><span class="lineNum">     171</span>              :         }</span>
+<span id="L172"><span class="lineNum">     172</span>              :     }</span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span>              :     // When A/B are overaligned (e.g. 1b with assumed 4b alignment), and k dimension is contiguous</span>
+<span id="L175"><span class="lineNum">     175</span>              :     //  in memory, can safely expand remainder load k based on the alignment. This avoids</span>
+<span id="L176"><span class="lineNum">     176</span>              :     //  slow memory accesses.</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       46893 :         if (!strategy.slmA &amp;&amp; !isColMajor(problem.A.layout)) {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       23033 :             ka_loadRem = std::max(ka_loadRem, problem.A.alignment / Ta_load);</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       23033 :             ka_loadRem = std::min(ka_loadRem, strategy.ka_load);</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :         }</span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       46893 :         if (!strategy.slmB &amp;&amp;  isColMajor(problem.B.layout)) {</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       29416 :             kb_loadRem = std::max(kb_loadRem, problem.B.alignment / Tb_load);</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       29416 :             kb_loadRem = std::min(kb_loadRem, strategy.kb_load);</span></span>
+<span id="L184"><span class="lineNum">     184</span>              :         }</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :     // Fragment the A, B layouts into smaller blocks (usually 1 row/column) for remainder loads.</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       46893 :     state.A_layoutRem = state.A_layout.trySlice(state.A_addrsRem, state.A_addrs, true,  0, ka_loadRem, strategy.A.padded);</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">       46893 :     state.B_layoutRem = state.B_layout.trySlice(state.B_addrsRem, state.B_addrs, false, 0, kb_loadRem, strategy.B.padded);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       46893 :     if (!state.A_layoutRem || !state.B_layoutRem) return false;</span></span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span>              :     // Add k masking now for block 2D loads. Otherwise it is done later, or not at all.</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       46893 :     if (a2D &amp;&amp; (ka_loadRem &gt; 1)) addRemainder(state.A_layoutRem, false, true, AvoidFragment);</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       46893 :     if (b2D &amp;&amp; (kb_loadRem &gt; 1)) addRemainder(state.B_layoutRem, true, false, AvoidFragment);</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              :     // Manually set k remainder flags in the overaligned case.</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      101266 :     if (ka_loadRem &gt; 1 &amp;&amp; !A_lateKRem) for (auto &amp;block: state.A_layoutRem)</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       54373 :         block.remainderC = true;</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       78713 :     if (kb_loadRem &gt; 1 &amp;&amp; !B_lateKRem) for (auto &amp;block: state.B_layoutRem)</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       31820 :         block.remainderR = true;</span></span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              :     // Ai/Bi remainders.</span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_layoutRem = state.Ai_layoutRem, &amp;Bi_layoutRem = state.Bi_layoutRem;</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_layoutK = state.Ai_layoutK, &amp;Bi_layoutK = state.Bi_layoutK;</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_addrsRem = state.Ai_addrsRem, &amp;Bi_addrsRem = state.Bi_addrsRem;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_addrsK = state.Ai_addrsK, &amp;Bi_addrsK = state.Bi_addrsK;</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_regsRem = state.Ai_regsRem, &amp;Bi_regsRem = state.Bi_regsRem;</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       46893 :     auto &amp;Ao_regsRem = state.Ao_regsRem, &amp;Bo_regsRem = state.Bo_regsRem;</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_hasKRem = state.Ai_hasKRem, &amp;Bi_hasKRem = state.Bi_hasKRem;</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_lateKRem = state.Ai_lateKRem, &amp;Bi_lateKRem = state.Bi_lateKRem;</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_remIncrCopy = state.Ai_remIncrCopy, &amp;Bi_remIncrCopy = state.Bi_remIncrCopy;</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">       46893 :     auto &amp;Ai_incrementalRem = state.Ai_incrementalRem, &amp;Bi_incrementalRem = state.Bi_incrementalRem;</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">       46893 :     auto &amp;aioShareRem = state.aioShareRem, &amp;bioShareRem = state.bioShareRem;</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       46893 :     int ka_slm = state.ka_slm, kb_slm = state.kb_slm;</span></span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       46893 :     Ai_layoutRem = state.Ai_layout;</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">       46893 :     Bi_layoutRem = state.Bi_layout;</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">       46893 :     Ai_addrsRem = state.Ai_addrs;</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       46893 :     Bi_addrsRem = state.Bi_addrs;</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">       46893 :     Ai_regsRem = state.Ai_regs;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       46893 :     Bi_regsRem = state.Bi_regs;</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       46893 :     Ao_regsRem = state.Ao_regs;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">       46893 :     Bo_regsRem = state.Bo_regs;</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : </span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">       46893 :     Ai_hasKRem = Ai_lateKRem = false;</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">       46893 :     Bi_hasKRem = Bi_lateKRem = false;</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">       46893 :     Ai_remIncrCopy = Bi_remIncrCopy = false;</span></span>
+<span id="L227"><span class="lineNum">     227</span>              : </span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">       46893 :     if (ai2D &amp;&amp; (ka_loadRem &gt; 1) &amp;&amp; state.Ai_strategy.address2D) {</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">          70 :         Ai_hasKRem = true;</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">          70 :         addRemainder(state.Ai_layoutRem, false, true, AvoidFragment);</span></span>
+<span id="L231"><span class="lineNum">     231</span>              :     }</span>
+<span id="L232"><span class="lineNum">     232</span>              : </span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">       46893 :     if (bi2D &amp;&amp; (kb_loadRem &gt; 1) &amp;&amp; state.Bi_strategy.address2D) {</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">         138 :         Bi_hasKRem = true;</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">         138 :         addRemainder(state.Bi_layoutRem, true, false, AvoidFragment);</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :     }</span>
+<span id="L237"><span class="lineNum">     237</span>              : </span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       46893 :     if (strategy.slmA &amp;&amp; !Ai_hasKRem)</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">       17873 :         Ai_lateKRem |= !isRegisterColMajor(Ta_ext, state.Ai, state.Ai_strategy);</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       46893 :     if (strategy.slmB &amp;&amp; !Bi_hasKRem)</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">       16049 :         Bi_lateKRem |=  isRegisterColMajor(Tb_ext, state.Bi, state.Bi_strategy);</span></span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">       46893 :     Ai_incrementalRem = strategy.slmA &amp;&amp; !state.Ai_hasKRem &amp;&amp; !state.Ai_lateKRem;</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">       46893 :     Bi_incrementalRem = strategy.slmB &amp;&amp; !state.Bi_hasKRem &amp;&amp; !state.Bi_lateKRem;</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">       46893 :     aioShareRem = state.aioShare;</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">       46893 :     bioShareRem = state.bioShare;</span></span>
+<span id="L247"><span class="lineNum">     247</span>              : </span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       46893 :     if (Ai_incrementalRem) {</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :         // Prepare to split Ai layout in k dimension. If it's not possible to do in-place, then</span>
+<span id="L250"><span class="lineNum">     250</span>              :         // either redo the layout or copy Ai-&gt;Ao incrementally.</span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">        9755 :         Ai_layoutK.resize(ka_slm);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        9755 :         Ai_addrsK.resize(ka_slm);</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       52709 :         for (int h = 0; h &lt; ka_slm; h++) {</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">       43240 :             bool success = false;</span></span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       43240 :             if (h &lt; int(Ai_addrsK.size())) {</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       42784 :                 Ai_layoutK[h] = Ai_layoutRem.trySlice(Ai_addrsK[h], state.Ai_addrs, true, h, h + 1, state.Ai_strategy.padded);</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       42784 :                 success = Ai_layoutK[h].valid();</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :             }</span>
+<span id="L260"><span class="lineNum">     260</span>              : </span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">       43240 :             if (!success &amp;&amp; h == 0) stub();</span></span>
+<span id="L262"><span class="lineNum">     262</span>              : </span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       43240 :             if (!success) {</span></span>
+<span id="L264"><span class="lineNum">     264</span>              :                 // Maybe the subblock is OK, but we didn't get an address register. Try again without</span>
+<span id="L265"><span class="lineNum">     265</span>              :                 //  asking for address registers.</span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">         970 :                 Ai_addrsK.resize(1);</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">         970 :                 Ai_layoutK[h] = Ai_layoutRem.trySlice(true, h, h + 1, state.Ai_strategy.padded, true);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">         970 :                 success = Ai_layoutK[h].valid();</span></span>
+<span id="L269"><span class="lineNum">     269</span>              :             }</span>
+<span id="L270"><span class="lineNum">     270</span>              : </span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       43240 :             if (!success) {</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :                 // Can't make a subblock. Will need a new layout or an incremental copy.</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">         286 :                 if (strategy.slmUseIncrCopy) {</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">         286 :                     Ai_remIncrCopy = true;</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">         286 :                     Ai_layoutK.resize(1);</span></span>
+<span id="L276"><span class="lineNum">     276</span>              :                 } else</span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaUNC">           0 :                     makeAiBiKCloneLayout(hw, true, Ai_layoutRem, Ai_layoutK, Ai_regsRem, ka_slm, strategy, state);</span></span>
+<span id="L278"><span class="lineNum">     278</span>              : </span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">         286 :                 aioShareRem = false;</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">         286 :                 if (state.aioShare || state.aoReuseA)</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">         270 :                     Ao_regsRem = state.ra.alloc_range(state.Ao_layout.regs());</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">         286 :                 break;</span></span>
+<span id="L283"><span class="lineNum">     283</span>              :             }</span>
+<span id="L284"><span class="lineNum">     284</span>              :         }</span>
+<span id="L285"><span class="lineNum">     285</span>              :     }</span>
+<span id="L286"><span class="lineNum">     286</span>              : </span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">       46893 :     if (Bi_incrementalRem) {</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        3355 :         Bi_layoutK.resize(kb_slm);</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        3355 :         Bi_addrsK.resize(kb_slm);</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">       16124 :         for (int h = 0; h &lt; kb_slm; h++) {</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">       13293 :             bool success = false;</span></span>
+<span id="L292"><span class="lineNum">     292</span>              : </span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">       13293 :             if (h &lt; int(Bi_addrsK.size())) {</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">       12689 :                 Bi_layoutK[h] = Bi_layoutRem.trySlice(Bi_addrsK[h], state.Bi_addrs, false, h, h + 1, state.Bi_strategy.padded);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">       12689 :                 success = Bi_layoutK[h].valid();</span></span>
+<span id="L296"><span class="lineNum">     296</span>              :             }</span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">       13293 :             if (!success &amp;&amp; h == 0) stub();</span></span>
+<span id="L299"><span class="lineNum">     299</span>              : </span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">       13293 :             if (!success) {</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">        1654 :                 Bi_addrsK.resize(1);</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        1654 :                 Bi_layoutK[h] = Bi_layoutRem.trySlice(false, h, h + 1, state.Bi_strategy.padded, true);</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">        1654 :                 success = Bi_layoutK[h].valid();</span></span>
+<span id="L304"><span class="lineNum">     304</span>              :             }</span>
+<span id="L305"><span class="lineNum">     305</span>              : </span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">       13293 :             if (!success) {</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">         524 :                 if (strategy.slmUseIncrCopy) {</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">         524 :                     Bi_remIncrCopy = true;</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">         524 :                     Bi_layoutK.resize(1);</span></span>
+<span id="L310"><span class="lineNum">     310</span>              :                 } else</span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaUNC">           0 :                     makeAiBiKCloneLayout(hw, false, Bi_layoutRem, Bi_layoutK, Bi_regsRem, kb_slm, strategy, state);</span></span>
+<span id="L312"><span class="lineNum">     312</span>              : </span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">         524 :                 bioShareRem = false;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">         524 :                 if (state.bioShare || state.boReuseB)</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">         508 :                     Bo_regsRem = state.ra.alloc_range(state.Bo_layout.regs());</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">         524 :                 break;</span></span>
+<span id="L317"><span class="lineNum">     317</span>              :             }</span>
+<span id="L318"><span class="lineNum">     318</span>              :         }</span>
+<span id="L319"><span class="lineNum">     319</span>              :     }</span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span>              :     // Allocate repack registers if we need to assemble multiple loads for</span>
+<span id="L322"><span class="lineNum">     322</span>              :     //  each outer product calculation.</span>
+<span id="L323"><span class="lineNum">     323</span>              :     // TODO: allow allocation to overlap unneeded A/B registers.</span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">       46893 :     auto &amp;repackA = state.repackA, &amp;repackB = state.repackB;</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       46893 :     auto &amp;repackARem = state.repackARem, &amp;repackBRem = state.repackBRem;</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       46893 :     auto &amp;ka_repackRem = state.ka_repackRem, &amp;kb_repackRem = state.kb_repackRem;</span></span>
+<span id="L327"><span class="lineNum">     327</span>              : </span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">       46893 :     repackARem = repackA;</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">       46893 :     repackBRem = repackB;</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">       46893 :     ka_repackRem = repackA ? std::min(ka_loadRem, state.ka_repack) : 0;</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">       46893 :     kb_repackRem = repackB ? kb_loadRem : 0;</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">       46893 :     if (minOPCount &gt; 1) {</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">       35020 :         if (ka_loadRem &lt; minOPCount) {</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">       13156 :             ka_repackRem = minOPCount;</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">       13156 :             repackARem = true;</span></span>
+<span id="L336"><span class="lineNum">     336</span>              :         }</span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">       35020 :         if (kb_loadRem &lt; minOPCount) {</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">        7345 :             kb_repackRem = minOPCount;</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">        7345 :             repackBRem = true;</span></span>
+<span id="L340"><span class="lineNum">     340</span>              :         }</span>
+<span id="L341"><span class="lineNum">     341</span>              :     }</span>
+<span id="L342"><span class="lineNum">     342</span>              : </span>
+<span id="L343"><span class="lineNum">     343</span>              :     int crosspackA, crosspackB, tileM_A, tileK_A, tileK_B, tileN_B;</span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">       46893 :     std::tie(crosspackA, crosspackB) = targetKernelCrosspack(hw, problem, strategy);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">       46893 :     std::tie(tileM_A, tileK_A, tileK_B, tileN_B) = targetKernelTiling(hw, problem, strategy);</span></span>
+<span id="L346"><span class="lineNum">     346</span>              : </span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">       46893 :     if (!repackA &amp;&amp; repackARem) {</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">       12770 :         state.Ar_layout = RegisterLayout(hw, Ta, unrollM, ka_repackRem, state.A_layout.colMajor(), crosspackA, tileM_A, tileK_A);</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       12770 :         state.Ar_regs = state.ra.allocRange(state.Ar_layout.regs(), getHint(HintType::A0, strategy));</span></span>
+<span id="L350"><span class="lineNum">     350</span>              :     }</span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       46893 :     if (!repackB &amp;&amp; repackBRem) {</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">        6034 :         state.Br_layout = RegisterLayout(hw, Tb, kb_repackRem, unrollN, state.B_layout.colMajor(), crosspackB, tileK_B, tileN_B);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">        6034 :         state.Br_regs = state.ra.allocRange(state.Br_layout.regs(), getHint(HintType::B0, strategy));</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :     }</span>
+<span id="L356"><span class="lineNum">     356</span>              : </span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">       46893 :     state.remActiveA = state.remActiveB = state.remActiveSLM = false;</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">       46893 :     state.slmRemaskA = state.slmRemaskB = false;</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">       46893 :     state.firstKLoopSegment = true;</span></span>
+<span id="L360"><span class="lineNum">     360</span>              : </span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       46893 :     return true;</span></span>
+<span id="L362"><span class="lineNum">     362</span>              : }</span>
+<span id="L363"><span class="lineNum">     363</span>              : </span>
+<span id="L364"><span class="lineNum">     364</span>              : // Tear down after a single k loop.</span>
+<span id="L365"><span class="lineNum">     365</span>              : template &lt;HW hw&gt;</span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">       46860 : void Generator&lt;hw&gt;::kLoopTeardown(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span></span>
+<span id="L367"><span class="lineNum">     367</span>              : {</span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">       46860 :     if (state.K != state.k)</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">       34960 :         state.ra.safeRelease(state.K);</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">       46860 :     state.barrierReady = false;</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">       46860 :     state.ra.safeRelease(state.barrierHeader);</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">       46860 :     state.ra.safeRelease(state.barrierHeaderM);</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">       46860 :     state.ra.safeRelease(state.barrierHeaderN);</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">       46860 :     safeReleaseMaskAssignments(state.kMasksA, state);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">       46860 :     safeReleaseMaskAssignments(state.kMasksB, state);</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">       46860 :     safeReleaseMaskAssignments(state.kMasksAi, state);</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       46860 :     safeReleaseMaskAssignments(state.kMasksBi, state);</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">       46860 :     safeReleaseRanges(state.Ao_regsRem, state);</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">       46860 :     safeReleaseRanges(state.Bo_regsRem, state);</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">       46860 :     state.tokenAllocator.safeRelease(state.tokenBarrierFence[0]);</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       46860 :     state.tokenAllocator.safeRelease(state.tokenBarrierFence[1]);</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       46860 :     gemmTeardownL3Prefetch(problem, strategy, state);</span></span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">       46860 : }</span></span>
+<span id="L384"><span class="lineNum">     384</span>              : </span>
+<span id="L385"><span class="lineNum">     385</span>              : </span>
+<span id="L386"><span class="lineNum">     386</span>              : // Prepare for GEMM k loop with m/n masked A/B accesses. Returns true if ka_lda/kb_ldb need recalculating.</span>
+<span id="L387"><span class="lineNum">     387</span>              : template &lt;HW hw&gt;</span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">       35615 : bool Generator&lt;hw&gt;::gemmPrepMaskedAB(const GEMMProblem &amp;problem, GEMMStrategy &amp;strategy, GEMMState &amp;state)</span></span>
+<span id="L389"><span class="lineNum">     389</span>              : {</span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">       35615 :     bool recalc = false;</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       35615 :     bool shrinkUK = false;</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">       35615 :     if (!strategy.A.padded &amp;&amp; (strategy.remHandling[LoopM] != RemainderHandling::Ignore)) {</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">       18006 :         shrinkUK = true;</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">       18006 :         if (strategy.ka_load &gt; strategy.ka_load_masked) {</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">         134 :             status &lt;&lt; &quot;Downgrading ka_load: &quot; &lt;&lt; strategy.ka_load &lt;&lt; &quot; -&gt; &quot; &lt;&lt; strategy.ka_load_masked &lt;&lt; status_stream::endl;</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">         134 :             strategy.ka_load = strategy.ka_load_masked;</span></span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">         134 :             strategy.trimKChain(hw, strategy.ka_load, problem);</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">         134 :             recalc = true;</span></span>
+<span id="L399"><span class="lineNum">     399</span>              :         }</span>
+<span id="L400"><span class="lineNum">     400</span>              :         // Avoid access patterns that require double masking, unless enabled.</span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">       18006 :         if (isBlock2D(strategy.A.accessType) || strategy.allowDoubleMasking(LoopM))</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">       10559 :             noop();</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">        7447 :         else if (!isRegisterColMajor(problem.Ta_ext, problem.A, strategy.A)) {</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">         347 :             transposeAccessType(strategy.A);</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">         347 :             if (strategy.slmA &amp;&amp; strategy.coopA == CoopSplit::MN)</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">          42 :                 strategy.coopA = CoopSplit::K;</span></span>
+<span id="L407"><span class="lineNum">     407</span>              :         }</span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">       18006 :         strategy.slmATrans = false;</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">       18006 :         strategy.prefetchA = strategy.prefetchAMasked;</span></span>
+<span id="L410"><span class="lineNum">     410</span>              :     }</span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">       35615 :     if (!strategy.B.padded &amp;&amp; (strategy.remHandling[LoopN] != RemainderHandling::Ignore)) {</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">       12963 :         shrinkUK = true;</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">       12963 :         if (strategy.kb_load &gt; strategy.kb_load_masked) {</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">         137 :             status &lt;&lt; &quot;Downgrading kb_load: &quot; &lt;&lt; strategy.kb_load &lt;&lt; &quot; -&gt; &quot; &lt;&lt; strategy.kb_load_masked &lt;&lt; status_stream::endl;</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">         137 :             strategy.kb_load = strategy.kb_load_masked;</span></span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">         137 :             strategy.trimKChain(hw, strategy.kb_load, problem);</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">         137 :             recalc = true;</span></span>
+<span id="L418"><span class="lineNum">     418</span>              :         }</span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">       12963 :         if (isBlock2D(strategy.B.accessType) || strategy.allowDoubleMasking(LoopN))</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">       10022 :             noop();</span></span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">        2941 :         else if (isRegisterColMajor(problem.Tb_ext, problem.B, strategy.B)) {</span></span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">         929 :             transposeAccessType(strategy.B);</span></span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">         929 :             if (strategy.slmB &amp;&amp; strategy.coopB == CoopSplit::MN)</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">         321 :                 strategy.coopB = CoopSplit::K;</span></span>
+<span id="L425"><span class="lineNum">     425</span>              :         }</span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">       12963 :         strategy.slmBTrans = false;</span></span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">       12963 :         strategy.prefetchB = strategy.prefetchBMasked;</span></span>
+<span id="L428"><span class="lineNum">     428</span>              :     }</span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">       35615 :     if (shrinkUK &amp;&amp; (strategy.unrollK_masked &gt; 0)</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaUNC">           0 :                  &amp;&amp; (strategy.unroll[LoopK] &gt; strategy.unrollK_masked)) {</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaUNC">           0 :         status &lt;&lt; &quot;Downgrading k unroll: &quot; &lt;&lt; strategy.unroll[LoopK] &lt;&lt; &quot; -&gt; &quot; &lt;&lt; strategy.unrollK_masked &lt;&lt; status_stream::endl;</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaUNC">           0 :         strategy.unroll[LoopK] = strategy.unrollK_masked;</span></span>
+<span id="L433"><span class="lineNum">     433</span>              :     }</span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">       35615 :     if (shrinkUK &amp;&amp; (strategy.unrollKSLMMasked &gt; 0)</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">           4 :                  &amp;&amp; (strategy.unrollKSLM &gt; strategy.unrollKSLMMasked)) {</span></span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">           4 :         status &lt;&lt; &quot;Downgrading SLM k chunk size: &quot; &lt;&lt; strategy.unrollKSLM &lt;&lt; &quot; -&gt; &quot; &lt;&lt; strategy.unrollKSLMMasked &lt;&lt; status_stream::endl;</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">           4 :         strategy.unrollKSLM = strategy.unrollKSLMMasked;</span></span>
+<span id="L438"><span class="lineNum">     438</span>              :     }</span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">       35615 :     return recalc;</span></span>
+<span id="L440"><span class="lineNum">     440</span>              : }</span>
+<span id="L441"><span class="lineNum">     441</span>              : </span>
+<span id="L442"><span class="lineNum">     442</span>              : </span>
+<span id="L443"><span class="lineNum">     443</span>              : // Calculate kSLMA/kSLMB -- countdown variables for SLM copies.</span>
+<span id="L444"><span class="lineNum">     444</span>              : template &lt;HW hw&gt;</span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       29875 : void Generator&lt;hw&gt;::gemmCalcKSLM(const Subregister &amp;kSLM, const Subregister &amp;lid, int kgran, int kdiv, int krep,</span></span>
+<span id="L446"><span class="lineNum">     446</span>              :                                  const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, Subregister kBase)</span>
+<span id="L447"><span class="lineNum">     447</span>              : {</span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">       29875 :     if (kBase.isInvalid()) kBase = state.K;</span></span>
+<span id="L449"><span class="lineNum">     449</span>              : </span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       29875 :     if (kdiv == 1)</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">         108 :         mov(1, kSLM, kBase);</span></span>
+<span id="L452"><span class="lineNum">     452</span>              :     else {</span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">       29767 :         auto modLID = lid;</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">       29767 :         if (krep &gt; 1) {</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaUNC">           0 :             if (!is_zero_or_pow2(krep)) stub();</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaUNC">           0 :             modLID = state.ra.alloc_sub&lt;uint16_t&gt;();</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaUNC">           0 :             shr(1, modLID, lid, ilog2(krep));</span></span>
+<span id="L458"><span class="lineNum">     458</span>              :         }</span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">       29767 :         if (!problem.backward())</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">       29767 :             emad(1 | sat, kSLM.uw(), kBase.w(), -modLID.w(), kgran, strategy, state);</span></span>
+<span id="L461"><span class="lineNum">     461</span>              :         else {</span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaUNC">           0 :             emad(1, kSLM, strategy.unrollKSLM - kgran, -modLID, kgran, strategy, state);</span></span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaUNC">           0 :             add(1, kSLM, kBase, state.kSLMCountUp ? +kSLM : -kSLM);</span></span>
+<span id="L464"><span class="lineNum">     464</span>              :         }</span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">       29767 :         if (krep &gt; 1) state.ra.safeRelease(modLID);</span></span>
+<span id="L466"><span class="lineNum">     466</span>              :     }</span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">       29875 : }</span></span>
+<span id="L468"><span class="lineNum">     468</span>              : </span>
+<span id="L469"><span class="lineNum">     469</span>              : template &lt;HW hw&gt;</span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">       19509 : void Generator&lt;hw&gt;::gemmCalcKSLMA(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, Subregister kBase)</span></span>
+<span id="L471"><span class="lineNum">     471</span>              : {</span>
+<span id="L472"><span class="lineNum">     472</span>              :     int kgran, kdiv, krep;</span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       19509 :     switch (state.effCoopA) {</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaUNC">           0 :         case CoopSplit::MN:</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaUNC">           0 :             kgran = strategy.unrollKSLM;</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaUNC">           0 :             kdiv = 1;</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaUNC">           0 :             krep = strategy.wg[LoopN];</span></span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaUNC">           0 :         case CoopSplit::Linear:</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaUNC">           0 :             kgran = std::max&lt;int&gt;(state.Ai.crosspack, state.Ai.tileC);</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaUNC">           0 :             kdiv = strategy.unrollKSLM / kgran;</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaUNC">           0 :             krep = strategy.wg[LoopN] / kdiv;</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaUNC">           0 :             if (krep &gt; 0)</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaUNC">           0 :                 break;</span></span>
+<span id="L485"><span class="lineNum">     485</span>              :             /* fall through: only split in k dimension */</span>
+<span id="L486"><span class="lineNum">     486</span>              :         case CoopSplit::K:</span>
+<span id="L487"><span class="lineNum">     487</span>              :         case CoopSplit::FullK:</span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">       19509 :             kgran = state.ka_slm;</span></span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">       19509 :             kdiv = strategy.wg[LoopN];</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">       19509 :             krep = 1;</span></span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">       19509 :             break;</span></span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaUNC">           0 :         default: stub();</span></span>
+<span id="L493"><span class="lineNum">     493</span>              :     }</span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">       19509 :     gemmCalcKSLM(state.kSLMA, state.lidN, kgran, kdiv, krep, problem, strategy, state, kBase);</span></span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">       19509 : }</span></span>
+<span id="L496"><span class="lineNum">     496</span>              : </span>
+<span id="L497"><span class="lineNum">     497</span>              : template &lt;HW hw&gt;</span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">       10366 : void Generator&lt;hw&gt;::gemmCalcKSLMB(const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state, Subregister kBase)</span></span>
+<span id="L499"><span class="lineNum">     499</span>              : {</span>
+<span id="L500"><span class="lineNum">     500</span>              :     int kgran, kdiv, krep;</span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">       10366 :     switch (state.effCoopB) {</span></span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">          64 :         case CoopSplit::MN:</span></span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">          64 :             kgran = strategy.unrollKSLM;</span></span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">          64 :             kdiv = 1;</span></span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">          64 :             krep = strategy.wg[LoopM];</span></span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">          64 :             break;</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaUNC">           0 :         case CoopSplit::Linear:</span></span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaUNC">           0 :             kgran = std::max&lt;int&gt;(state.Bi.crosspack, state.Bi.tileR);</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaUNC">           0 :             kdiv = strategy.unrollKSLM / kgran;</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaUNC">           0 :             krep = strategy.wg[LoopM] / kdiv;</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaUNC">           0 :             if (krep &gt; 0)</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaUNC">           0 :                 break;</span></span>
+<span id="L513"><span class="lineNum">     513</span>              :             /* fall through: only split in k dimension */</span>
+<span id="L514"><span class="lineNum">     514</span>              :         case CoopSplit::K:</span>
+<span id="L515"><span class="lineNum">     515</span>              :         case CoopSplit::FullK:</span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">       10302 :             kgran = state.kb_slm;</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       10302 :             kdiv = strategy.wg[LoopM];</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">       10302 :             krep = 1;</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">       10302 :             break;</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaUNC">           0 :         default: stub();</span></span>
+<span id="L521"><span class="lineNum">     521</span>              :     }</span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       10366 :     gemmCalcKSLM(state.kSLMB, state.lidM, kgran, kdiv, krep, problem, strategy, state, kBase);</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       10366 : }</span></span>
+<span id="L524"><span class="lineNum">     524</span>              : </span>
+<span id="L525"><span class="lineNum">     525</span>              : // Calculate barrier count for a k loop.</span>
+<span id="L526"><span class="lineNum">     526</span>              : template &lt;HW hw&gt;</span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">       21728 : void Generator&lt;hw&gt;::gemmCalcKLoopBarrierCount(Subregister &amp;count, const Subregister &amp;k, int cooldown,</span></span>
+<span id="L528"><span class="lineNum">     528</span>              :                                               const GEMMProblem &amp;problem, const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span>
+<span id="L529"><span class="lineNum">     529</span>              : {</span>
+<span id="L530"><span class="lineNum">     530</span> <span class="tlaGNC">       21728 :     int barrierFreq = strategy.barrierFreq;</span></span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">       21728 :     int unrollK     = strategy.unroll[LoopK];</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">       21728 :     int unrollKSLM  = strategy.unrollKSLM;</span></span>
+<span id="L533"><span class="lineNum">     533</span>              : </span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">       21728 :     if (count.isInvalid())</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">       21728 :         count = state.ra.alloc_sub&lt;uint32_t&gt;();</span></span>
+<span id="L536"><span class="lineNum">     536</span>              : </span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">       21728 :     if (barrierFreq &gt; 0) {</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">       14712 :         bool maySkipSplitBarrier = strategy.splitBarrier &amp;&amp; (cooldown &gt; 0) &amp;&amp; !state.splitBarrierAlways;</span></span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">       14712 :         if (maySkipSplitBarrier)</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">       14680 :             cmp(1 | ge | state.flagAP, k, cooldown);</span></span>
+<span id="L541"><span class="lineNum">     541</span> <span class="tlaGNC">       14712 :         add(1 | sat, count, k, barrierFreq - cooldown - unrollK);</span></span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">       14712 :         divDown(count, count, barrierFreq, strategy, state);</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">       14712 :         if (strategy.splitBarrier) {</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">       14712 :             maySkipSplitBarrier ? add(1 | state.flagAP, count, count, 1)</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">       14712 :                                 : add(1,                count, count, 1);</span></span>
+<span id="L546"><span class="lineNum">     546</span>              :         }</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">        7016 :     } else if (strategy.slmBuffers &gt; 0) {</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">        7016 :         if (!is_zero_or_pow2(unrollKSLM)) stub();</span></span>
+<span id="L549"><span class="lineNum">     549</span>              : </span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">        7016 :         if (strategy.slmBuffers == 1) {</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaUNC">           0 :             add(1 | sat, count, k, unrollKSLM - 1);</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaUNC">           0 :             if (unrollKSLM == 2)</span></span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaUNC">           0 :                 and_(1, count, count, ~uint32_t(1));</span></span>
+<span id="L554"><span class="lineNum">     554</span>              :             else {</span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaUNC">           0 :                 shr(1, count, count, uint16_t(ilog2(unrollKSLM)));</span></span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaUNC">           0 :                 shl(1, count, count, 1);</span></span>
+<span id="L557"><span class="lineNum">     557</span>              :             }</span>
+<span id="L558"><span class="lineNum">     558</span>              :         } else {</span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">        7016 :             add(1 | sat, count, k, unrollKSLM - 1);</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">        7016 :             shr(1, count, count, uint16_t(ilog2(unrollKSLM)));</span></span>
+<span id="L561"><span class="lineNum">     561</span>              :         }</span>
+<span id="L562"><span class="lineNum">     562</span>              :     } else</span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaUNC">           0 :         mov(1, count, 0);</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       21728 : }</span></span>
+<span id="L565"><span class="lineNum">     565</span>              : </span>
+<span id="L566"><span class="lineNum">     566</span>              : // Make a remainder layout by duplicating the k = 0 slice, allocating extra registers as needed.</span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaUNC">           0 : static void makeAiBiKCloneLayout(HW hw, bool isA, RegisterLayout &amp;Xi_layout, vector&lt;RegisterLayout&gt; &amp;Xi_layoutK,</span></span>
+<span id="L568"><span class="lineNum">     568</span>              :                                  vector&lt;GRFMultirange&gt; &amp;Xi_regsRem, int kx_slm,</span>
+<span id="L569"><span class="lineNum">     569</span>              :                                  const GEMMStrategy &amp;strategy, GEMMState &amp;state)</span>
+<span id="L570"><span class="lineNum">     570</span>              : {</span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaUNC">           0 :     auto regCountK = Xi_layoutK[0].regs();</span></span>
+<span id="L572"><span class="lineNum">     572</span> <span class="tlaUNC">           0 :     auto regCount = regCountK * kx_slm;</span></span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaUNC">           0 :     auto offsetK = isA ? &amp;RegisterBlock::offsetC : &amp;RegisterBlock::offsetR;</span></span>
+<span id="L574"><span class="lineNum">     574</span>              : </span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaUNC">           0 :     auto Xi_list = Xi_layoutK[0].allBlocks();</span></span>
+<span id="L576"><span class="lineNum">     576</span>              : </span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaUNC">           0 :     for (int h1 = 1; h1 &lt; kx_slm; h1++) {</span></span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaUNC">           0 :         Xi_layoutK[h1] = Xi_layoutK[h1 - 1];</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaUNC">           0 :         for (auto &amp;block: Xi_layoutK[h1]) {</span></span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaUNC">           0 :             block.offsetBytes += regCountK * GRF::bytes(hw);</span></span>
+<span id="L581"><span class="lineNum">     581</span>              : </span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaUNC">           0 :             auto oblock = block;</span></span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaUNC">           0 :             oblock.*offsetK += h1;</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaUNC">           0 :             Xi_list.push_back(std::move(oblock));</span></span>
+<span id="L585"><span class="lineNum">     585</span>              :         }</span>
+<span id="L586"><span class="lineNum">     586</span>              :     }</span>
+<span id="L587"><span class="lineNum">     587</span>              : </span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaUNC">           0 :     Xi_layout = RegisterLayout(Xi_layoutK[0].type(), Xi_layoutK[0].addressing(), Xi_layoutK[0].addressingStrategy(), std::move(Xi_list));</span></span>
+<span id="L589"><span class="lineNum">     589</span>              : </span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaUNC">           0 :     int extraRegs = regCount - Xi_regsRem[0].getLen();</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaUNC">           0 :     if (extraRegs &gt; 0) {</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaUNC">           0 :         for (int q = 0; q &lt; strategy.slmCopies; q++)</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaUNC">           0 :             Xi_regsRem[q].append(state.ra.alloc_range(extraRegs));</span></span>
+<span id="L594"><span class="lineNum">     594</span>              :     }</span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L596"><span class="lineNum">     596</span>              : </span>
+<span id="L597"><span class="lineNum">     597</span>              : GEMMSTONE_NAMESPACE_END</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

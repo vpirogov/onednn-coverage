@@ -1,0 +1,1596 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/quantization.cxx - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - quantization.cxx<span style="font-size: 80%;"> (<a href="quantization.cxx.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">82.6&nbsp;%</td>
+            <td class="headerCovTableEntry">368</td>
+            <td class="headerCovTableEntry">304</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">26.9&nbsp;%</td>
+            <td class="headerCovTableEntry">171</td>
+            <td class="headerCovTableEntry">46</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><a href="quantization.cxx.func.html"><img src="../../../../../../../updown.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></a></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><img src="../../../../../../../glass.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)10&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)11&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)12&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)5&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)6&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)7&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)8&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L497">gemmstone::Generator&lt;(ngen::Core)9&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L302">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L309">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#2}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L316">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#3}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnHi">112</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)10&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)11&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)12&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)5&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)9&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)7&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">24</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)8&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">24</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L444">gemmstone::Generator&lt;(ngen::Core)6&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">64</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnHi">124</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">12</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">48</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L320">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#4}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">64</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">136</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)10&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)11&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)12&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)5&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)9&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)7&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">24</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)8&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">48</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L454">gemmstone::Generator&lt;(ngen::Core)6&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">64</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnHi">400</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)10&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)11&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)12&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)5&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)9&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)7&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">48</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)6&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">160</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L447">gemmstone::Generator&lt;(ngen::Core)8&gt;::dequantizeInt4Shift(gemmstone::Type, gemmstone::GRFMultirange, gemmstone::CommonStrategy const&amp;)::{lambda(int, ngen::RegData, ngen::RegData)#1}::operator()(int, ngen::RegData, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">192</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnHi">411</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">64</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">154</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L255">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)::{lambda(int, ngen::RegData)#1}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">193</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnHi">920</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">248</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L191">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)#3}::operator()(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout&amp;, gemmstone::RegisterLayout const&amp;, int, int, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">424</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnHi">1216</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)10&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)11&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)12&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)4&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)5&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)9&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)7&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">192</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)6&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L504">gemmstone::Generator&lt;(ngen::Core)8&gt;::dequantizeInt4(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, int, gemmstone::GEMMProblem const*, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;, bool)::{lambda(int, ngen::RegData)#2}::operator()(int, ngen::RegData) const</a></td>
+              
+              <td class="coverFnAliasHi">768</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnHi">1644</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">435</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">441</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L150">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MatrixAddressing const&amp;)#1}::operator()(gemmstone::MatrixAddressing const&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">768</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnHi">2008</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">528</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">536</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L163">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)::{lambda(gemmstone::MaskInfo&amp;)#2}::operator()(gemmstone::MaskInfo&amp;) const</a></td>
+              
+              <td class="coverFnAliasHi">944</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">4512</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">861</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">951</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L276">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DOffsetData(gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2700</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">5324</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">952</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1044</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L267">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DQuantizationData(gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3328</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnHi">5604</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1482</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">1946</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L530">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmDequantizeAB(bool, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;, bool)</a></td>
+              
+              <td class="coverFnAliasHi">2176</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">9836</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1813</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">1995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L226">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmRepack2DQuantizationData(gemmstone::Type, gemmstone::Type, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy const&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6028</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnHi">10492</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2878</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">3406</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L330">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmDequantizeOperation(bool, gemmstone::Type, gemmstone::Type, gemmstone::BinaryOp, gemmstone::RegisterLayout const&amp;, gemmstone::RegisterLayout const&amp;, gemmstone::GRFMultirange const&amp;, gemmstone::GRFMultirange const&amp;, int, int, int, gemmstone::GEMMProblem const&amp;, gemmstone::CommonStrategy const&amp;, gemmstone::CommonState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">4208</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnHi">70224</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)10&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)11&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)12&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)5&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)9&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)4&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">4796</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)7&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">16810</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)8&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">17676</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="quantization.cxx.gcov.html#L32">gemmstone::Generator&lt;(ngen::Core)6&gt;::gemmMake2DQuantizationLayouts(bool, gemmstone::GEMMProblem const&amp;, gemmstone::GEMMStrategy&amp;, gemmstone::GEMMState&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">30942</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

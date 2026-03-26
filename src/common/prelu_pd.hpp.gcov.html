@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/prelu_pd.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - prelu_pd.hpp<span style="font-size: 80%;"> (source / <a href="prelu_pd.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">99.0&nbsp;%</td>
+            <td class="headerCovTableEntry">97</td>
+            <td class="headerCovTableEntry">96</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">32</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2020 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef COMMON_PRELU_PD_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define COMMON_PRELU_PD_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;oneapi/dnnl/dnnl.h&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/primitive_desc.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : #define VDISPATCH_PRELU(cond, msg, ...) \</span>
+<span id="L26"><span class="lineNum">      26</span>              :     VCONDCHECK(primitive, create, dispatch, prelu, (cond), \</span>
+<span id="L27"><span class="lineNum">      27</span>              :             status::unimplemented, &quot;%s,&quot; msg, this-&gt;info(engine), \</span>
+<span id="L28"><span class="lineNum">      28</span>              :             ##__VA_ARGS__)</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : #define VDISPATCH_PRELU_SC(f, msg, ...) \</span>
+<span id="L31"><span class="lineNum">      31</span>              :     VCHECK(primitive, create, dispatch, prelu, (f), &quot;%s,&quot; msg, \</span>
+<span id="L32"><span class="lineNum">      32</span>              :             this-&gt;info(engine), ##__VA_ARGS__)</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace dnnl {</span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace impl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : struct prelu_fwd_pd_t;</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span>              : struct prelu_pd_t : public primitive_desc_t {</span>
+<span id="L40"><span class="lineNum">      40</span>              :     static constexpr auto base_pkind = primitive_kind::prelu;</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">     1732401 :     const prelu_desc_t *desc() const { return &amp;desc_; }</span></span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">      493226 :     const op_desc_t *op_desc() const override {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">      493226 :         return reinterpret_cast&lt;const op_desc_t *&gt;(this-&gt;desc());</span></span>
+<span id="L46"><span class="lineNum">      46</span>              :     }</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">     5201858 :     status_t query(query_t what, int idx, void *result) const override {</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">     5201858 :         switch (what) {</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">      861498 :             case query::prop_kind:</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">      861498 :                 *(prop_kind_t *)result = desc()-&gt;prop_kind;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">      861498 :                 break;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">     4340360 :             default: return primitive_desc_t::query(what, idx, result);</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :         }</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">      861498 :         return status::success;</span></span>
+<span id="L56"><span class="lineNum">      56</span>              :     }</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">       11252 :     dim_t N() const { return src_md()-&gt;dims[0]; }</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">       11252 :     dim_t C() const { return src_md()-&gt;dims[1]; }</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">       11252 :     dim_t D() const { return ndims() &gt;= 5 ? src_md()-&gt;dims[ndims() - 3] : 1; }</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       11252 :     dim_t H() const { return ndims() &gt;= 4 ? src_md()-&gt;dims[ndims() - 2] : 1; }</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       11252 :     dim_t W() const { return ndims() &gt;= 3 ? src_md()-&gt;dims[ndims() - 1] : 1; }</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       51598 :     int ndims() const { return src_md()-&gt;ndims; }</span></span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       88750 :     bool has_zero_dim_memory() const {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       88750 :         return memory_desc_wrapper(src_md()).has_zero_dim();</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :     }</span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      272173 :     bool is_fwd() const {</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">      272173 :         return utils::one_of(desc_.prop_kind, prop_kind::forward_training,</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">      272173 :                 prop_kind::forward_inference);</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :     }</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              : protected:</span>
+<span id="L76"><span class="lineNum">      76</span>              :     prelu_desc_t desc_;</span>
+<span id="L77"><span class="lineNum">      77</span>              :     const prelu_fwd_pd_t *hint_fwd_pd_;</span>
+<span id="L78"><span class="lineNum">      78</span>              :     memory_desc_t src_md_;</span>
+<span id="L79"><span class="lineNum">      79</span>              :     memory_desc_t weights_md_;</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      220458 :     prelu_pd_t(const op_desc_t *adesc, const primitive_attr_t *attr,</span></span>
+<span id="L82"><span class="lineNum">      82</span>              :             const prelu_fwd_pd_t *hint_fwd_pd)</span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">      220458 :         : primitive_desc_t(attr, base_pkind)</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">      440916 :         , desc_(*op_desc_t::to_desc&lt;prelu_desc_t&gt;(adesc))</span></span>
+<span id="L85"><span class="lineNum">      85</span>              :         , hint_fwd_pd_(hint_fwd_pd)</span>
+<span id="L86"><span class="lineNum">      86</span>              :         , src_md_(desc_.src_desc)</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      220458 :         , weights_md_(desc_.weights_desc) {}</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : };</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              : // NOLINTBEGIN(google-default-arguments)</span>
+<span id="L91"><span class="lineNum">      91</span>              : struct prelu_fwd_pd_t : public prelu_pd_t {</span>
+<span id="L92"><span class="lineNum">      92</span>              :     using base_class = prelu_fwd_pd_t;</span>
+<span id="L93"><span class="lineNum">      93</span>              :     using hint_class = prelu_fwd_pd_t;</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">      161066 :     primitive_desc_t::arg_usage_t arg_usage(int arg) const override {</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">      161066 :         if (arg == DNNL_ARG_SRC) return arg_usage_t::input;</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">      107670 :         if (arg == DNNL_ARG_WEIGHTS) return arg_usage_t::input;</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">       54274 :         if (arg == DNNL_ARG_DST) return arg_usage_t::output;</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">         878 :         return primitive_desc_t::arg_usage(arg);</span></span>
+<span id="L100"><span class="lineNum">     100</span>              :     }</span>
+<span id="L101"><span class="lineNum">     101</span>              : </span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">      259734 :     const memory_desc_t *arg_md(</span></span>
+<span id="L103"><span class="lineNum">     103</span>              :             int arg, bool user_input = false) const override {</span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">      259734 :         switch (arg) {</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">       52494 :             case DNNL_ARG_SRC: return src_md(0);</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">       52494 :             case DNNL_ARG_WEIGHTS: return weights_md(0);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">       52494 :             case DNNL_ARG_DST: return dst_md(0, user_input);</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">      102252 :             default: return prelu_pd_t::arg_md(arg);</span></span>
+<span id="L109"><span class="lineNum">     109</span>              :         }</span>
+<span id="L110"><span class="lineNum">     110</span>              :     }</span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">      885950 :     const memory_desc_t *src_md(</span></span>
+<span id="L113"><span class="lineNum">     113</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">      885950 :         if (index == 0) return user_input ? &amp;desc()-&gt;src_desc : &amp;src_md_;</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">      128665 :         return &amp;glob_zero_md;</span></span>
+<span id="L116"><span class="lineNum">     116</span>              :     }</span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">      644786 :     const memory_desc_t *weights_md(</span></span>
+<span id="L119"><span class="lineNum">     119</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">      644786 :         if (index == 0)</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">      543220 :             return user_input ? &amp;desc()-&gt;weights_desc : &amp;weights_md_;</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      101566 :         return &amp;glob_zero_md;</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :     }</span>
+<span id="L124"><span class="lineNum">     124</span>              : </span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">      435968 :     const memory_desc_t *dst_md(</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">      435968 :         if (index == 0) return user_input ? &amp;desc()-&gt;dst_desc : &amp;dst_md_;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaUNC">           0 :         return &amp;glob_zero_md;</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :     }</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">      236259 :     int n_inputs() const override { return 2; }</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      209160 :     int n_outputs() const override { return 1; }</span></span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span>              : protected:</span>
+<span id="L135"><span class="lineNum">     135</span>              :     memory_desc_t dst_md_;</span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">      112684 :     prelu_fwd_pd_t(const op_desc_t *adesc, const primitive_attr_t *attr,</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :             const prelu_fwd_pd_t *hint_fwd_pd)</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">      112684 :         : prelu_pd_t(adesc, attr, hint_fwd_pd), dst_md_(desc_.dst_desc) {}</span></span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       69189 :     bool set_default_formats() {</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       23806 :         return IMPLICATION(weights_md_.format_kind == format_kind::any,</span></span>
+<span id="L143"><span class="lineNum">     143</span>              :                        memory_desc_init_by_blocking_desc(</span>
+<span id="L144"><span class="lineNum">     144</span>              :                                weights_md_, src_md_.format_desc.blocking)</span>
+<span id="L145"><span class="lineNum">     145</span>              :                                == status::success)</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">       92995 :                 &amp;&amp; IMPLICATION(dst_md_.format_kind == format_kind::any,</span></span>
+<span id="L147"><span class="lineNum">     147</span>              :                         memory_desc_init_by_md_and_dt(</span>
+<span id="L148"><span class="lineNum">     148</span>              :                                 dst_md_, src_md_, dst_md_.data_type)</span>
+<span id="L149"><span class="lineNum">     149</span>              :                                 == status::success);</span>
+<span id="L150"><span class="lineNum">     150</span>              :     }</span>
+<span id="L151"><span class="lineNum">     151</span>              : };</span>
+<span id="L152"><span class="lineNum">     152</span>              : // NOLINTEND(google-default-arguments)</span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span>              : // NOLINTBEGIN(google-default-arguments)</span>
+<span id="L155"><span class="lineNum">     155</span>              : struct prelu_bwd_pd_t : public prelu_pd_t {</span>
+<span id="L156"><span class="lineNum">     156</span>              :     using base_class = prelu_bwd_pd_t;</span>
+<span id="L157"><span class="lineNum">     157</span>              :     using hint_class = prelu_fwd_pd_t;</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">      278648 :     primitive_desc_t::arg_usage_t arg_usage(int arg) const override {</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">      278648 :         if (arg == DNNL_ARG_SRC) return arg_usage_t::input;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">      226250 :         if (arg == DNNL_ARG_WEIGHTS) return arg_usage_t::input;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">      173852 :         if (arg == DNNL_ARG_DIFF_DST) return arg_usage_t::input;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">      121454 :         if (arg == DNNL_ARG_DIFF_SRC) return arg_usage_t::output;</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       69056 :         if (arg == DNNL_ARG_DIFF_WEIGHTS) return arg_usage_t::output;</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       16658 :         return primitive_desc_t::arg_usage(arg);</span></span>
+<span id="L166"><span class="lineNum">     166</span>              :     }</span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">      354566 :     const memory_desc_t *arg_md(</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :             int arg, bool user_input = false) const override {</span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">      354566 :         switch (arg) {</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       50894 :             case DNNL_ARG_SRC: return src_md(0);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       50894 :             case DNNL_ARG_WEIGHTS: return weights_md(0);</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       50894 :             case DNNL_ARG_DIFF_SRC: return diff_src_md(0);</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       50894 :             case DNNL_ARG_DIFF_DST: return diff_dst_md(0, user_input);</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       50894 :             case DNNL_ARG_DIFF_WEIGHTS: return diff_weights_md(0);</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">      100096 :             default: return prelu_pd_t::arg_md(arg);</span></span>
+<span id="L177"><span class="lineNum">     177</span>              :         }</span>
+<span id="L178"><span class="lineNum">     178</span>              :     }</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC"> 22195930069 :     const memory_desc_t *src_md(</span></span>
+<span id="L181"><span class="lineNum">     181</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC"> 22195930069 :         if (index == 0) return user_input ? &amp;desc()-&gt;src_desc : &amp;src_md_;</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">      246752 :         return &amp;glob_zero_md;</span></span>
+<span id="L184"><span class="lineNum">     184</span>              :     }</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC"> 22195855048 :     const memory_desc_t *weights_md(</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC"> 22195855048 :         if (index == 0)</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC"> 22195657848 :             return user_input ? &amp;desc()-&gt;weights_desc : &amp;weights_md_;</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">      197520 :         return &amp;glob_zero_md;</span></span>
+<span id="L191"><span class="lineNum">     191</span>              :     }</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">      668995 :     const memory_desc_t *diff_src_md(</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">      668995 :         if (index == 0)</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      570235 :             return user_input ? &amp;desc()-&gt;diff_src_desc : &amp;diff_src_md_;</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       98760 :         return &amp;glob_zero_md;</span></span>
+<span id="L198"><span class="lineNum">     198</span>              :     }</span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">      625811 :     const memory_desc_t *diff_dst_md(</span></span>
+<span id="L201"><span class="lineNum">     201</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      625811 :         if (index == 0)</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">      403675 :             return user_input ? &amp;desc()-&gt;diff_dst_desc : &amp;diff_dst_md_;</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">      222136 :         return &amp;glob_zero_md;</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :     }</span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      574346 :     const memory_desc_t *diff_weights_md(</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">      574346 :         if (index == 0)</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      475586 :             return user_input ? &amp;desc()-&gt;diff_weights_desc : &amp;diff_weights_md_;</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">       98760 :         return &amp;glob_zero_md;</span></span>
+<span id="L212"><span class="lineNum">     212</span>              :     }</span>
+<span id="L213"><span class="lineNum">     213</span>              : </span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      249622 :     int n_inputs() const override { return 3; }</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      225006 :     int n_outputs() const override { return 2; }</span></span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              : protected:</span>
+<span id="L218"><span class="lineNum">     218</span>              :     memory_desc_t diff_src_md_;</span>
+<span id="L219"><span class="lineNum">     219</span>              :     memory_desc_t diff_weights_md_;</span>
+<span id="L220"><span class="lineNum">     220</span>              :     memory_desc_t diff_dst_md_;</span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">      107774 :     prelu_bwd_pd_t(const op_desc_t *adesc, const primitive_attr_t *attr,</span></span>
+<span id="L223"><span class="lineNum">     223</span>              :             const prelu_fwd_pd_t *hint_fwd_pd)</span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">      107774 :         : prelu_pd_t(adesc, attr, hint_fwd_pd)</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :         , diff_src_md_(desc_.diff_src_desc)</span>
+<span id="L226"><span class="lineNum">     226</span>              :         , diff_weights_md_(desc_.diff_weights_desc)</span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">      107774 :         , diff_dst_md_(desc_.diff_dst_desc) {}</span></span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       64302 :     bool set_default_formats() {</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">       61323 :         return IMPLICATION(diff_dst_md_.format_kind == format_kind::any,</span></span>
+<span id="L231"><span class="lineNum">     231</span>              :                        memory_desc_init_by_md_and_dt(</span>
+<span id="L232"><span class="lineNum">     232</span>              :                                diff_dst_md_, src_md_, diff_dst_md_.data_type)</span>
+<span id="L233"><span class="lineNum">     233</span>              :                                == status::success)</span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       64302 :                 &amp;&amp; IMPLICATION(diff_src_md_.format_kind == format_kind::any,</span></span>
+<span id="L235"><span class="lineNum">     235</span>              :                         memory_desc_init_by_md_and_dt(diff_src_md_,</span>
+<span id="L236"><span class="lineNum">     236</span>              :                                 diff_dst_md_, diff_src_md_.data_type)</span>
+<span id="L237"><span class="lineNum">     237</span>              :                                 == status::success)</span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">       64302 :                 &amp;&amp; IMPLICATION(weights_md_.format_kind == format_kind::any,</span></span>
+<span id="L239"><span class="lineNum">     239</span>              :                         memory_desc_init_by_blocking_desc(</span>
+<span id="L240"><span class="lineNum">     240</span>              :                                 weights_md_, src_md_.format_desc.blocking)</span>
+<span id="L241"><span class="lineNum">     241</span>              :                                 == status::success)</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">      128604 :                 &amp;&amp; IMPLICATION(diff_weights_md_.format_kind == format_kind::any,</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :                         memory_desc_init_by_md_and_dt(diff_weights_md_,</span>
+<span id="L244"><span class="lineNum">     244</span>              :                                 weights_md_, diff_weights_md_.data_type)</span>
+<span id="L245"><span class="lineNum">     245</span>              :                                 == status::success);</span>
+<span id="L246"><span class="lineNum">     246</span>              :     }</span>
+<span id="L247"><span class="lineNum">     247</span>              : };</span>
+<span id="L248"><span class="lineNum">     248</span>              : // NOLINTEND(google-default-arguments)</span>
+<span id="L249"><span class="lineNum">     249</span>              : </span>
+<span id="L250"><span class="lineNum">     250</span>              : } // namespace impl</span>
+<span id="L251"><span class="lineNum">     251</span>              : } // namespace dnnl</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span>              : #endif</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

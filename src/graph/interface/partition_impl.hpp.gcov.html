@@ -1,0 +1,485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/interface/partition_impl.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/interface">src/graph/interface</a> - partition_impl.hpp<span style="font-size: 80%;"> (source / <a href="partition_impl.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">97.7&nbsp;%</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntry">42</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">95.7&nbsp;%</td>
+            <td class="headerCovTableEntry">23</td>
+            <td class="headerCovTableEntry">22</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GRAPH_INTERFACE_PARTITION_IMPL_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GRAPH_INTERFACE_PARTITION_IMPL_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;cstring&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;limits&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;memory&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;sstream&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;string&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;utility&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &lt;vector&gt;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &lt;unordered_map&gt;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &lt;unordered_set&gt;</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;common/engine.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;graph/interface/c_types_map.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &quot;graph/interface/graph_attr.hpp&quot;</span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &quot;graph/interface/logical_tensor.hpp&quot;</span>
+<span id="L35"><span class="lineNum">      35</span>              : #include &quot;graph/interface/op.hpp&quot;</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : #include &quot;graph/utils/id.hpp&quot;</span>
+<span id="L38"><span class="lineNum">      38</span>              : #include &quot;graph/utils/utils.hpp&quot;</span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span>              : #ifdef DNNL_WITH_SYCL</span>
+<span id="L41"><span class="lineNum">      41</span>              : #include &quot;oneapi/dnnl/dnnl_sycl.hpp&quot;</span>
+<span id="L42"><span class="lineNum">      42</span>              : #endif</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL</span>
+<span id="L45"><span class="lineNum">      45</span>              : #include &lt;CL/cl.h&gt;</span>
+<span id="L46"><span class="lineNum">      46</span>              : #endif</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : namespace std {</span>
+<span id="L49"><span class="lineNum">      49</span>              : template &lt;&gt;</span>
+<span id="L50"><span class="lineNum">      50</span>              : struct hash&lt;std::pair&lt;size_t, size_t&gt;&gt; {</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       21475 :     size_t operator()(const std::pair&lt;size_t, size_t&gt; &amp;v) const {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       21475 :         size_t seed = 0;</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       21475 :         seed ^= std::hash&lt;size_t&gt; {}(v.first) + 0x9e3779b9 + (seed &lt;&lt; 6)</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       21475 :                 + (seed &gt;&gt; 2);</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       21475 :         seed ^= std::hash&lt;size_t&gt; {}(v.second) + 0x9e3779b9 + (seed &lt;&lt; 6)</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       21475 :                 + (seed &gt;&gt; 2);</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">       21475 :         return seed;</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :     }</span>
+<span id="L59"><span class="lineNum">      59</span>              : };</span>
+<span id="L60"><span class="lineNum">      60</span>              : } // namespace std</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              : namespace dnnl {</span>
+<span id="L63"><span class="lineNum">      63</span>              : namespace impl {</span>
+<span id="L64"><span class="lineNum">      64</span>              : namespace graph {</span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span>              : class backend_t;</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span>              : class partition_impl_t : public std::enable_shared_from_this&lt;partition_impl_t&gt; {</span>
+<span id="L69"><span class="lineNum">      69</span>              : public:</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      314797 :     explicit partition_impl_t(engine_kind_t engine_kind, fpmath_t fpmath_mode,</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :             partition_kind_t pkind)</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">      314797 :         : engine_kind_(engine_kind)</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :         , fpmath_mode_(fpmath_mode)</span>
+<span id="L74"><span class="lineNum">      74</span>              :         , pkind_(pkind)</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">      314740 :         , can_use_blocked_layout_(false) {}</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">        8704 :     explicit partition_impl_t(</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :             engine_kind_t engine_kind, fpmath_t fpmath_mode = {})</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">        8704 :         : engine_kind_(engine_kind)</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :         , fpmath_mode_(fpmath_mode)</span>
+<span id="L81"><span class="lineNum">      81</span>              :         , pkind_(partition_kind_t::undef)</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">        8704 :         , can_use_blocked_layout_(false) {</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        8704 :         fpmath_mode_.mode_ = graph::fpmath_mode::strict;</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        8632 :     }</span></span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      822115 :     virtual ~partition_impl_t() = default;</span></span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span>              :     /// The getter for engine_kind_, which is used in C API</span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">      427271 :     engine_kind_t get_engine_kind() const { return engine_kind_; }</span></span>
+<span id="L90"><span class="lineNum">      90</span>              : </span>
+<span id="L91"><span class="lineNum">      91</span>              :     /// The getter for fpmath_mode_</span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">      459256 :     const fpmath_t &amp;get_fpmath_mode() const { return fpmath_mode_; }</span></span>
+<span id="L93"><span class="lineNum">      93</span>              : </span>
+<span id="L94"><span class="lineNum">      94</span>              :     /// The getter for partition kind</span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">      166008 :     partition_kind_t get_kind() const { return pkind_; }</span></span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span>              :     /// The getter for ops_, which is used in C API</span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">      678450 :     const std::vector&lt;std::shared_ptr&lt;op_t&gt;&gt; &amp;get_ops() const { return ops_; }</span></span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span>              :     /// The getters for inputs_, which is used in C API</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">      271156 :     const std::vector&lt;logical_tensor_t&gt; &amp;get_inputs() const { return inputs_; }</span></span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span>              :     /// The getters for outputs_, which is used in C API</span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">      235203 :     const std::vector&lt;logical_tensor_t&gt; &amp;get_outputs() const {</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">      235179 :         return outputs_;</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :     }</span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span>              :     virtual bool is_initialized() const = 0;</span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span>              :     /// Deep copy a partition, and return the copied partition's smart pointer</span>
+<span id="L111"><span class="lineNum">     111</span>              :     /// Derived class must clone the members in base class when implementing</span>
+<span id="L112"><span class="lineNum">     112</span>              :     /// this method.</span>
+<span id="L113"><span class="lineNum">     113</span>              :     virtual std::shared_ptr&lt;partition_impl_t&gt; clone() const = 0;</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :     /// Return the assigned backend of this partition</span>
+<span id="L116"><span class="lineNum">     116</span>              :     virtual const backend_t *get_assigned_backend() const = 0;</span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span>              :     /// Infer the outputs shape according to the inputs shape and the ops in</span>
+<span id="L119"><span class="lineNum">     119</span>              :     /// this partition.</span>
+<span id="L120"><span class="lineNum">     120</span>              :     /// @param inputs The inputs logical tensors whose shapes are valid</span>
+<span id="L121"><span class="lineNum">     121</span>              :     /// @param outputs The outputs logical tensors whose shapes are</span>
+<span id="L122"><span class="lineNum">     122</span>              :     ///     invalid but will be filled by this function</span>
+<span id="L123"><span class="lineNum">     123</span>              :     /// @return The status code</span>
+<span id="L124"><span class="lineNum">     124</span>              :     /// @note</span>
+<span id="L125"><span class="lineNum">     125</span>              :     ///     The order of the given in/outputs logical tensor may be not same</span>
+<span id="L126"><span class="lineNum">     126</span>              :     ///     with the in/outputs_. Backend should do the reorder inside this</span>
+<span id="L127"><span class="lineNum">     127</span>              :     ///     function's implementation.</span>
+<span id="L128"><span class="lineNum">     128</span>              :     virtual status_t infer_shape(std::vector&lt;const logical_tensor_t *&gt; &amp;inputs,</span>
+<span id="L129"><span class="lineNum">     129</span>              :             std::vector&lt;logical_tensor_t *&gt; &amp;outputs) const</span>
+<span id="L130"><span class="lineNum">     130</span>              :             = 0;</span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span>              :     /// Compile the partition with specific inputs and outputs logical tensors</span>
+<span id="L133"><span class="lineNum">     133</span>              :     /// and engine. A partition can be compiled multiple times with different</span>
+<span id="L134"><span class="lineNum">     134</span>              :     /// inputs and outputs</span>
+<span id="L135"><span class="lineNum">     135</span>              :     /// @param compiled_partition The pointer of an empty instance, whose</span>
+<span id="L136"><span class="lineNum">     136</span>              :     ///     pimpl_ field should be filled with a smart pointer of internally</span>
+<span id="L137"><span class="lineNum">     137</span>              :     ///     created compiled_partition_impl_t instance during the compile</span>
+<span id="L138"><span class="lineNum">     138</span>              :     /// @param inputs The inputs logical tensors which are fully specified</span>
+<span id="L139"><span class="lineNum">     139</span>              :     ///     id, data type, shape, and layout. For each logical tensor</span>
+<span id="L140"><span class="lineNum">     140</span>              :     ///     in the inputs_, there must be one logical tensor in input whose</span>
+<span id="L141"><span class="lineNum">     141</span>              :     ///     id is exactly same with it</span>
+<span id="L142"><span class="lineNum">     142</span>              :     /// @param outputs The outputs logical tensors, which are fully specified</span>
+<span id="L143"><span class="lineNum">     143</span>              :     ///     id, data type, shape, and layout. For each logical tensor</span>
+<span id="L144"><span class="lineNum">     144</span>              :     ///     in the outputs_, there must be one logical tensor in output whose</span>
+<span id="L145"><span class="lineNum">     145</span>              :     ///     id is exactly same with it</span>
+<span id="L146"><span class="lineNum">     146</span>              :     /// @param aengine The engine that this partition is compiled for. Engine</span>
+<span id="L147"><span class="lineNum">     147</span>              :     ///     contains the device target so the compilation knows what kind of</span>
+<span id="L148"><span class="lineNum">     148</span>              :     ///     binary to generate. The device target doesn’t contain uArch</span>
+<span id="L149"><span class="lineNum">     149</span>              :     ///     information. The backend should access the uArch information by</span>
+<span id="L150"><span class="lineNum">     150</span>              :     ///     querying device runtime.</span>
+<span id="L151"><span class="lineNum">     151</span>              :     /// @return The status code</span>
+<span id="L152"><span class="lineNum">     152</span>              :     /// @note</span>
+<span id="L153"><span class="lineNum">     153</span>              :     ///     1. The order of the given in/outputs logical tensor may be not same</span>
+<span id="L154"><span class="lineNum">     154</span>              :     ///     with the in/outputs_. Backend should reorder the given logical</span>
+<span id="L155"><span class="lineNum">     155</span>              :     ///     tensors by their id in most efficient way</span>
+<span id="L156"><span class="lineNum">     156</span>              :     ///     2. The reordered in/outputs should be passed to the constructor when</span>
+<span id="L157"><span class="lineNum">     157</span>              :     ///     creating the compiled_partition_impl_t instance, for representing</span>
+<span id="L158"><span class="lineNum">     158</span>              :     ///     that the instance is specialized for such logical tensors.</span>
+<span id="L159"><span class="lineNum">     159</span>              :     ///     3. It’s allowed to set outputs arguments’ layout to `any` and let</span>
+<span id="L160"><span class="lineNum">     160</span>              :     ///     backend choose the optimal layouts by itself</span>
+<span id="L161"><span class="lineNum">     161</span>              :     ///     4. The given in/outputs are const, so if backend need to set layout,</span>
+<span id="L162"><span class="lineNum">     162</span>              :     ///     it should modify the copied ones in compiled_partition_impl_t</span>
+<span id="L163"><span class="lineNum">     163</span>              :     ///     5. If the layout is row-major contiguous, the compilation must</span>
+<span id="L164"><span class="lineNum">     164</span>              :     ///     succeed. If the layout is strided layout, it is implementation</span>
+<span id="L165"><span class="lineNum">     165</span>              :     ///     dependent whether the compilation must succeed.</span>
+<span id="L166"><span class="lineNum">     166</span>              :     ///     6. If certain dimension of shape has unknown value, indicated by</span>
+<span id="L167"><span class="lineNum">     167</span>              :     ///     “-1” , it is implementation dependent whether the compilation</span>
+<span id="L168"><span class="lineNum">     168</span>              :     ///     succeed. If it succeed, the compiled partition should be able to</span>
+<span id="L169"><span class="lineNum">     169</span>              :     ///     handle any value for that dimension at the execution time.</span>
+<span id="L170"><span class="lineNum">     170</span>              :     ///     7. If rank has unknown value, indicated by “-1” , it is</span>
+<span id="L171"><span class="lineNum">     171</span>              :     ///     implementation dependent whether the compilation succeed.</span>
+<span id="L172"><span class="lineNum">     172</span>              :     ///     If it succeed, the compiled partition should be able to handle any</span>
+<span id="L173"><span class="lineNum">     173</span>              :     ///     value for input tensor with any rank at the execution time.</span>
+<span id="L174"><span class="lineNum">     174</span>              :     virtual status_t compile(compiled_partition_t *compiled_partition,</span>
+<span id="L175"><span class="lineNum">     175</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;inputs,</span>
+<span id="L176"><span class="lineNum">     176</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;outputs,</span>
+<span id="L177"><span class="lineNum">     177</span>              :             const engine_t *aengine) const</span>
+<span id="L178"><span class="lineNum">     178</span>              :             = 0;</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :     /// get partition_impl id</span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">      245566 :     size_t id() const { return id_; }</span></span>
+<span id="L182"><span class="lineNum">     182</span>              : </span>
+<span id="L183"><span class="lineNum">     183</span>              :     /// set partition_impl id</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">      152544 :     void set_id(const size_t id) { id_ = id; }</span></span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :     /// Used to set the partition can use blocked layout</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">      142251 :     virtual void set_use_blocked_layout(bool flag) {</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">      142251 :         can_use_blocked_layout_ = flag;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">      142251 :     }</span></span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span>              :     /// Used to check if a partition can use blocked layout</span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">      127140 :     virtual bool get_use_blocked_layout() const {</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">      127140 :         return can_use_blocked_layout_;</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :     }</span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span>              : protected:</span>
+<span id="L197"><span class="lineNum">     197</span>              :     // Engine kind</span>
+<span id="L198"><span class="lineNum">     198</span>              :     engine_kind_t engine_kind_;</span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span>              :     // floating-point math mode</span>
+<span id="L201"><span class="lineNum">     201</span>              :     fpmath_t fpmath_mode_;</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :     // Partition kind</span>
+<span id="L204"><span class="lineNum">     204</span>              :     partition_kind_t pkind_;</span>
+<span id="L205"><span class="lineNum">     205</span>              : </span>
+<span id="L206"><span class="lineNum">     206</span>              :     //////////////////////////////////////////////////////</span>
+<span id="L207"><span class="lineNum">     207</span>              :     /// Q: What do the ops_/inputs_/outputs_ represent for?</span>
+<span id="L208"><span class="lineNum">     208</span>              :     /// A: Take the following pattern as an example:</span>
+<span id="L209"><span class="lineNum">     209</span>              :     ///    A    B</span>
+<span id="L210"><span class="lineNum">     210</span>              :     ///     \  /</span>
+<span id="L211"><span class="lineNum">     211</span>              :     ///      conv</span>
+<span id="L212"><span class="lineNum">     212</span>              :     ///       |</span>
+<span id="L213"><span class="lineNum">     213</span>              :     ///       C   D</span>
+<span id="L214"><span class="lineNum">     214</span>              :     ///        \ /</span>
+<span id="L215"><span class="lineNum">     215</span>              :     ///         add</span>
+<span id="L216"><span class="lineNum">     216</span>              :     ///          |</span>
+<span id="L217"><span class="lineNum">     217</span>              :     ///          E</span>
+<span id="L218"><span class="lineNum">     218</span>              :     /// The ops_ are used to store the operators belong to</span>
+<span id="L219"><span class="lineNum">     219</span>              :     /// this partition. They should be able to represent a</span>
+<span id="L220"><span class="lineNum">     220</span>              :     /// subgraph.</span>
+<span id="L221"><span class="lineNum">     221</span>              :     /// The inputs_ and outputs_ represent the edge in the</span>
+<span id="L222"><span class="lineNum">     222</span>              :     /// graph, such as inputs_=[A,B,D] and outputs_=[E].</span>
+<span id="L223"><span class="lineNum">     223</span>              :     /// The inputs_ and outputs_ are logical tensors, they</span>
+<span id="L224"><span class="lineNum">     224</span>              :     /// must contain id/dtype and optionally shape/strides.</span>
+<span id="L225"><span class="lineNum">     225</span>              :     /// Because they are inherited from the graph, and FWK</span>
+<span id="L226"><span class="lineNum">     226</span>              :     /// may not have valid shape infos when creating the</span>
+<span id="L227"><span class="lineNum">     227</span>              :     /// graph</span>
+<span id="L228"><span class="lineNum">     228</span>              :     ///</span>
+<span id="L229"><span class="lineNum">     229</span>              :     /// Q: How to populate the ops_/inputs_/outputs_?</span>
+<span id="L230"><span class="lineNum">     230</span>              :     /// A: Take the above pattern as an example:</span>
+<span id="L231"><span class="lineNum">     231</span>              :     /// The ops_, inputs_ and outputs_ should be added by</span>
+<span id="L232"><span class="lineNum">     232</span>              :     /// each backend during the pattern matching. oneDNN</span>
+<span id="L233"><span class="lineNum">     233</span>              :     /// Graph doesn’t care the order of addition at all.</span>
+<span id="L234"><span class="lineNum">     234</span>              :     /// You can add the ops_ as [conv,add] or [add,conv],</span>
+<span id="L235"><span class="lineNum">     235</span>              :     /// and add the inputs_ as [A,B,D] or [A,D,B] or others.</span>
+<span id="L236"><span class="lineNum">     236</span>              :     /// It’s backend’s responsibility to record the exact</span>
+<span id="L237"><span class="lineNum">     237</span>              :     /// mapping between in/outputs_ and the populated ops’</span>
+<span id="L238"><span class="lineNum">     238</span>              :     /// in/outputs, if they want to know the semantics of</span>
+<span id="L239"><span class="lineNum">     239</span>              :     /// logical tensor</span>
+<span id="L240"><span class="lineNum">     240</span>              :     //////////////////////////////////////////////////////</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              :     /// All the ops belong to this partition.</span>
+<span id="L243"><span class="lineNum">     243</span>              :     std::vector&lt;std::shared_ptr&lt;op_t&gt;&gt; ops_;</span>
+<span id="L244"><span class="lineNum">     244</span>              : </span>
+<span id="L245"><span class="lineNum">     245</span>              :     /// All the input logical tensors of a partition</span>
+<span id="L246"><span class="lineNum">     246</span>              :     std::vector&lt;logical_tensor_t&gt; inputs_;</span>
+<span id="L247"><span class="lineNum">     247</span>              : </span>
+<span id="L248"><span class="lineNum">     248</span>              :     /// All the output logical tensors of a partition</span>
+<span id="L249"><span class="lineNum">     249</span>              :     std::vector&lt;logical_tensor_t&gt; outputs_;</span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span>              :     /// Partition_impl id</span>
+<span id="L252"><span class="lineNum">     252</span>              :     size_t id_ = std::numeric_limits&lt;size_t&gt;::max();</span>
+<span id="L253"><span class="lineNum">     253</span>              : </span>
+<span id="L254"><span class="lineNum">     254</span>              :     bool can_use_blocked_layout_;</span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              : private:</span>
+<span id="L257"><span class="lineNum">     257</span>              :     DNNL_DISALLOW_COPY_AND_ASSIGN(partition_impl_t);</span>
+<span id="L258"><span class="lineNum">     258</span>              : };</span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span>              : class compiled_partition_impl_t {</span>
+<span id="L261"><span class="lineNum">     261</span>              : public:</span>
+<span id="L262"><span class="lineNum">     262</span>              :     /// The base constructor of compiled_partition_impl_t. The subclass</span>
+<span id="L263"><span class="lineNum">     263</span>              :     /// instance should be created and set to compiled_partition's pimpl</span>
+<span id="L264"><span class="lineNum">     264</span>              :     /// field during compilation</span>
+<span id="L265"><span class="lineNum">     265</span>              :     ///</span>
+<span id="L266"><span class="lineNum">     266</span>              :     /// @param engine The engine which this compiled_partition_impl_t</span>
+<span id="L267"><span class="lineNum">     267</span>              :     ///     is specialized for. Should be equal to the engine that is</span>
+<span id="L268"><span class="lineNum">     268</span>              :     ///     given when calling partition_impl_t::compile</span>
+<span id="L269"><span class="lineNum">     269</span>              :     /// @param inputs The inputs logical tensors which this</span>
+<span id="L270"><span class="lineNum">     270</span>              :     ///     compiled_partition_impl_t is specialized for. Should have</span>
+<span id="L271"><span class="lineNum">     271</span>              :     ///     exact shape/dtype/layout information</span>
+<span id="L272"><span class="lineNum">     272</span>              :     /// @param outputs The outputs logical tensors which this</span>
+<span id="L273"><span class="lineNum">     273</span>              :     ///     compiled_partition_impl_t is specialized for. Should have</span>
+<span id="L274"><span class="lineNum">     274</span>              :     ///     exact shape/dtype/layout information</span>
+<span id="L275"><span class="lineNum">     275</span>              :     /// @param inplace_pairs The inplace pairs that used to indicate</span>
+<span id="L276"><span class="lineNum">     276</span>              :     ///     which input and output tensor given on execute can share</span>
+<span id="L277"><span class="lineNum">     277</span>              :     ///     same memory buffer</span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">      142035 :     compiled_partition_impl_t(const engine_t &amp;engine,</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;inputs,</span>
+<span id="L280"><span class="lineNum">     280</span>              :             const std::vector&lt;logical_tensor_t&gt; &amp;outputs,</span>
+<span id="L281"><span class="lineNum">     281</span>              :             const std::vector&lt;inplace_pair_t&gt; &amp;inplace_pairs)</span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">      142035 :         : engine_(&amp;engine)</span></span>
+<span id="L283"><span class="lineNum">     283</span>              :         , inputs_(inputs)</span>
+<span id="L284"><span class="lineNum">     284</span>              :         , outputs_(outputs)</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">      142035 :         , inplace_pairs_(inplace_pairs) {}</span></span>
+<span id="L286"><span class="lineNum">     286</span>              : </span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">      270309 :     virtual ~compiled_partition_impl_t() = default;</span></span>
+<span id="L288"><span class="lineNum">     288</span>              : </span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaUNC">           0 :     virtual std::string str() const { return &quot;n/a&quot;; }</span></span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span>              :     /// The getters for engine_, which is used in C API implementation</span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      788008 :     const engine_t *get_engine() const { return engine_; }</span></span>
+<span id="L293"><span class="lineNum">     293</span>              : </span>
+<span id="L294"><span class="lineNum">     294</span>              :     /// The getters for inputs_, which is used in verbose mode</span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">         216 :     const std::vector&lt;logical_tensor_t&gt; &amp;get_inputs() const { return inputs_; }</span></span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span>              :     /// The getters for outputs_, which is used in verbose mode</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">         192 :     const std::vector&lt;logical_tensor_t&gt; &amp;get_outputs() const {</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">         192 :         return outputs_;</span></span>
+<span id="L300"><span class="lineNum">     300</span>              :     }</span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span>              :     /// The getters for inplace_pairs_, which is used in C API</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">       29828 :     const std::vector&lt;inplace_pair_t&gt; &amp;get_inplace_pairs() const {</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">       29828 :         return inplace_pairs_;</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :     }</span>
+<span id="L306"><span class="lineNum">     306</span>              : </span>
+<span id="L307"><span class="lineNum">     307</span>              :     /// Query out a specific logical tensor by using an id. This function</span>
+<span id="L308"><span class="lineNum">     308</span>              :     /// is used in C APIThe queried</span>
+<span id="L309"><span class="lineNum">     309</span>              :     /// @param tid The id used to find the required logical tensor</span>
+<span id="L310"><span class="lineNum">     310</span>              :     /// @param lt The address of buffer that is used to store the queried</span>
+<span id="L311"><span class="lineNum">     311</span>              :     ///     logical tensor. Will be zero if not find the required one</span>
+<span id="L312"><span class="lineNum">     312</span>              :     /// @return The status code. Will always be true</span>
+<span id="L313"><span class="lineNum">     313</span>              :     /// @note If we don't find the logical tensor in compiled partition's</span>
+<span id="L314"><span class="lineNum">     314</span>              :     ///     inputs_and outputs_, this means the logical tensor is not used by</span>
+<span id="L315"><span class="lineNum">     315</span>              :     ///     this compiled partition. This will be a common situation if FWK</span>
+<span id="L316"><span class="lineNum">     316</span>              :     ///     gives arbitrary connection, and shouldn't be regarded as an error</span>
+<span id="L317"><span class="lineNum">     317</span>              :     status_t query_logical_tensor(size_t tid, logical_tensor_t *lt) const;</span>
+<span id="L318"><span class="lineNum">     318</span>              : </span>
+<span id="L319"><span class="lineNum">     319</span>              :     /// The mutable getter for inputs and outputs</span>
+<span id="L320"><span class="lineNum">     320</span>              :     /// @note After compile, backend may choose opaque layout for in/outputs.</span>
+<span id="L321"><span class="lineNum">     321</span>              :     ///     The opaque layout is represented by the layout_id in logical tensor.</span>
+<span id="L322"><span class="lineNum">     322</span>              :     ///     In order to tell frontend which backend generates this opaque</span>
+<span id="L323"><span class="lineNum">     323</span>              :     ///     layout_id, we need to encode backend id into the layout_id in</span>
+<span id="L324"><span class="lineNum">     324</span>              :     ///     oneDNN Graph. So, we need to get out the mutable reference.</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">      141987 :     std::vector&lt;logical_tensor_t&gt; &amp;get_mutable_inputs() { return inputs_; }</span></span>
+<span id="L326"><span class="lineNum">     326</span>              : </span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">      141987 :     std::vector&lt;logical_tensor_t&gt; &amp;get_mutable_outputs() { return outputs_; }</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :     /// Execute a compiled_partition with given inputs/outputs tensors</span>
+<span id="L330"><span class="lineNum">     330</span>              :     /// @param astream For different device target, stream represent</span>
+<span id="L331"><span class="lineNum">     331</span>              :     ///     different runtime object, which can be used to execute the</span>
+<span id="L332"><span class="lineNum">     332</span>              :     ///     compiled partition.</span>
+<span id="L333"><span class="lineNum">     333</span>              :     /// @param inputs The inputs tensors, which contain metadata and buffer</span>
+<span id="L334"><span class="lineNum">     334</span>              :     ///     For each logical tensor in the inputs_, there must be one tensor</span>
+<span id="L335"><span class="lineNum">     335</span>              :     ///     in inputs arguments whose metadata is exactly same with it</span>
+<span id="L336"><span class="lineNum">     336</span>              :     /// @param outputs The outputs tensors, which contain metadata and buffer</span>
+<span id="L337"><span class="lineNum">     337</span>              :     ///     For each logical tensor in the outputs_, there must be one tensor</span>
+<span id="L338"><span class="lineNum">     338</span>              :     ///     in output arguments whose metadata is exactly same with it.</span>
+<span id="L339"><span class="lineNum">     339</span>              :     /// @return The status code</span>
+<span id="L340"><span class="lineNum">     340</span>              :     /// @note</span>
+<span id="L341"><span class="lineNum">     341</span>              :     ///     1. The given in/outputs tensors should have the same order with</span>
+<span id="L342"><span class="lineNum">     342</span>              :     ///     the given in/outputs logical tensors on partition compilation.</span>
+<span id="L343"><span class="lineNum">     343</span>              :     ///     However, the order of the given in/outputs tensors may be not same</span>
+<span id="L344"><span class="lineNum">     344</span>              :     ///     with the in/outputs_ logical tensors. Backend should do the mapping</span>
+<span id="L345"><span class="lineNum">     345</span>              :     ///     inside this function's implementation.</span>
+<span id="L346"><span class="lineNum">     346</span>              :     ///     2. The stream is designed to interoperate with other custom op not</span>
+<span id="L347"><span class="lineNum">     347</span>              :     ///     implemented using oneDNN graph. The custom op may want to execute</span>
+<span id="L348"><span class="lineNum">     348</span>              :     ///     with the compiled partitions using same stream. For backend which</span>
+<span id="L349"><span class="lineNum">     349</span>              :     ///     would like to manage device resource by its own, it may ignore</span>
+<span id="L350"><span class="lineNum">     350</span>              :     ///     stream object. By doing this, it won’t support custom op</span>
+<span id="L351"><span class="lineNum">     351</span>              :     ///     implemented outside oneDNN Graph.</span>
+<span id="L352"><span class="lineNum">     352</span>              :     virtual status_t execute(const stream_t *astream,</span>
+<span id="L353"><span class="lineNum">     353</span>              :             const std::vector&lt;tensor_t&gt; &amp;inputs,</span>
+<span id="L354"><span class="lineNum">     354</span>              :             const std::vector&lt;tensor_t&gt; &amp;outputs)</span>
+<span id="L355"><span class="lineNum">     355</span>              :             = 0;</span>
+<span id="L356"><span class="lineNum">     356</span>              : </span>
+<span id="L357"><span class="lineNum">     357</span>              : #ifdef DNNL_WITH_SYCL</span>
+<span id="L358"><span class="lineNum">     358</span>              :     virtual status_t execute_sycl(const stream_t *astream,</span>
+<span id="L359"><span class="lineNum">     359</span>              :             const std::vector&lt;tensor_t&gt; &amp;inputs,</span>
+<span id="L360"><span class="lineNum">     360</span>              :             const std::vector&lt;tensor_t&gt; &amp;outputs,</span>
+<span id="L361"><span class="lineNum">     361</span>              :             const std::vector&lt;::sycl::event&gt; &amp;sycl_deps,</span>
+<span id="L362"><span class="lineNum">     362</span>              :             ::sycl::event *sycl_event)</span>
+<span id="L363"><span class="lineNum">     363</span>              :             = 0;</span>
+<span id="L364"><span class="lineNum">     364</span>              : #endif</span>
+<span id="L365"><span class="lineNum">     365</span>              : </span>
+<span id="L366"><span class="lineNum">     366</span>              : #if DNNL_GPU_RUNTIME == DNNL_RUNTIME_OCL</span>
+<span id="L367"><span class="lineNum">     367</span>              :     virtual status_t execute_ocl(const stream_t *astream,</span>
+<span id="L368"><span class="lineNum">     368</span>              :             const std::vector&lt;tensor_t&gt; &amp;inputs,</span>
+<span id="L369"><span class="lineNum">     369</span>              :             const std::vector&lt;tensor_t&gt; &amp;outputs,</span>
+<span id="L370"><span class="lineNum">     370</span>              :             const std::vector&lt;cl_event&gt; &amp;ocl_deps, cl_event *ocl_event)</span>
+<span id="L371"><span class="lineNum">     371</span>              :             = 0;</span>
+<span id="L372"><span class="lineNum">     372</span>              : #endif</span>
+<span id="L373"><span class="lineNum">     373</span>              : </span>
+<span id="L374"><span class="lineNum">     374</span>              : protected:</span>
+<span id="L375"><span class="lineNum">     375</span>              :     /// The engine which this compiled_partition_impl_t is specialized</span>
+<span id="L376"><span class="lineNum">     376</span>              :     /// for. Should directly store the engine that is given when calling</span>
+<span id="L377"><span class="lineNum">     377</span>              :     /// partition_impl_t::compile</span>
+<span id="L378"><span class="lineNum">     378</span>              :     const engine_t *engine_;</span>
+<span id="L379"><span class="lineNum">     379</span>              : </span>
+<span id="L380"><span class="lineNum">     380</span>              :     /// The inputs logical tensors which this compiled_partition_impl_t</span>
+<span id="L381"><span class="lineNum">     381</span>              :     /// is specialized for.Should have exact shape/dtype/layout and be</span>
+<span id="L382"><span class="lineNum">     382</span>              :     /// in same order with inputs_ in partition_impl_t</span>
+<span id="L383"><span class="lineNum">     383</span>              :     std::vector&lt;logical_tensor_t&gt; inputs_;</span>
+<span id="L384"><span class="lineNum">     384</span>              : </span>
+<span id="L385"><span class="lineNum">     385</span>              :     /// The outputs logical tensors which this compiled_partition_impl_t</span>
+<span id="L386"><span class="lineNum">     386</span>              :     /// is specialized for.Should have exact shape/dtype/layout and be</span>
+<span id="L387"><span class="lineNum">     387</span>              :     /// in same order with outputs_ in partition_impl_t</span>
+<span id="L388"><span class="lineNum">     388</span>              :     std::vector&lt;logical_tensor_t&gt; outputs_;</span>
+<span id="L389"><span class="lineNum">     389</span>              : </span>
+<span id="L390"><span class="lineNum">     390</span>              :     /// The inplace_pair_t is used to indicate which input</span>
+<span id="L391"><span class="lineNum">     391</span>              :     /// and output tensor given in execute can share same</span>
+<span id="L392"><span class="lineNum">     392</span>              :     /// memory buffer.</span>
+<span id="L393"><span class="lineNum">     393</span>              :     /// Take the following pattern as an example:</span>
+<span id="L394"><span class="lineNum">     394</span>              :     ///    A    B</span>
+<span id="L395"><span class="lineNum">     395</span>              :     ///     \  /</span>
+<span id="L396"><span class="lineNum">     396</span>              :     ///      add</span>
+<span id="L397"><span class="lineNum">     397</span>              :     ///       |</span>
+<span id="L398"><span class="lineNum">     398</span>              :     ///       C</span>
+<span id="L399"><span class="lineNum">     399</span>              :     /// Assume that A's id is 1, B's id is 2 and C's id is 3.</span>
+<span id="L400"><span class="lineNum">     400</span>              :     /// If B and C can share same buffer, then the inplace_pairs_</span>
+<span id="L401"><span class="lineNum">     401</span>              :     /// should be [{2, 3}]</span>
+<span id="L402"><span class="lineNum">     402</span>              :     std::vector&lt;inplace_pair_t&gt; inplace_pairs_;</span>
+<span id="L403"><span class="lineNum">     403</span>              : };</span>
+<span id="L404"><span class="lineNum">     404</span>              : </span>
+<span id="L405"><span class="lineNum">     405</span>              : } // namespace graph</span>
+<span id="L406"><span class="lineNum">     406</span>              : } // namespace impl</span>
+<span id="L407"><span class="lineNum">     407</span>              : } // namespace dnnl</span>
+<span id="L408"><span class="lineNum">     408</span>              : </span>
+<span id="L409"><span class="lineNum">     409</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

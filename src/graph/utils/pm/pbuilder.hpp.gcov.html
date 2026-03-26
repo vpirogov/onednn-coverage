@@ -1,0 +1,423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/utils/pm/pbuilder.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/utils/pm">src/graph/utils/pm</a> - pbuilder.hpp<span style="font-size: 80%;"> (source / <a href="pbuilder.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">18</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">14</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GRAPH_UTILS_PM_PBUILDER_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GRAPH_UTILS_PM_PBUILDER_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;cstdint&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;memory&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;string&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;utility&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;vector&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;unordered_set&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;graph/interface/c_types_map.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace dnnl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace impl {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace graph {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace utils {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace pm {</span>
+<span id="L34"><span class="lineNum">      34</span>              : class pb_op_t;</span>
+<span id="L35"><span class="lineNum">      35</span>              : class pb_node_t;</span>
+<span id="L36"><span class="lineNum">      36</span>              : class pb_graph_t;</span>
+<span id="L37"><span class="lineNum">      37</span>              : // Helper types</span>
+<span id="L38"><span class="lineNum">      38</span>              : // VARIADIC_INPUT_NUM means the num of inputs will be depend on the op</span>
+<span id="L39"><span class="lineNum">      39</span>              : // Using a large enough number to represent this.</span>
+<span id="L40"><span class="lineNum">      40</span>              : #define VARIADIC_INPUT_NUM 64</span>
+<span id="L41"><span class="lineNum">      41</span>              : using iport_t = size_t;</span>
+<span id="L42"><span class="lineNum">      42</span>              : using oport_t = size_t;</span>
+<span id="L43"><span class="lineNum">      43</span>              : using producer_t = std::pair&lt;pb_node_t *, oport_t&gt;;</span>
+<span id="L44"><span class="lineNum">      44</span>              : using consumer_t = std::pair&lt;pb_node_t *, iport_t&gt;;</span>
+<span id="L45"><span class="lineNum">      45</span>              : using consumers_t = std::vector&lt;std::shared_ptr&lt;consumer_t&gt;&gt;;</span>
+<span id="L46"><span class="lineNum">      46</span>              : using in_edge_t = std::pair&lt;iport_t, std::shared_ptr&lt;producer_t&gt;&gt;;</span>
+<span id="L47"><span class="lineNum">      47</span>              : using in_edges_t = std::vector&lt;std::shared_ptr&lt;in_edge_t&gt;&gt;;</span>
+<span id="L48"><span class="lineNum">      48</span>              : using port_map = std::pair&lt;oport_t, iport_t&gt;;</span>
+<span id="L49"><span class="lineNum">      49</span>              : //</span>
+<span id="L50"><span class="lineNum">      50</span>              : // Part 1:</span>
+<span id="L51"><span class="lineNum">      51</span>              : // Structures for representing basic topological patterns</span>
+<span id="L52"><span class="lineNum">      52</span>              : // and attribute patterns</span>
+<span id="L53"><span class="lineNum">      53</span>              : //</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              : // Represents any backend defined function that takes a pointer to dnnl graph op</span>
+<span id="L56"><span class="lineNum">      56</span>              : // and check some attribute(op type, attributes, input shapes ...)</span>
+<span id="L57"><span class="lineNum">      57</span>              : using decision_function = std::function&lt;bool(op_t *)&gt;;</span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span>              : enum class pb_node_kind {</span>
+<span id="L60"><span class="lineNum">      60</span>              :     PB_NODE_KIND_OP,</span>
+<span id="L61"><span class="lineNum">      61</span>              :     PB_NODE_KIND_ALTERNATION,</span>
+<span id="L62"><span class="lineNum">      62</span>              :     PB_NODE_KIND_REPETITION,</span>
+<span id="L63"><span class="lineNum">      63</span>              : };</span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span>              : // Base class for pattern graph with input and output ports (placeholders)</span>
+<span id="L66"><span class="lineNum">      66</span>              : // Only implements traversal methods and setting commutative input pairs.</span>
+<span id="L67"><span class="lineNum">      67</span>              : // Suitable for representing topological patterns</span>
+<span id="L68"><span class="lineNum">      68</span>              : class pb_node_t {</span>
+<span id="L69"><span class="lineNum">      69</span>              : public:</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">    35786347 :     virtual ~pb_node_t() = default;</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     // API for traversing</span>
+<span id="L72"><span class="lineNum">      72</span>              :     std::shared_ptr&lt;producer_t&gt; get_producer(iport_t p_port);</span>
+<span id="L73"><span class="lineNum">      73</span>              :     std::shared_ptr&lt;consumers_t&gt; get_consumers(oport_t p_port);</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              :     std::vector&lt;std::pair&lt;iport_t, producer_t&gt;&gt; get_inputs();</span>
+<span id="L76"><span class="lineNum">      76</span>              :     std::vector&lt;std::pair&lt;oport_t, consumers_t&gt;&gt; get_outputs();</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              :     size_t get_num_decision_functions();</span>
+<span id="L79"><span class="lineNum">      79</span>              :     decision_function get_decision_function(size_t index);</span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     3455137 :     pb_node_kind get_node_kind() { return node_kind_; }</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">          19 :     virtual std::string get_name() { return debug_string_; }</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">    34783200 :     virtual void set_name(std::string &amp;&amp;name) {</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">    34783200 :         debug_string_ = std::move(name);</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">    34783200 :     }</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">     4470625 :     const std::unordered_set&lt;pb_op_t *&gt; &amp;get_contained_ops() { return p_ops_; }</span></span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span>              : protected:</span>
+<span id="L88"><span class="lineNum">      88</span>              :     friend class pb_graph_t;</span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">    35786347 :     pb_node_t() = default;</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :     bool set_producer(iport_t p_port, std::shared_ptr&lt;producer_t&gt; p_producer);</span>
+<span id="L91"><span class="lineNum">      91</span>              :     bool add_consumer(</span>
+<span id="L92"><span class="lineNum">      92</span>              :             oport_t p_port, const std::shared_ptr&lt;consumer_t&gt; &amp;p_consumer);</span>
+<span id="L93"><span class="lineNum">      93</span>              :     std::vector&lt;std::shared_ptr&lt;producer_t&gt;&gt; ins_;</span>
+<span id="L94"><span class="lineNum">      94</span>              :     std::vector&lt;std::shared_ptr&lt;consumers_t&gt;&gt; outs_;</span>
+<span id="L95"><span class="lineNum">      95</span>              :     std::vector&lt;decision_function&gt; decision_functions_;</span>
+<span id="L96"><span class="lineNum">      96</span>              :     std::string debug_string_;</span>
+<span id="L97"><span class="lineNum">      97</span>              :     pb_node_kind node_kind_;</span>
+<span id="L98"><span class="lineNum">      98</span>              :     std::unordered_set&lt;pb_op_t *&gt; p_ops_;</span>
+<span id="L99"><span class="lineNum">      99</span>              : };</span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span>              : std::shared_ptr&lt;consumer_t&gt; consumer(pb_node_t *p_node, iport_t i_t);</span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span>              : std::shared_ptr&lt;consumer_t&gt; producer(pb_node_t *p_node, oport_t o_t);</span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              : std::shared_ptr&lt;in_edge_t&gt; in_edge(iport_t i_t, pb_node_t *p_node, oport_t o_t);</span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span>              : // Helper function for op kind check</span>
+<span id="L108"><span class="lineNum">     108</span>              : decision_function kind(dnnl::impl::graph::op_kind_t okind);</span>
+<span id="L109"><span class="lineNum">     109</span>              : decision_function one_of_kind(</span>
+<span id="L110"><span class="lineNum">     110</span>              :         const std::vector&lt;dnnl::impl::graph::op_kind_t&gt; &amp;okind);</span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span>              : // pb_op_t represents a single dnnl graph  op (and future sub-class) operation</span>
+<span id="L113"><span class="lineNum">     113</span>              : // No public constructor</span>
+<span id="L114"><span class="lineNum">     114</span>              : // Always created by a pb_graph_t</span>
+<span id="L115"><span class="lineNum">     115</span>              : // pb_op_t has type and attributes</span>
+<span id="L116"><span class="lineNum">     116</span>              : // Type and attribute contraint checkers are registered in pb_op_t</span>
+<span id="L117"><span class="lineNum">     117</span>              : // Extends &quot;pb_node_t&quot; to enable attribute matching including op type check.</span>
+<span id="L118"><span class="lineNum">     118</span>              : class pb_op_t : public pb_node_t {</span>
+<span id="L119"><span class="lineNum">     119</span>              : public:</span>
+<span id="L120"><span class="lineNum">     120</span>              :     pb_op_t() = delete;</span>
+<span id="L121"><span class="lineNum">     121</span>              :     // like is_commutative by callback</span>
+<span id="L122"><span class="lineNum">     122</span>              :     bool append_decision_function(const decision_function &amp;p_fn);</span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span>              :     // For overriding default side output control</span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">         228 :     void allow_external_outputs() { accept_external_outputs_ = true; }</span></span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       84629 :     bool is_allowing_external_outputs() const {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       84629 :         return accept_external_outputs_;</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :     }</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">      213636 :     void allow_internal_inputs() { accept_internal_inputs_ = true; }</span></span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">          19 :     bool is_allowing_internal_inputs() const { return accept_internal_inputs_; }</span></span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span>              : protected:</span>
+<span id="L136"><span class="lineNum">     136</span>              :     friend class pb_graph_t;</span>
+<span id="L137"><span class="lineNum">     137</span>              :     pb_op_t(const decision_function &amp;p_fn);</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              :     /*</span>
+<span id="L140"><span class="lineNum">     140</span>              :         The outputs could link to ops outside the pattern.</span>
+<span id="L141"><span class="lineNum">     141</span>              :         Explained by the following example.</span>
+<span id="L142"><span class="lineNum">     142</span>              :         The pattern:</span>
+<span id="L143"><span class="lineNum">     143</span>              :           \   /</span>
+<span id="L144"><span class="lineNum">     144</span>              :           Matmul</span>
+<span id="L145"><span class="lineNum">     145</span>              :             |</span>
+<span id="L146"><span class="lineNum">     146</span>              :            Div</span>
+<span id="L147"><span class="lineNum">     147</span>              :             |</span>
+<span id="L148"><span class="lineNum">     148</span>              :            Add</span>
+<span id="L149"><span class="lineNum">     149</span>              :             |</span>
+<span id="L150"><span class="lineNum">     150</span>              :           SoftMax</span>
+<span id="L151"><span class="lineNum">     151</span>              :             |</span>
+<span id="L152"><span class="lineNum">     152</span>              :            Mul</span>
+<span id="L153"><span class="lineNum">     153</span>              :             |</span>
+<span id="L154"><span class="lineNum">     154</span>              :         When accept_external_outputs_ is true,</span>
+<span id="L155"><span class="lineNum">     155</span>              :         the following graph could also be matched:</span>
+<span id="L156"><span class="lineNum">     156</span>              :           \   /</span>
+<span id="L157"><span class="lineNum">     157</span>              :           Matmul</span>
+<span id="L158"><span class="lineNum">     158</span>              :             |</span>
+<span id="L159"><span class="lineNum">     159</span>              :            Div</span>
+<span id="L160"><span class="lineNum">     160</span>              :             |</span>
+<span id="L161"><span class="lineNum">     161</span>              :            Add</span>
+<span id="L162"><span class="lineNum">     162</span>              :             |</span>
+<span id="L163"><span class="lineNum">     163</span>              :          SoftMax</span>
+<span id="L164"><span class="lineNum">     164</span>              :             |  \________________</span>
+<span id="L165"><span class="lineNum">     165</span>              :            Mul                  \  (external output)</span>
+<span id="L166"><span class="lineNum">     166</span>              :             |            SoftMaxBackProp</span>
+<span id="L167"><span class="lineNum">     167</span>              :     */</span>
+<span id="L168"><span class="lineNum">     168</span>              :     bool accept_external_outputs_ = false;</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span>              :     /*</span>
+<span id="L171"><span class="lineNum">     171</span>              :         The inputs could come from ops within the pattern.</span>
+<span id="L172"><span class="lineNum">     172</span>              :         Explained by the following example.</span>
+<span id="L173"><span class="lineNum">     173</span>              :         The pattern:</span>
+<span id="L174"><span class="lineNum">     174</span>              :          \  /</span>
+<span id="L175"><span class="lineNum">     175</span>              :          Conv</span>
+<span id="L176"><span class="lineNum">     176</span>              :            |</span>
+<span id="L177"><span class="lineNum">     177</span>              :            |</span>
+<span id="L178"><span class="lineNum">     178</span>              :          Sigmoid</span>
+<span id="L179"><span class="lineNum">     179</span>              :            |</span>
+<span id="L180"><span class="lineNum">     180</span>              :             \     /</span>
+<span id="L181"><span class="lineNum">     181</span>              :            Multiply</span>
+<span id="L182"><span class="lineNum">     182</span>              :                |</span>
+<span id="L183"><span class="lineNum">     183</span>              :         When accept_internal_inputs_ is true,</span>
+<span id="L184"><span class="lineNum">     184</span>              :         the following graph could also be matched:</span>
+<span id="L185"><span class="lineNum">     185</span>              :          \  /</span>
+<span id="L186"><span class="lineNum">     186</span>              :          Conv</span>
+<span id="L187"><span class="lineNum">     187</span>              :            |_______</span>
+<span id="L188"><span class="lineNum">     188</span>              :            |       |</span>
+<span id="L189"><span class="lineNum">     189</span>              :          Sigmoid   | (internal input)</span>
+<span id="L190"><span class="lineNum">     190</span>              :            |       |</span>
+<span id="L191"><span class="lineNum">     191</span>              :             \     /</span>
+<span id="L192"><span class="lineNum">     192</span>              :            Multiply</span>
+<span id="L193"><span class="lineNum">     193</span>              :                |</span>
+<span id="L194"><span class="lineNum">     194</span>              :     */</span>
+<span id="L195"><span class="lineNum">     195</span>              :     bool accept_internal_inputs_ = false;</span>
+<span id="L196"><span class="lineNum">     196</span>              : };</span>
+<span id="L197"><span class="lineNum">     197</span>              : </span>
+<span id="L198"><span class="lineNum">     198</span>              : //</span>
+<span id="L199"><span class="lineNum">     199</span>              : // Part 2:</span>
+<span id="L200"><span class="lineNum">     200</span>              : // Structures for extended patterns</span>
+<span id="L201"><span class="lineNum">     201</span>              : // API may change</span>
+<span id="L202"><span class="lineNum">     202</span>              : //</span>
+<span id="L203"><span class="lineNum">     203</span>              : class alternation_t : public pb_node_t {</span>
+<span id="L204"><span class="lineNum">     204</span>              : public:</span>
+<span id="L205"><span class="lineNum">     205</span>              :     alternation_t() = delete;</span>
+<span id="L206"><span class="lineNum">     206</span>              :     std::vector&lt;pb_graph_t *&gt; get_alternatives();</span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">          38 :     size_t get_min_op_num() const { return min_op_num_; }</span></span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span>              : protected:</span>
+<span id="L210"><span class="lineNum">     210</span>              :     friend class pb_graph_t;</span>
+<span id="L211"><span class="lineNum">     211</span>              :     alternation_t(std::vector&lt;std::shared_ptr&lt;pb_graph_t&gt;&gt; p_nodes);</span>
+<span id="L212"><span class="lineNum">     212</span>              :     std::vector&lt;std::shared_ptr&lt;pb_graph_t&gt;&gt; alternatives_;</span>
+<span id="L213"><span class="lineNum">     213</span>              :     size_t min_op_num_;</span>
+<span id="L214"><span class="lineNum">     214</span>              : };</span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span>              : class repetition_t : public pb_node_t {</span>
+<span id="L217"><span class="lineNum">     217</span>              : public:</span>
+<span id="L218"><span class="lineNum">     218</span>              :     repetition_t() = delete;</span>
+<span id="L219"><span class="lineNum">     219</span>              :     pb_graph_t *get_body();</span>
+<span id="L220"><span class="lineNum">     220</span>              :     port_map get_port_map(); // only support single port binding</span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">      479909 :     size_t get_min_rep() const { return min_rep_; }</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">      178068 :     size_t get_max_rep() const { return max_rep_; }</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">      243611 :     size_t get_min_op_num() const { return min_op_num_; }</span></span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span>              : protected:</span>
+<span id="L226"><span class="lineNum">     226</span>              :     friend class pb_graph_t;</span>
+<span id="L227"><span class="lineNum">     227</span>              :     // Represents p_node repeated [min_rep, max_rep) times with p_map for</span>
+<span id="L228"><span class="lineNum">     228</span>              :     // output to input binding</span>
+<span id="L229"><span class="lineNum">     229</span>              :     // [n, n+1) means exactly n repetitions</span>
+<span id="L230"><span class="lineNum">     230</span>              :     // [0, n+1) means at most n repetitions</span>
+<span id="L231"><span class="lineNum">     231</span>              :     // [n, INT64_MAX) means at least n repetitions</span>
+<span id="L232"><span class="lineNum">     232</span>              :     repetition_t(std::shared_ptr&lt;pb_graph_t&gt; p_node, port_map p_map,</span>
+<span id="L233"><span class="lineNum">     233</span>              :             size_t min_rep, size_t max_rep);</span>
+<span id="L234"><span class="lineNum">     234</span>              :     // Usage case for Optional does not need a port map</span>
+<span id="L235"><span class="lineNum">     235</span>              :     repetition_t(std::shared_ptr&lt;pb_graph_t&gt; p_node);</span>
+<span id="L236"><span class="lineNum">     236</span>              :     std::shared_ptr&lt;pb_graph_t&gt; body_;</span>
+<span id="L237"><span class="lineNum">     237</span>              :     port_map port_map_;</span>
+<span id="L238"><span class="lineNum">     238</span>              :     size_t min_rep_;</span>
+<span id="L239"><span class="lineNum">     239</span>              :     size_t max_rep_;</span>
+<span id="L240"><span class="lineNum">     240</span>              :     size_t min_op_num_;</span>
+<span id="L241"><span class="lineNum">     241</span>              : };</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              : // &quot;pb_graph_t&quot; represents a group of pb_op_ts and also serves as a pb_node_t</span>
+<span id="L244"><span class="lineNum">     244</span>              : // anywhere And provides a way to limit interface by limiting ports</span>
+<span id="L245"><span class="lineNum">     245</span>              : // (placeholders) to outside of pb_graph_t.</span>
+<span id="L246"><span class="lineNum">     246</span>              : // Nested/Hierarchical pb_nodes are useful for expressing patterns beyond fixed</span>
+<span id="L247"><span class="lineNum">     247</span>              : // pb_graph_t. Regular expression like extension may works on a unit larger</span>
+<span id="L248"><span class="lineNum">     248</span>              : // than a single pb_node_t.</span>
+<span id="L249"><span class="lineNum">     249</span>              : // So a concept that represent grouping is going to be useful.</span>
+<span id="L250"><span class="lineNum">     250</span>              : // pb_graph_t defines a way to forward input/output of the group</span>
+<span id="L251"><span class="lineNum">     251</span>              : // to input/output of individual pb_nodes.</span>
+<span id="L252"><span class="lineNum">     252</span>              : // For example, pb_graph_t &quot;G&quot; below wraps two connected pb_nodes &quot;MUL&quot; and</span>
+<span id="L253"><span class="lineNum">     253</span>              : // &quot;ADD&quot; Collectively, G defines three inputs and one output. The three inputs</span>
+<span id="L254"><span class="lineNum">     254</span>              : // of &quot;G&quot; are mapped to (pb_graph_t inner) inputs of &quot;MUL&quot; and &quot;ADD&quot;</span>
+<span id="L255"><span class="lineNum">     255</span>              : // The single output of &quot;G&quot; maps to the single output of &quot;ADD&quot;</span>
+<span id="L256"><span class="lineNum">     256</span>              : // Now, this &quot;G&quot; can used as part of a bigger pattern by connecting through</span>
+<span id="L257"><span class="lineNum">     257</span>              : // the three inputs and one output just defined.</span>
+<span id="L258"><span class="lineNum">     258</span>              : // Also, &quot;G&quot; can declare output ports which provides a way for backends to</span>
+<span id="L259"><span class="lineNum">     259</span>              : // declare which outputs can be produced by compiled kernels for the pattern.</span>
+<span id="L260"><span class="lineNum">     260</span>              : // Declaring output ports is important for exposing backend's ability to handle</span>
+<span id="L261"><span class="lineNum">     261</span>              : // side outputs.</span>
+<span id="L262"><span class="lineNum">     262</span>              : //    ----------------------</span>
+<span id="L263"><span class="lineNum">     263</span>              : //    |   ------   -----   |</span>
+<span id="L264"><span class="lineNum">     264</span>              : // 0- | 0-| MUL|---|ADD|   |</span>
+<span id="L265"><span class="lineNum">     265</span>              : //    | 1-|    |  0|   |-0 |</span>
+<span id="L266"><span class="lineNum">     266</span>              : // 1- |   ------   |   |   |-0</span>
+<span id="L267"><span class="lineNum">     267</span>              : //    |          1-|   |   |</span>
+<span id="L268"><span class="lineNum">     268</span>              : // 2- |            -----   |</span>
+<span id="L269"><span class="lineNum">     269</span>              : //    ----------------------</span>
+<span id="L270"><span class="lineNum">     270</span>              : //          pb_graph_t &quot;G&quot;</span>
+<span id="L271"><span class="lineNum">     271</span>              : //</span>
+<span id="L272"><span class="lineNum">     272</span>              : // G:IN0-&gt;MUL:IN0, G:IN1-&gt;MUL:IN1, G:IN2-&gt;ADD:IN1</span>
+<span id="L273"><span class="lineNum">     273</span>              : // G:OUT0-&gt;ADD:OUT0</span>
+<span id="L274"><span class="lineNum">     274</span>              : // G:OUTPUT PORTS = {OUT0}</span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span>              : class pb_graph_t : public pb_node_t {</span>
+<span id="L277"><span class="lineNum">     277</span>              : public:</span>
+<span id="L278"><span class="lineNum">     278</span>              :     pb_graph_t();</span>
+<span id="L279"><span class="lineNum">     279</span>              : </span>
+<span id="L280"><span class="lineNum">     280</span>              :     // Restrict &quot;pb_op_t&quot; create to a pb_graph_t to avoid dangling &quot;pb_op_t&quot;s</span>
+<span id="L281"><span class="lineNum">     281</span>              :     pb_op_t *append_op(</span>
+<span id="L282"><span class="lineNum">     282</span>              :             dnnl::impl::graph::op_kind_t p_kind, const in_edges_t &amp;p_in_edges);</span>
+<span id="L283"><span class="lineNum">     283</span>              :     pb_op_t *append_op(dnnl::impl::graph::op_kind_t p_kind);</span>
+<span id="L284"><span class="lineNum">     284</span>              : </span>
+<span id="L285"><span class="lineNum">     285</span>              :     pb_op_t *append_alternation(</span>
+<span id="L286"><span class="lineNum">     286</span>              :             const std::vector&lt;dnnl::impl::graph::op_kind_t&gt; &amp;p_kind,</span>
+<span id="L287"><span class="lineNum">     287</span>              :             const in_edges_t &amp;p_in_edges);</span>
+<span id="L288"><span class="lineNum">     288</span>              :     pb_op_t *append_alternation(</span>
+<span id="L289"><span class="lineNum">     289</span>              :             const std::vector&lt;dnnl::impl::graph::op_kind_t&gt; &amp;p_kind);</span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span>              :     alternation_t *append_alternation(</span>
+<span id="L292"><span class="lineNum">     292</span>              :             const std::vector&lt;std::shared_ptr&lt;pb_graph_t&gt;&gt; &amp;p_nodes,</span>
+<span id="L293"><span class="lineNum">     293</span>              :             const in_edges_t &amp;p_in_edges);</span>
+<span id="L294"><span class="lineNum">     294</span>              :     alternation_t *append_alternation(</span>
+<span id="L295"><span class="lineNum">     295</span>              :             const std::vector&lt;std::shared_ptr&lt;pb_graph_t&gt;&gt; &amp;p_nodes);</span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span>              :     repetition_t *append_repetition(const std::shared_ptr&lt;pb_graph_t&gt; &amp;p_node,</span>
+<span id="L298"><span class="lineNum">     298</span>              :             const port_map &amp;p_map, size_t min_rep, size_t max_rep,</span>
+<span id="L299"><span class="lineNum">     299</span>              :             const in_edges_t &amp;p_in_edges);</span>
+<span id="L300"><span class="lineNum">     300</span>              :     repetition_t *append_repetition(const std::shared_ptr&lt;pb_graph_t&gt; &amp;p_node,</span>
+<span id="L301"><span class="lineNum">     301</span>              :             const port_map &amp;p_map, size_t min_rep, size_t max_rep);</span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span>              :     repetition_t *append_optional(const std::shared_ptr&lt;pb_graph_t&gt; &amp;p_node,</span>
+<span id="L304"><span class="lineNum">     304</span>              :             const in_edges_t &amp;p_in_edges);</span>
+<span id="L305"><span class="lineNum">     305</span>              :     repetition_t *append_optional(const std::shared_ptr&lt;pb_graph_t&gt; &amp;p_node);</span>
+<span id="L306"><span class="lineNum">     306</span>              : </span>
+<span id="L307"><span class="lineNum">     307</span>              :     std::vector&lt;std::pair&lt;iport_t, consumers_t&gt;&gt; get_inner_consumers();</span>
+<span id="L308"><span class="lineNum">     308</span>              :     std::vector&lt;std::pair&lt;oport_t, producer_t&gt;&gt; get_inner_producers();</span>
+<span id="L309"><span class="lineNum">     309</span>              :     std::shared_ptr&lt;consumers_t&gt; get_inner_consumer(iport_t);</span>
+<span id="L310"><span class="lineNum">     310</span>              :     std::shared_ptr&lt;producer_t&gt; get_inner_producer(oport_t);</span>
+<span id="L311"><span class="lineNum">     311</span>              : </span>
+<span id="L312"><span class="lineNum">     312</span>              :     bool create_input_port(iport_t, pb_node_t *, iport_t);</span>
+<span id="L313"><span class="lineNum">     313</span>              :     bool create_output_port(oport_t, pb_node_t *, oport_t);</span>
+<span id="L314"><span class="lineNum">     314</span>              : </span>
+<span id="L315"><span class="lineNum">     315</span>              :     std::vector&lt;pb_node_t *&gt; get_nodes();</span>
+<span id="L316"><span class="lineNum">     316</span>              : </span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">     7078361 :     size_t get_min_op_num() const { return min_op_num_; }</span></span>
+<span id="L318"><span class="lineNum">     318</span>              : </span>
+<span id="L319"><span class="lineNum">     319</span>              : protected:</span>
+<span id="L320"><span class="lineNum">     320</span>              :     pb_op_t *append_op(const decision_function &amp;type_checker,</span>
+<span id="L321"><span class="lineNum">     321</span>              :             const in_edges_t &amp;p_in_edges, std::string name = &quot;&quot;);</span>
+<span id="L322"><span class="lineNum">     322</span>              :     pb_op_t *append_op(</span>
+<span id="L323"><span class="lineNum">     323</span>              :             const decision_function &amp;type_checker, std::string name = &quot;&quot;);</span>
+<span id="L324"><span class="lineNum">     324</span>              : </span>
+<span id="L325"><span class="lineNum">     325</span>              :     bool set_edge(const std::shared_ptr&lt;consumer_t&gt; &amp;,</span>
+<span id="L326"><span class="lineNum">     326</span>              :             const std::shared_ptr&lt;producer_t&gt; &amp;);</span>
+<span id="L327"><span class="lineNum">     327</span>              :     bool connect_edges(pb_node_t *p_node, const in_edges_t &amp;p_in_edges);</span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :     bool create_input_port(iport_t, const std::shared_ptr&lt;consumer_t&gt; &amp;);</span>
+<span id="L330"><span class="lineNum">     330</span>              :     bool create_output_port(oport_t, std::shared_ptr&lt;producer_t&gt;);</span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span>              :     // Reference to all internal pb_nodes</span>
+<span id="L333"><span class="lineNum">     333</span>              :     std::vector&lt;std::shared_ptr&lt;pb_node_t&gt;&gt; nodes_;</span>
+<span id="L334"><span class="lineNum">     334</span>              :     std::unordered_set&lt;oport_t&gt; output_ports_;</span>
+<span id="L335"><span class="lineNum">     335</span>              :     std::vector&lt;std::shared_ptr&lt;consumers_t&gt;&gt; inner_consumers_ {nullptr};</span>
+<span id="L336"><span class="lineNum">     336</span>              :     std::vector&lt;std::shared_ptr&lt;producer_t&gt;&gt; inner_producers_ {nullptr};</span>
+<span id="L337"><span class="lineNum">     337</span>              : </span>
+<span id="L338"><span class="lineNum">     338</span>              :     // Mininum op number required to match the pattern graph</span>
+<span id="L339"><span class="lineNum">     339</span>              :     size_t min_op_num_;</span>
+<span id="L340"><span class="lineNum">     340</span>              : };</span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span>              : } // namespace pm</span>
+<span id="L343"><span class="lineNum">     343</span>              : } // namespace utils</span>
+<span id="L344"><span class="lineNum">     344</span>              : } // namespace graph</span>
+<span id="L345"><span class="lineNum">     345</span>              : } // namespace impl</span>
+<span id="L346"><span class="lineNum">     346</span>              : } // namespace dnnl</span>
+<span id="L347"><span class="lineNum">     347</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

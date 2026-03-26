@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/cache_utils.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - cache_utils.hpp<span style="font-size: 80%;"> (source / <a href="cache_utils.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">89.2&nbsp;%</td>
+            <td class="headerCovTableEntry">120</td>
+            <td class="headerCovTableEntry">107</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">91.2&nbsp;%</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntry">62</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2023 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef COMMON_CACHE_UTILS_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define COMMON_CACHE_UTILS_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;algorithm&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;future&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;memory&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;thread&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;unordered_map&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;oneapi/dnnl/dnnl_config.h&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : #if DNNL_CPU_RUNTIME != DNNL_RUNTIME_NONE</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/platform.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #else</span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &lt;chrono&gt;</span>
+<span id="L32"><span class="lineNum">      32</span>              : #endif</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : #ifdef _WIN32</span>
+<span id="L35"><span class="lineNum">      35</span>              : #include &lt;windows.h&gt;</span>
+<span id="L36"><span class="lineNum">      36</span>              : #endif</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : #include &quot;rw_mutex.hpp&quot;</span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span>              : namespace dnnl {</span>
+<span id="L41"><span class="lineNum">      41</span>              : namespace impl {</span>
+<span id="L42"><span class="lineNum">      42</span>              : namespace utils {</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : // A key k and object o may share resources. This function moves the shared</span>
+<span id="L45"><span class="lineNum">      45</span>              : // resources from a copy of object o into the key k. This is used to deduplicate</span>
+<span id="L46"><span class="lineNum">      46</span>              : // data stored in cached objects.</span>
+<span id="L47"><span class="lineNum">      47</span>              : template &lt;typename K, typename O&gt;</span>
+<span id="L48"><span class="lineNum">      48</span>              : using key_merge_t = void (*)(const K &amp;, const O &amp;);</span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span>              : template &lt;typename K, typename O, typename C,</span>
+<span id="L51"><span class="lineNum">      51</span>              :         key_merge_t&lt;K, O&gt; key_merge = nullptr&gt;</span>
+<span id="L52"><span class="lineNum">      52</span>              : struct cache_t {</span>
+<span id="L53"><span class="lineNum">      53</span>              :     using key_t = K;</span>
+<span id="L54"><span class="lineNum">      54</span>              :     using object_t = O;</span>
+<span id="L55"><span class="lineNum">      55</span>              :     using cache_object_t = C;</span>
+<span id="L56"><span class="lineNum">      56</span>              :     using value_t = std::shared_future&lt;cache_object_t&gt;;</span>
+<span id="L57"><span class="lineNum">      57</span>              :     using create_func_t = cache_object_t (&amp;)(void *);</span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        8320 :     virtual ~cache_t() = default;</span></span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span>              :     virtual status_t set_capacity(int capacity) = 0;</span>
+<span id="L62"><span class="lineNum">      62</span>              :     virtual int get_capacity() const = 0;</span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span>              :     virtual int get_size() const = 0;</span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span>              :     // Returns the cached value or cache_object_t() on a miss</span>
+<span id="L67"><span class="lineNum">      67</span>              :     virtual cache_object_t get(const key_t &amp;key) = 0;</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              :     // Returns the cached object associated with key, the object generated by</span>
+<span id="L70"><span class="lineNum">      70</span>              :     // the create(create_context) function, or an empty object in case of</span>
+<span id="L71"><span class="lineNum">      71</span>              :     // errors. The function create() is called upon a cache miss, or if the user</span>
+<span id="L72"><span class="lineNum">      72</span>              :     // forced creation through a `force_create` boolean flag. The returned</span>
+<span id="L73"><span class="lineNum">      73</span>              :     // object is added to the cache on a cache miss.</span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">    40272053 :     cache_object_t get_or_create(const key_t &amp;key, create_func_t create,</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :             void *create_context, bool force_create) {</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">    80544114 :         std::promise&lt;cache_object_t&gt; p_promise;</span></span>
+<span id="L77"><span class="lineNum">      77</span>              :         // Try to get the shared future from the cache, if it's missing then a</span>
+<span id="L78"><span class="lineNum">      78</span>              :         // shared future with no shared state is returned and the passed shared</span>
+<span id="L79"><span class="lineNum">      79</span>              :         // future is added, otherwise a valid shared future is returned and no</span>
+<span id="L80"><span class="lineNum">      80</span>              :         // insertion is performed.</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">   120816152 :         auto p_future = get_or_add(key, p_promise.get_future());</span></span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">    40272053 :         if (!force_create &amp;&amp; p_future.valid()) {</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :             // The requested object is present in the cache or is being created</span>
+<span id="L85"><span class="lineNum">      85</span>              :             // by another thread.</span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">    31429902 :             return p_future.get();</span></span>
+<span id="L87"><span class="lineNum">      87</span>              :         } else {</span>
+<span id="L88"><span class="lineNum">      88</span>              :             // The requested object is NOT present in the cache therefore we</span>
+<span id="L89"><span class="lineNum">      89</span>              :             // have to create it and notify the waiting threads once the</span>
+<span id="L90"><span class="lineNum">      90</span>              :             // creation is done.</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">    17684302 :             cache_object_t cv = create(create_context);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">     8842151 :             if (cv.status != status::success) {</span></span>
+<span id="L93"><span class="lineNum">      93</span>              :                 // Communicate an error.</span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">          26 :                 p_promise.set_value({nullptr, cv.status});</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :                 // Remove the shared future from the cache because it's</span>
+<span id="L96"><span class="lineNum">      96</span>              :                 // invalidated. An invalidated shared future is the one that</span>
+<span id="L97"><span class="lineNum">      97</span>              :                 // stores a nullptr.</span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">          26 :                 remove_if_invalidated(key);</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">          26 :                 return {nullptr, cv.status};</span></span>
+<span id="L100"><span class="lineNum">     100</span>              :             } else {</span>
+<span id="L101"><span class="lineNum">     101</span>              :                 // Store the created object in the shared future and notify the</span>
+<span id="L102"><span class="lineNum">     102</span>              :                 // waiting threads.</span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">     8842125 :                 p_promise.set_value(cv);</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              :                 // The key_t may contains pointers that should reside within the</span>
+<span id="L106"><span class="lineNum">     106</span>              :                 // stored object. Therefore the pointers in the key may need</span>
+<span id="L107"><span class="lineNum">     107</span>              :                 // updated.</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">     8842125 :                 update_entry(key, cv.get_value());</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">     8842125 :                 return cv;</span></span>
+<span id="L110"><span class="lineNum">     110</span>              :             }</span>
+<span id="L111"><span class="lineNum">     111</span>              :         }</span>
+<span id="L112"><span class="lineNum">     112</span>              :     }</span>
+<span id="L113"><span class="lineNum">     113</span>              : </span>
+<span id="L114"><span class="lineNum">     114</span>              : protected:</span>
+<span id="L115"><span class="lineNum">     115</span>              :     virtual value_t get_or_add(const key_t &amp;key, const value_t &amp;value) = 0;</span>
+<span id="L116"><span class="lineNum">     116</span>              :     virtual void remove_if_invalidated(const key_t &amp;key) = 0;</span>
+<span id="L117"><span class="lineNum">     117</span>              :     virtual void update_entry(const key_t &amp;key, const object_t &amp;p) = 0;</span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">   168109953 :     static utils::rw_mutex_t &amp;rw_mutex() {</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">   168109953 :         static utils::rw_mutex_t mutex;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">   168109953 :         return mutex;</span></span>
+<span id="L121"><span class="lineNum">     121</span>              :     }</span>
+<span id="L122"><span class="lineNum">     122</span>              : };</span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span>              : // The cache uses LRU replacement policy</span>
+<span id="L125"><span class="lineNum">     125</span>              : template &lt;typename K, typename O, typename C,</span>
+<span id="L126"><span class="lineNum">     126</span>              :         key_merge_t&lt;K, O&gt; key_merge = nullptr&gt;</span>
+<span id="L127"><span class="lineNum">     127</span>              : struct lru_cache_t final : public cache_t&lt;K, O, C, key_merge&gt; {</span>
+<span id="L128"><span class="lineNum">     128</span>              :     using lru_base_t = cache_t&lt;K, O, C, key_merge&gt;;</span>
+<span id="L129"><span class="lineNum">     129</span>              :     using key_t = typename lru_base_t::key_t;</span>
+<span id="L130"><span class="lineNum">     130</span>              :     using object_t = typename lru_base_t::object_t;</span>
+<span id="L131"><span class="lineNum">     131</span>              :     using cache_object_t = typename lru_base_t::cache_object_t;</span>
+<span id="L132"><span class="lineNum">     132</span>              :     using value_t = typename lru_base_t::value_t;</span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">        8320 :     lru_cache_t(int capacity) : capacity_(capacity) {}</span></span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        8320 :     ~lru_cache_t() override {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        8320 :         if (cache_mapper().empty()) return;</span></span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        5656 :         if (!is_destroying_cache_safe()) {</span></span>
+<span id="L139"><span class="lineNum">     139</span>              :             // It is safe to remove those entries that are not affected by the</span>
+<span id="L140"><span class="lineNum">     140</span>              :             // unloading order issue e.g. native CPU.</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaUNC">           0 :             for (auto it = cache_mapper().begin();</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaUNC">           0 :                     it != cache_mapper().end();) {</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaUNC">           0 :                 if (!it-&gt;first.has_runtime_dependencies()) {</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaUNC">           0 :                     it = cache_mapper().erase(it);</span></span>
+<span id="L145"><span class="lineNum">     145</span>              :                 } else {</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaUNC">           0 :                     ++it;</span></span>
+<span id="L147"><span class="lineNum">     147</span>              :                 }</span>
+<span id="L148"><span class="lineNum">     148</span>              :             }</span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaUNC">           0 :             release_cache();</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaUNC">           0 :             return;</span></span>
+<span id="L151"><span class="lineNum">     151</span>              :         }</span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">       19304 :     }</span></span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">    74203834 :     cache_object_t get(const key_t &amp;key) override {</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">    74203834 :         value_t e;</span></span>
+<span id="L156"><span class="lineNum">     156</span>              :         {</span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">    74203834 :             utils::lock_read_t lock_r(this-&gt;rw_mutex());</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">    74203834 :             if (capacity_ == 0) { return cache_object_t(); }</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">    74203834 :             e = get_future(key);</span></span>
+<span id="L160"><span class="lineNum">     160</span>              :         }</span>
+<span id="L161"><span class="lineNum">     161</span>              : </span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">    74203834 :         if (e.valid()) return e.get();</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">    34941882 :         return cache_object_t();</span></span>
+<span id="L164"><span class="lineNum">     164</span>              :     }</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">    35153310 :     int get_capacity() const override {</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">    35153310 :         utils::lock_read_t lock_r(this-&gt;rw_mutex());</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">    70306596 :         return capacity_;</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :     }</span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       61362 :     status_t set_capacity(int capacity) override {</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       61530 :         utils::lock_write_t lock_w(this-&gt;rw_mutex());</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       61362 :         capacity_ = capacity;</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :         // Check if number of entries exceeds the new capacity</span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       61362 :         if (get_size_no_lock() &gt; capacity_) {</span></span>
+<span id="L176"><span class="lineNum">     176</span>              :             // Evict excess entries</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">       26198 :             int n_excess_entries = get_size_no_lock() - capacity_;</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       26198 :             evict(n_excess_entries);</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :         }</span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">      122556 :         return status::success;</span></span>
+<span id="L181"><span class="lineNum">     181</span>              :     }</span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">     2261940 :     void set_capacity_without_clearing(int capacity) {</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">     2261940 :         utils::lock_write_t lock_w(this-&gt;rw_mutex());</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">     2261940 :         capacity_ = capacity;</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">     2261940 :     }</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">         357 :     int get_size() const override {</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         357 :         utils::lock_read_t lock_r(this-&gt;rw_mutex());</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">         618 :         return get_size_no_lock();</span></span>
+<span id="L190"><span class="lineNum">     190</span>              :     }</span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span>              : protected:</span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">     7342208 :     int get_size_no_lock() const { return (int)cache_mapper().size(); }</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">    40272053 :     value_t get_or_add(const key_t &amp;key, const value_t &amp;value) override {</span></span>
+<span id="L196"><span class="lineNum">     196</span>              :         {</span>
+<span id="L197"><span class="lineNum">     197</span>              :             // 1. Section with shared access (read lock)</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">    40272053 :             utils::lock_read_t lock_r(this-&gt;rw_mutex());</span></span>
+<span id="L199"><span class="lineNum">     199</span>              :             // Check if the cache is enabled.</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">    40272053 :             if (capacity_ == 0) { return value_t(); }</span></span>
+<span id="L201"><span class="lineNum">     201</span>              :             // Check if the requested entry is present in the cache (likely</span>
+<span id="L202"><span class="lineNum">     202</span>              :             // cache_hit)</span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">    38684193 :             auto e = get_future(key);</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">    38684193 :             if (e.valid()) { return e; }</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :         }</span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">    14763976 :         utils::lock_write_t lock_w(this-&gt;rw_mutex());</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :         // 2. Section with exclusive access (write lock).</span>
+<span id="L209"><span class="lineNum">     209</span>              :         // In a multithreaded scenario, in the context of one thread the cache</span>
+<span id="L210"><span class="lineNum">     210</span>              :         // may have changed by another thread between releasing the read lock</span>
+<span id="L211"><span class="lineNum">     211</span>              :         // and acquiring the write lock (a.k.a. ABA problem), therefore</span>
+<span id="L212"><span class="lineNum">     212</span>              :         // additional checks have to be performed for correctness. Double check</span>
+<span id="L213"><span class="lineNum">     213</span>              :         // the capacity due to possible race condition</span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">     7381988 :         if (capacity_ == 0) { return value_t(); }</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span>              :         // Double check if the requested entry is present in the cache (unlikely</span>
+<span id="L217"><span class="lineNum">     217</span>              :         // cache_hit).</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">    14763976 :         auto e = get_future(key);</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">     7381988 :         if (!e.valid()) {</span></span>
+<span id="L220"><span class="lineNum">     220</span>              :             // If the entry is missing in the cache then add it (cache_miss)</span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">     7254291 :             add(key, value);</span></span>
+<span id="L222"><span class="lineNum">     222</span>              :         }</span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">     7381988 :         return e;</span></span>
+<span id="L224"><span class="lineNum">     224</span>              :     }</span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">          26 :     void remove_if_invalidated(const key_t &amp;key) override {</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">          26 :         utils::lock_write_t lock_w(this-&gt;rw_mutex());</span></span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">          26 :         if (capacity_ == 0) { return; }</span></span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">          26 :         auto it = cache_mapper().find(key);</span></span>
+<span id="L232"><span class="lineNum">     232</span>              :         // The entry has been already evicted at this point</span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">          26 :         if (it == cache_mapper().end()) { return; }</span></span>
+<span id="L234"><span class="lineNum">     234</span>              : </span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">          26 :         const auto &amp;value = it-&gt;second.value_;</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :         // If the entry is not invalidated</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">          26 :         if (!value.get().is_empty()) { return; }</span></span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span>              :         // Remove the invalidated entry</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">          26 :         cache_mapper().erase(it);</span></span>
+<span id="L241"><span class="lineNum">     241</span>              :     }</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              : private:</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">    77946120 :     static size_t get_timestamp() {</span></span>
+<span id="L245"><span class="lineNum">     245</span>              : #if DNNL_CPU_RUNTIME != DNNL_RUNTIME_NONE</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">    77946120 :         return cpu::platform::get_timestamp();</span></span>
+<span id="L247"><span class="lineNum">     247</span>              : #else</span>
+<span id="L248"><span class="lineNum">     248</span>              :         return std::chrono::steady_clock::now().time_since_epoch().count();</span>
+<span id="L249"><span class="lineNum">     249</span>              : #endif</span>
+<span id="L250"><span class="lineNum">     250</span>              :     }</span>
+<span id="L251"><span class="lineNum">     251</span>              : </span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">     8842125 :     void update_entry(const key_t &amp;key, const object_t &amp;p) override {</span></span>
+<span id="L253"><span class="lineNum">     253</span>              :         // Cast to void as compilers may warn about comparing compile time</span>
+<span id="L254"><span class="lineNum">     254</span>              :         // constant function pointers with nullptr, as that is often not an</span>
+<span id="L255"><span class="lineNum">     255</span>              :         // intended behavior</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">     1654616 :         if ((void *)key_merge == nullptr) return;</span></span>
+<span id="L257"><span class="lineNum">     257</span>              : </span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">     8775049 :         utils::lock_write_t lock_w(this-&gt;rw_mutex());</span></span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">     8775049 :         if (capacity_ == 0) { return; }</span></span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :         // There is nothing to do in two cases:</span>
+<span id="L263"><span class="lineNum">     263</span>              :         // 1. The requested entry is not in the cache because it has been evicted</span>
+<span id="L264"><span class="lineNum">     264</span>              :         //    by another thread</span>
+<span id="L265"><span class="lineNum">     265</span>              :         // 2. After the requested entry had been evicted it was inserted again</span>
+<span id="L266"><span class="lineNum">     266</span>              :         //    by another thread</span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     7187509 :         auto it = cache_mapper().find(key);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">     7187509 :         if (it == cache_mapper().end()</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     7187509 :                 || it-&gt;first.thread_id() != key.thread_id()) {</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaUNC">           0 :             return;</span></span>
+<span id="L271"><span class="lineNum">     271</span>              :         }</span>
+<span id="L272"><span class="lineNum">     272</span>              : </span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     7187509 :         key_merge(it-&gt;first, p);</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :     }</span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">     6318382 :     void evict(int n) {</span></span>
+<span id="L277"><span class="lineNum">     277</span>              :         using v_t =</span>
+<span id="L278"><span class="lineNum">     278</span>              :                 typename std::unordered_map&lt;key_t, timed_entry_t&gt;::value_type;</span>
+<span id="L279"><span class="lineNum">     279</span>              : </span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">     6318382 :         if (n == capacity_) {</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">           9 :             cache_mapper().clear();</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">           9 :             return;</span></span>
+<span id="L283"><span class="lineNum">     283</span>              :         }</span>
+<span id="L284"><span class="lineNum">     284</span>              : </span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">    12641759 :         for (int e = 0; e &lt; n; e++) {</span></span>
+<span id="L286"><span class="lineNum">     286</span>              :             // Find the smallest timestamp</span>
+<span id="L287"><span class="lineNum">     287</span>              :             // TODO: revisit the eviction algorithm due to O(n) complexity, E.g.</span>
+<span id="L288"><span class="lineNum">     288</span>              :             // maybe evict multiple entries at once.</span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">     6323626 :             auto it = std::min_element(cache_mapper().begin(),</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">     6323386 :                     cache_mapper().end(),</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">  6436714740 :                     [&amp;](const v_t &amp;left, const v_t &amp;right) {</span></span>
+<span id="L292"><span class="lineNum">     292</span>              :                 // By default, load() and operator T use sequentially</span>
+<span id="L293"><span class="lineNum">     293</span>              :                 // consistent memory ordering, which enforces writing</span>
+<span id="L294"><span class="lineNum">     294</span>              :                 // the timestamps into registers in the same exact order</span>
+<span id="L295"><span class="lineNum">     295</span>              :                 // they are read from the CPU cache line. Since eviction</span>
+<span id="L296"><span class="lineNum">     296</span>              :                 // is performed under a write lock, this order is not</span>
+<span id="L297"><span class="lineNum">     297</span>              :                 // important, therefore we can safely use the weakest</span>
+<span id="L298"><span class="lineNum">     298</span>              :                 // memory ordering (relaxed). This brings about a few</span>
+<span id="L299"><span class="lineNum">     299</span>              :                 // microseconds performance improvement for default</span>
+<span id="L300"><span class="lineNum">     300</span>              :                 // cache capacity.</span>
+<span id="L301"><span class="lineNum">     301</span>              :                 return left.second.timestamp_.load(std::memory_order_relaxed)</span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC"> 12873433696 :                         &lt; right.second.timestamp_.load(</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">  6436714740 :                                 std::memory_order_relaxed);</span></span>
+<span id="L304"><span class="lineNum">     304</span>              :             });</span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">     6323626 :             auto res = cache_mapper().erase(it-&gt;first);</span></span>
+<span id="L306"><span class="lineNum">     306</span>              :             MAYBE_UNUSED(res);</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">     6323386 :             assert(res);</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :         }</span>
+<span id="L309"><span class="lineNum">     309</span>              :     }</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">     7254291 :     void add(const key_t &amp;key, const value_t &amp;value) {</span></span>
+<span id="L311"><span class="lineNum">     311</span>              :         // std::list::size() method has linear complexity. Check the cache size</span>
+<span id="L312"><span class="lineNum">     312</span>              :         // using std::unordered_map::size();</span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">     7254291 :         if (get_size_no_lock() == capacity_) {</span></span>
+<span id="L314"><span class="lineNum">     314</span>              :             // Evict the least recently used entry</span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">     6292184 :             evict(1);</span></span>
+<span id="L316"><span class="lineNum">     316</span>              :         }</span>
+<span id="L317"><span class="lineNum">     317</span>              : </span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">     7254291 :         size_t timestamp = get_timestamp();</span></span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">     7254291 :         auto res = cache_mapper().emplace(std::piecewise_construct,</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :                 std::forward_as_tuple(key),</span>
+<span id="L322"><span class="lineNum">     322</span>              :                 std::forward_as_tuple(value, timestamp));</span>
+<span id="L323"><span class="lineNum">     323</span>              :         MAYBE_UNUSED(res);</span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">     7254291 :         assert(res.second);</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">     7254291 :     }</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">   120270004 :     value_t get_future(const key_t &amp;key) {</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">   120270004 :         auto it = cache_mapper().find(key);</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">   120270004 :         if (it == cache_mapper().end()) return value_t();</span></span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">    70691839 :         size_t timestamp = get_timestamp();</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">    70691839 :         it-&gt;second.timestamp_.store(timestamp);</span></span>
+<span id="L332"><span class="lineNum">     332</span>              :         // Return the entry</span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">    70691839 :         return it-&gt;second.value_;</span></span>
+<span id="L334"><span class="lineNum">     334</span>              :     }</span>
+<span id="L335"><span class="lineNum">     335</span>              : </span>
+<span id="L336"><span class="lineNum">     336</span>              :     int capacity_;</span>
+<span id="L337"><span class="lineNum">     337</span>              :     struct timed_entry_t {</span>
+<span id="L338"><span class="lineNum">     338</span>              :         value_t value_;</span>
+<span id="L339"><span class="lineNum">     339</span>              :         std::atomic&lt;size_t&gt; timestamp_;</span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">     7254291 :         timed_entry_t(const value_t &amp;value, size_t timestamp)</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">     7254291 :             : value_(value), timestamp_(timestamp) {}</span></span>
+<span id="L342"><span class="lineNum">     342</span>              :     };</span>
+<span id="L343"><span class="lineNum">     343</span>              : </span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">   281147646 :     std::unordered_map&lt;key_t, timed_entry_t&gt; &amp;cache_mapper() {</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">   281147406 :         return cache_mapper_;</span></span>
+<span id="L346"><span class="lineNum">     346</span>              :     }</span>
+<span id="L347"><span class="lineNum">     347</span>              : </span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">     7342208 :     const std::unordered_map&lt;key_t, timed_entry_t&gt; &amp;cache_mapper() const {</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">     7342136 :         return cache_mapper_;</span></span>
+<span id="L350"><span class="lineNum">     350</span>              :     }</span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span>              :     // Leaks cached resources. Used to avoid issues with calling destructors</span>
+<span id="L353"><span class="lineNum">     353</span>              :     // allocated by an already unloaded dynamic library.</span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaUNC">           0 :     void release_cache() {</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaUNC">           0 :         auto t = utils::make_unique&lt;std::unordered_map&lt;key_t, timed_entry_t&gt;&gt;();</span></span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaUNC">           0 :         std::swap(*t, cache_mapper_);</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaUNC">           0 :         t.release();</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L359"><span class="lineNum">     359</span>              :     // Each entry in the cache has a corresponding key and timestamp. NOTE:</span>
+<span id="L360"><span class="lineNum">     360</span>              :     // pairs that contain atomics cannot be stored in an unordered_map *as an</span>
+<span id="L361"><span class="lineNum">     361</span>              :     // element*, since it invokes the copy constructor of std::atomic, which is</span>
+<span id="L362"><span class="lineNum">     362</span>              :     // deleted.</span>
+<span id="L363"><span class="lineNum">     363</span>              :     std::unordered_map&lt;key_t, timed_entry_t&gt; cache_mapper_;</span>
+<span id="L364"><span class="lineNum">     364</span>              : };</span>
+<span id="L365"><span class="lineNum">     365</span>              : </span>
+<span id="L366"><span class="lineNum">     366</span>              : } // namespace utils</span>
+<span id="L367"><span class="lineNum">     367</span>              : } // namespace impl</span>
+<span id="L368"><span class="lineNum">     368</span>              : } // namespace dnnl</span>
+<span id="L369"><span class="lineNum">     369</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

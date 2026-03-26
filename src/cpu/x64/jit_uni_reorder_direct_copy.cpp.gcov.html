@@ -1,0 +1,490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_uni_reorder_direct_copy.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_uni_reorder_direct_copy.cpp<span style="font-size: 80%;"> (source / <a href="jit_uni_reorder_direct_copy.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">89.7&nbsp;%</td>
+            <td class="headerCovTableEntry">175</td>
+            <td class="headerCovTableEntry">157</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">94.1&nbsp;%</td>
+            <td class="headerCovTableEntry">51</td>
+            <td class="headerCovTableEntry">48</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2018 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;cpu/x64/jit_uni_reorder_direct_copy.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;cpu/x64/utils/jit_io_helper.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : using namespace Xbyak;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace dnnl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace impl {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace cpu {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace x64 {</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L32"><span class="lineNum">      32</span>              : struct direct_copy_kernel_t</span>
+<span id="L33"><span class="lineNum">      33</span>              :     : public jit_uni_reorder_direct_copy_t::kernel_base_t,</span>
+<span id="L34"><span class="lineNum">      34</span>              :       public jit_generator_t {</span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">      734415 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(direct_copy_kernel_t)</span></span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">      244805 :     direct_copy_kernel_t(const reorder_pd_t *pd, cpu_isa_t isa)</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :         : jit_uni_reorder_direct_copy_t::kernel_base_t(pd)</span>
+<span id="L39"><span class="lineNum">      39</span>              :         , jit_generator_t(jit_name(), isa)</span>
+<span id="L40"><span class="lineNum">      40</span>              :         , isa_(isa)</span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      489610 :         , src_dt_(pd_-&gt;src_md()-&gt;data_type)</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      244805 :         , dst_dt_(pd_-&gt;dst_md()-&gt;data_type) {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      244805 :         assert(!utils::one_of(isa_, isa_undef, isa_all));</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">      244805 :         const memory_desc_wrapper src_d(pd_-&gt;src_md());</span></span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">      244805 :         tail_size_ = src_d.nelems() % simd_w_;</span></span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">      244805 :         io::io_conf_t io_conf;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">      244805 :         io::io_tail_conf_t io_tail_conf(</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">      244805 :                 simd_w_, tail_size_, tail_opmask_idx_, tail_vmm_idx_, reg_tmp_);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">      244805 :         io::io_emu_bf16_conf_t io_bf16_conf(emu_zmm_1_idx_, emu_zmm_2_idx_,</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">      244805 :                 emu_zmm_3_idx_, reg_tmp_, emu_zmm_4_idx_);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">      244805 :         io::io_emu_fp8_conf_t io_fp8_conf(emu_zmm_1_idx_, emu_zmm_2_idx_,</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">      244805 :                 emu_zmm_3_idx_, emu_zmm_4_idx_, emu_zmm_5_idx_,</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">      244805 :                 emu_kmask_aux_idx_, reg_tmp_);</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      244805 :         io::io_saturation_conf_t io_saturation_conf(</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">      244805 :                 zero_idx_, saturation_ubound_idx_, reg_tmp_);</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">      489610 :         io_ = io::jit_io_multi_dt_helper_t&lt;Vmm&gt;(this, isa_, {src_dt_, dst_dt_},</span></span>
+<span id="L61"><span class="lineNum">      61</span>              :                 io_conf, io_tail_conf, io_bf16_conf,</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">      244805 :                 {{dst_dt_, io_saturation_conf}}, utils::nullopt, io_fp8_conf);</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">      244805 :     }</span></span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span>              :     static constexpr int vlen_ = vreg_traits_t&lt;Vmm&gt;::vlen;</span>
+<span id="L66"><span class="lineNum">      66</span>              :     static constexpr int simd_w_ = vlen_ / sizeof(float);</span>
+<span id="L67"><span class="lineNum">      67</span>              :     static constexpr int unroll_12_ = 12;</span>
+<span id="L68"><span class="lineNum">      68</span>              :     static constexpr int unroll_4_ = 4;</span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">    11703510 :     int get_max_unroll() const override { return unroll_12_; }</span></span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">   544016066 :     void operator()(</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :             const void *src, void *dst, size_t work_amount) const override {</span>
+<span id="L74"><span class="lineNum">      74</span>              :         ker_args_t args;</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">   544016066 :         args.src = src;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">   544016066 :         args.dst = dst;</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">   544016066 :         args.work_amount = work_amount;</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">   544016066 :         jit_generator_t::operator()(&amp;args);</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">   544016066 :     }</span></span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      244805 :     status_t create_kernel() override {</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">      244805 :         return jit_generator_t::create_kernel();</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :     }</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">     8812980 :     Address src_ptr(size_t offt = 0) { return ptr[reg_src + offt]; }</span></span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">     8812980 :     Address dst_ptr(size_t offt = 0) { return ptr[reg_dst + offt]; }</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">     8812980 :     Vmm vmm_src(int idx) const {</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :         // Incorporate `+ 1` here as `0th` index is used for tail on AVX2.</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">     8812980 :         return Vmm(idx + 1);</span></span>
+<span id="L92"><span class="lineNum">      92</span>              :     }</span>
+<span id="L93"><span class="lineNum">      93</span>              : </span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">      979220 :     void copy(const int unroll, const bool tail) {</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :         // Copy two simdw at once in vectorized loop first when `ne_convert`</span>
+<span id="L96"><span class="lineNum">      96</span>              :         // instructions are available for xf16.</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">     1958440 :         if (isa_ == avx2_vnni_2</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">       19876 :                 &amp;&amp; (utils::one_of(src_dt_, data_type::bf16, data_type::f16))</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">      999096 :                 &amp;&amp; (unroll % 2 == 0)) {</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :             for (size_t i = 0; i &lt; static_cast&lt;size_t&gt;(unroll) / 2; i++) {</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :                 const Vmm &amp;vmm_src_even = vmm_src(2 * i);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :                 const Vmm &amp;vmm_src_odd = vmm_src(2 * i + 1);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :                 Vmm vmm_tmp(vmm_tmp_idx_);</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :                 io_[src_dt_]-&gt;load_two_simdw_xf16(</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaUNC">           0 :                         src_ptr(2 * i * types::data_type_size(src_dt_)</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :                                 * simd_w_),</span>
+<span id="L107"><span class="lineNum">     107</span>              :                         vmm_src_even, vmm_src_odd);</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaUNC">           0 :                 io_[src_dt_]-&gt;merge_interleaved_to_plain(</span></span>
+<span id="L109"><span class="lineNum">     109</span>              :                         vmm_src_even, vmm_src_odd, vmm_tmp);</span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaUNC">           0 :                 io_[dst_dt_]-&gt;store(vmm_src_even,</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaUNC">           0 :                         dst_ptr(2 * i * types::data_type_size(dst_dt_)</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :                                 * simd_w_),</span>
+<span id="L113"><span class="lineNum">     113</span>              :                         tail);</span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaUNC">           0 :                 io_[dst_dt_]-&gt;store(vmm_src_odd,</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaUNC">           0 :                         dst_ptr((2 * i + 1) * types::data_type_size(dst_dt_)</span></span>
+<span id="L116"><span class="lineNum">     116</span>              :                                 * simd_w_),</span>
+<span id="L117"><span class="lineNum">     117</span>              :                         tail);</span>
+<span id="L118"><span class="lineNum">     118</span>              :             }</span>
+<span id="L119"><span class="lineNum">     119</span>              :         } else {</span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">     5385710 :             for (int i = 0; i &lt; unroll; i++) {</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">     8812980 :                 io_[src_dt_]-&gt;load(</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">     4406490 :                         src_ptr(i * types::data_type_size(src_dt_) * simd_w_),</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :                         vmm_src(i), tail);</span>
+<span id="L124"><span class="lineNum">     124</span>              :             }</span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     5385710 :             for (int i = 0; i &lt; unroll; i++) {</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">     8812980 :                 io_[dst_dt_]-&gt;store(vmm_src(i),</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     4406490 :                         dst_ptr(i * types::data_type_size(dst_dt_) * simd_w_),</span></span>
+<span id="L128"><span class="lineNum">     128</span>              :                         tail);</span>
+<span id="L129"><span class="lineNum">     129</span>              :             }</span>
+<span id="L130"><span class="lineNum">     130</span>              :         }</span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      979220 :         if (tail) return;</span></span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">      734415 :         add(reg_src, unroll * types::data_type_size(src_dt_) * simd_w_);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      734415 :         add(reg_dst, unroll * types::data_type_size(dst_dt_) * simd_w_);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      734415 :         sub(reg_work_amount, unroll * simd_w_);</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :     }</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">      244805 :     void generate() override {</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">      244805 :         preamble();</span></span>
+<span id="L141"><span class="lineNum">     141</span>              : </span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">      244805 :         if (tail_size_) io_.prepare_tail_mask();</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      244805 :         if (is_bf16()) io_.init_bf16();</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      244805 :         io_.init_saturate_f32({dst_dt_});</span></span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">      244805 :         Reg64 param = abi_param1;</span></span>
+<span id="L147"><span class="lineNum">     147</span>              : #define PARAM_OFF(x) offsetof(ker_args_t, x)</span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      244805 :         mov(reg_src, ptr[param + PARAM_OFF(src)]);</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      244805 :         mov(reg_dst, ptr[param + PARAM_OFF(dst)]);</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      244805 :         mov(reg_work_amount, ptr[param + PARAM_OFF(work_amount)]);</span></span>
+<span id="L151"><span class="lineNum">     151</span>              : #undef PARAM_OFF</span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      489610 :         Label unroll_12_start, unroll_4_start, full_vector_start, tail_start,</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      489610 :                 end;</span></span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      244805 :         L(unroll_12_start);</span></span>
+<span id="L157"><span class="lineNum">     157</span>              :         {</span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      244805 :             cmp(reg_work_amount, unroll_12_ * simd_w_);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">      244805 :             jl(unroll_4_start, T_NEAR);</span></span>
+<span id="L160"><span class="lineNum">     160</span>              : </span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">      244805 :             copy(unroll_12_, false);</span></span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">      244805 :             jmp(unroll_12_start, T_NEAR);</span></span>
+<span id="L164"><span class="lineNum">     164</span>              :         }</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">      244805 :         L(unroll_4_start);</span></span>
+<span id="L167"><span class="lineNum">     167</span>              :         {</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">      244805 :             cmp(reg_work_amount, unroll_4_ * simd_w_);</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">      244805 :             jl(full_vector_start, T_NEAR);</span></span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">      244805 :             copy(unroll_4_, false);</span></span>
+<span id="L172"><span class="lineNum">     172</span>              : </span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">      244805 :             jmp(unroll_4_start, T_NEAR);</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :         }</span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">      244805 :         L(full_vector_start);</span></span>
+<span id="L177"><span class="lineNum">     177</span>              :         {</span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">      244805 :             cmp(reg_work_amount, simd_w_);</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">      244805 :             jl(tail_start, T_NEAR);</span></span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">      244805 :             copy(1, false);</span></span>
+<span id="L182"><span class="lineNum">     182</span>              : </span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">      244805 :             jmp(full_vector_start, T_NEAR);</span></span>
+<span id="L184"><span class="lineNum">     184</span>              :         }</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">      244805 :         L(tail_start);</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :         {</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">      244805 :             cmp(reg_work_amount, 0);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">      244805 :             jle(end, T_NEAR);</span></span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">      244805 :             copy(1, true);</span></span>
+<span id="L192"><span class="lineNum">     192</span>              :         }</span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">      244805 :         L(end);</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">      244805 :         postamble();</span></span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">      244805 :         if (is_f8()) io_.prepare_table_fp8();</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">      244805 :     }</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span>              : private:</span>
+<span id="L201"><span class="lineNum">     201</span>              :     struct ker_args_t {</span>
+<span id="L202"><span class="lineNum">     202</span>              :         const void *src;</span>
+<span id="L203"><span class="lineNum">     203</span>              :         void *dst;</span>
+<span id="L204"><span class="lineNum">     204</span>              :         size_t work_amount;</span>
+<span id="L205"><span class="lineNum">     205</span>              :     };</span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      244805 :     bool is_bf16() const {</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      244805 :         return utils::one_of(data_type::bf16, src_dt_, dst_dt_);</span></span>
+<span id="L209"><span class="lineNum">     209</span>              :     }</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaUNC">           0 :     bool is_f16() const {</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaUNC">           0 :         return utils::one_of(data_type::f16, src_dt_, dst_dt_);</span></span>
+<span id="L213"><span class="lineNum">     213</span>              :     }</span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      244805 :     bool is_f8() const {</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">      244805 :         return utils::one_of(data_type::f8_e4m3, src_dt_, dst_dt_)</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      244805 :                 || utils::one_of(data_type::f8_e5m2, src_dt_, dst_dt_);</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :     }</span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span>              :     cpu_isa_t isa_;</span>
+<span id="L221"><span class="lineNum">     221</span>              :     data_type_t src_dt_, dst_dt_;</span>
+<span id="L222"><span class="lineNum">     222</span>              :     io::jit_io_multi_dt_helper_t&lt;Vmm&gt; io_;</span>
+<span id="L223"><span class="lineNum">     223</span>              :     size_t tail_size_;</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span>              :     const Reg64 reg_tmp_ = rax;</span>
+<span id="L226"><span class="lineNum">     226</span>              :     const Reg64 reg_src = r8;</span>
+<span id="L227"><span class="lineNum">     227</span>              :     const Reg64 reg_dst = r9;</span>
+<span id="L228"><span class="lineNum">     228</span>              :     const Reg64 reg_work_amount = r10;</span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span>              :     const int tail_opmask_idx_ = 1;</span>
+<span id="L231"><span class="lineNum">     231</span>              : </span>
+<span id="L232"><span class="lineNum">     232</span>              :     const int tail_vmm_idx_ = 0;</span>
+<span id="L233"><span class="lineNum">     233</span>              :     // Indices from 1 to 12 are occupied in the unrolled body.</span>
+<span id="L234"><span class="lineNum">     234</span>              :     const int vmm_tmp_idx_ = 13;</span>
+<span id="L235"><span class="lineNum">     235</span>              :     const int zero_idx_ = 14;</span>
+<span id="L236"><span class="lineNum">     236</span>              :     const int saturation_ubound_idx_ = 15;</span>
+<span id="L237"><span class="lineNum">     237</span>              :     const int emu_zmm_1_idx_ = 27;</span>
+<span id="L238"><span class="lineNum">     238</span>              :     const int emu_zmm_2_idx_ = 28;</span>
+<span id="L239"><span class="lineNum">     239</span>              :     const int emu_zmm_3_idx_ = 29;</span>
+<span id="L240"><span class="lineNum">     240</span>              :     const int emu_zmm_4_idx_ = 30;</span>
+<span id="L241"><span class="lineNum">     241</span>              :     const int emu_zmm_5_idx_ = 31;</span>
+<span id="L242"><span class="lineNum">     242</span>              :     const int emu_kmask_aux_idx_ = 2;</span>
+<span id="L243"><span class="lineNum">     243</span>              : };</span>
+<span id="L244"><span class="lineNum">     244</span>              : </span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">     1606168 : status_t jit_uni_reorder_direct_copy_t::pd_t::create(reorder_pd_t **reorder_pd,</span></span>
+<span id="L246"><span class="lineNum">     246</span>              :         engine_t *engine, const primitive_attr_t *attr, engine_t *src_engine,</span>
+<span id="L247"><span class="lineNum">     247</span>              :         const memory_desc_t *src_md, engine_t *dst_engine,</span>
+<span id="L248"><span class="lineNum">     248</span>              :         const memory_desc_t *dst_md) {</span>
+<span id="L249"><span class="lineNum">     249</span>              :     auto _pd = make_unique_pd&lt;pd_t&gt;(</span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">     3212336 :             attr, src_engine-&gt;kind(), src_md, dst_engine-&gt;kind(), dst_md);</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">     1606168 :     if (_pd == nullptr) return status::out_of_memory;</span></span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">     1606168 :     CHECK(_pd-&gt;init(engine, src_engine, dst_engine));</span></span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      245907 :     return safe_ptr_assign(*reorder_pd, _pd.release());</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : }</span>
+<span id="L257"><span class="lineNum">     257</span>              : </span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">     1606168 : status_t jit_uni_reorder_direct_copy_t::pd_t::init(</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :         engine_t *engine, engine_t *src_engine, engine_t *dst_engine) {</span>
+<span id="L260"><span class="lineNum">     260</span>              :     using namespace data_type;</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">     1606168 :     VDISPATCH_REORDER(is_dense_format_kind({src_md(), dst_md()}),</span></span>
+<span id="L263"><span class="lineNum">     263</span>              :             VERBOSE_UNSUPPORTED_SPARSE_CFG);</span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">     1606162 :     isa_ = get_max_cpu_isa();</span></span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">     1606162 :     const auto src_dt = src_md()-&gt;data_type;</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     1606162 :     const auto dst_dt = dst_md()-&gt;data_type;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">     1606162 :     const memory_desc_wrapper src_d(src_md());</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     1606162 :     const memory_desc_wrapper dst_d(dst_md());</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">     1606162 :     const auto blocks_size = src_d.blk_size();</span></span>
+<span id="L271"><span class="lineNum">     271</span>              : </span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">     1606162 :     VDISPATCH_REORDER(!src_d.has_runtime_dims_or_strides(),</span></span>
+<span id="L273"><span class="lineNum">     273</span>              :             VERBOSE_RUNTIMEDIM_UNSUPPORTED);</span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">     1569783 :     VDISPATCH_REORDER(!dst_d.has_runtime_dims_or_strides(),</span></span>
+<span id="L275"><span class="lineNum">     275</span>              :             VERBOSE_RUNTIMEDIM_UNSUPPORTED);</span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">     1569783 :     VDISPATCH_REORDER(</span></span>
+<span id="L277"><span class="lineNum">     277</span>              :             src_d.is_blocking_desc(), VERBOSE_UNSUPPORTED_FORMAT_KIND);</span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">     1569783 :     VDISPATCH_REORDER(</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :             dst_d.is_blocking_desc(), VERBOSE_UNSUPPORTED_FORMAT_KIND);</span>
+<span id="L280"><span class="lineNum">     280</span>              : </span>
+<span id="L281"><span class="lineNum">     281</span>              :     // Note: io_helper has an implicit conversion to f32 which is incorrect for</span>
+<span id="L282"><span class="lineNum">     282</span>              :     // s32-&gt;s32. Disabling it for now.</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">     1569783 :     const bool is_s32 = utils::everyone_is(s32, src_dt, dst_dt);</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">     1569783 :     VDISPATCH_REORDER(!is_s32, VERBOSE_UNSUPPORTED_DT);</span></span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">     1555250 :     const bool is_f64 = utils::one_of(f64, src_dt, dst_dt);</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">     1555250 :     VDISPATCH_REORDER(!is_f64, VERBOSE_UNSUPPORTED_DT);</span></span>
+<span id="L288"><span class="lineNum">     288</span>              : </span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">     1555250 :     VDISPATCH_REORDER(IMPLICATION(utils::one_of(bf16, src_dt, dst_dt),</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :                               mayiuse(avx512_core) || mayiuse(avx2_vnni_2)),</span>
+<span id="L291"><span class="lineNum">     291</span>              :             VERBOSE_ISA_DT_MISMATCH);</span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">     1525798 :     VDISPATCH_REORDER(</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :             IMPLICATION(utils::one_of(f16, src_dt, dst_dt),</span>
+<span id="L294"><span class="lineNum">     294</span>              :                     mayiuse(avx512_core_fp16) || mayiuse(avx2_vnni_2)),</span>
+<span id="L295"><span class="lineNum">     295</span>              :             VERBOSE_ISA_DT_MISMATCH);</span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">     1477705 :     VDISPATCH_REORDER(</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :             IMPLICATION(utils::one_of(bf16, src_dt, dst_dt) &amp;&amp; blocks_size &lt; 8,</span>
+<span id="L298"><span class="lineNum">     298</span>              :                     mayiuse(avx512_core_bf16)),</span>
+<span id="L299"><span class="lineNum">     299</span>              :             VERBOSE_ISA_DT_MISMATCH);</span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">     1422476 :     VDISPATCH_REORDER(</span></span>
+<span id="L301"><span class="lineNum">     301</span>              :             IMPLICATION(utils::one_of(f16, src_dt, dst_dt) &amp;&amp; blocks_size &lt; 8,</span>
+<span id="L302"><span class="lineNum">     302</span>              :                     mayiuse(avx512_core_fp16)),</span>
+<span id="L303"><span class="lineNum">     303</span>              :             VERBOSE_ISA_DT_MISMATCH);</span>
+<span id="L304"><span class="lineNum">     304</span>              : </span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">     1410023 :     const bool is_f8 = utils::one_of(f8_e4m3, src_dt, dst_dt)</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">     1410023 :             || utils::one_of(f8_e5m2, src_dt, dst_dt);</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">     1410023 :     VDISPATCH_REORDER(IMPLICATION(is_f8, mayiuse(avx512_core_amx)),</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :             VERBOSE_ISA_DT_MISMATCH);</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">     1395801 :     VDISPATCH_REORDER(IMPLICATION(is_f8,</span></span>
+<span id="L310"><span class="lineNum">     310</span>              :                               !utils::one_of(src_dt, u8, s8)</span>
+<span id="L311"><span class="lineNum">     311</span>              :                                       &amp;&amp; !utils::one_of(dst_dt, u8, s8)),</span>
+<span id="L312"><span class="lineNum">     312</span>              :             VERBOSE_UNSUPPORTED_DT_CFG);</span>
+<span id="L313"><span class="lineNum">     313</span>              :     // Direct copy operates only on identical formats.</span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">     1395801 :     VDISPATCH_REORDER(src_d.similar_to(dst_d, true, false, 0),</span></span>
+<span id="L315"><span class="lineNum">     315</span>              :             VERBOSE_TENSOR_FORMAT_MISMATCH, &quot;src&quot;, &quot;dst&quot;);</span>
+<span id="L316"><span class="lineNum">     316</span>              : </span>
+<span id="L317"><span class="lineNum">     317</span>              :     // Direct copy doesn't operate on plain non-dense cases, though it can</span>
+<span id="L318"><span class="lineNum">     318</span>              :     // simply extend nelems to contain wholes in strides but it would be</span>
+<span id="L319"><span class="lineNum">     319</span>              :     // inefficient.</span>
+<span id="L320"><span class="lineNum">     320</span>              :     // TODO: enable smart plain non-dense case support.</span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">      271495 :     VDISPATCH_REORDER(IMPLICATION(src_d.is_plain(), src_d.is_dense()),</span></span>
+<span id="L322"><span class="lineNum">     322</span>              :             VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;src&quot;);</span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">      271391 :     VDISPATCH_REORDER(src_d.extra().flags == dst_d.extra().flags,</span></span>
+<span id="L325"><span class="lineNum">     325</span>              :             VERBOSE_UNSUPPORTED_MD_FLAG, &quot;src or dst&quot;);</span>
+<span id="L326"><span class="lineNum">     326</span>              : </span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">      270269 :     VDISPATCH_REORDER(IMPLICATION(src_d.extra().flags &gt; 0UL,</span></span>
+<span id="L328"><span class="lineNum">     328</span>              :                               src_d.additional_buffer_size()</span>
+<span id="L329"><span class="lineNum">     329</span>              :                                       == dst_d.additional_buffer_size()),</span>
+<span id="L330"><span class="lineNum">     330</span>              :             VERBOSE_UNSUPPORTED_MD_FLAG, &quot;src or dst&quot;);</span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">      270269 :     VDISPATCH_REORDER(attr()-&gt;has_default_values(), VERBOSE_UNSUPPORTED_ATTR);</span></span>
+<span id="L333"><span class="lineNum">     333</span>              : </span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">      245907 :     return status::success;</span></span>
+<span id="L335"><span class="lineNum">     335</span>              : }</span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span>              : jit_uni_reorder_direct_copy_t::kernel_base_t *</span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">      244805 : jit_uni_reorder_direct_copy_t::kernel_base_t::create(</span></span>
+<span id="L339"><span class="lineNum">     339</span>              :         const reorder_pd_t *pd, cpu_isa_t isa) {</span>
+<span id="L340"><span class="lineNum">     340</span>              :     // Reorder must support blocked formats such as aBx8b.</span>
+<span id="L341"><span class="lineNum">     341</span>              :     // These variables will help to dispatch smaller blocks into proper kernels.</span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">      244805 :     const bool has_blocks = !memory_desc_wrapper(pd-&gt;src_md()).is_plain();</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">      244805 :     const auto blocks_size = memory_desc_wrapper(pd-&gt;src_md()).blk_size();</span></span>
+<span id="L344"><span class="lineNum">     344</span>              : </span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">      244805 :     if (is_superset(isa, avx512_core)</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">      244805 :             &amp;&amp; IMPLICATION(has_blocks, blocks_size &gt;= 16)) {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">      178809 :         return new direct_copy_kernel_t&lt;Zmm&gt;(pd, isa);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">       65996 :     } else if (is_superset(isa, avx2)</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">       65996 :             &amp;&amp; IMPLICATION(has_blocks, blocks_size &gt;= 8)) {</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">       38368 :         return new direct_copy_kernel_t&lt;Ymm&gt;(pd, isa);</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">       27628 :     } else if (is_superset(isa, sse41)) {</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">       27628 :         return new direct_copy_kernel_t&lt;Xmm&gt;(pd, isa);</span></span>
+<span id="L353"><span class="lineNum">     353</span>              :     } else {</span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaUNC">           0 :         assert(!&quot;unexpected&quot;);</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :     }</span>
+<span id="L356"><span class="lineNum">     356</span>              :     return nullptr;</span>
+<span id="L357"><span class="lineNum">     357</span>              : }</span>
+<span id="L358"><span class="lineNum">     358</span>              : </span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">      244805 : status_t jit_uni_reorder_direct_copy_t::init(engine_t *engine) {</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">      244805 :     const auto isa = pd()-&gt;isa_;</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">      244805 :     CHECK(safe_ptr_assign(kernel_, kernel_base_t::create(pd(), isa)));</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">      244805 :     return kernel_-&gt;create_kernel();</span></span>
+<span id="L363"><span class="lineNum">     363</span>              : }</span>
+<span id="L364"><span class="lineNum">     364</span>              : </span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">    11703510 : status_t jit_uni_reorder_direct_copy_t::execute(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">    11703510 :     const auto in = CTX_IN_MEM(const char *, DNNL_ARG_FROM);</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">    11703510 :     auto out = CTX_OUT_MEM(char *, DNNL_ARG_TO);</span></span>
+<span id="L368"><span class="lineNum">     368</span>              : </span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">    11703510 :     const memory_desc_wrapper src_d(pd()-&gt;src_md());</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">    11703510 :     const memory_desc_wrapper dst_d(pd()-&gt;dst_md());</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">    11703510 :     const auto src_dt_size = src_d.data_type_size();</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">    11703510 :     const auto dst_dt_size = dst_d.data_type_size();</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">    11703510 :     const auto nelems = src_d.nelems(true);</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">    11703510 :     const int simd_w = isa_max_vlen(pd()-&gt;isa_) / sizeof(float);</span></span>
+<span id="L375"><span class="lineNum">     375</span>              : </span>
+<span id="L376"><span class="lineNum">     376</span>              :     // If nelem is small, we do sequential copy and don't spawn threads</span>
+<span id="L377"><span class="lineNum">     377</span>              :     const dim_t thr_granularity</span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">    11703510 :             = static_cast&lt;dim_t&gt;(kernel_-&gt;get_max_unroll()) * simd_w;</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">    11703510 :     int nthr = nelems &lt; thr_granularity ? 1 : 0;</span></span>
+<span id="L380"><span class="lineNum">     380</span>              : </span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">    11703510 :     parallel(nthr, [= COMPAT_THIS_CAPTURE](const int ithr, const int nthr) {</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">   907859795 :         dim_t start {0}, end {0};</span></span>
+<span id="L383"><span class="lineNum">     383</span>              : </span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">   907859795 :         balance211(utils::div_up(nelems, simd_w), nthr, ithr, start, end);</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">   907859795 :         start = nstl::min(nelems, start * simd_w);</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">   907859795 :         end = nstl::min(nelems, end * simd_w);</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">   907859795 :         if (start == end) return;</span></span>
+<span id="L388"><span class="lineNum">     388</span>              : </span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">  1088032298 :         (*kernel_)(in + (start + src_d.offset0()) * src_dt_size,</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">   544016062 :                 out + (start + dst_d.offset0()) * dst_dt_size, end - start);</span></span>
+<span id="L391"><span class="lineNum">     391</span>              :     });</span>
+<span id="L392"><span class="lineNum">     392</span>              : </span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">    11703510 :     if (src_d.is_additional_buffer()) {</span></span>
+<span id="L394"><span class="lineNum">     394</span>              :         // Verified in pd_t::init();</span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaUNC">           0 :         assert(src_d.extra().flags == dst_d.extra().flags);</span></span>
+<span id="L396"><span class="lineNum">     396</span>              : </span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaUNC">           0 :         const auto additional_size = src_d.additional_buffer_size();</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaUNC">           0 :         const auto data_size = src_d.size(/* index = */ 0,</span></span>
+<span id="L399"><span class="lineNum">     399</span>              :                 /* include_additional_size = */ false);</span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaUNC">           0 :         std::memcpy(out + data_size * dst_dt_size, in + data_size * src_dt_size,</span></span>
+<span id="L401"><span class="lineNum">     401</span>              :                 additional_size);</span>
+<span id="L402"><span class="lineNum">     402</span>              :     }</span>
+<span id="L403"><span class="lineNum">     403</span>              : </span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">    11703510 :     return status::success;</span></span>
+<span id="L405"><span class="lineNum">     405</span>              : }</span>
+<span id="L406"><span class="lineNum">     406</span>              : </span>
+<span id="L407"><span class="lineNum">     407</span>              : template struct direct_copy_kernel_t&lt;Zmm&gt;;</span>
+<span id="L408"><span class="lineNum">     408</span>              : template struct direct_copy_kernel_t&lt;Ymm&gt;;</span>
+<span id="L409"><span class="lineNum">     409</span>              : template struct direct_copy_kernel_t&lt;Xmm&gt;;</span>
+<span id="L410"><span class="lineNum">     410</span>              : </span>
+<span id="L411"><span class="lineNum">     411</span>              : } // namespace x64</span>
+<span id="L412"><span class="lineNum">     412</span>              : } // namespace cpu</span>
+<span id="L413"><span class="lineNum">     413</span>              : } // namespace impl</span>
+<span id="L414"><span class="lineNum">     414</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

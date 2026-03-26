@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/profiler.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - profiler.hpp<span style="font-size: 80%;"> (source / <a href="profiler.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">80.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">4</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : #ifndef COMMON_PROFILER_HPP</span>
+<span id="L17"><span class="lineNum">      17</span>              : #define COMMON_PROFILER_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #ifndef _WIN32</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;sys/time.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #else</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;windows.h&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #endif</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;algorithm&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &lt;assert.h&gt;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &lt;atomic&gt;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &lt;cstddef&gt;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &lt;iomanip&gt;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &lt;sstream&gt;</span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &lt;string&gt;</span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &lt;utility&gt;</span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &lt;vector&gt;</span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &lt;unordered_map&gt;</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace dnnl {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace impl {</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">    74250548 : static double get_msec() {</span></span>
+<span id="L40"><span class="lineNum">      40</span>              : #ifdef _WIN32</span>
+<span id="L41"><span class="lineNum">      41</span>              :     static LARGE_INTEGER frequency;</span>
+<span id="L42"><span class="lineNum">      42</span>              :     if (frequency.QuadPart == 0) QueryPerformanceFrequency(&amp;frequency);</span>
+<span id="L43"><span class="lineNum">      43</span>              :     // In case the hardware does not support high-resolution perf counter</span>
+<span id="L44"><span class="lineNum">      44</span>              :     if (frequency.QuadPart == 0) return 0.0;</span>
+<span id="L45"><span class="lineNum">      45</span>              :     LARGE_INTEGER now;</span>
+<span id="L46"><span class="lineNum">      46</span>              :     QueryPerformanceCounter(&amp;now);</span>
+<span id="L47"><span class="lineNum">      47</span>              :     return 1e+3 * now.QuadPart / frequency.QuadPart;</span>
+<span id="L48"><span class="lineNum">      48</span>              : #else</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :     struct timeval time;</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">    74250548 :     gettimeofday(&amp;time, nullptr);</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">    74250548 :     return 1e+3 * static_cast&lt;double&gt;(time.tv_sec)</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">    74250548 :             + 1e-3 * static_cast&lt;double&gt;(time.tv_usec);</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : #endif</span>
+<span id="L54"><span class="lineNum">      54</span>              : }</span>
+<span id="L55"><span class="lineNum">      55</span>              : </span>
+<span id="L56"><span class="lineNum">      56</span>              : // Record custom profiling information within a single thread.</span>
+<span id="L57"><span class="lineNum">      57</span>              : //</span>
+<span id="L58"><span class="lineNum">      58</span>              : // Basic Usage:</span>
+<span id="L59"><span class="lineNum">      59</span>              : //        profiler_t profile(&quot;Profile Name&quot;); // Start profiling</span>
+<span id="L60"><span class="lineNum">      60</span>              : //        ...                                 // Some code</span>
+<span id="L61"><span class="lineNum">      61</span>              : //        profile.stamp(&quot;Stamp Name 1&quot;);      // Record data</span>
+<span id="L62"><span class="lineNum">      62</span>              : //        ...                                 // Some code</span>
+<span id="L63"><span class="lineNum">      63</span>              : //        profile.stamp(&quot;Stamp Name 2&quot;);      // Record data</span>
+<span id="L64"><span class="lineNum">      64</span>              : //        ...                                 // Some code</span>
+<span id="L65"><span class="lineNum">      65</span>              : //        profile.stop(&quot;Stamp Name 3&quot;);       // Record data</span>
+<span id="L66"><span class="lineNum">      66</span>              : //        std::cout &lt;&lt; profile &lt;&lt; &quot;\n&quot;;       // Print recorded results</span>
+<span id="L67"><span class="lineNum">      67</span>              : //</span>
+<span id="L68"><span class="lineNum">      68</span>              : // The profiler_t structure can be used over multiple calls to a function, and</span>
+<span id="L69"><span class="lineNum">      69</span>              : // all time stamps will be collated into a total time.</span>
+<span id="L70"><span class="lineNum">      70</span>              : // Alternative Usage:</span>
+<span id="L71"><span class="lineNum">      71</span>              : //        profiler_t profile(&quot;Profile Name&quot;);</span>
+<span id="L72"><span class="lineNum">      72</span>              : //        function() {</span>
+<span id="L73"><span class="lineNum">      73</span>              : //           profile.start()                     // Start Profiling</span>
+<span id="L74"><span class="lineNum">      74</span>              : //           ...                                 // Some code</span>
+<span id="L75"><span class="lineNum">      75</span>              : //           profile.stamp(&quot;Stamp Name 1&quot;);      // Record data</span>
+<span id="L76"><span class="lineNum">      76</span>              : //           ...                                 // Some code</span>
+<span id="L77"><span class="lineNum">      77</span>              : //           profile.stamp(&quot;Stamp Name 2&quot;);      // Record data</span>
+<span id="L78"><span class="lineNum">      78</span>              : //           ...                                 // Some code</span>
+<span id="L79"><span class="lineNum">      79</span>              : //           profile.stop(&quot;Stamp Name 3&quot;);       // Record data</span>
+<span id="L80"><span class="lineNum">      80</span>              : //        }</span>
+<span id="L81"><span class="lineNum">      81</span>              : //</span>
+<span id="L82"><span class="lineNum">      82</span>              : //        high_level_function() {</span>
+<span id="L83"><span class="lineNum">      83</span>              : //           profile.reset()                     // Clear unwanted profiling data</span>
+<span id="L84"><span class="lineNum">      84</span>              : //           ...                                 // Some code</span>
+<span id="L85"><span class="lineNum">      85</span>              : //           std::cout &lt;&lt; profile &lt;&lt; &quot;\n&quot;;       // Print recorded results</span>
+<span id="L86"><span class="lineNum">      86</span>              : //        }</span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span>              : // Note: To reduce overhead, the stamp names are initially recorded as pointers.</span>
+<span id="L89"><span class="lineNum">      89</span>              : // All pointers need to be valid when stop() is called, at which point stamp</span>
+<span id="L90"><span class="lineNum">      90</span>              : // names are copied into long term storage.</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span>              : struct profiler_t {</span>
+<span id="L93"><span class="lineNum">      93</span>              :     profiler_t(const std::string &amp;profile_name) : _profile_name(profile_name) {</span>
+<span id="L94"><span class="lineNum">      94</span>              :         // Reserve data on construction to reduce chance of recording</span>
+<span id="L95"><span class="lineNum">      95</span>              :         // reallocation</span>
+<span id="L96"><span class="lineNum">      96</span>              :         _run_data.reserve(128);</span>
+<span id="L97"><span class="lineNum">      97</span>              :         start();</span>
+<span id="L98"><span class="lineNum">      98</span>              :     }</span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span>              :     // Start recording timing data</span>
+<span id="L101"><span class="lineNum">     101</span>              :     void start() {</span>
+<span id="L102"><span class="lineNum">     102</span>              :         _run_data.clear();</span>
+<span id="L103"><span class="lineNum">     103</span>              :         _state = RUNNING;</span>
+<span id="L104"><span class="lineNum">     104</span>              :         _start_time = get_msec();</span>
+<span id="L105"><span class="lineNum">     105</span>              :         optimization_barrier();</span>
+<span id="L106"><span class="lineNum">     106</span>              :     }</span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span>              :     // Recording data</span>
+<span id="L109"><span class="lineNum">     109</span>              :     void stamp(const char *name) {</span>
+<span id="L110"><span class="lineNum">     110</span>              :         optimization_barrier();</span>
+<span id="L111"><span class="lineNum">     111</span>              :         _run_data.emplace_back(name, get_msec());</span>
+<span id="L112"><span class="lineNum">     112</span>              :         assert(_state == RUNNING);</span>
+<span id="L113"><span class="lineNum">     113</span>              :         optimization_barrier();</span>
+<span id="L114"><span class="lineNum">     114</span>              :     }</span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span>              :     void stop(const char *name) {</span>
+<span id="L117"><span class="lineNum">     117</span>              :         optimization_barrier();</span>
+<span id="L118"><span class="lineNum">     118</span>              :         _run_data.emplace_back(name, get_msec());</span>
+<span id="L119"><span class="lineNum">     119</span>              :         stop();</span>
+<span id="L120"><span class="lineNum">     120</span>              :     }</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :     void stop() {</span>
+<span id="L123"><span class="lineNum">     123</span>              :         assert(_state == RUNNING);</span>
+<span id="L124"><span class="lineNum">     124</span>              :         _state = STOPPED;</span>
+<span id="L125"><span class="lineNum">     125</span>              :         collate();</span>
+<span id="L126"><span class="lineNum">     126</span>              :     }</span>
+<span id="L127"><span class="lineNum">     127</span>              : </span>
+<span id="L128"><span class="lineNum">     128</span>              :     void reset() {</span>
+<span id="L129"><span class="lineNum">     129</span>              :         _data.clear();</span>
+<span id="L130"><span class="lineNum">     130</span>              :         start();</span>
+<span id="L131"><span class="lineNum">     131</span>              :     }</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span>              :     std::string str() const {</span>
+<span id="L134"><span class="lineNum">     134</span>              :         dnnl::impl::ostringstream_t oss;</span>
+<span id="L135"><span class="lineNum">     135</span>              :         std::vector&lt;record_t&lt;std::string&gt;&gt; print_data(</span>
+<span id="L136"><span class="lineNum">     136</span>              :                 _data.begin(), _data.end());</span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              :         std::sort(print_data.begin(), print_data.end());</span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span>              :         prof_time_t total_time = 0;</span>
+<span id="L141"><span class="lineNum">     141</span>              :         for (auto &amp;record : print_data) {</span>
+<span id="L142"><span class="lineNum">     142</span>              :             total_time += record.time;</span>
+<span id="L143"><span class="lineNum">     143</span>              :         }</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              :         const int max_name_width = 20;</span>
+<span id="L146"><span class="lineNum">     146</span>              :         oss &lt;&lt; _profile_name &lt;&lt; &quot;:\n&quot;;</span>
+<span id="L147"><span class="lineNum">     147</span>              :         oss &lt;&lt; std::setw(max_name_width) &lt;&lt; &quot;Total Time&quot; &lt;&lt; std::setw(0)</span>
+<span id="L148"><span class="lineNum">     148</span>              :             &lt;&lt; &quot;:          &quot; &lt;&lt; std::setw(8) &lt;&lt; std::fixed</span>
+<span id="L149"><span class="lineNum">     149</span>              :             &lt;&lt; std::setprecision(3) &lt;&lt; total_time &lt;&lt; std::setw(0) &lt;&lt; &quot; ms\n&quot;;</span>
+<span id="L150"><span class="lineNum">     150</span>              :         for (const auto &amp;record : print_data) {</span>
+<span id="L151"><span class="lineNum">     151</span>              :             oss &lt;&lt; std::setw(max_name_width)</span>
+<span id="L152"><span class="lineNum">     152</span>              :                 &lt;&lt; record.name.substr(0, max_name_width) &lt;&lt; std::setw(0)</span>
+<span id="L153"><span class="lineNum">     153</span>              :                 &lt;&lt; &quot;: interval &quot; &lt;&lt; std::setw(8) &lt;&lt; std::fixed</span>
+<span id="L154"><span class="lineNum">     154</span>              :                 &lt;&lt; std::setprecision(3) &lt;&lt; record.time &lt;&lt; std::setw(0)</span>
+<span id="L155"><span class="lineNum">     155</span>              :                 &lt;&lt; &quot; ms, total &quot; &lt;&lt; std::setw(8)</span>
+<span id="L156"><span class="lineNum">     156</span>              :                 &lt;&lt; 100.0 * record.time / total_time &lt;&lt; &quot; % recorded time\n&quot;;</span>
+<span id="L157"><span class="lineNum">     157</span>              :         }</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              :         return oss.str();</span>
+<span id="L160"><span class="lineNum">     160</span>              :     }</span>
+<span id="L161"><span class="lineNum">     161</span>              : </span>
+<span id="L162"><span class="lineNum">     162</span>              : private:</span>
+<span id="L163"><span class="lineNum">     163</span>              :     using prof_time_t = double;</span>
+<span id="L164"><span class="lineNum">     164</span>              : </span>
+<span id="L165"><span class="lineNum">     165</span>              :     static void inline optimization_barrier() {</span>
+<span id="L166"><span class="lineNum">     166</span>              :         atomic_signal_fence(std::memory_order_seq_cst);</span>
+<span id="L167"><span class="lineNum">     167</span>              :     }</span>
+<span id="L168"><span class="lineNum">     168</span>              : </span>
+<span id="L169"><span class="lineNum">     169</span>              :     template &lt;typename T&gt;</span>
+<span id="L170"><span class="lineNum">     170</span>              :     struct record_t {</span>
+<span id="L171"><span class="lineNum">     171</span>              :         T name;</span>
+<span id="L172"><span class="lineNum">     172</span>              :         prof_time_t time;</span>
+<span id="L173"><span class="lineNum">     173</span>              :         record_t(T name, prof_time_t time) : name(name), time(time) {}</span>
+<span id="L174"><span class="lineNum">     174</span>              :         record_t(const std::pair&lt;T, prof_time_t&gt; &amp;record)</span>
+<span id="L175"><span class="lineNum">     175</span>              :             : name(record.first), time(record.second) {}</span>
+<span id="L176"><span class="lineNum">     176</span>              :         // Reversed time ordering</span>
+<span id="L177"><span class="lineNum">     177</span>              :         bool operator&lt;(const record_t &amp;b) const { return this-&gt;time &gt; b.time; }</span>
+<span id="L178"><span class="lineNum">     178</span>              :     };</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :     enum state_t {</span>
+<span id="L181"><span class="lineNum">     181</span>              :         RUNNING,</span>
+<span id="L182"><span class="lineNum">     182</span>              :         STOPPED,</span>
+<span id="L183"><span class="lineNum">     183</span>              :     };</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span>              :     // Record data in a vector to minimize overhead associated with recording</span>
+<span id="L186"><span class="lineNum">     186</span>              :     // data. Data is flushed into a separate long term storage once time</span>
+<span id="L187"><span class="lineNum">     187</span>              :     // recording has stopped.</span>
+<span id="L188"><span class="lineNum">     188</span>              :     std::string _profile_name;</span>
+<span id="L189"><span class="lineNum">     189</span>              :     std::vector&lt;record_t&lt;const char *&gt;&gt; _run_data;</span>
+<span id="L190"><span class="lineNum">     190</span>              :     std::unordered_map&lt;std::string, prof_time_t&gt; _data;</span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span>              :     state_t _state = STOPPED;</span>
+<span id="L193"><span class="lineNum">     193</span>              :     prof_time_t _start_time = 0;</span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              :     void collate() {</span>
+<span id="L196"><span class="lineNum">     196</span>              :         assert(_state == STOPPED);</span>
+<span id="L197"><span class="lineNum">     197</span>              :         prof_time_t last_stamp = _start_time;</span>
+<span id="L198"><span class="lineNum">     198</span>              :         for (const auto &amp;record : _run_data) {</span>
+<span id="L199"><span class="lineNum">     199</span>              :             _data[std::string(record.name)] += record.time - last_stamp;</span>
+<span id="L200"><span class="lineNum">     200</span>              :             last_stamp = record.time;</span>
+<span id="L201"><span class="lineNum">     201</span>              :         }</span>
+<span id="L202"><span class="lineNum">     202</span>              :         _run_data.clear();</span>
+<span id="L203"><span class="lineNum">     203</span>              :     }</span>
+<span id="L204"><span class="lineNum">     204</span>              : };</span>
+<span id="L205"><span class="lineNum">     205</span>              : </span>
+<span id="L206"><span class="lineNum">     206</span>              : inline std::ostream &amp;operator&lt;&lt;(std::ostream &amp;out, const profiler_t &amp;profile) {</span>
+<span id="L207"><span class="lineNum">     207</span>              :     out &lt;&lt; profile.str();</span>
+<span id="L208"><span class="lineNum">     208</span>              :     return out;</span>
+<span id="L209"><span class="lineNum">     209</span>              : }</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              : } // namespace impl</span>
+<span id="L212"><span class="lineNum">     212</span>              : } // namespace dnnl</span>
+<span id="L213"><span class="lineNum">     213</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

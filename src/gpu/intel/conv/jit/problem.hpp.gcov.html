@@ -1,0 +1,407 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/conv/jit/problem.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/conv/jit">src/gpu/intel/conv/jit</a> - problem.hpp<span style="font-size: 80%;"> (source / <a href="problem.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">56.6&nbsp;%</td>
+            <td class="headerCovTableEntry">106</td>
+            <td class="headerCovTableEntry">60</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">67.3&nbsp;%</td>
+            <td class="headerCovTableEntry">49</td>
+            <td class="headerCovTableEntry">33</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2023 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GPU_INTEL_CONV_JIT_PROBLEM_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GPU_INTEL_CONV_JIT_PROBLEM_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;string&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;vector&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;gpu/intel/conv/config.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;gpu/intel/jit/ir/hw.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;gpu/intel/jit/ir/problem.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace dnnl {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace impl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace gpu {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace intel {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace conv {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace jit {</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span>              : using namespace intel::jit;</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : char to_spatial(const pvar_t &amp;p);</span>
+<span id="L38"><span class="lineNum">      38</span>              : int spatial_index(const pvar_t &amp;p);</span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span>              : template &lt;typename T&gt;</span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 : bool has_spatial(const pvar_map_t&lt;T&gt; &amp;map, char spatial) {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC">           0 :     for (auto &amp;d : map) {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :         if (to_spatial(d) == spatial) return true;</span></span>
+<span id="L44"><span class="lineNum">      44</span>              :     }</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :     return false;</span></span>
+<span id="L46"><span class="lineNum">      46</span>              : }</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : bool is_index(const pvar_t &amp;dim);</span>
+<span id="L49"><span class="lineNum">      49</span>              : bool is_index(const pvar_t &amp;dim, prop_kind_t prop);</span>
+<span id="L50"><span class="lineNum">      50</span>              : pvar_t prb_stride(const pvar_t &amp;dim, tensor_kind_t tensor_kind);</span>
+<span id="L51"><span class="lineNum">      51</span>              : const std::vector&lt;pvar_t&gt; &amp;dims();</span>
+<span id="L52"><span class="lineNum">      52</span>              : const std::vector&lt;pvar_t&gt; &amp;index_dims(prop_kind_t prop);</span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              : const std::vector&lt;pvar_t&gt; &amp;layout_dims(</span>
+<span id="L55"><span class="lineNum">      55</span>              :         tensor_kind_t tensor_kind, bool src_dst_with_group = false);</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span>              : template &lt;typename T&gt;</span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaUNC">           0 : T &amp;&amp;pick_abc(tensor_kind_t abc, prop_kind_t prop, T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) {</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :     bool is_fwd = (prop == prop_kind::forward);</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :     bool is_bwd_d = (prop == prop_kind::backward_data);</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :     bool is_bwd_w = (prop == prop_kind::backward_weights);</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :     switch (abc) {</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaUNC">           0 :         case tensor_kind_t::a:</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :             if (is_fwd || is_bwd_w) return std::forward&lt;T&gt;(src);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaUNC">           0 :             return std::forward&lt;T&gt;(dst);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaUNC">           0 :         case tensor_kind_t::b:</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaUNC">           0 :             if (is_fwd || is_bwd_d) return std::forward&lt;T&gt;(wei);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaUNC">           0 :             return std::forward&lt;T&gt;(dst);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :         case tensor_kind_t::c:</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaUNC">           0 :             if (is_fwd) return std::forward&lt;T&gt;(dst);</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaUNC">           0 :             if (is_bwd_d) return std::forward&lt;T&gt;(src);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :             return std::forward&lt;T&gt;(wei);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaUNC">           0 :         default: gpu_error_not_expected();</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :     }</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaUNC">           0 :     return std::forward&lt;T&gt;(src);</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : }</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              : template &lt;typename T&gt;</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaUNC">           0 : T &amp;&amp;pick_a(prop_kind_t prop, T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) {</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaUNC">           0 :     return std::forward&lt;T&gt;(pick_abc(tensor_kind_t::a, prop,</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaUNC">           0 :             std::forward&lt;T&gt;(src), std::forward&lt;T&gt;(wei), std::forward&lt;T&gt;(dst)));</span></span>
+<span id="L82"><span class="lineNum">      82</span>              : }</span>
+<span id="L83"><span class="lineNum">      83</span>              : </span>
+<span id="L84"><span class="lineNum">      84</span>              : template &lt;typename T&gt;</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 : T &amp;&amp;pick_b(prop_kind_t prop, T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaUNC">           0 :     return std::forward&lt;T&gt;(pick_abc(tensor_kind_t::b, prop,</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0 :             std::forward&lt;T&gt;(src), std::forward&lt;T&gt;(wei), std::forward&lt;T&gt;(dst)));</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : }</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              : template &lt;typename T&gt;</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaUNC">           0 : T &amp;&amp;pick_c(prop_kind_t prop, T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) {</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaUNC">           0 :     return std::forward&lt;T&gt;(pick_abc(tensor_kind_t::c, prop,</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 :             std::forward&lt;T&gt;(src), std::forward&lt;T&gt;(wei), std::forward&lt;T&gt;(dst)));</span></span>
+<span id="L94"><span class="lineNum">      94</span>              : }</span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span>              : tensor_kind_t to_abc(prop_kind_t prop, tensor_kind_t tensor);</span>
+<span id="L97"><span class="lineNum">      97</span>              : tensor_kind_t from_abc(prop_kind_t prop, tensor_kind_t abc);</span>
+<span id="L98"><span class="lineNum">      98</span>              : const std::vector&lt;pvar_t&gt; &amp;stride_dims();</span>
+<span id="L99"><span class="lineNum">      99</span>              : const std::vector&lt;pvar_t&gt; &amp;dilation_dims();</span>
+<span id="L100"><span class="lineNum">     100</span>              : const std::vector&lt;pvar_t&gt; &amp;padding_dims();</span>
+<span id="L101"><span class="lineNum">     101</span>              : </span>
+<span id="L102"><span class="lineNum">     102</span>              : // Description of the convolution problem.</span>
+<span id="L103"><span class="lineNum">     103</span>              : class problem_t {</span>
+<span id="L104"><span class="lineNum">     104</span>              : public:</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">      503965 :     problem_t() = default;</span></span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span>              :     status_t init(impl::engine_t *engine, const pd_t *conv_pd);</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">      446322 :     bool is_stride1() const { return sd == 1 &amp;&amp; sh == 1 &amp;&amp; sw == 1; }</span></span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :     // If possible, reduces dimensions for 1x1 kernel and shifts spatial</span>
+<span id="L112"><span class="lineNum">     112</span>              :     // dimensions.</span>
+<span id="L113"><span class="lineNum">     113</span>              :     void normalize_shape();</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              :     // Number of operations (including virtual padding operations).</span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaUNC">           0 :     double ops() const {</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaUNC">           0 :         double ret = 2.0;</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaUNC">           0 :         ret *= (double)g * mb * oc * ic;</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaUNC">           0 :         ret *= ksp;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaUNC">           0 :         ret *= (is_bwd_d ? isp : osp);</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaUNC">           0 :         return ret;</span></span>
+<span id="L122"><span class="lineNum">     122</span>              :     }</span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">       78165 :     bool is_s32_accumulator() const { return acc_data_type == data_type::s32; }</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      733761 :     bool is_f64_accumulator() const { return acc_data_type == data_type::f64; }</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">    43787102 :     bool is_fp4_conv() const {</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">    87574384 :         return utils::one_of(</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">    43787102 :                        src_data_type, data_type::f4_e2m1, data_type::f4_e3m0)</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">    87574384 :                 || utils::one_of(</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">    87574384 :                         wei_data_type, data_type::f4_e2m1, data_type::f4_e3m0);</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :     }</span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">    19987220 :     bool is_fp8_conv() const {</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">    39974420 :         return utils::one_of(</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">    19987220 :                        src_data_type, data_type::f8_e4m3, data_type::f8_e5m2)</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">    39968084 :                 || utils::one_of(</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">    39968084 :                         wei_data_type, data_type::f8_e5m2, data_type::f8_e4m3);</span></span>
+<span id="L136"><span class="lineNum">     136</span>              :     }</span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">     4114768 :     bool is_f32_conv() const {</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">     4114768 :         return utils::everyone_is(src_data_type, wei_data_type, data_type::f32);</span></span>
+<span id="L139"><span class="lineNum">     139</span>              :     }</span>
+<span id="L140"><span class="lineNum">     140</span>              :     bool is_int8_dst() const {</span>
+<span id="L141"><span class="lineNum">     141</span>              :         return utils::one_of(dst_data_type, data_type::s8, data_type::u8);</span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span>              :     bool is_mixed_int8() const {</span>
+<span id="L144"><span class="lineNum">     144</span>              :         return utils::one_of(a_data_type, dnnl_f16, dnnl_f32)</span>
+<span id="L145"><span class="lineNum">     145</span>              :                 &amp;&amp; utils::one_of(c_data_type, dnnl_u8, dnnl_s8);</span>
+<span id="L146"><span class="lineNum">     146</span>              :     }</span>
+<span id="L147"><span class="lineNum">     147</span>              :     bool reduce_b() const { return is_bwd_w &amp;&amp; with_bias; }</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">   727006213 :     prop_kind_t prop_kind() const {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">   727006213 :         if (is_fwd) return prop_kind::forward;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">   646846084 :         if (is_bwd_d) return prop_kind::backward_data;</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">   410492013 :         if (is_bwd_w) return prop_kind::backward_weights;</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaUNC">           0 :         return prop_kind::undef;</span></span>
+<span id="L155"><span class="lineNum">     155</span>              :     }</span>
+<span id="L156"><span class="lineNum">     156</span>              : </span>
+<span id="L157"><span class="lineNum">     157</span>              :     const memory_desc_t &amp;a_md() const;</span>
+<span id="L158"><span class="lineNum">     158</span>              :     const memory_desc_t &amp;b_md() const;</span>
+<span id="L159"><span class="lineNum">     159</span>              :     const memory_desc_t &amp;c_md() const;</span>
+<span id="L160"><span class="lineNum">     160</span>              : </span>
+<span id="L161"><span class="lineNum">     161</span>              :     template &lt;typename T&gt;</span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">     1696233 :     T &amp;&amp;pick_a(T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) const {</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">     3388664 :         return std::forward&lt;T&gt;(ab_swap_transpose ? (is_bwd_w ? dst : wei)</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">     1692431 :                         : (is_fwd || is_bwd_w)   ? src</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">     1696233 :                                                  : dst);</span></span>
+<span id="L166"><span class="lineNum">     166</span>              :     }</span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              :     template &lt;typename T&gt;</span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">     1696233 :     T &amp;&amp;pick_b(T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) const {</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     3392466 :         return std::forward&lt;T&gt;(ab_swap_transpose</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        3802 :                         ? ((is_fwd || is_bwd_w) ? src : dst)</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     1692431 :                         : (is_fwd || is_bwd_d) ? wei</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">     1696233 :                                                : dst);</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :     }</span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :     template &lt;typename T&gt;</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">      706269 :     T &amp;&amp;pick_c(T &amp;&amp;src, T &amp;&amp;wei, T &amp;&amp;dst) const {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">      706269 :         return std::forward&lt;T&gt;(is_fwd ? dst : is_bwd_d ? src : wei);</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :     }</span>
+<span id="L180"><span class="lineNum">     180</span>              : </span>
+<span id="L181"><span class="lineNum">     181</span>              :     template &lt;typename T&gt;</span>
+<span id="L182"><span class="lineNum">     182</span>              :     T &amp;&amp;pick_by_dir(T &amp;&amp;fwd, T &amp;&amp;bwd_d, T &amp;&amp;bwd_w) const {</span>
+<span id="L183"><span class="lineNum">     183</span>              :         return std::forward&lt;T&gt;(is_fwd ? fwd : is_bwd_d ? bwd_d : bwd_w);</span>
+<span id="L184"><span class="lineNum">     184</span>              :     }</span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span>              :     std::string desc_str(bool print_mb = true) const;</span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span>              :     const pd_t *conv_pd = nullptr;</span>
+<span id="L189"><span class="lineNum">     189</span>              :     const primitive_attr_t *attr = nullptr;</span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span>              :     data_type_t src_data_type = data_type::undef;</span>
+<span id="L192"><span class="lineNum">     192</span>              :     data_type_t wei_data_type = data_type::undef;</span>
+<span id="L193"><span class="lineNum">     193</span>              :     data_type_t dst_data_type = data_type::undef;</span>
+<span id="L194"><span class="lineNum">     194</span>              :     data_type_t bia_data_type = data_type::undef;</span>
+<span id="L195"><span class="lineNum">     195</span>              :     fpmath_mode_t fpmath_mode = fpmath_mode::strict;</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              :     bool is_fwd = false;</span>
+<span id="L198"><span class="lineNum">     198</span>              :     bool is_bwd_d = false;</span>
+<span id="L199"><span class="lineNum">     199</span>              :     bool is_bwd_w = false;</span>
+<span id="L200"><span class="lineNum">     200</span>              :     bool with_bias = false;</span>
+<span id="L201"><span class="lineNum">     201</span>              :     bool with_groups = false;</span>
+<span id="L202"><span class="lineNum">     202</span>              :     bool with_sum = false;</span>
+<span id="L203"><span class="lineNum">     203</span>              :     bool is_dw = false;</span>
+<span id="L204"><span class="lineNum">     204</span>              :     bool ab_swap_transpose = false;</span>
+<span id="L205"><span class="lineNum">     205</span>              :     bool strided = false;</span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span>              :     int ndims = 0;</span>
+<span id="L208"><span class="lineNum">     208</span>              :     dim_t mb = 0; // Batch size.</span>
+<span id="L209"><span class="lineNum">     209</span>              :     dim_t g = 0; // Groups.</span>
+<span id="L210"><span class="lineNum">     210</span>              :     dim_t ic = 0, oc = 0; // Input and output channels.</span>
+<span id="L211"><span class="lineNum">     211</span>              :     dim_t id = 0, ih = 0, iw = 0; // Input spatial sizes.</span>
+<span id="L212"><span class="lineNum">     212</span>              :     dim_t od = 0, oh = 0, ow = 0; // Output spatial sizes.</span>
+<span id="L213"><span class="lineNum">     213</span>              :     dim_t kd = 0, kh = 0, kw = 0; // Kernel sizes.</span>
+<span id="L214"><span class="lineNum">     214</span>              :     dim_t sd = 0, sh = 0, sw = 0; // Strides.</span>
+<span id="L215"><span class="lineNum">     215</span>              :     dim_t pd = 0, ph = 0, pw = 0; // Padding in the beginning.</span>
+<span id="L216"><span class="lineNum">     216</span>              :     dim_t dd = 0, dh = 0, dw = 0; // Dilation.</span>
+<span id="L217"><span class="lineNum">     217</span>              :     // Mapping for spatial dimensions (e.g. when 3D convolution is reduced to 1D).</span>
+<span id="L218"><span class="lineNum">     218</span>              :     std::array&lt;int, 3&gt; dhw_map = {-1, -1, -1};</span>
+<span id="L219"><span class="lineNum">     219</span>              :     dim_t isp = 0, osp = 0,</span>
+<span id="L220"><span class="lineNum">     220</span>              :           ksp = 0; // Combined input/output/kernel spatial size.</span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span>              :     data_type_t a_data_type = data_type::undef;</span>
+<span id="L223"><span class="lineNum">     223</span>              :     data_type_t b_data_type = data_type::undef;</span>
+<span id="L224"><span class="lineNum">     224</span>              :     data_type_t c_data_type = data_type::undef;</span>
+<span id="L225"><span class="lineNum">     225</span>              :     data_type_t acc_data_type = data_type::undef;</span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span>              :     int a_data_type_size = 0;</span>
+<span id="L228"><span class="lineNum">     228</span>              :     int b_data_type_size = 0;</span>
+<span id="L229"><span class="lineNum">     229</span>              :     int c_data_type_size = 0;</span>
+<span id="L230"><span class="lineNum">     230</span>              :     int acc_data_type_size = 0;</span>
+<span id="L231"><span class="lineNum">     231</span>              : </span>
+<span id="L232"><span class="lineNum">     232</span>              : private:</span>
+<span id="L233"><span class="lineNum">     233</span>              :     // Initializes A/B/C data types (GEMM notation: C += A * B) according to</span>
+<span id="L234"><span class="lineNum">     234</span>              :     // the following convention:</span>
+<span id="L235"><span class="lineNum">     235</span>              :     // FWD:        src -&gt; A,      wei -&gt; B,      dst -&gt; C</span>
+<span id="L236"><span class="lineNum">     236</span>              :     // BWD_D: diff_dst -&gt; A,      wei -&gt; B, diff_src -&gt; C</span>
+<span id="L237"><span class="lineNum">     237</span>              :     // BWD_W:      src -&gt; A, diff_dst -&gt; B, diff_wei -&gt; C</span>
+<span id="L238"><span class="lineNum">     238</span>              :     status_t init_abc_data_types(const dsl::hw_t &amp;hw);</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span>              :     status_t init_acc_data_type();</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              :     bool with_sum_post_op() const;</span>
+<span id="L243"><span class="lineNum">     243</span>              : </span>
+<span id="L244"><span class="lineNum">     244</span>              :     void init_transpose(const dsl::hw_t &amp;hw);</span>
+<span id="L245"><span class="lineNum">     245</span>              : };</span>
+<span id="L246"><span class="lineNum">     246</span>              : </span>
+<span id="L247"><span class="lineNum">     247</span>              : void normalize_shape(dim_t &amp;id, dim_t &amp;od, dim_t &amp;kd, dim_t &amp;sd, dim_t &amp;dd,</span>
+<span id="L248"><span class="lineNum">     248</span>              :         dim_t &amp;pd, dim_t &amp;ih, dim_t &amp;oh, dim_t &amp;kh, dim_t &amp;sh, dim_t &amp;dh,</span>
+<span id="L249"><span class="lineNum">     249</span>              :         dim_t &amp;ph, dim_t &amp;iw, dim_t &amp;ow, dim_t &amp;kw, dim_t &amp;sw, dim_t &amp;dw,</span>
+<span id="L250"><span class="lineNum">     250</span>              :         dim_t &amp;pw, bool can_flatten_spatial, std::array&lt;int, 3&gt; &amp;dhw_map);</span>
+<span id="L251"><span class="lineNum">     251</span>              : bool is_small_ic(const problem_t &amp;prb);</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span>              : class arg_helper_t {</span>
+<span id="L254"><span class="lineNum">     254</span>              : public:</span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      173288 :     arg_helper_t(const problem_t &amp;prb) : prb_(prb) {}</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">      173288 :     int src_arg_key() const {</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">      173288 :         if (prb_.is_fwd) return DNNL_ARG_SRC;</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">      160827 :         if (prb_.is_bwd_d) return DNNL_ARG_DIFF_SRC;</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">        7977 :         if (prb_.is_bwd_w) return DNNL_ARG_SRC;</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaUNC">           0 :         return DNNL_ARG_UNDEF;</span></span>
+<span id="L263"><span class="lineNum">     263</span>              :     }</span>
+<span id="L264"><span class="lineNum">     264</span>              : </span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">      173288 :     bool is_src_input() const { return prb_.is_fwd || prb_.is_bwd_w; }</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">      173288 :     bool is_src_output() const { return prb_.is_bwd_d; }</span></span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">      173288 :     int wei_arg_key() const {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">      173288 :         if (prb_.is_fwd) return DNNL_ARG_WEIGHTS;</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      160827 :         if (prb_.is_bwd_d) return DNNL_ARG_WEIGHTS;</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        7977 :         if (prb_.is_bwd_w) return DNNL_ARG_DIFF_WEIGHTS;</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaUNC">           0 :         return DNNL_ARG_UNDEF;</span></span>
+<span id="L274"><span class="lineNum">     274</span>              :     }</span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      173288 :     bool is_wei_input() const { return prb_.is_fwd || prb_.is_bwd_d; }</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">      173288 :     bool is_wei_output() const { return prb_.is_bwd_w; }</span></span>
+<span id="L278"><span class="lineNum">     278</span>              : </span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       29867 :     int bia_arg_key() const {</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">       29867 :         if (prb_.is_fwd) return DNNL_ARG_BIAS;</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       26761 :         if (prb_.is_bwd_d) return DNNL_ARG_BIAS;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">          97 :         if (prb_.is_bwd_w) return DNNL_ARG_DIFF_BIAS;</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaUNC">           0 :         return DNNL_ARG_UNDEF;</span></span>
+<span id="L285"><span class="lineNum">     285</span>              :     }</span>
+<span id="L286"><span class="lineNum">     286</span>              : </span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">       29867 :     bool is_bia_input() const { return prb_.is_fwd || prb_.is_bwd_d; }</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">       29867 :     bool is_bia_output() const { return prb_.is_bwd_w; }</span></span>
+<span id="L289"><span class="lineNum">     289</span>              : </span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">      173288 :     int dst_arg_key() const {</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">      173288 :         if (prb_.is_fwd) return DNNL_ARG_DST;</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      160827 :         if (prb_.is_bwd_d) return DNNL_ARG_DIFF_DST;</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">        7977 :         if (prb_.is_bwd_w) return DNNL_ARG_DIFF_DST;</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaUNC">           0 :         return DNNL_ARG_UNDEF;</span></span>
+<span id="L296"><span class="lineNum">     296</span>              :     }</span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      173288 :     bool is_dst_input() const { return prb_.is_bwd_d || prb_.is_bwd_w; }</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">      173288 :     bool is_dst_output() const { return prb_.is_fwd; }</span></span>
+<span id="L300"><span class="lineNum">     300</span>              : </span>
+<span id="L301"><span class="lineNum">     301</span>              : private:</span>
+<span id="L302"><span class="lineNum">     302</span>              :     const problem_t &amp;prb_;</span>
+<span id="L303"><span class="lineNum">     303</span>              : };</span>
+<span id="L304"><span class="lineNum">     304</span>              : </span>
+<span id="L305"><span class="lineNum">     305</span>              : pvar_t to_gemm(const pvar_t &amp;d, prop_kind_t prop, bool is_transpose = false);</span>
+<span id="L306"><span class="lineNum">     306</span>              : tile_t to_gemm(const tile_t &amp;t, prop_kind_t prop, bool is_transpose = false);</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">   529194565 : inline pvar_t to_gemm(const pvar_t &amp;d, const problem_t &amp;prb) {</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">   529194565 :     return to_gemm(d, prb.prop_kind(), prb.ab_swap_transpose);</span></span>
+<span id="L309"><span class="lineNum">     309</span>              : }</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">   133583343 : inline tile_t to_gemm(const tile_t &amp;t, const problem_t &amp;prb) {</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">   133583343 :     return to_gemm(t, prb.prop_kind(), prb.ab_swap_transpose);</span></span>
+<span id="L312"><span class="lineNum">     312</span>              : }</span>
+<span id="L313"><span class="lineNum">     313</span>              : </span>
+<span id="L314"><span class="lineNum">     314</span>              : // Matches the user-provided descriptor against the list of supported plain tags.</span>
+<span id="L315"><span class="lineNum">     315</span>              : std::string get_plain_user_tag(</span>
+<span id="L316"><span class="lineNum">     316</span>              :         const problem_t &amp;prb, const memory_desc_t &amp;md, bool is_wei);</span>
+<span id="L317"><span class="lineNum">     317</span>              : </span>
+<span id="L318"><span class="lineNum">     318</span>              : // Checks if using NCHW layout for activations is optimal, this is dependent on:</span>
+<span id="L319"><span class="lineNum">     319</span>              : // - Whether the user-side layout is NCHW</span>
+<span id="L320"><span class="lineNum">     320</span>              : // - Whether the tensor sizes allow to use optimal loads (block 2D messages)</span>
+<span id="L321"><span class="lineNum">     321</span>              : bool is_nchw_ok(const problem_t &amp;prb, ngen::HW hw, tensor_kind_t kind,</span>
+<span id="L322"><span class="lineNum">     322</span>              :         bool nested = false);</span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              : } // namespace jit</span>
+<span id="L325"><span class="lineNum">     325</span>              : } // namespace conv</span>
+<span id="L326"><span class="lineNum">     326</span>              : } // namespace intel</span>
+<span id="L327"><span class="lineNum">     327</span>              : } // namespace gpu</span>
+<span id="L328"><span class="lineNum">     328</span>              : } // namespace impl</span>
+<span id="L329"><span class="lineNum">     329</span>              : } // namespace dnnl</span>
+<span id="L330"><span class="lineNum">     330</span>              : </span>
+<span id="L331"><span class="lineNum">     331</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

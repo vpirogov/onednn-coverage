@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/utils/jit_io_helper.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/utils">src/cpu/x64/utils</a> - jit_io_helper.hpp<span style="font-size: 80%;"> (source / <a href="jit_io_helper.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_UTILS_JIT_IO_HELPER_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_UTILS_JIT_IO_HELPER_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;map&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;memory&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;unordered_set&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/optional.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;cpu/x64/cpu_isa_traits.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace dnnl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace impl {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace cpu {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace x64 {</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : struct bf16_emulation_t;</span>
+<span id="L35"><span class="lineNum">      35</span>              : struct fp8_conversion_base_t;</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace io {</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span>              : class io_conf_t {</span>
+<span id="L40"><span class="lineNum">      40</span>              : public:</span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      145919 :     io_conf_t() = default;</span></span>
+<span id="L42"><span class="lineNum">      42</span>              :     io_conf_t(const bool nt_stores_enabled);</span>
+<span id="L43"><span class="lineNum">      43</span>              :     io_conf_t(const io_conf_t &amp;other) = default;</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span>              :     io_conf_t &amp;operator=(const io_conf_t &amp;other) = default;</span>
+<span id="L46"><span class="lineNum">      46</span>              : </span>
+<span id="L47"><span class="lineNum">      47</span>              :     bool nt_stores_enabled_ = false;</span>
+<span id="L48"><span class="lineNum">      48</span>              : };</span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span>              : class io_tail_conf_t {</span>
+<span id="L51"><span class="lineNum">      51</span>              : public:</span>
+<span id="L52"><span class="lineNum">      52</span>              :     io_tail_conf_t(const std::size_t simd_w, const std::size_t tail_size,</span>
+<span id="L53"><span class="lineNum">      53</span>              :             const Xbyak::Opmask &amp;tail_opmask, const int tail_vmm_mask_idx,</span>
+<span id="L54"><span class="lineNum">      54</span>              :             const Xbyak::Reg64 &amp;reg_tmp);</span>
+<span id="L55"><span class="lineNum">      55</span>              :     io_tail_conf_t(const std::size_t simd_w, const std::size_t tail_size,</span>
+<span id="L56"><span class="lineNum">      56</span>              :             int tail_opmask_idx, const int tail_vmm_mask_idx,</span>
+<span id="L57"><span class="lineNum">      57</span>              :             const Xbyak::Reg64 &amp;reg_tmp);</span>
+<span id="L58"><span class="lineNum">      58</span>              :     io_tail_conf_t(const io_tail_conf_t &amp;other) = default;</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              :     io_tail_conf_t &amp;operator=(const io_tail_conf_t &amp;other) = default;</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              :     std::size_t simd_w_ = 0;</span>
+<span id="L63"><span class="lineNum">      63</span>              :     std::size_t tail_size_ = 0;</span>
+<span id="L64"><span class="lineNum">      64</span>              :     Xbyak::Opmask tail_opmask_;</span>
+<span id="L65"><span class="lineNum">      65</span>              :     int tail_vmm_mask_idx_ = 0;</span>
+<span id="L66"><span class="lineNum">      66</span>              :     Xbyak::Reg64 reg_tmp_;</span>
+<span id="L67"><span class="lineNum">      67</span>              : };</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              : class io_emu_bf16_conf_t {</span>
+<span id="L70"><span class="lineNum">      70</span>              : public:</span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       31461 :     io_emu_bf16_conf_t() = default;</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :     io_emu_bf16_conf_t(const Xbyak::Zmm &amp;bf16_emu_reserv_1,</span>
+<span id="L73"><span class="lineNum">      73</span>              :             const Xbyak::Zmm &amp;bf16_emu_reserv_2,</span>
+<span id="L74"><span class="lineNum">      74</span>              :             const Xbyak::Zmm &amp;bf16_emu_reserv_3, const Xbyak::Reg64 &amp;reg_tmp,</span>
+<span id="L75"><span class="lineNum">      75</span>              :             const Xbyak::Zmm &amp;bf16_emu_reserv_4);</span>
+<span id="L76"><span class="lineNum">      76</span>              :     io_emu_bf16_conf_t(int bf16_emu_reserv_1_idx, int bf16_emu_reserv_2_idx,</span>
+<span id="L77"><span class="lineNum">      77</span>              :             int bf16_emu_reserv_3_idx, const Xbyak::Reg64 &amp;reg_tmp,</span>
+<span id="L78"><span class="lineNum">      78</span>              :             int bf16_emu_reserv_4_idx);</span>
+<span id="L79"><span class="lineNum">      79</span>              :     io_emu_bf16_conf_t(const io_emu_bf16_conf_t &amp;other) = default;</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              :     io_emu_bf16_conf_t &amp;operator=(const io_emu_bf16_conf_t &amp;other) = default;</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span>              :     Xbyak::Zmm bf16_emu_reserv_1_ = Xbyak::Zmm(28);</span>
+<span id="L84"><span class="lineNum">      84</span>              :     Xbyak::Zmm bf16_emu_reserv_2_ = Xbyak::Zmm(29);</span>
+<span id="L85"><span class="lineNum">      85</span>              :     Xbyak::Zmm bf16_emu_reserv_3_ = Xbyak::Zmm(30);</span>
+<span id="L86"><span class="lineNum">      86</span>              :     Xbyak::Reg64 reg_tmp_ = Xbyak::Reg64(Xbyak::Operand::RAX);</span>
+<span id="L87"><span class="lineNum">      87</span>              :     Xbyak::Zmm bf16_emu_reserv_4_ = Xbyak::Zmm(31);</span>
+<span id="L88"><span class="lineNum">      88</span>              : };</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              : class io_emu_fp8_conf_t {</span>
+<span id="L91"><span class="lineNum">      91</span>              : public:</span>
+<span id="L92"><span class="lineNum">      92</span>              :     io_emu_fp8_conf_t() = default;</span>
+<span id="L93"><span class="lineNum">      93</span>              :     io_emu_fp8_conf_t(const Xbyak::Zmm &amp;fp8_emu_reserv_1,</span>
+<span id="L94"><span class="lineNum">      94</span>              :             const Xbyak::Zmm &amp;fp8_emu_reserv_2,</span>
+<span id="L95"><span class="lineNum">      95</span>              :             const Xbyak::Zmm &amp;fp8_emu_reserv_3,</span>
+<span id="L96"><span class="lineNum">      96</span>              :             const Xbyak::Zmm &amp;fp8_emu_reserv_4,</span>
+<span id="L97"><span class="lineNum">      97</span>              :             const Xbyak::Zmm &amp;fp8_emu_reserv_5, const Xbyak::Opmask &amp;kmask_aux,</span>
+<span id="L98"><span class="lineNum">      98</span>              :             const Xbyak::Reg64 &amp;reg_tmp);</span>
+<span id="L99"><span class="lineNum">      99</span>              :     io_emu_fp8_conf_t(int fp8_emu_reserv_1_idx, int fp8_emu_reserv_2_idx,</span>
+<span id="L100"><span class="lineNum">     100</span>              :             int fp8_emu_reserv_3_idx, int fp8_emu_reserv_4_idx,</span>
+<span id="L101"><span class="lineNum">     101</span>              :             int fp8_emu_reserv_5_idx, int kmask_aux_idx_,</span>
+<span id="L102"><span class="lineNum">     102</span>              :             const Xbyak::Reg64 &amp;reg_tmp);</span>
+<span id="L103"><span class="lineNum">     103</span>              :     io_emu_fp8_conf_t(const io_emu_fp8_conf_t &amp;other) = default;</span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              :     io_emu_fp8_conf_t &amp;operator=(const io_emu_fp8_conf_t &amp;other) = default;</span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span>              :     // For fp8 via emulation only.</span>
+<span id="L108"><span class="lineNum">     108</span>              :     Xbyak::Zmm fp8_emu_reserv_1_ = Xbyak::Zmm(27);</span>
+<span id="L109"><span class="lineNum">     109</span>              :     Xbyak::Zmm fp8_emu_reserv_2_ = Xbyak::Zmm(28);</span>
+<span id="L110"><span class="lineNum">     110</span>              :     Xbyak::Zmm fp8_emu_reserv_3_ = Xbyak::Zmm(29);</span>
+<span id="L111"><span class="lineNum">     111</span>              :     Xbyak::Zmm fp8_emu_reserv_4_ = Xbyak::Zmm(30);</span>
+<span id="L112"><span class="lineNum">     112</span>              :     Xbyak::Zmm fp8_emu_reserv_5_ = Xbyak::Zmm(31);</span>
+<span id="L113"><span class="lineNum">     113</span>              :     Xbyak::Opmask kmask_aux_ = Xbyak::Opmask(2);</span>
+<span id="L114"><span class="lineNum">     114</span>              :     Xbyak::Reg64 reg_tmp_ = Xbyak::util::rax;</span>
+<span id="L115"><span class="lineNum">     115</span>              : };</span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span>              : class io_saturation_conf_t {</span>
+<span id="L118"><span class="lineNum">     118</span>              : public:</span>
+<span id="L119"><span class="lineNum">     119</span>              :     io_saturation_conf_t(const int vreg_zero_saturation_idx,</span>
+<span id="L120"><span class="lineNum">     120</span>              :             const int vreg_saturation_ubound_idx, const Xbyak::Reg64 &amp;reg_tmp);</span>
+<span id="L121"><span class="lineNum">     121</span>              :     io_saturation_conf_t(const io_saturation_conf_t &amp;other) = default;</span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :     io_saturation_conf_t &amp;operator=(const io_saturation_conf_t &amp;other)</span>
+<span id="L124"><span class="lineNum">     124</span>              :             = default;</span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span>              :     int vreg_zero_saturation_idx_ = 0;</span>
+<span id="L127"><span class="lineNum">     127</span>              :     int vreg_saturation_ubound_idx_ = 0;</span>
+<span id="L128"><span class="lineNum">     128</span>              :     Xbyak::Reg64 reg_tmp_;</span>
+<span id="L129"><span class="lineNum">     129</span>              : };</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              : class io_gather_conf_t {</span>
+<span id="L132"><span class="lineNum">     132</span>              : public:</span>
+<span id="L133"><span class="lineNum">     133</span>              :     io_gather_conf_t(const std::size_t simd_w, const Xbyak::Opmask &amp;full_opmask,</span>
+<span id="L134"><span class="lineNum">     134</span>              :             const int full_vmm_mask_idx, const Xbyak::Reg64 &amp;reg_tmp,</span>
+<span id="L135"><span class="lineNum">     135</span>              :             const Xbyak::Reg64 &amp;reg_tmp1,</span>
+<span id="L136"><span class="lineNum">     136</span>              :             const utils::optional_t&lt;int&gt; &amp;vmm_tmp_idx = utils::nullopt);</span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">      212864 :     io_gather_conf_t(const io_gather_conf_t &amp;other) = default;</span></span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              :     io_gather_conf_t &amp;operator=(const io_gather_conf_t &amp;other) = default;</span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span>              :     std::size_t simd_w_ = 0;</span>
+<span id="L142"><span class="lineNum">     142</span>              :     Xbyak::Opmask full_opmask_;</span>
+<span id="L143"><span class="lineNum">     143</span>              :     int full_vmm_mask_idx_ = 0;</span>
+<span id="L144"><span class="lineNum">     144</span>              :     Xbyak::Reg64 reg_tmp_;</span>
+<span id="L145"><span class="lineNum">     145</span>              :     Xbyak::Reg64 reg_tmp1_;</span>
+<span id="L146"><span class="lineNum">     146</span>              :     // It is needed, when io_helper use emulation for gather</span>
+<span id="L147"><span class="lineNum">     147</span>              :     // and it is not needed for sse.</span>
+<span id="L148"><span class="lineNum">     148</span>              :     utils::optional_t&lt;int&gt; vmm_tmp_idx_ = utils::nullopt;</span>
+<span id="L149"><span class="lineNum">     149</span>              : };</span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L152"><span class="lineNum">     152</span>              : class jit_io_multi_dt_helper_t;</span>
+<span id="L153"><span class="lineNum">     153</span>              : </span>
+<span id="L154"><span class="lineNum">     154</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">     1567619 : class jit_io_helper_t {</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : public:</span>
+<span id="L157"><span class="lineNum">     157</span>              :     friend class jit_io_multi_dt_helper_t&lt;Vmm&gt;;</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              :     jit_io_helper_t() = default;</span>
+<span id="L160"><span class="lineNum">     160</span>              :     jit_io_helper_t(jit_generator_t *host, const cpu_isa_t &amp;isa,</span>
+<span id="L161"><span class="lineNum">     161</span>              :             const data_type_t &amp;data_type, const io_conf_t &amp;io_conf,</span>
+<span id="L162"><span class="lineNum">     162</span>              :             const utils::optional_t&lt;io_tail_conf_t&gt; &amp;tail_conf = utils::nullopt,</span>
+<span id="L163"><span class="lineNum">     163</span>              :             const utils::optional_t&lt;io_emu_bf16_conf_t&gt; &amp;bf16_conf</span>
+<span id="L164"><span class="lineNum">     164</span>              :             = utils::nullopt,</span>
+<span id="L165"><span class="lineNum">     165</span>              :             const utils::optional_t&lt;io_saturation_conf_t&gt; &amp;saturation_conf</span>
+<span id="L166"><span class="lineNum">     166</span>              :             = utils::nullopt,</span>
+<span id="L167"><span class="lineNum">     167</span>              :             const utils::optional_t&lt;io_gather_conf_t&gt; &amp;gather_conf</span>
+<span id="L168"><span class="lineNum">     168</span>              :             = utils::nullopt,</span>
+<span id="L169"><span class="lineNum">     169</span>              :             const utils::optional_t&lt;io_emu_fp8_conf_t&gt; &amp;fp8_conf</span>
+<span id="L170"><span class="lineNum">     170</span>              :             = utils::nullopt);</span>
+<span id="L171"><span class="lineNum">     171</span>              :     jit_io_helper_t(jit_io_helper_t &amp;&amp;) = default;</span>
+<span id="L172"><span class="lineNum">     172</span>              :     jit_io_helper_t &amp;operator=(jit_io_helper_t &amp;&amp;) = default;</span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span>              :     ~jit_io_helper_t();</span>
+<span id="L175"><span class="lineNum">     175</span>              :     void prepare_tail_mask();</span>
+<span id="L176"><span class="lineNum">     176</span>              :     void prepare_full_mask();</span>
+<span id="L177"><span class="lineNum">     177</span>              :     /*</span>
+<span id="L178"><span class="lineNum">     178</span>              :      * Sometimes the values in the register can be nan at the</span>
+<span id="L179"><span class="lineNum">     179</span>              :      * beginning of the kernel, then using vcmpps(vmm, vmm, vmm)</span>
+<span id="L180"><span class="lineNum">     180</span>              :      * will not set all bits to 1, instead of that this instruction will</span>
+<span id="L181"><span class="lineNum">     181</span>              :      * return zero. At the beginning, it is worth to zeroing</span>
+<span id="L182"><span class="lineNum">     182</span>              :      * full mask vmm to be sure, that vcmpps work properly.</span>
+<span id="L183"><span class="lineNum">     183</span>              :      */</span>
+<span id="L184"><span class="lineNum">     184</span>              :     void init_full_mask();</span>
+<span id="L185"><span class="lineNum">     185</span>              :     void init_saturate_f32() const;</span>
+<span id="L186"><span class="lineNum">     186</span>              :     void init_bf16();</span>
+<span id="L187"><span class="lineNum">     187</span>              :     // `prepare_table` implies the call must be used after `postamble`.</span>
+<span id="L188"><span class="lineNum">     188</span>              :     void prepare_table_fp8();</span>
+<span id="L189"><span class="lineNum">     189</span>              :     void gather(const Xbyak::Reg64 &amp;src_reg, const Vmm &amp;indices_vmm,</span>
+<span id="L190"><span class="lineNum">     190</span>              :             const Vmm &amp;dst_vmm, const bool tail);</span>
+<span id="L191"><span class="lineNum">     191</span>              :     void broadcast(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm);</span>
+<span id="L192"><span class="lineNum">     192</span>              :     void load(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm,</span>
+<span id="L193"><span class="lineNum">     193</span>              :             const bool tail);</span>
+<span id="L194"><span class="lineNum">     194</span>              :     void store(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr,</span>
+<span id="L195"><span class="lineNum">     195</span>              :             const bool tail);</span>
+<span id="L196"><span class="lineNum">     196</span>              :     // Load odd and even data into two registers with ne_convert instructions</span>
+<span id="L197"><span class="lineNum">     197</span>              :     // Then we can call merge_interleaved_to_plain() to merge them into</span>
+<span id="L198"><span class="lineNum">     198</span>              :     // plain layouts when needed</span>
+<span id="L199"><span class="lineNum">     199</span>              :     void load_two_simdw_xf16(const Xbyak::Address &amp;src_addr,</span>
+<span id="L200"><span class="lineNum">     200</span>              :             const Vmm &amp;dst_even_vmm, const Vmm &amp;dst_odd_vmm);</span>
+<span id="L201"><span class="lineNum">     201</span>              :     void merge_interleaved_to_plain(</span>
+<span id="L202"><span class="lineNum">     202</span>              :             const Vmm &amp;vmm_even, const Vmm &amp;vmm_odd, const Vmm &amp;vmm_aux0);</span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span>              : private:</span>
+<span id="L205"><span class="lineNum">     205</span>              :     bool is_data_type_supported(const data_type_t dt);</span>
+<span id="L206"><span class="lineNum">     206</span>              :     void prepare_opmask(const std::size_t how_many_bits_to_set,</span>
+<span id="L207"><span class="lineNum">     207</span>              :             const Xbyak::Reg64 &amp;reg_tmp, const Xbyak::Opmask &amp;mask);</span>
+<span id="L208"><span class="lineNum">     208</span>              :     void prepare_vmm_mask(const std::size_t how_many_bits_to_set,</span>
+<span id="L209"><span class="lineNum">     209</span>              :             const std::size_t simd_w, const Xbyak::Reg64 &amp;reg_tmp,</span>
+<span id="L210"><span class="lineNum">     210</span>              :             const Vmm &amp;mask);</span>
+<span id="L211"><span class="lineNum">     211</span>              :     void prepare_i8_data_to_store(const Vmm &amp;i8_vmm);</span>
+<span id="L212"><span class="lineNum">     212</span>              :     void prepare_xf16_data_to_store(const Vmm &amp;vmm);</span>
+<span id="L213"><span class="lineNum">     213</span>              :     // Emulates the behavior of vgatherdps for architectures</span>
+<span id="L214"><span class="lineNum">     214</span>              :     // that do not support this instruction.</span>
+<span id="L215"><span class="lineNum">     215</span>              :     void emu_gather(const Xbyak::Reg64 &amp;src_reg, const Vmm &amp;indices_vmm,</span>
+<span id="L216"><span class="lineNum">     216</span>              :             const Vmm &amp;dst_vmm, const bool tail);</span>
+<span id="L217"><span class="lineNum">     217</span>              :     void load_byte_by_byte(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm,</span>
+<span id="L218"><span class="lineNum">     218</span>              :             const int load_size);</span>
+<span id="L219"><span class="lineNum">     219</span>              :     void load_f32(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm,</span>
+<span id="L220"><span class="lineNum">     220</span>              :             const bool tail);</span>
+<span id="L221"><span class="lineNum">     221</span>              :     void load_s32(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm,</span>
+<span id="L222"><span class="lineNum">     222</span>              :             const bool tail);</span>
+<span id="L223"><span class="lineNum">     223</span>              :     void load_bf16(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm);</span>
+<span id="L224"><span class="lineNum">     224</span>              :     void load_f16(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm);</span>
+<span id="L225"><span class="lineNum">     225</span>              :     void load_f8(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm);</span>
+<span id="L226"><span class="lineNum">     226</span>              :     void load_i8(const Xbyak::Address &amp;src_addr, const Vmm &amp;dst_vmm);</span>
+<span id="L227"><span class="lineNum">     227</span>              :     void saturate(const Vmm &amp;vmm, const bool use_sat_cvt);</span>
+<span id="L228"><span class="lineNum">     228</span>              :     void store_byte_by_byte(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr,</span>
+<span id="L229"><span class="lineNum">     229</span>              :             const int store_size);</span>
+<span id="L230"><span class="lineNum">     230</span>              :     void store_f32(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr,</span>
+<span id="L231"><span class="lineNum">     231</span>              :             const bool tail);</span>
+<span id="L232"><span class="lineNum">     232</span>              :     void store_bf16(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr);</span>
+<span id="L233"><span class="lineNum">     233</span>              :     void store_f16(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr);</span>
+<span id="L234"><span class="lineNum">     234</span>              :     void store_f8(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr);</span>
+<span id="L235"><span class="lineNum">     235</span>              :     void store_i8(const Vmm &amp;src_vmm, const Xbyak::Address &amp;dst_addr,</span>
+<span id="L236"><span class="lineNum">     236</span>              :             const bool use_sat_cvt);</span>
+<span id="L237"><span class="lineNum">     237</span>              :     void convert_to_f32(const Vmm &amp;dst_vmm, const Xbyak::Xmm &amp;src_vmm,</span>
+<span id="L238"><span class="lineNum">     238</span>              :             const data_type_t src_data_type);</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span>              :     jit_generator_t *host_;</span>
+<span id="L241"><span class="lineNum">     241</span>              :     const cpu_isa_t isa_;</span>
+<span id="L242"><span class="lineNum">     242</span>              :     const data_type_t data_type_;</span>
+<span id="L243"><span class="lineNum">     243</span>              :     const bool bf16_supported_;</span>
+<span id="L244"><span class="lineNum">     244</span>              :     const bool f16_supported_;</span>
+<span id="L245"><span class="lineNum">     245</span>              :     const bool fp8_supported_;</span>
+<span id="L246"><span class="lineNum">     246</span>              :     std::unique_ptr&lt;bf16_emulation_t&gt; bf16_emu_;</span>
+<span id="L247"><span class="lineNum">     247</span>              :     std::unique_ptr&lt;fp8_conversion_base_t&gt; fp8_cvt_;</span>
+<span id="L248"><span class="lineNum">     248</span>              :     const io_conf_t io_conf_;</span>
+<span id="L249"><span class="lineNum">     249</span>              :     const utils::optional_t&lt;io_tail_conf_t&gt; tail_conf_;</span>
+<span id="L250"><span class="lineNum">     250</span>              :     const utils::optional_t&lt;io_emu_bf16_conf_t&gt; bf16_conf_;</span>
+<span id="L251"><span class="lineNum">     251</span>              :     const utils::optional_t&lt;io_saturation_conf_t&gt; saturation_conf_;</span>
+<span id="L252"><span class="lineNum">     252</span>              :     const utils::optional_t&lt;io_gather_conf_t&gt; gather_conf_;</span>
+<span id="L253"><span class="lineNum">     253</span>              :     const utils::optional_t&lt;io_emu_fp8_conf_t&gt; fp8_conf_;</span>
+<span id="L254"><span class="lineNum">     254</span>              : };</span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">     2851687 : class jit_io_multi_dt_helper_t {</span></span>
+<span id="L258"><span class="lineNum">     258</span>              : public:</span>
+<span id="L259"><span class="lineNum">     259</span>              :     using data_types_t = std::unordered_set&lt;data_type_t, std::hash&lt;int&gt;&gt;;</span>
+<span id="L260"><span class="lineNum">     260</span>              :     using saturation_map_t = std::map&lt;data_type_t, io_saturation_conf_t&gt;;</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :     jit_io_multi_dt_helper_t();</span>
+<span id="L263"><span class="lineNum">     263</span>              :     jit_io_multi_dt_helper_t(jit_generator_t *host, const cpu_isa_t &amp;isa,</span>
+<span id="L264"><span class="lineNum">     264</span>              :             const data_types_t &amp;data_types, const io_conf_t &amp;io_conf,</span>
+<span id="L265"><span class="lineNum">     265</span>              :             const utils::optional_t&lt;io_tail_conf_t&gt; &amp;tail_conf = utils::nullopt,</span>
+<span id="L266"><span class="lineNum">     266</span>              :             const utils::optional_t&lt;io_emu_bf16_conf_t&gt; &amp;bf16_conf</span>
+<span id="L267"><span class="lineNum">     267</span>              :             = utils::nullopt,</span>
+<span id="L268"><span class="lineNum">     268</span>              :             const saturation_map_t &amp;saturation_confs = saturation_map_t {},</span>
+<span id="L269"><span class="lineNum">     269</span>              :             const utils::optional_t&lt;io_gather_conf_t&gt; &amp;gather_conf</span>
+<span id="L270"><span class="lineNum">     270</span>              :             = utils::nullopt,</span>
+<span id="L271"><span class="lineNum">     271</span>              :             const utils::optional_t&lt;io_emu_fp8_conf_t&gt; &amp;fp8_conf</span>
+<span id="L272"><span class="lineNum">     272</span>              :             = utils::nullopt);</span>
+<span id="L273"><span class="lineNum">     273</span>              :     virtual ~jit_io_multi_dt_helper_t();</span>
+<span id="L274"><span class="lineNum">     274</span>              :     void prepare_tail_mask();</span>
+<span id="L275"><span class="lineNum">     275</span>              :     void prepare_full_mask();</span>
+<span id="L276"><span class="lineNum">     276</span>              :     void init_saturate_f32(const data_types_t &amp;store_data_types);</span>
+<span id="L277"><span class="lineNum">     277</span>              :     void init_full_mask();</span>
+<span id="L278"><span class="lineNum">     278</span>              :     void init_bf16();</span>
+<span id="L279"><span class="lineNum">     279</span>              :     // `prepare_table` implies the call must be used after `postamble`.</span>
+<span id="L280"><span class="lineNum">     280</span>              :     void prepare_table_fp8();</span>
+<span id="L281"><span class="lineNum">     281</span>              : </span>
+<span id="L282"><span class="lineNum">     282</span>              :     std::shared_ptr&lt;jit_io_helper_t&lt;Vmm&gt;&gt; at(const data_type_t dt) const;</span>
+<span id="L283"><span class="lineNum">     283</span>              :     bool empty() const;</span>
+<span id="L284"><span class="lineNum">     284</span>              :     std::shared_ptr&lt;jit_io_helper_t&lt;Vmm&gt;&gt; operator[](</span>
+<span id="L285"><span class="lineNum">     285</span>              :             const data_type_t dt) const;</span>
+<span id="L286"><span class="lineNum">     286</span>              : </span>
+<span id="L287"><span class="lineNum">     287</span>              : private:</span>
+<span id="L288"><span class="lineNum">     288</span>              :     std::unordered_map&lt;data_type_t, std::shared_ptr&lt;jit_io_helper_t&lt;Vmm&gt;&gt;,</span>
+<span id="L289"><span class="lineNum">     289</span>              :             std::hash&lt;int&gt;&gt;</span>
+<span id="L290"><span class="lineNum">     290</span>              :             storage_;</span>
+<span id="L291"><span class="lineNum">     291</span>              : };</span>
+<span id="L292"><span class="lineNum">     292</span>              : </span>
+<span id="L293"><span class="lineNum">     293</span>              : template &lt;&gt;</span>
+<span id="L294"><span class="lineNum">     294</span>              : void jit_io_helper_t&lt;Xbyak::Zmm&gt;::emu_gather(const Xbyak::Reg64 &amp;src_reg,</span>
+<span id="L295"><span class="lineNum">     295</span>              :         const Xbyak::Zmm &amp;indices_vmm, const Xbyak::Zmm &amp;dst_vmm,</span>
+<span id="L296"><span class="lineNum">     296</span>              :         const bool tail);</span>
+<span id="L297"><span class="lineNum">     297</span>              : template &lt;&gt;</span>
+<span id="L298"><span class="lineNum">     298</span>              : void jit_io_helper_t&lt;Xbyak::Ymm&gt;::emu_gather(const Xbyak::Reg64 &amp;src_reg,</span>
+<span id="L299"><span class="lineNum">     299</span>              :         const Xbyak::Ymm &amp;indices_vmm, const Xbyak::Ymm &amp;dst_vmm,</span>
+<span id="L300"><span class="lineNum">     300</span>              :         const bool tail);</span>
+<span id="L301"><span class="lineNum">     301</span>              : template &lt;&gt;</span>
+<span id="L302"><span class="lineNum">     302</span>              : void jit_io_helper_t&lt;Xbyak::Xmm&gt;::emu_gather(const Xbyak::Reg64 &amp;src_reg,</span>
+<span id="L303"><span class="lineNum">     303</span>              :         const Xbyak::Xmm &amp;indices_vmm, const Xbyak::Xmm &amp;dst_vmm,</span>
+<span id="L304"><span class="lineNum">     304</span>              :         const bool tail);</span>
+<span id="L305"><span class="lineNum">     305</span>              : </span>
+<span id="L306"><span class="lineNum">     306</span>              : extern template class jit_io_helper_t&lt;Xbyak::Zmm&gt;;</span>
+<span id="L307"><span class="lineNum">     307</span>              : extern template class jit_io_helper_t&lt;Xbyak::Ymm&gt;;</span>
+<span id="L308"><span class="lineNum">     308</span>              : extern template class jit_io_helper_t&lt;Xbyak::Xmm&gt;;</span>
+<span id="L309"><span class="lineNum">     309</span>              : </span>
+<span id="L310"><span class="lineNum">     310</span>              : extern template class jit_io_multi_dt_helper_t&lt;Xbyak::Zmm&gt;;</span>
+<span id="L311"><span class="lineNum">     311</span>              : extern template class jit_io_multi_dt_helper_t&lt;Xbyak::Ymm&gt;;</span>
+<span id="L312"><span class="lineNum">     312</span>              : extern template class jit_io_multi_dt_helper_t&lt;Xbyak::Xmm&gt;;</span>
+<span id="L313"><span class="lineNum">     313</span>              : </span>
+<span id="L314"><span class="lineNum">     314</span>              : } // namespace io</span>
+<span id="L315"><span class="lineNum">     315</span>              : } // namespace x64</span>
+<span id="L316"><span class="lineNum">     316</span>              : } // namespace cpu</span>
+<span id="L317"><span class="lineNum">     317</span>              : } // namespace impl</span>
+<span id="L318"><span class="lineNum">     318</span>              : } // namespace dnnl</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

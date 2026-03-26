@@ -1,0 +1,427 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_avx512_core_x8s8s32x_deconvolution.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_avx512_core_x8s8s32x_deconvolution.hpp<span style="font-size: 80%;"> (source / <a href="jit_avx512_core_x8s8s32x_deconvolution.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.4&nbsp;%</td>
+            <td class="headerCovTableEntry">83</td>
+            <td class="headerCovTableEntry">80</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">37</td>
+            <td class="headerCovTableEntry">37</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2018 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_JIT_AVX512_CORE_X8S8S32X_DECONVOLUTION_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_JIT_AVX512_CORE_X8S8S32X_DECONVOLUTION_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;functional&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;memory&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;vector&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/memory.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;common/nstl.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;common/primitive.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/cpu_deconvolution_pd.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &quot;cpu/x64/injectors/jit_uni_postops_injector.hpp&quot;</span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L35"><span class="lineNum">      35</span>              : #include &quot;cpu/x64/jit_primitive_conf.hpp&quot;</span>
+<span id="L36"><span class="lineNum">      36</span>              : #include &quot;cpu/x64/jit_uni_deconv_zp_pad_str_kernel.hpp&quot;</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : namespace dnnl {</span>
+<span id="L39"><span class="lineNum">      39</span>              : namespace impl {</span>
+<span id="L40"><span class="lineNum">      40</span>              : namespace cpu {</span>
+<span id="L41"><span class="lineNum">      41</span>              : namespace x64 {</span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span>              : enum ker_block_t {</span>
+<span id="L44"><span class="lineNum">      44</span>              :     no_last_block = 0x1U,</span>
+<span id="L45"><span class="lineNum">      45</span>              :     last_ic_block = 0x2U,</span>
+<span id="L46"><span class="lineNum">      46</span>              :     last_sp_block = 0x4U,</span>
+<span id="L47"><span class="lineNum">      47</span>              : };</span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              : struct ur_w_blks_params_t {</span>
+<span id="L50"><span class="lineNum">      50</span>              :     struct single_ur_w_blk_params_t {</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">        1937 :         single_ur_w_blk_params_t(</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :                 int l_overflow, int r_overflow, bool process_sp_carefully)</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        1937 :             : l_overflow(l_overflow)</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :             , r_overflow(r_overflow)</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">        1937 :             , process_sp_carefully(process_sp_carefully) {}</span></span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span>              :         // l_overflow - no. of spatial elements of weights standing out of</span>
+<span id="L58"><span class="lineNum">      58</span>              :         // src spatial when computing the 1st output pixel in the current blk</span>
+<span id="L59"><span class="lineNum">      59</span>              :         int l_overflow;</span>
+<span id="L60"><span class="lineNum">      60</span>              :         // r_overflow - no. of spatial elements of weights standing out of</span>
+<span id="L61"><span class="lineNum">      61</span>              :         // src spatial when computing the lst output pixel in the current blk</span>
+<span id="L62"><span class="lineNum">      62</span>              :         int r_overflow;</span>
+<span id="L63"><span class="lineNum">      63</span>              :         // process_sp_carefully - indicates if loading the last src sp</span>
+<span id="L64"><span class="lineNum">      64</span>              :         // for computation of the last dst sp of the block can't be done</span>
+<span id="L65"><span class="lineNum">      65</span>              :         // by fetching 4 src sp at once</span>
+<span id="L66"><span class="lineNum">      66</span>              :         bool process_sp_carefully;</span>
+<span id="L67"><span class="lineNum">      67</span>              :     };</span>
+<span id="L68"><span class="lineNum">      68</span>              :     std::vector&lt;single_ur_w_blk_params_t&gt; blks_params;</span>
+<span id="L69"><span class="lineNum">      69</span>              :     int num_pre_blks; // num of blocks with l_overflow&gt;0</span>
+<span id="L70"><span class="lineNum">      70</span>              :     int num_post_blks; // num of blocks with r_overflow&gt;0 or that need to be</span>
+<span id="L71"><span class="lineNum">      71</span>              :             // processed carefully</span>
+<span id="L72"><span class="lineNum">      72</span>              : };</span>
+<span id="L73"><span class="lineNum">      73</span>              : </span>
+<span id="L74"><span class="lineNum">      74</span>              : template &lt;typename Vmm&gt;</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        1154 : struct jit_avx512_core_x8s8s32x_deconv_fwd_kernel_t : public jit_generator_t {</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">        1731 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_avx512_core_x8s8s32x_deconv_fwd_ker_t);</span></span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              :     jit_avx512_core_x8s8s32x_deconv_fwd_kernel_t(const jit_conv_conf_t &amp;ajcp,</span>
+<span id="L79"><span class="lineNum">      79</span>              :             const primitive_attr_t &amp;attr, const memory_desc_t &amp;dst_md);</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              :     ~jit_avx512_core_x8s8s32x_deconv_fwd_kernel_t() override;</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span>              :     const jit_conv_conf_t &amp;jcp;</span>
+<span id="L84"><span class="lineNum">      84</span>              :     const primitive_attr_t &amp;attr_;</span>
+<span id="L85"><span class="lineNum">      85</span>              : </span>
+<span id="L86"><span class="lineNum">      86</span>              : private:</span>
+<span id="L87"><span class="lineNum">      87</span>              :     std::unique_ptr&lt;injector::jit_uni_postops_injector_t&lt;avx512_core, Vmm&gt;&gt;</span>
+<span id="L88"><span class="lineNum">      88</span>              :             postops_injector_;</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              :     const int ic_sub_step = 4;</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span>              :     /* data regs */</span>
+<span id="L93"><span class="lineNum">      93</span>              :     const Xbyak::Reg64 reg_src = r8;</span>
+<span id="L94"><span class="lineNum">      94</span>              :     const Xbyak::Reg64 reg_filt = r9;</span>
+<span id="L95"><span class="lineNum">      95</span>              :     const Xbyak::Reg64 reg_dst = r10;</span>
+<span id="L96"><span class="lineNum">      96</span>              :     const Xbyak::Reg64 param1 = abi_param1;</span>
+<span id="L97"><span class="lineNum">      97</span>              :     const Xbyak::Reg64 reg_kh = abi_not_param1;</span>
+<span id="L98"><span class="lineNum">      98</span>              :     const Xbyak::Reg64 reg_ki = r14;</span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span>              :     const Xbyak::Reg64 reg_nur_w = rbx;</span>
+<span id="L101"><span class="lineNum">     101</span>              :     const Xbyak::Reg64 reg_bias = rdx;</span>
+<span id="L102"><span class="lineNum">     102</span>              :     const Xbyak::Reg64 reg_icb = reg_bias;</span>
+<span id="L103"><span class="lineNum">     103</span>              :     const Xbyak::Reg64 reg_src_scales = rax;</span>
+<span id="L104"><span class="lineNum">     104</span>              :     const Xbyak::Reg64 reg_wei_scales = rax;</span>
+<span id="L105"><span class="lineNum">     105</span>              :     const Xbyak::Reg64 reg_scale_adjust = rax;</span>
+<span id="L106"><span class="lineNum">     106</span>              :     const Xbyak::Reg64 reg_dst_scales = rax;</span>
+<span id="L107"><span class="lineNum">     107</span>              :     const Xbyak::Reg64 reg_ptr_saturation_ubound = rax;</span>
+<span id="L108"><span class="lineNum">     108</span>              :     const Xbyak::Reg64 reg_oc_blocks = rsi;</span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span>              :     const Xbyak::Reg64 aux_reg_src = r11;</span>
+<span id="L111"><span class="lineNum">     111</span>              :     const Xbyak::Reg64 aux_reg_filt = r12;</span>
+<span id="L112"><span class="lineNum">     112</span>              : </span>
+<span id="L113"><span class="lineNum">     113</span>              :     const Xbyak::Reg64 aux_reg_src_d = r13;</span>
+<span id="L114"><span class="lineNum">     114</span>              :     const Xbyak::Reg64 aux_reg_filt_d = r15;</span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span>              :     const Xbyak::Reg64 reg_compensation = r14;</span>
+<span id="L117"><span class="lineNum">     117</span>              :     const Xbyak::Reg64 reg_scratch = r14;</span>
+<span id="L118"><span class="lineNum">     118</span>              :     const Xbyak::Reg64 reg_ptr_sum_scale = r11;</span>
+<span id="L119"><span class="lineNum">     119</span>              :     const Xbyak::Reg64 reg_overflow = rax;</span>
+<span id="L120"><span class="lineNum">     120</span>              :     const Xbyak::Reg64 reg_comp_strides = reg_overflow;</span>
+<span id="L121"><span class="lineNum">     121</span>              :     const Xbyak::Reg64 reg_ker_long_offt = r15;</span>
+<span id="L122"><span class="lineNum">     122</span>              :     const Xbyak::Reg64 &amp;reg_zp_dst_ = r15;</span>
+<span id="L123"><span class="lineNum">     123</span>              :     const Xbyak::Reg64 &amp;reg_zp_src_ = r15;</span>
+<span id="L124"><span class="lineNum">     124</span>              :     const Xbyak::Reg64 &amp;reg_zp_compensation = r11;</span>
+<span id="L125"><span class="lineNum">     125</span>              :     static constexpr int reserved_stack_size_ = 16;</span>
+<span id="L126"><span class="lineNum">     126</span>              :     const Xbyak::Address zp_src_pad_comp_addr = ptr[rsp];</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">         577 :     const Xbyak::Address reg_scratch_preserved = ptr[rsp + 8];</span></span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span>              :     Xbyak::Opmask ktail_mask = Xbyak::Opmask(2);</span>
+<span id="L130"><span class="lineNum">     130</span>              :     const Vmm vmm_tmp = Vmm(28);</span>
+<span id="L131"><span class="lineNum">     131</span>              :     const Vmm vmm_one = Vmm(29);</span>
+<span id="L132"><span class="lineNum">     132</span>              :     /* used during write-out section of store_output */</span>
+<span id="L133"><span class="lineNum">     133</span>              :     const Vmm vmm_zero = Vmm(31);</span>
+<span id="L134"><span class="lineNum">     134</span>              :     const Vmm vmm_saturation = Vmm(31);</span>
+<span id="L135"><span class="lineNum">     135</span>              :     const Vmm vmm_wei = Vmm(31);</span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span>              :     /* signed input */</span>
+<span id="L138"><span class="lineNum">     138</span>              :     const Vmm vmm_shift = Vmm(30);</span>
+<span id="L139"><span class="lineNum">     139</span>              :     const Vmm vmm_comp = Vmm(30);</span>
+<span id="L140"><span class="lineNum">     140</span>              :     const Vmm vmm_bias = Vmm(31);</span>
+<span id="L141"><span class="lineNum">     141</span>              :     const Vmm vmm_scale_adjust = Vmm(31);</span>
+<span id="L142"><span class="lineNum">     142</span>              :     const Vmm vmm_prev_dst = Vmm(31);</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      456486 :     Vmm vmm_out(int i_ur, int i_oc) {</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      456486 :         int idx = i_ur * jcp.nb_oc_blocking + i_oc;</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">      456486 :         assert(idx &lt; 31);</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      456486 :         return Vmm(idx);</span></span>
+<span id="L148"><span class="lineNum">     148</span>              :     }</span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      355950 :     Vmm vmm_inp(int i_ic, int nb_x_blocking) const {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      355950 :         int idx = i_ic + nb_x_blocking * jcp.ur_w;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">      355950 :         assert(idx &lt; 31);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">      355950 :         return Vmm(idx);</span></span>
+<span id="L153"><span class="lineNum">     153</span>              :     }</span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">       17427 :     int get_ow_start(int ki, int l_overflow) {</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       17427 :         int res = (jcp.ow - 1 + jcp.r_pad) % jcp.stride_w</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       17427 :                 + l_overflow * jcp.stride_w</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       17427 :                 - (jcp.kw - 1 - ki) * (jcp.dilate_w + 1);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       32741 :         while (res &lt; 0)</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       15314 :             res += jcp.stride_w;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       17427 :         return res;</span></span>
+<span id="L162"><span class="lineNum">     162</span>              :     }</span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       17427 :     int get_ow_end(int ur_w, int ki, int r_overflow) {</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       17427 :         if (utils::one_of(ur_w, jcp.ow, jcp.ur_w_tail))</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">        7707 :             ur_w += nstl::min(0, jcp.r_pad); // remove negative padding</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       17427 :         int res = (ur_w - 1 + jcp.l_pad) % jcp.stride_w</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       17427 :                 + r_overflow * jcp.stride_w - ki * (jcp.dilate_w + 1);</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       31013 :         while (res &lt; 0)</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       13586 :             res += jcp.stride_w;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       17427 :         return ur_w - res;</span></span>
+<span id="L172"><span class="lineNum">     172</span>              :     }</span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span>              :     int get_blocking_size() const noexcept;</span>
+<span id="L175"><span class="lineNum">     175</span>              :     int get_tail_size() const noexcept;</span>
+<span id="L176"><span class="lineNum">     176</span>              :     void prepare_output(int ur_w);</span>
+<span id="L177"><span class="lineNum">     177</span>              :     void store_output(int ur_w, bool last_oc_block);</span>
+<span id="L178"><span class="lineNum">     178</span>              :     void compute(const Vmm &amp;vreg_acc, const Vmm &amp;vreg_wei, const Vmm &amp;vreg_src);</span>
+<span id="L179"><span class="lineNum">     179</span>              :     std::function&lt;Vmm()&gt; prepare_round_robin_vmm_inp_generator(</span>
+<span id="L180"><span class="lineNum">     180</span>              :             int ur_w) const noexcept;</span>
+<span id="L181"><span class="lineNum">     181</span>              :     void apply_zp_src_pad_str_comp(</span>
+<span id="L182"><span class="lineNum">     182</span>              :             int ur_w, int l_overflow, int r_overflow, bool h_padded);</span>
+<span id="L183"><span class="lineNum">     183</span>              :     void append_zp_src_pad_str_comp(int ur_w, int l_overflow, int r_overflow,</span>
+<span id="L184"><span class="lineNum">     184</span>              :             bool h_padded, bool last_oc_block);</span>
+<span id="L185"><span class="lineNum">     185</span>              :     void compute_ker(int ur_w, int l_overflow, int r_overflow,</span>
+<span id="L186"><span class="lineNum">     186</span>              :             ker_block_t last_ic_block_flag, bool h_padded = false);</span>
+<span id="L187"><span class="lineNum">     187</span>              :     void kh_loop(int ur_w, int pad_l, int pad_r, ker_block_t last_ker_block);</span>
+<span id="L188"><span class="lineNum">     188</span>              :     void icb_loop(int ur_w, int pad_l, int pad_r, bool last_block);</span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              :     ur_w_blks_params_t get_ur_w_blks_params();</span>
+<span id="L191"><span class="lineNum">     191</span>              : </span>
+<span id="L192"><span class="lineNum">     192</span>              :     void generate() override;</span>
+<span id="L193"><span class="lineNum">     193</span>              :     void cvt2ps(data_type_t type_in, Vmm vmm_in, const Xbyak::Operand &amp;op,</span>
+<span id="L194"><span class="lineNum">     194</span>              :             bool mask_flag);</span>
+<span id="L195"><span class="lineNum">     195</span>              : };</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              : struct jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t {</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">         577 :     jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t(</span></span>
+<span id="L199"><span class="lineNum">     199</span>              :             const jit_conv_conf_t &amp;ajcp, const primitive_attr_t &amp;attr,</span>
+<span id="L200"><span class="lineNum">     200</span>              :             const memory_desc_t &amp;dst_md)</span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">         577 :         : kernel_(nullptr) {</span></span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">         577 :         int ch_block = ajcp.is_depthwise ? ajcp.ch_block : ajcp.ic_block;</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">         577 :         switch (ch_block) {</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">         521 :             case 16:</span></span>
+<span id="L206"><span class="lineNum">     206</span>              :                 kernel_ = utils::make_unique&lt;</span>
+<span id="L207"><span class="lineNum">     207</span>              :                         jit_avx512_core_x8s8s32x_deconv_fwd_kernel_t&lt;</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">         521 :                                 Xbyak::Zmm&gt;&gt;(ajcp, attr, dst_md);</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">         521 :                 return;</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">           4 :             case 8:</span></span>
+<span id="L211"><span class="lineNum">     211</span>              :                 kernel_ = utils::make_unique&lt;</span>
+<span id="L212"><span class="lineNum">     212</span>              :                         jit_avx512_core_x8s8s32x_deconv_fwd_kernel_t&lt;</span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">           4 :                                 Xbyak::Ymm&gt;&gt;(ajcp, attr, dst_md);</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           4 :                 return;</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">          52 :             case 4:</span></span>
+<span id="L216"><span class="lineNum">     216</span>              :                 kernel_ = utils::make_unique&lt;</span>
+<span id="L217"><span class="lineNum">     217</span>              :                         jit_avx512_core_x8s8s32x_deconv_fwd_kernel_t&lt;</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">          52 :                                 Xbyak::Xmm&gt;&gt;(ajcp, attr, dst_md);</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">          52 :                 return;</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaUNC">           0 :             default: assert(!&quot;invalid channel blocking&quot;);</span></span>
+<span id="L221"><span class="lineNum">     221</span>              :         }</span>
+<span id="L222"><span class="lineNum">     222</span>              :     }</span>
+<span id="L223"><span class="lineNum">     223</span>              : </span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         577 :     status_t create_kernel() {</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         577 :         if (kernel_) return kernel_-&gt;create_kernel();</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :         return status::out_of_memory;</span></span>
+<span id="L227"><span class="lineNum">     227</span>              :     }</span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">         577 :     ~jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t() = default;</span></span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">       37308 :     void operator()(const jit_deconv_args_t *p) const { (*kernel_)(p); }</span></span>
+<span id="L232"><span class="lineNum">     232</span>              : </span>
+<span id="L233"><span class="lineNum">     233</span>              :     static bool post_ops_ok(jit_conv_conf_t &amp;jcp, primitive_attr_t &amp;attr,</span>
+<span id="L234"><span class="lineNum">     234</span>              :             const memory_desc_wrapper &amp;dst_d);</span>
+<span id="L235"><span class="lineNum">     235</span>              : </span>
+<span id="L236"><span class="lineNum">     236</span>              :     static status_t init_conf(jit_conv_conf_t &amp;jcp,</span>
+<span id="L237"><span class="lineNum">     237</span>              :             const deconvolution_desc_t &amp;cd, memory_desc_t &amp;src_md,</span>
+<span id="L238"><span class="lineNum">     238</span>              :             memory_desc_t &amp;weights_md, memory_desc_t &amp;dst_md,</span>
+<span id="L239"><span class="lineNum">     239</span>              :             const bool with_bias, memory_desc_t &amp;bias_md,</span>
+<span id="L240"><span class="lineNum">     240</span>              :             primitive_attr_t &amp;attr, int nthreads);</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              :     static void init_scratchpad(memory_tracking::registrar_t &amp;scratchpad,</span>
+<span id="L243"><span class="lineNum">     243</span>              :             const jit_conv_conf_t &amp;jcp, const primitive_attr_t &amp;attr);</span>
+<span id="L244"><span class="lineNum">     244</span>              : </span>
+<span id="L245"><span class="lineNum">     245</span>              : private:</span>
+<span id="L246"><span class="lineNum">     246</span>              :     DNNL_DISALLOW_COPY_AND_ASSIGN(</span>
+<span id="L247"><span class="lineNum">     247</span>              :             jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t);</span>
+<span id="L248"><span class="lineNum">     248</span>              :     std::unique_ptr&lt;jit_generator_t&gt; kernel_;</span>
+<span id="L249"><span class="lineNum">     249</span>              : };</span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span>              : struct jit_avx512_core_x8s8s32x_deconvolution_fwd_t : public primitive_t {</span>
+<span id="L252"><span class="lineNum">     252</span>              :     struct pd_t : public cpu_deconvolution_fwd_pd_t {</span>
+<span id="L253"><span class="lineNum">     253</span>              :         using cpu_deconvolution_fwd_pd_t::cpu_deconvolution_fwd_pd_t;</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        5083 :         DECLARE_COMMON_PD_T(</span></span>
+<span id="L256"><span class="lineNum">     256</span>              :                 JIT_IMPL_NAME_HELPER(&quot;jit_deconvolution:&quot;,</span>
+<span id="L257"><span class="lineNum">     257</span>              :                         ((jcp_.has_vnni) ? avx512_core_vnni : avx512_core), &quot;&quot;),</span>
+<span id="L258"><span class="lineNum">     258</span>              :                 jit_avx512_core_x8s8s32x_deconvolution_fwd_t);</span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">      117189 :         status_t init(engine_t *engine) {</span></span>
+<span id="L261"><span class="lineNum">     261</span>              :             using namespace data_type;</span>
+<span id="L262"><span class="lineNum">     262</span>              :             using skip_mask_t = primitive_attr_t::skip_mask_t;</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">      117189 :             VDISPATCH_DECONVOLUTION(is_fwd(), VERBOSE_BAD_PROPKIND);</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">      117189 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :                     (desc()-&gt;alg_kind &amp; alg_kind::deconvolution_direct),</span>
+<span id="L266"><span class="lineNum">     266</span>              :                     VERBOSE_BAD_ALGORITHM);</span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">      117189 :             VDISPATCH_DECONVOLUTION(utils::one_of(src_md(0)-&gt;data_type, s8, u8),</span></span>
+<span id="L268"><span class="lineNum">     268</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">       34351 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :                     weights_md(0)-&gt;data_type == s8, VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">       34351 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :                     IMPLICATION(with_bias(),</span>
+<span id="L273"><span class="lineNum">     273</span>              :                             utils::one_of(weights_md(1)-&gt;data_type, f32, s32,</span>
+<span id="L274"><span class="lineNum">     274</span>              :                                     s8, u8)),</span>
+<span id="L275"><span class="lineNum">     275</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">       34351 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L277"><span class="lineNum">     277</span>              :                     utils::one_of(dst_md(0)-&gt;data_type, f32, s32, s8, u8),</span>
+<span id="L278"><span class="lineNum">     278</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       32720 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L280"><span class="lineNum">     280</span>              :                     desc()-&gt;accum_data_type == s32, VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       32720 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :                     attr()-&gt;has_default_values(skip_mask_t::scales</span>
+<span id="L283"><span class="lineNum">     283</span>              :                             | skip_mask_t::post_ops | skip_mask_t::zero_points),</span>
+<span id="L284"><span class="lineNum">     284</span>              :                     VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">       32656 :             VDISPATCH_DECONVOLUTION(</span></span>
+<span id="L286"><span class="lineNum">     286</span>              :                     attr_scales_ok(), VERBOSE_UNSUPPORTED_SCALES_CFG);</span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span>              :             // TODO: make `init_conf` assign initialized object to `jcp_`</span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">       32656 :             CHECK(jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t::init_conf(</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :                     jcp_, *desc(), src_md_, weights_md_, dst_md_, with_bias(),</span>
+<span id="L291"><span class="lineNum">     291</span>              :                     bias_md_, attr_, dnnl_get_max_threads()));</span>
+<span id="L292"><span class="lineNum">     292</span>              : </span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">         620 :             auto scratchpad = scratchpad_registry().registrar();</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">         620 :             jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t::init_scratchpad(</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">         620 :                     scratchpad, jcp_, *attr());</span></span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">         620 :             return status::success;</span></span>
+<span id="L298"><span class="lineNum">     298</span>              :         }</span>
+<span id="L299"><span class="lineNum">     299</span>              : </span>
+<span id="L300"><span class="lineNum">     300</span>              :         jit_conv_conf_t jcp_ = utils::zero&lt;decltype(jcp_)&gt;();</span>
+<span id="L301"><span class="lineNum">     301</span>              :     };</span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">         577 :     jit_avx512_core_x8s8s32x_deconvolution_fwd_t(const pd_t *apd)</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">         577 :         : primitive_t(apd) {}</span></span>
+<span id="L305"><span class="lineNum">     305</span>              : </span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">         577 :     status_t init(engine_t *engine) override {</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">         577 :         CHECK(safe_ptr_assign(kernel_,</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :                 new jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t(</span>
+<span id="L309"><span class="lineNum">     309</span>              :                         pd()-&gt;jcp_, *pd()-&gt;attr(), *pd()-&gt;dst_md(0))));</span>
+<span id="L310"><span class="lineNum">     310</span>              : </span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">         577 :         if (zp::should_calculate_deconv_zp_src_pad_str_comp(pd()-&gt;jcp_)) {</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">         148 :             CHECK(safe_ptr_assign(zp_src_pad_comp_kernel_,</span></span>
+<span id="L313"><span class="lineNum">     313</span>              :                     zp::create_deconv_zp_pad_str_comp_ker&lt;avx512_core&gt;(</span>
+<span id="L314"><span class="lineNum">     314</span>              :                             pd()-&gt;jcp_)));</span>
+<span id="L315"><span class="lineNum">     315</span>              :             const auto zp_kernel_status</span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">         148 :                     = zp_src_pad_comp_kernel_-&gt;create_kernel();</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">         148 :             if (zp_kernel_status != status::success) return zp_kernel_status;</span></span>
+<span id="L318"><span class="lineNum">     318</span>              :         }</span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">         577 :         return kernel_-&gt;create_kernel();</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :     }</span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">        1681 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">        1681 :         auto ndims = pd()-&gt;ndims();</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">        1681 :         if (ndims == 3)</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">         822 :             return execute_forward_1d(ctx);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">         859 :         else if (ndims == 4)</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">         839 :             return execute_forward_2d(ctx);</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">          20 :         else if (ndims == 5)</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">          20 :             return execute_forward_3d(ctx);</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0 :         return status::runtime_error;</span></span>
+<span id="L332"><span class="lineNum">     332</span>              :     }</span>
+<span id="L333"><span class="lineNum">     333</span>              : </span>
+<span id="L334"><span class="lineNum">     334</span>              : private:</span>
+<span id="L335"><span class="lineNum">     335</span>              :     status_t execute_forward_1d(const exec_ctx_t &amp;ctx) const;</span>
+<span id="L336"><span class="lineNum">     336</span>              :     status_t execute_forward_2d(const exec_ctx_t &amp;ctx) const;</span>
+<span id="L337"><span class="lineNum">     337</span>              :     status_t execute_forward_3d(const exec_ctx_t &amp;ctx) const;</span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">       36991 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L339"><span class="lineNum">     339</span>              :     std::unique_ptr&lt;jit_avx512_core_x8s8s32x_deconv_fwd_kernel_vmm_t&gt; kernel_;</span>
+<span id="L340"><span class="lineNum">     340</span>              :     std::unique_ptr&lt;zp::jit_uni_deconv_zp_pad_str_kernel_base_t&gt;</span>
+<span id="L341"><span class="lineNum">     341</span>              :             zp_src_pad_comp_kernel_;</span>
+<span id="L342"><span class="lineNum">     342</span>              : };</span>
+<span id="L343"><span class="lineNum">     343</span>              : </span>
+<span id="L344"><span class="lineNum">     344</span>              : } // namespace x64</span>
+<span id="L345"><span class="lineNum">     345</span>              : } // namespace cpu</span>
+<span id="L346"><span class="lineNum">     346</span>              : } // namespace impl</span>
+<span id="L347"><span class="lineNum">     347</span>              : } // namespace dnnl</span>
+<span id="L348"><span class="lineNum">     348</span>              : </span>
+<span id="L349"><span class="lineNum">     349</span>              : #endif</span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

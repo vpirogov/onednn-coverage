@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/reduction.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - reduction.cpp<span style="font-size: 80%;"> (source / <a href="reduction.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntry">43</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2020 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;oneapi/dnnl/dnnl.h&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;opdesc.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;primitive_desc_iface.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;c_types_map.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;utils.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : using namespace dnnl::impl;</span>
+<span id="L25"><span class="lineNum">      25</span>              : using namespace dnnl::impl::status;</span>
+<span id="L26"><span class="lineNum">      26</span>              : using namespace dnnl::impl::utils;</span>
+<span id="L27"><span class="lineNum">      27</span>              : using namespace dnnl::impl::alg_kind;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : #define VCHECK_RED(cond, msg, ...) \</span>
+<span id="L30"><span class="lineNum">      30</span>              :     VCONDCHECK(primitive, create, check, reduction, (cond), \</span>
+<span id="L31"><span class="lineNum">      31</span>              :             status::invalid_arguments, msg, ##__VA_ARGS__);</span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span>              : #define VCHECK_RED_UNIMPL(cond, msg, ...) \</span>
+<span id="L34"><span class="lineNum">      34</span>              :     VCONDCHECK(primitive, create, check, reduction, (cond), \</span>
+<span id="L35"><span class="lineNum">      35</span>              :             status::unimplemented, msg, ##__VA_ARGS__);</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace dnnl {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace impl {</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      512418 : status_t reduction_desc_init(reduction_desc_t *reduction_desc,</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :         alg_kind_t alg_kind, const memory_desc_t *src_desc,</span>
+<span id="L41"><span class="lineNum">      41</span>              :         const memory_desc_t *dst_desc, float p, float eps) {</span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">      512418 :     VCHECK_RED(!any_null(src_desc, dst_desc), VERBOSE_NULL_ARG);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">      512418 :     VCHECK_RED(src_desc-&gt;format_kind != format_kind::any,</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :             VERBOSE_UNSUPPORTED_TAG_S, &quot;src&quot;);</span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">      512289 :     VCHECK_RED(one_of(alg_kind, reduction_max, reduction_min, reduction_sum,</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :                        reduction_mul, reduction_mean, reduction_norm_lp_max,</span>
+<span id="L48"><span class="lineNum">      48</span>              :                        reduction_norm_lp_sum, reduction_norm_lp_power_p_max,</span>
+<span id="L49"><span class="lineNum">      49</span>              :                        reduction_norm_lp_power_p_sum),</span>
+<span id="L50"><span class="lineNum">      50</span>              :             VERBOSE_BAD_ALGORITHM);</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">      512160 :     VCHECK_RED(IMPLICATION(one_of(alg_kind, reduction_norm_lp_max,</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :                                    reduction_norm_lp_sum,</span>
+<span id="L53"><span class="lineNum">      53</span>              :                                    reduction_norm_lp_power_p_max,</span>
+<span id="L54"><span class="lineNum">      54</span>              :                                    reduction_norm_lp_power_p_sum),</span>
+<span id="L55"><span class="lineNum">      55</span>              :                        p &gt;= 1.0f &amp;&amp; !std::isinf(p)),</span>
+<span id="L56"><span class="lineNum">      56</span>              :             VERBOSE_BAD_PARAM, &quot;p&quot;);</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      511515 :     VCHECK_RED(IMPLICATION(one_of(alg_kind, reduction_norm_lp_max,</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :                                    reduction_norm_lp_sum,</span>
+<span id="L59"><span class="lineNum">      59</span>              :                                    reduction_norm_lp_power_p_max,</span>
+<span id="L60"><span class="lineNum">      60</span>              :                                    reduction_norm_lp_power_p_sum),</span>
+<span id="L61"><span class="lineNum">      61</span>              :                        one_of(src_desc-&gt;data_type, data_type::f32,</span>
+<span id="L62"><span class="lineNum">      62</span>              :                                data_type::bf16, data_type::f16)),</span>
+<span id="L63"><span class="lineNum">      63</span>              :             VERBOSE_INVALID_DATATYPE, &quot;src&quot;);</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">      511515 :     VCHECK_RED(!any_memory_desc_host_scalar(src_desc, dst_desc),</span></span>
+<span id="L65"><span class="lineNum">      65</span>              :             VERBOSE_UNSUPPORTED_FORMAT_KIND);</span>
+<span id="L66"><span class="lineNum">      66</span>              : </span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">      511515 :     VCHECK_RED(src_desc-&gt;ndims == dst_desc-&gt;ndims,</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :             VERBOSE_INCONSISTENT_NDIMS_WITH_VALS, &quot;src&quot;, &quot;dst&quot;, src_desc-&gt;ndims,</span>
+<span id="L69"><span class="lineNum">      69</span>              :             dst_desc-&gt;ndims);</span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">     2459677 :     for (auto d = 0; d &lt; src_desc-&gt;ndims; ++d) {</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">     1948162 :         const auto dst_dim_d = dst_desc-&gt;dims[d];</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">     1948162 :         VCHECK_RED(one_of(dst_dim_d, 1, src_desc-&gt;dims[d]),</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :                 VERBOSE_INCONSISTENT_DIM, &quot;src&quot;, d, &quot;dst&quot;, d);</span>
+<span id="L75"><span class="lineNum">      75</span>              :     }</span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              :     // reduction primitive doesn't support identity operation</span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">      511515 :     VCHECK_RED(!array_cmp(src_desc-&gt;dims, dst_desc-&gt;dims, src_desc-&gt;ndims),</span></span>
+<span id="L79"><span class="lineNum">      79</span>              :             VERBOSE_INCONSISTENT_DIM, &quot;src&quot;, -1, &quot;dst&quot;, -1);</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">      511386 :     VCHECK_RED(src_desc-&gt;format_kind == format_kind::blocked,</span></span>
+<span id="L82"><span class="lineNum">      82</span>              :             VERBOSE_UNSUPPORTED_TAG_S, &quot;src&quot;);</span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">      511386 :     VCHECK_RED(one_of(dst_desc-&gt;format_kind, format_kind::blocked,</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :                        format_kind::any),</span>
+<span id="L85"><span class="lineNum">      85</span>              :             VERBOSE_UNSUPPORTED_TAG_S, &quot;dst&quot;);</span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      511386 :     VCHECK_RED(src_desc-&gt;extra.flags == 0, VERBOSE_UNSUPPORTED_MD_FLAG, &quot;src&quot;);</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">      511386 :     VCHECK_RED(IMPLICATION(dst_desc-&gt;format_kind == format_kind::blocked,</span></span>
+<span id="L89"><span class="lineNum">      89</span>              :                        dst_desc-&gt;extra.flags == 0),</span>
+<span id="L90"><span class="lineNum">      90</span>              :             VERBOSE_UNSUPPORTED_MD_FLAG, &quot;dst&quot;);</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">      511386 :     auto rd = reduction_desc_t();</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">      511386 :     rd.primitive_kind = primitive_kind::reduction;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">      511386 :     rd.alg_kind = alg_kind;</span></span>
+<span id="L95"><span class="lineNum">      95</span>              : </span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">      511386 :     rd.src_desc = *src_desc;</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">      511386 :     rd.dst_desc = *dst_desc;</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">      511386 :     rd.p = p;</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">      511386 :     rd.eps = eps;</span></span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">      511386 :     (*reduction_desc) = rd;</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">      511386 :     return success;</span></span>
+<span id="L103"><span class="lineNum">     103</span>              : }</span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">      495705 : status_t reduction_attr_check(const reduction_desc_t &amp;desc,</span></span>
+<span id="L106"><span class="lineNum">     106</span>              :         const engine_t *engine, const primitive_attr_t *attr) {</span>
+<span id="L107"><span class="lineNum">     107</span>              :     using smask_t = primitive_attr_t::skip_mask_t;</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">      495705 :     if (attr == nullptr) return status::success;</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">      495705 :     if (attr-&gt;has_default_values()) return status::success;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span>              :     // Check attributes</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">      295642 :     const data_type_t dst_dt = desc.dst_desc.data_type;</span></span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">      295642 :     auto attr_mask = smask_t::post_ops;</span></span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">      295642 :     VCHECK_RED_UNIMPL(attr-&gt;has_default_values(attr_mask, dst_dt),</span></span>
+<span id="L118"><span class="lineNum">     118</span>              :             VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L119"><span class="lineNum">     119</span>              : </span>
+<span id="L120"><span class="lineNum">     120</span>              :     // Check post-ops</span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">      293059 :     if (!attr-&gt;post_ops_.has_default_values()) {</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      293059 :         const auto &amp;po = attr-&gt;post_ops_;</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :         using namespace primitive_kind;</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      293059 :         VCHECK_RED_UNIMPL(po.has_default_values({binary, eltwise, sum}),</span></span>
+<span id="L125"><span class="lineNum">     125</span>              :                 VERBOSE_UNSUPPORTED_POSTOP);</span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              :         // Check sum</span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      292198 :         VCHECK_RED_UNIMPL(po.check_sum_consistency(dst_dt, false, true),</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :                 VERBOSE_UNSUPPORTED_POSTOP);</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :         // Note: verbose support is inside the call.</span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">      292198 :         CHECK(po.validate_binary(engine-&gt;kind(), &amp;desc.dst_desc));</span></span>
+<span id="L133"><span class="lineNum">     133</span>              :     }</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">      291337 :     return status::success;</span></span>
+<span id="L136"><span class="lineNum">     136</span>              : }</span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              : } // namespace impl</span>
+<span id="L139"><span class="lineNum">     139</span>              : } // namespace dnnl</span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">      496737 : dnnl_status_t dnnl_reduction_primitive_desc_create(</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :         primitive_desc_iface_t **primitive_desc_iface, engine_t *engine,</span>
+<span id="L143"><span class="lineNum">     143</span>              :         alg_kind_t alg_kind, const memory_desc_t *src_desc,</span>
+<span id="L144"><span class="lineNum">     144</span>              :         const memory_desc_t *dst_desc, float p, float eps,</span>
+<span id="L145"><span class="lineNum">     145</span>              :         const primitive_attr_t *attr) {</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      993474 :     auto reduction_desc = reduction_desc_t();</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      496737 :     CHECK(reduction_desc_init(</span></span>
+<span id="L149"><span class="lineNum">     149</span>              :             &amp;reduction_desc, alg_kind, src_desc, dst_desc, p, eps));</span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      495705 :     CHECK(reduction_attr_check(reduction_desc, engine, attr));</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">      491400 :     return primitive_desc_create(primitive_desc_iface, engine,</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">      491400 :             (const op_desc_t *)&amp;reduction_desc, nullptr, attr);</span></span>
+<span id="L153"><span class="lineNum">     153</span>              : }</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

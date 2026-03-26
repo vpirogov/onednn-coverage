@@ -1,0 +1,656 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/math_utils.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - math_utils.hpp<span style="font-size: 80%;"> (source / <a href="math_utils.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">94.4&nbsp;%</td>
+            <td class="headerCovTableEntry">252</td>
+            <td class="headerCovTableEntry">238</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">94.7&nbsp;%</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntry">71</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2017 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : * Copyright 2025 Arm Ltd. and affiliates</span>
+<span id="L4"><span class="lineNum">       4</span>              : *</span>
+<span id="L5"><span class="lineNum">       5</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L6"><span class="lineNum">       6</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L7"><span class="lineNum">       7</span>              : * You may obtain a copy of the License at</span>
+<span id="L8"><span class="lineNum">       8</span>              : *</span>
+<span id="L9"><span class="lineNum">       9</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L10"><span class="lineNum">      10</span>              : *</span>
+<span id="L11"><span class="lineNum">      11</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L12"><span class="lineNum">      12</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L13"><span class="lineNum">      13</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L14"><span class="lineNum">      14</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L15"><span class="lineNum">      15</span>              : * limitations under the License.</span>
+<span id="L16"><span class="lineNum">      16</span>              : *******************************************************************************/</span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              : #ifndef COMMON_MATH_UTILS_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : #define COMMON_MATH_UTILS_HPP</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;type_traits&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;math.h&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;stdint.h&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;dnnl_traits.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;nstl.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;type_helpers.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;utils.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace dnnl {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace impl {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace math {</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span>              : // Algorithm is picked from https://en.wikipedia.org/wiki/Primality_test</span>
+<span id="L36"><span class="lineNum">      36</span>              : template &lt;typename T&gt;</span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaUNC">           0 : inline bool is_prime(T n) {</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :     static_assert(std::is_integral&lt;T&gt;::value == true, &quot;Not an integral type&quot;);</span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :     if (n &lt;= 1) { return false; }</span></span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC">           0 :     if (n == 2 || n == 3 || n == 5) { return true; }</span></span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :     if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0) { return false; }</span></span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :     const T sqrtn = static_cast&lt;T&gt;(std::sqrt(n));</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :     // It is enough to check prime divisors up to `sqrt(n)`.</span>
+<span id="L48"><span class="lineNum">      48</span>              :     // All potential prime divisors are represented with `6*i + k` for k={1, 5}.</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :     for (T i = 1; 6 * i + 5 &lt;= sqrtn; i++) {</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :         if ((n % (6 * i + 1) == 0) || (n % (6 * i + 5) == 0)) return false;</span></span>
+<span id="L51"><span class="lineNum">      51</span>              :     }</span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :     return true;</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : }</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              : template &lt;typename T&gt;</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">   139456623 : inline T gcd(T a, T b) {</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">   139456623 :     a = impl::nstl::abs(a);</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">   139456623 :     b = impl::nstl::abs(b);</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">   139456623 :     if (a &lt; b) {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">    34712334 :         T x = a;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">    34712334 :         a = b;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">    34712334 :         b = x;</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :     }</span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">   139456623 :     if (b == 0) return a;</span></span>
+<span id="L66"><span class="lineNum">      66</span>              : </span>
+<span id="L67"><span class="lineNum">      67</span>              :     T r;</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">   139287643 :     while ((r = a % b) != 0) {</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">     1674369 :         a = b;</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">     1674369 :         b = r;</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     }</span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">   137613407 :     return b;</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : }</span>
+<span id="L75"><span class="lineNum">      75</span>              : </span>
+<span id="L76"><span class="lineNum">      76</span>              : template &lt;typename T&gt;</span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">    91260465 : inline T lcm(T a, T b) {</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">    91260465 :     a = impl::nstl::abs(a);</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">    91260465 :     b = impl::nstl::abs(b);</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">    91260465 :     assert(a &gt; 0 &amp;&amp; b &gt; 0);</span></span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">    91260465 :     return a * b / gcd(a, b);</span></span>
+<span id="L83"><span class="lineNum">      83</span>              : }</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span>              : template &lt;typename T&gt;</span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">    44260299 : inline bool is_pow2(const T &amp;v) {</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">    44260299 :     return (v &gt; 0) &amp;&amp; ((v &amp; (v - 1)) == 0);</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : }</span>
+<span id="L89"><span class="lineNum">      89</span>              : </span>
+<span id="L90"><span class="lineNum">      90</span>              : /** returns floor(log2(v)), aka the position of the leftmost non-0 bit */</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">     9418859 : inline int ilog2q(size_t v) {</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">     9418859 :     if (v == 0) return -1;</span></span>
+<span id="L93"><span class="lineNum">      93</span>              : </span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">     9352468 :     int p = 0;</span></span>
+<span id="L95"><span class="lineNum">      95</span>              : #define CP(pw) \</span>
+<span id="L96"><span class="lineNum">      96</span>              :     do { \</span>
+<span id="L97"><span class="lineNum">      97</span>              :         if (v &gt;= (1ull &lt;&lt; (pw))) { \</span>
+<span id="L98"><span class="lineNum">      98</span>              :             v &gt;&gt;= (pw); \</span>
+<span id="L99"><span class="lineNum">      99</span>              :             p += (pw); \</span>
+<span id="L100"><span class="lineNum">     100</span>              :         } \</span>
+<span id="L101"><span class="lineNum">     101</span>              :     } while (0)</span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">     9352468 :     CP(32);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">     9352468 :     CP(16);</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">     9352468 :     CP(8);</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">     9352468 :     CP(4);</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">     9352468 :     CP(2);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">     9352468 :     CP(1);</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : #undef CP</span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">     9352468 :     return p;</span></span>
+<span id="L110"><span class="lineNum">     110</span>              : }</span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">     7035104 : inline U one_m_square(T x) {</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">     7035104 :     return (U)(1 - x) * (1 + x);</span></span>
+<span id="L115"><span class="lineNum">     115</span>              : }</span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">    11208960 : inline U x_m_square(T x) {</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">    11208960 :     return (U)(1 - x) * x;</span></span>
+<span id="L120"><span class="lineNum">     120</span>              : }</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              : /* activation */</span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span>              : /** rounds @p f to an integer according to the mxcsr register */</span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC"> >27507*10^7 : inline float mxcsr_round(float f) ATTR_NO_MSAN {</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC"> >27507*10^7 :     return nearbyintf(f);</span></span>
+<span id="L127"><span class="lineNum">     127</span>              : }</span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span>              : /** converts @p f to an integer according to the mxcsr register */</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC"> >27469*10^7 : inline int mxcsr_cvt(float f) ATTR_NO_MSAN {</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC"> >27469*10^7 :     return (int)mxcsr_round(f);</span></span>
+<span id="L132"><span class="lineNum">     132</span>              : }</span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">   379541564 : inline float round_fwd(float s) {</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">   379541564 :     return mxcsr_round(s);</span></span>
+<span id="L136"><span class="lineNum">     136</span>              : }</span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              : template &lt;typename T, typename A,</span>
+<span id="L139"><span class="lineNum">     139</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L140"><span class="lineNum">     140</span>              : inline typename utils::enable_if&lt;nstl::is_integral&lt;U&gt;::value, U&gt;::type relu_fwd(</span>
+<span id="L141"><span class="lineNum">     141</span>              :         T s, A alpha) {</span>
+<span id="L142"><span class="lineNum">     142</span>              :     return s &gt; 0 ? s : (U)mxcsr_cvt(static_cast&lt;float&gt;(s * alpha));</span>
+<span id="L143"><span class="lineNum">     143</span>              : }</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              : template &lt;typename T, typename A,</span>
+<span id="L146"><span class="lineNum">     146</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L147"><span class="lineNum">     147</span>              : inline typename utils::enable_if&lt;!nstl::is_integral&lt;U&gt;::value, U&gt;::type</span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC"> >15240*10^7 : relu_fwd(T s, A alpha) ATTR_NO_MSAN {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC"> >15240*10^7 :     return s &gt; 0 ? s : (U)(s * alpha);</span></span>
+<span id="L150"><span class="lineNum">     150</span>              : }</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              : template &lt;typename T, typename A,</span>
+<span id="L153"><span class="lineNum">     153</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC"> 13596247640 : inline U relu_bwd(T dd, T s, A alpha) {</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC"> 13596247640 :     return s &gt; 0 ? dd : (U)(dd * alpha);</span></span>
+<span id="L156"><span class="lineNum">     156</span>              : }</span>
+<span id="L157"><span class="lineNum">     157</span>              : template &lt;typename T, typename A,</span>
+<span id="L158"><span class="lineNum">     158</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaUNC">           0 : inline U relu_bwd(T s, A alpha) {</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaUNC">           0 :     return s &gt; 0 ? (U)1 : (U)alpha;</span></span>
+<span id="L161"><span class="lineNum">     161</span>              : }</span>
+<span id="L162"><span class="lineNum">     162</span>              : template &lt;typename T, typename A,</span>
+<span id="L163"><span class="lineNum">     163</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC"> 22199676360 : inline U relu_bwd_use_dst(T dd, T d, A alpha) {</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC"> 22199676360 :     return d &gt; 0 ? dd : (U)(dd * alpha);</span></span>
+<span id="L166"><span class="lineNum">     166</span>              : }</span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">  6978130952 : inline U tanh_fwd(T s) {</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">  5372393928 :     const float e = tanhf((float)s);</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">  1676839348 :     return (U)e;</span></span>
+<span id="L172"><span class="lineNum">     172</span>              : }</span>
+<span id="L173"><span class="lineNum">     173</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">     1893836 : inline U tanh_bwd(T dd, T s) {</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">     1893836 :     const float e = tanh_fwd&lt;float&gt;((float)s);</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">     1893836 :     return (U)(dd * (1 - e) * (1 + e));</span></span>
+<span id="L177"><span class="lineNum">     177</span>              : }</span>
+<span id="L178"><span class="lineNum">     178</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">     2792984 : inline U tanh_bwd_use_dst(T dd, T d) {</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">     2792984 :     return (U)(dd * (1 - d) * (1 + d));</span></span>
+<span id="L181"><span class="lineNum">     181</span>              : }</span>
+<span id="L182"><span class="lineNum">     182</span>              : </span>
+<span id="L183"><span class="lineNum">     183</span>              : template &lt;typename T, typename A,</span>
+<span id="L184"><span class="lineNum">     184</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">   910212710 : inline U elu_fwd(T s, A alpha) {</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">   910212710 :     return s &gt; 0 ? s : (U)(alpha * (::expm1f((float)s)));</span></span>
+<span id="L187"><span class="lineNum">     187</span>              : }</span>
+<span id="L188"><span class="lineNum">     188</span>              : template &lt;typename T, typename A,</span>
+<span id="L189"><span class="lineNum">     189</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">     3565516 : inline U elu_bwd(T dd, T s, A alpha) {</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">     3565516 :     return (U)(dd * (s &gt; 0 ? 1 : alpha * ::expf((float)s)));</span></span>
+<span id="L192"><span class="lineNum">     192</span>              : }</span>
+<span id="L193"><span class="lineNum">     193</span>              : template &lt;typename T, typename A,</span>
+<span id="L194"><span class="lineNum">     194</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">     4539064 : inline U elu_bwd_use_dst(T dd, T d, A alpha) {</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">     4539064 :     return (U)(dd * (d &gt; 0 ? 1 : d + alpha));</span></span>
+<span id="L197"><span class="lineNum">     197</span>              : }</span>
+<span id="L198"><span class="lineNum">     198</span>              : </span>
+<span id="L199"><span class="lineNum">     199</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">   889534346 : inline U square_fwd(T s) {</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">   889534346 :     return s * s;</span></span>
+<span id="L202"><span class="lineNum">     202</span>              : }</span>
+<span id="L203"><span class="lineNum">     203</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">     1893836 : inline U square_bwd(T dd, T s) {</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">     1893836 :     return dd * 2 * s;</span></span>
+<span id="L206"><span class="lineNum">     206</span>              : }</span>
+<span id="L207"><span class="lineNum">     207</span>              : </span>
+<span id="L208"><span class="lineNum">     208</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">  1028778021 : inline U abs_fwd(T s) {</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">  1028778021 :     return s &gt; 0 ? s : (U)-s;</span></span>
+<span id="L211"><span class="lineNum">     211</span>              : }</span>
+<span id="L212"><span class="lineNum">     212</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">     1893836 : inline U abs_bwd(T dd, T s) {</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">     1893836 :     return s &gt; 0 ? dd : s &lt; 0 ? (U)-dd : (U)0;</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : }</span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">   755764824 : inline U sqrt_fwd(T s) {</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">   755764824 :     return (U)(::sqrtf((float)(s)));</span></span>
+<span id="L220"><span class="lineNum">     220</span>              : }</span>
+<span id="L221"><span class="lineNum">     221</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">     1884780 : inline U sqrt_bwd(T dd, T s) {</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">     1884780 :     return (U)(dd / (2 * ::sqrtf((float)(s))));</span></span>
+<span id="L224"><span class="lineNum">     224</span>              : }</span>
+<span id="L225"><span class="lineNum">     225</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">     2746200 : inline U sqrt_bwd_use_dst(T dd, T d) {</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">     2746200 :     return (U)(dd / (2 * d));</span></span>
+<span id="L228"><span class="lineNum">     228</span>              : }</span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span>              : template &lt;typename T, typename A,</span>
+<span id="L231"><span class="lineNum">     231</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC"> 77715505300 : inline U linear_fwd(T s, A alpha, A beta) {</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC"> 77715505300 :     return (U)(alpha * s + beta);</span></span>
+<span id="L234"><span class="lineNum">     234</span>              : }</span>
+<span id="L235"><span class="lineNum">     235</span>              : template &lt;typename T, typename A,</span>
+<span id="L236"><span class="lineNum">     236</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">     8580556 : inline U linear_bwd(T dd, T s, A alpha, A beta) {</span></span>
+<span id="L238"><span class="lineNum">     238</span>              :     (void)s;</span>
+<span id="L239"><span class="lineNum">     239</span>              :     (void)beta;</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">     8580556 :     return (U)(dd * alpha);</span></span>
+<span id="L241"><span class="lineNum">     241</span>              : }</span>
+<span id="L242"><span class="lineNum">     242</span>              : </span>
+<span id="L243"><span class="lineNum">     243</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">  2090736937 : inline U logistic_fwd(T s) {</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :     // Here we avoid division/inverse by infinity as some architectures have</span>
+<span id="L246"><span class="lineNum">     246</span>              :     // non-standard behavior</span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">  2090736937 :     float exp_overflow_bound = 88.72283172607421875f;</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">  2090736937 :     float in = (float)-s;</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">  2081950269 :     return in &lt; exp_overflow_bound ? (U)(1.f / (1.f + ::expf(in))) : 0.f;</span></span>
+<span id="L250"><span class="lineNum">     250</span>              : }</span>
+<span id="L251"><span class="lineNum">     251</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">     1893836 : inline U logistic_bwd(T dd, T s) {</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">     1893836 :     float v = logistic_fwd&lt;float&gt;(s);</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">     1893836 :     return (U)(dd * v * (1 - v));</span></span>
+<span id="L255"><span class="lineNum">     255</span>              : }</span>
+<span id="L256"><span class="lineNum">     256</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">     2792984 : inline U logistic_bwd_use_dst(T dd, T d) {</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">     2792984 :     return (U)(dd * d * (1 - d));</span></span>
+<span id="L259"><span class="lineNum">     259</span>              : }</span>
+<span id="L260"><span class="lineNum">     260</span>              : </span>
+<span id="L261"><span class="lineNum">     261</span>              : template &lt;typename T, typename A,</span>
+<span id="L262"><span class="lineNum">     262</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">  3910754790 : inline U soft_relu_fwd(T s, A alpha) {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">  3910754790 :     float exp_overflow_bound = 88.72283172607421875f;</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">  3910754790 :     float in = (float)s * (float)alpha;</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">  3910754790 :     float v = (in &lt; exp_overflow_bound ? (U)(::log1pf(::expf(in))) : (U)in);</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">  3910754790 :     return (U)(v / alpha);</span></span>
+<span id="L268"><span class="lineNum">     268</span>              : }</span>
+<span id="L269"><span class="lineNum">     269</span>              : template &lt;typename T, typename A,</span>
+<span id="L270"><span class="lineNum">     270</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">     5585968 : inline U soft_relu_bwd(T dd, T s, A alpha) {</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">     4686820 :     float in = (float)s * (float)alpha;</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">     4686820 :     return (U)(dd * logistic_fwd&lt;float&gt;(in));</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : }</span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">    26444388 : inline U mish_fwd(T s) {</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">    26444388 :     return s * tanh_fwd(soft_relu_fwd(s, 1.f));</span></span>
+<span id="L279"><span class="lineNum">     279</span>              : }</span>
+<span id="L280"><span class="lineNum">     280</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">     1893836 : inline U mish_bwd(T dd, T s) {</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">     1893836 :     const float tanh = tanh_fwd(soft_relu_fwd(s, 1.f));</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">     1893836 :     const float srelu_bwd = soft_relu_bwd(1.f, s, 1.f);</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">     1893836 :     const float derivative = tanh + s * srelu_bwd * (1 - ::powf(tanh, 2.0f));</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">     1893836 :     return dd * derivative;</span></span>
+<span id="L286"><span class="lineNum">     286</span>              : }</span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span>              : template &lt;typename T, typename A,</span>
+<span id="L289"><span class="lineNum">     289</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">   133867676 : inline U swish_fwd(T s, A alpha) {</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">   240069756 :     return (U)(s * logistic_fwd&lt;float&gt;(alpha * s));</span></span>
+<span id="L292"><span class="lineNum">     292</span>              : }</span>
+<span id="L293"><span class="lineNum">     293</span>              : template &lt;typename T, typename A,</span>
+<span id="L294"><span class="lineNum">     294</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">     3565516 : inline U swish_bwd(T dd, T s, A alpha) {</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">     3565516 :     float v = logistic_fwd&lt;float&gt;(alpha * s);</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">     3565516 :     return dd * (v + s * alpha * v * (1 - v));</span></span>
+<span id="L298"><span class="lineNum">     298</span>              : }</span>
+<span id="L299"><span class="lineNum">     299</span>              : </span>
+<span id="L300"><span class="lineNum">     300</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">   352919756 : inline U exp_fwd(T s) {</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">   352919756 :     return (U)(::expf((float)s));</span></span>
+<span id="L303"><span class="lineNum">     303</span>              : }</span>
+<span id="L304"><span class="lineNum">     304</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">     1893836 : inline U exp_bwd(T dd, T s) {</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">     1893836 :     return (U)(dd * (::expf((float)s)));</span></span>
+<span id="L307"><span class="lineNum">     307</span>              : }</span>
+<span id="L308"><span class="lineNum">     308</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">     2792984 : inline U exp_bwd_use_dst(T dd, T d) {</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">     2792984 :     return (U)(dd * d);</span></span>
+<span id="L311"><span class="lineNum">     311</span>              : }</span>
+<span id="L312"><span class="lineNum">     312</span>              : </span>
+<span id="L313"><span class="lineNum">     313</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">  1067994640 : inline U gelu_tanh_fwd(T s) {</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">  1067994640 :     const float sqrt_2_over_pi = 0.79788458347320556640625f;</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">  1067994640 :     const float fitting_const = 0.044715f;</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">  1067994640 :     float v = tanh_fwd(sqrt_2_over_pi * s * (1 + fitting_const * s * s));</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">  1067994640 :     return (U)(0.5 * s * (1. + v));</span></span>
+<span id="L319"><span class="lineNum">     319</span>              : }</span>
+<span id="L320"><span class="lineNum">     320</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">   523886808 : inline U gelu_tanh_bwd(T dd, T s) {</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">   523886808 :     const float sqrt_2_over_pi = 0.79788458347320556640625f;</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">   523886808 :     const float fitting_const = 0.044715f;</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">   523886808 :     float g = s * sqrt_2_over_pi * (1 + fitting_const * s * s);</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">   523886808 :     float dg = sqrt_2_over_pi * (1 + 3 * fitting_const * s * s);</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">   523886808 :     float v = tanh_fwd(g);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">   523886808 :     return (U)(dd * 0.5 * (1. + v) * (1. + s * (1 - v) * dg));</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : }</span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">   383558252 : inline U log_fwd(T s) {</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">   383558252 :     return (U)(::logf((float)s));</span></span>
+<span id="L333"><span class="lineNum">     333</span>              : }</span>
+<span id="L334"><span class="lineNum">     334</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">     1884780 : inline U log_bwd(T dd, T s) {</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">     1884780 :     return (U)(dd * (1.f / (float)s));</span></span>
+<span id="L337"><span class="lineNum">     337</span>              : }</span>
+<span id="L338"><span class="lineNum">     338</span>              : </span>
+<span id="L339"><span class="lineNum">     339</span>              : template &lt;typename T, typename A,</span>
+<span id="L340"><span class="lineNum">     340</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">   560061638 : inline U clip_fwd(T s, A alpha, A beta) {</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">   560061638 :     s = s &gt; alpha ? s : (U)alpha;</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">   560061638 :     return s &gt; beta ? (U)beta : s;</span></span>
+<span id="L344"><span class="lineNum">     344</span>              : }</span>
+<span id="L345"><span class="lineNum">     345</span>              : template &lt;typename T, typename A,</span>
+<span id="L346"><span class="lineNum">     346</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">     6073036 : inline U clip_bwd(T dd, T s, A alpha, A beta) {</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">    10540702 :     return dd * (alpha &lt; s &amp;&amp; s &lt;= beta ? 1 : 0);</span></span>
+<span id="L349"><span class="lineNum">     349</span>              : }</span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span>              : template &lt;typename T, typename A,</span>
+<span id="L352"><span class="lineNum">     352</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">    81691554 : inline U clip_v2_fwd(T s, A alpha, A beta) {</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">    81691554 :     s = s &gt; alpha ? s : (U)alpha;</span></span>
+<span id="L355"><span class="lineNum">     355</span> <span class="tlaGNC">    81691554 :     return s &lt; beta ? s : (U)beta;</span></span>
+<span id="L356"><span class="lineNum">     356</span>              : }</span>
+<span id="L357"><span class="lineNum">     357</span>              : template &lt;typename T, typename A,</span>
+<span id="L358"><span class="lineNum">     358</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">    17224412 : inline U clip_v2_bwd(T dd, T s, A alpha, A beta) {</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">    15300374 :     return dd * (alpha &lt; s &amp;&amp; s &lt; beta ? 1 : 0);</span></span>
+<span id="L361"><span class="lineNum">     361</span>              : }</span>
+<span id="L362"><span class="lineNum">     362</span>              : template &lt;typename T, typename A,</span>
+<span id="L363"><span class="lineNum">     363</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">    11151392 : inline U clip_v2_bwd_use_dst(T dd, T d, A alpha, A beta) {</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">    11151392 :     return clip_v2_bwd(dd, d, alpha, beta);</span></span>
+<span id="L366"><span class="lineNum">     366</span>              : }</span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span>              : template &lt;typename T, typename A,</span>
+<span id="L369"><span class="lineNum">     369</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">  2049200392 : inline U pow_fwd(T s, A alpha, A beta) {</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">  2037038752 :     return (U)(alpha * ::powf((float)s, beta));</span></span>
+<span id="L372"><span class="lineNum">     372</span>              : }</span>
+<span id="L373"><span class="lineNum">     373</span>              : template &lt;typename T, typename A,</span>
+<span id="L374"><span class="lineNum">     374</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">    15918836 : inline U pow_bwd(T dd, T s, A alpha, A beta) {</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">    15918836 :     if (beta == 0) return 0;</span></span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">    13121196 :     float v = pow_fwd(s, alpha * beta, beta - 1);</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">    13121196 :     return (U)(dd * v);</span></span>
+<span id="L380"><span class="lineNum">     380</span>              : }</span>
+<span id="L381"><span class="lineNum">     381</span>              : </span>
+<span id="L382"><span class="lineNum">     382</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L383"><span class="lineNum">     383</span> <span class="tlaGNC">   383691884 : inline U gelu_erf_fwd(T s) {</span></span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">   383691884 :     const float sqrt_2_over_2 = 0.707106769084930419921875f;</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">   383691884 :     float v = s * sqrt_2_over_2;</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">   383691884 :     return (U)(0.5f * s * (1.f + ::erff(v)));</span></span>
+<span id="L387"><span class="lineNum">     387</span>              : }</span>
+<span id="L388"><span class="lineNum">     388</span>              : template &lt;typename T, typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">     1893836 : inline U gelu_erf_bwd(T dd, T s) {</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">     1893836 :     const float two_over_sqrt_pi = 1.12837922573089599609375f;</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">     1893836 :     const float sqrt_2_over_2 = 0.707106769084930419921875f;</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">     1893836 :     float v = s * sqrt_2_over_2;</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">     1893836 :     return (U)(dd * 0.5f</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">     1893836 :             * (1.f + ::erff(v) + v * two_over_sqrt_pi * ::expf(-v * v)));</span></span>
+<span id="L395"><span class="lineNum">     395</span>              : }</span>
+<span id="L396"><span class="lineNum">     396</span>              : </span>
+<span id="L397"><span class="lineNum">     397</span>              : template &lt;typename T, typename A,</span>
+<span id="L398"><span class="lineNum">     398</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">   596708416 : inline U hardsigmoid_fwd(T s, A alpha, A beta) {</span></span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">   596708416 :     float v = alpha * s + beta;</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">   588581844 :     return v &lt;= 0.f ? 0.f : v &gt;= 1.f ? 1.f : v;</span></span>
+<span id="L402"><span class="lineNum">     402</span>              : }</span>
+<span id="L403"><span class="lineNum">     403</span>              : template &lt;typename T, typename A,</span>
+<span id="L404"><span class="lineNum">     404</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">     2729676 : inline U hardsigmoid_bwd(T dd, T s, A alpha, A beta) {</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">     2729676 :     float v = alpha * s + beta;</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">     2729676 :     return v &lt;= 0.f ? 0.f : v &gt;= 1.f ? 0.f : dd * alpha;</span></span>
+<span id="L408"><span class="lineNum">     408</span>              : }</span>
+<span id="L409"><span class="lineNum">     409</span>              : </span>
+<span id="L410"><span class="lineNum">     410</span>              : template &lt;typename T, typename A,</span>
+<span id="L411"><span class="lineNum">     411</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">   567914660 : inline U hardswish_fwd(T s, A alpha, A beta) {</span></span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">   567914660 :     return (U)(s * hardsigmoid_fwd(s, alpha, beta));</span></span>
+<span id="L414"><span class="lineNum">     414</span>              : }</span>
+<span id="L415"><span class="lineNum">     415</span>              : template &lt;typename T, typename A,</span>
+<span id="L416"><span class="lineNum">     416</span>              :         typename U = typename utils::remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">     2682892 : inline U hardswish_bwd(T dd, T s, A alpha, A beta) {</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">     2682892 :     float v = alpha * s + beta;</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">     2682892 :     float w = 2.f * alpha * s + beta;</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">     2682892 :     return v &lt;= 0.f ? 0.f : v &gt;= 1.f ? dd : dd * w;</span></span>
+<span id="L421"><span class="lineNum">     421</span>              : }</span>
+<span id="L422"><span class="lineNum">     422</span>              : </span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">     4279889 : inline bool is_eltwise_ok(</span></span>
+<span id="L424"><span class="lineNum">     424</span>              :         data_type_t src_dt, alg_kind_t alg, float alpha, float beta) {</span>
+<span id="L425"><span class="lineNum">     425</span>              :     using namespace alg_kind;</span>
+<span id="L426"><span class="lineNum">     426</span>              :     using namespace utils;</span>
+<span id="L427"><span class="lineNum">     427</span>              : </span>
+<span id="L428"><span class="lineNum">     428</span>              :     const bool eltwise_use_src</span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">     4279889 :             = one_of(alg, eltwise_relu, eltwise_tanh, eltwise_elu,</span></span>
+<span id="L430"><span class="lineNum">     430</span>              :                       eltwise_square, eltwise_abs, eltwise_sqrt, eltwise_linear,</span>
+<span id="L431"><span class="lineNum">     431</span>              :                       eltwise_soft_relu, eltwise_mish, eltwise_logistic,</span>
+<span id="L432"><span class="lineNum">     432</span>              :                       eltwise_exp, eltwise_gelu_tanh, eltwise_hardsigmoid,</span>
+<span id="L433"><span class="lineNum">     433</span>              :                       eltwise_hardswish, eltwise_swish, eltwise_log,</span>
+<span id="L434"><span class="lineNum">     434</span>              :                       eltwise_clip, eltwise_clip_v2, eltwise_pow,</span>
+<span id="L435"><span class="lineNum">     435</span>              :                       eltwise_gelu_erf, eltwise_round)</span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">     3877951 :             &amp;&amp; IMPLICATION(</span></span>
+<span id="L437"><span class="lineNum">     437</span>              :                     one_of(alg, eltwise_clip, eltwise_clip_v2), beta &gt;= alpha)</span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">     3877951 :             &amp;&amp; IMPLICATION(alg == eltwise_round, src_dt == dnnl_f32)</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">     8157840 :             &amp;&amp; IMPLICATION(one_of(src_dt, dnnl_s32, dnnl_s8, dnnl_u8),</span></span>
+<span id="L440"><span class="lineNum">     440</span>              :                     one_of(alg, eltwise_relu, eltwise_linear, eltwise_clip));</span>
+<span id="L441"><span class="lineNum">     441</span>              : </span>
+<span id="L442"><span class="lineNum">     442</span>              :     const bool eltwise_use_dst</span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">     4279889 :             = one_of(alg, eltwise_relu_use_dst_for_bwd,</span></span>
+<span id="L444"><span class="lineNum">     444</span>              :                       eltwise_tanh_use_dst_for_bwd, eltwise_elu_use_dst_for_bwd,</span>
+<span id="L445"><span class="lineNum">     445</span>              :                       eltwise_sqrt_use_dst_for_bwd,</span>
+<span id="L446"><span class="lineNum">     446</span>              :                       eltwise_logistic_use_dst_for_bwd,</span>
+<span id="L447"><span class="lineNum">     447</span>              :                       eltwise_exp_use_dst_for_bwd,</span>
+<span id="L448"><span class="lineNum">     448</span>              :                       eltwise_clip_v2_use_dst_for_bwd)</span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">      401938 :             &amp;&amp; IMPLICATION(one_of(alg, eltwise_relu_use_dst_for_bwd,</span></span>
+<span id="L450"><span class="lineNum">     450</span>              :                                    eltwise_elu_use_dst_for_bwd),</span>
+<span id="L451"><span class="lineNum">     451</span>              :                     alpha &gt;= 0)</span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">     4681827 :             &amp;&amp; IMPLICATION(</span></span>
+<span id="L453"><span class="lineNum">     453</span>              :                     alg == eltwise_clip_v2_use_dst_for_bwd, beta &gt;= alpha);</span>
+<span id="L454"><span class="lineNum">     454</span>              : </span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">     4279889 :     return eltwise_use_src || eltwise_use_dst;</span></span>
+<span id="L456"><span class="lineNum">     456</span>              : }</span>
+<span id="L457"><span class="lineNum">     457</span>              : </span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">   617903936 : inline uint32_t philox4x32(uint64_t idx, uint64_t seed, uint64_t offset) {</span></span>
+<span id="L459"><span class="lineNum">     459</span>              :     // This impl is aligned with PyTorch at</span>
+<span id="L460"><span class="lineNum">     460</span>              :     // https://github.com/pytorch/pytorch/blob/09c950c/aten/src/ATen/core/PhiloxRNGEngine.h</span>
+<span id="L461"><span class="lineNum">     461</span>              :     // - both offset and idx are used to fill ctr</span>
+<span id="L462"><span class="lineNum">     462</span>              :     // - seed/offset/idx are uint64_t</span>
+<span id="L463"><span class="lineNum">     463</span>              : </span>
+<span id="L464"><span class="lineNum">     464</span>              :     // Note 1: This impl computes 4 different int32_t rand</span>
+<span id="L465"><span class="lineNum">     465</span>              :     //   values. Even though this is redundundant for sequential ref,</span>
+<span id="L466"><span class="lineNum">     466</span>              :     //   keeping vector version to guide optimized implementations.</span>
+<span id="L467"><span class="lineNum">     467</span>              : </span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">   617903936 :     uint64_t x = (idx &amp; ~3L);</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">   617903936 :     uint32_t ctr[4] = {uint32_t(offset), uint32_t(offset &gt;&gt; 32), uint32_t(x),</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">   617903936 :             uint32_t(x &gt;&gt; 32)};</span></span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">   617903936 :     uint32_t key[2] = {uint32_t(seed), uint32_t(seed &gt;&gt; 32)};</span></span>
+<span id="L472"><span class="lineNum">     472</span>              : </span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC"> 12349547304 :     auto mulhilo32 = [&amp;](uint32_t a, uint32_t b, uint32_t &amp;hi, uint32_t &amp;lo) {</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC"> 12348599360 :         const uint64_t product = static_cast&lt;uint64_t&gt;(a) * b;</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC"> 12348599360 :         lo = static_cast&lt;uint32_t&gt;(product);</span></span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC"> 12348599360 :         hi = static_cast&lt;uint32_t&gt;(product &gt;&gt; 32);</span></span>
+<span id="L477"><span class="lineNum">     477</span> <span class="tlaGNC"> 12339120000 :     };</span></span>
+<span id="L478"><span class="lineNum">     478</span>              : </span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">  6179987304 :     auto philox4x32round = [&amp;]() {</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">     9479360 :         constexpr static uint32_t PHILOX_M4x32_0 = 0xD2511F53;</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">     9479360 :         constexpr static uint32_t PHILOX_M4x32_1 = 0xCD9E8D57;</span></span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">     9479360 :         uint32_t hi0, lo0;</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">     9479360 :         uint32_t hi1, lo1;</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">  6179039360 :         mulhilo32(PHILOX_M4x32_0, ctr[0], hi0, lo0);</span></span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaGNC">  6179039360 :         mulhilo32(PHILOX_M4x32_1, ctr[2], hi1, lo1);</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">  6179039360 :         ctr[0] = hi1 ^ ctr[1] ^ key[0];</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">  6179039360 :         ctr[1] = lo1;</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">  6179039360 :         ctr[2] = hi0 ^ ctr[3] ^ key[1];</span></span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">  6179039360 :         ctr[3] = lo0;</span></span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">  6796943304 :     };</span></span>
+<span id="L491"><span class="lineNum">     491</span>              : </span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">  5562083360 :     auto philox4x32bumpkey = [&amp;]() {</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">     8531416 :         constexpr static uint32_t PHILOX_W4x32_0 = 0x9E3779B9;</span></span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">     8531416 :         constexpr static uint32_t PHILOX_W4x32_1 = 0xBB67AE85;</span></span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">  5561135416 :         key[0] += PHILOX_W4x32_0;</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">  5561135416 :         key[1] += PHILOX_W4x32_1;</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">  6170507936 :     };</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">   617903936 :     constexpr int nrounds = 10;</span></span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">  6179039360 :     for (int i = 0; i &lt; (nrounds - 1); ++i) {</span></span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">  5561135416 :         philox4x32round();</span></span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaGNC">  5561135416 :         philox4x32bumpkey();</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :     }</span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">   617903936 :     philox4x32round();</span></span>
+<span id="L504"><span class="lineNum">     504</span>              : </span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaGNC">   617903936 :     return ctr[idx &amp; 3L];</span></span>
+<span id="L506"><span class="lineNum">     506</span>              : }</span>
+<span id="L507"><span class="lineNum">     507</span>              : </span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">      502640 : inline uint32_t philox4x32(uint32_t idx, uint32_t seed) {</span></span>
+<span id="L509"><span class="lineNum">     509</span>              :     // Note: this is for compatibility with impls that don't support s64 rand</span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaGNC">      502640 :     uint64_t x = idx &amp; ~3L;</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">      502640 :     uint64_t idx_64 = ((x + 3) &lt;&lt; 32) + (x + 2);</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">      502640 :     uint64_t offset_64 = ((x + 1) &lt;&lt; 32) + x;</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">      502640 :     uint64_t seed_64 = (uint64_t(seed) &lt;&lt; 32) + seed;</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaGNC">      502640 :     return philox4x32(idx_64, seed_64, offset_64);</span></span>
+<span id="L515"><span class="lineNum">     515</span>              : }</span>
+<span id="L516"><span class="lineNum">     516</span>              : </span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">       57344 : inline uint16_t philox8x16(uint32_t idx, uint32_t seed) {</span></span>
+<span id="L518"><span class="lineNum">     518</span>              :     // we split the index in two parts:</span>
+<span id="L519"><span class="lineNum">     519</span>              :     // - 31 msb are used to generate 32 random bits</span>
+<span id="L520"><span class="lineNum">     520</span>              :     // - 1 lsb is used to index 16-bit words within this 32 bit random</span>
+<span id="L521"><span class="lineNum">     521</span>              :     //   value</span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">       57344 :     uint32_t r = philox4x32(idx &gt;&gt; 1, seed);</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">       57344 :     return (uint16_t)(r &gt;&gt; ((idx &amp; 1) * sizeof(uint16_t) * 8));</span></span>
+<span id="L524"><span class="lineNum">     524</span>              : }</span>
+<span id="L525"><span class="lineNum">     525</span>              : </span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaUNC">           0 : inline uint8_t philox16x8(uint32_t idx, uint32_t seed) {</span></span>
+<span id="L527"><span class="lineNum">     527</span>              :     // we split the index in two parts:</span>
+<span id="L528"><span class="lineNum">     528</span>              :     // - 30 msb are used to generate 32 random bits</span>
+<span id="L529"><span class="lineNum">     529</span>              :     // - 2 lsb is used to index 8-bit words within this 32 bit random</span>
+<span id="L530"><span class="lineNum">     530</span>              :     //   value</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaUNC">           0 :     uint32_t r = philox4x32(idx &gt;&gt; 2, seed);</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaUNC">           0 :     return (uint8_t)(r &gt;&gt; ((idx &amp; 3) * sizeof(uint8_t) * 8));</span></span>
+<span id="L533"><span class="lineNum">     533</span>              : }</span>
+<span id="L534"><span class="lineNum">     534</span>              : </span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">       57344 : inline float stochastic_round_fwd(</span></span>
+<span id="L536"><span class="lineNum">     536</span>              :         float s, uint32_t idx, uint32_t seed, data_type_t dst_dt) {</span>
+<span id="L537"><span class="lineNum">     537</span>              :     // The general algorithm for stochastic rounding:</span>
+<span id="L538"><span class="lineNum">     538</span>              :     // - generates random bias</span>
+<span id="L539"><span class="lineNum">     539</span>              :     // - aligns the bias to dst_dt mantissa precision</span>
+<span id="L540"><span class="lineNum">     540</span>              :     // - add the bias and truncate to destination accuracy.</span>
+<span id="L541"><span class="lineNum">     541</span>              :     // - saturate properly to final destination datatype</span>
+<span id="L542"><span class="lineNum">     542</span>              : </span>
+<span id="L543"><span class="lineNum">     543</span>              :     // Note: the bias alignment performed allows to apply stochastic</span>
+<span id="L544"><span class="lineNum">     544</span>              :     // flush-to-zero (sftz).</span>
+<span id="L545"><span class="lineNum">     545</span>              : </span>
+<span id="L546"><span class="lineNum">     546</span>              :     // TODO: NaN handling when dst_dt has no NaN</span>
+<span id="L547"><span class="lineNum">     547</span> <span class="tlaGNC">       57344 :     if (std::isnan(s)) return s;</span></span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">       57344 :     if (dst_dt == data_type::undef) return NAN;</span></span>
+<span id="L549"><span class="lineNum">     549</span>              : </span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">       57344 :     using namespace dnnl::impl::types;</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">       57344 :     if (digits&lt;uint32_t&gt;(data_type::f32) &lt; digits&lt;uint32_t&gt;(dst_dt)) {</span></span>
+<span id="L552"><span class="lineNum">     552</span> <span class="tlaUNC">           0 :         assert(!&quot;dst_dt is a bad data type&quot;);</span></span>
+<span id="L553"><span class="lineNum">     553</span>              :         return NAN;</span>
+<span id="L554"><span class="lineNum">     554</span>              :     }</span>
+<span id="L555"><span class="lineNum">     555</span>              : </span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">       57344 :     uint32_t truncation_mask = 0xffffffff</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">       57344 :             &lt;&lt; (digits&lt;uint32_t&gt;(data_type::f32) - digits&lt;uint32_t&gt;(dst_dt));</span></span>
+<span id="L558"><span class="lineNum">     558</span>              : </span>
+<span id="L559"><span class="lineNum">     559</span>              :     // IMPORTANT: lsb of bias are used.</span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       57344 :     uint32_t rnd_bias = data_type_size(dst_dt) == 2 ? philox16x8(idx, seed)</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       57344 :                                                     : philox8x16(idx, seed);</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       57344 :     rnd_bias = rnd_bias &amp; ~truncation_mask;</span></span>
+<span id="L563"><span class="lineNum">     563</span>              : </span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       57344 :     uint32_t s_u = utils::bit_cast&lt;uint32_t&gt;(s);</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">       57344 :     uint32_t r_u = (s_u + rnd_bias) &amp; truncation_mask;</span></span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">       57344 :     float r = utils::bit_cast&lt;float&gt;(r_u);</span></span>
+<span id="L567"><span class="lineNum">     567</span>              :     // Result saturation and flush to zero.</span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">       57344 :     r = nstl::min(nstl::max(r, lowest_value&lt;float&gt;(dst_dt)),</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">      114688 :             max_value&lt;float&gt;(dst_dt));</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">       57344 :     if (r &gt; 0 &amp;&amp; r &lt; min_value&lt;float&gt;(dst_dt)) r = 0;</span></span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">       57344 :     if (r &lt; 0 &amp;&amp; r &gt; -min_value&lt;float&gt;(dst_dt)) r = 0;</span></span>
+<span id="L572"><span class="lineNum">     572</span>              : </span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">       57344 :     return r;</span></span>
+<span id="L574"><span class="lineNum">     574</span>              : }</span>
+<span id="L575"><span class="lineNum">     575</span>              : </span>
+<span id="L576"><span class="lineNum">     576</span>              : } // namespace math</span>
+<span id="L577"><span class="lineNum">     577</span>              : } // namespace impl</span>
+<span id="L578"><span class="lineNum">     578</span>              : } // namespace dnnl</span>
+<span id="L579"><span class="lineNum">     579</span>              : </span>
+<span id="L580"><span class="lineNum">     580</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

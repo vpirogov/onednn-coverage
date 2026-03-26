@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/utils/attribute_value.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/utils">src/graph/utils</a> - attribute_value.hpp<span style="font-size: 80%;"> (source / <a href="attribute_value.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">62.7&nbsp;%</td>
+            <td class="headerCovTableEntry">67</td>
+            <td class="headerCovTableEntry">42</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">88.6&nbsp;%</td>
+            <td class="headerCovTableEntry">79</td>
+            <td class="headerCovTableEntry">70</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              :  * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              :  *</span>
+<span id="L4"><span class="lineNum">       4</span>              :  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              :  * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              :  * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              :  *</span>
+<span id="L8"><span class="lineNum">       8</span>              :  *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              :  *</span>
+<span id="L10"><span class="lineNum">      10</span>              :  * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              :  * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              :  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              :  * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              :  * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              :  *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GRAPH_UTILS_ATTRIBUTE_VALUE_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GRAPH_UTILS_ATTRIBUTE_VALUE_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;memory&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;stdexcept&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;string&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;utility&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;vector&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;graph/interface/c_types_map.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;graph/utils/json.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace dnnl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace impl {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace graph {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace dnnl_impl {</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : class fusion_info_t; // Forward declaration of fusion_info_t</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : } // namespace dnnl_impl</span>
+<span id="L37"><span class="lineNum">      37</span>              : } // namespace graph</span>
+<span id="L38"><span class="lineNum">      38</span>              : } // namespace impl</span>
+<span id="L39"><span class="lineNum">      39</span>              : } // namespace dnnl</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : namespace dnnl {</span>
+<span id="L42"><span class="lineNum">      42</span>              : namespace impl {</span>
+<span id="L43"><span class="lineNum">      43</span>              : namespace graph {</span>
+<span id="L44"><span class="lineNum">      44</span>              : namespace utils {</span>
+<span id="L45"><span class="lineNum">      45</span>              : // Add new attribute types by specializing on the C++ type and</span>
+<span id="L46"><span class="lineNum">      46</span>              : // defining an enum value below</span>
+<span id="L47"><span class="lineNum">      47</span>              : template &lt;typename value_type&gt;</span>
+<span id="L48"><span class="lineNum">      48</span>              : struct attribute_value_traits_t;</span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span>              : template &lt;&gt;</span>
+<span id="L51"><span class="lineNum">      51</span>              : struct attribute_value_traits_t&lt;int64_t&gt; {</span>
+<span id="L52"><span class="lineNum">      52</span>              :     static attribute_kind_t constexpr kind = attribute_kind::i;</span>
+<span id="L53"><span class="lineNum">      53</span>              : };</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              : template &lt;&gt;</span>
+<span id="L56"><span class="lineNum">      56</span>              : struct attribute_value_traits_t&lt;std::vector&lt;int64_t&gt;&gt; {</span>
+<span id="L57"><span class="lineNum">      57</span>              :     static attribute_kind_t constexpr kind = attribute_kind::is;</span>
+<span id="L58"><span class="lineNum">      58</span>              : };</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              : template &lt;&gt;</span>
+<span id="L61"><span class="lineNum">      61</span>              : struct attribute_value_traits_t&lt;float&gt; {</span>
+<span id="L62"><span class="lineNum">      62</span>              :     static attribute_kind_t constexpr kind = attribute_kind::f;</span>
+<span id="L63"><span class="lineNum">      63</span>              : };</span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span>              : template &lt;&gt;</span>
+<span id="L66"><span class="lineNum">      66</span>              : struct attribute_value_traits_t&lt;std::vector&lt;float&gt;&gt; {</span>
+<span id="L67"><span class="lineNum">      67</span>              :     static attribute_kind_t constexpr kind = attribute_kind::fs;</span>
+<span id="L68"><span class="lineNum">      68</span>              : };</span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span>              : template &lt;&gt;</span>
+<span id="L71"><span class="lineNum">      71</span>              : struct attribute_value_traits_t&lt;std::string&gt; {</span>
+<span id="L72"><span class="lineNum">      72</span>              :     static attribute_kind_t constexpr kind = attribute_kind::s;</span>
+<span id="L73"><span class="lineNum">      73</span>              : };</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              : template &lt;&gt;</span>
+<span id="L76"><span class="lineNum">      76</span>              : struct attribute_value_traits_t&lt;bool&gt; {</span>
+<span id="L77"><span class="lineNum">      77</span>              :     static attribute_kind_t constexpr kind = attribute_kind::b;</span>
+<span id="L78"><span class="lineNum">      78</span>              : };</span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span>              : template &lt;&gt;</span>
+<span id="L81"><span class="lineNum">      81</span>              : struct attribute_value_traits_t&lt;dnnl::impl::graph::dnnl_impl::fusion_info_t&gt; {</span>
+<span id="L82"><span class="lineNum">      82</span>              :     static attribute_kind_t constexpr kind = attribute_kind::fusion_info;</span>
+<span id="L83"><span class="lineNum">      83</span>              : };</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span>              : template &lt;typename value_type&gt;</span>
+<span id="L86"><span class="lineNum">      86</span>              : using base_value_type = typename std::remove_cv&lt;</span>
+<span id="L87"><span class="lineNum">      87</span>              :         typename std::remove_reference&lt;value_type&gt;::type&gt;::type;</span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span>              : template &lt;typename value_type&gt;</span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">    19302938 : constexpr attribute_kind_t get_attribute_kind() {</span></span>
+<span id="L91"><span class="lineNum">      91</span>              :     static_assert(std::is_same&lt;float, value_type&gt;::value</span>
+<span id="L92"><span class="lineNum">      92</span>              :                     || std::is_same&lt;int64_t, value_type&gt;::value</span>
+<span id="L93"><span class="lineNum">      93</span>              :                     || std::is_same&lt;std::vector&lt;float&gt;, value_type&gt;::value</span>
+<span id="L94"><span class="lineNum">      94</span>              :                     || std::is_same&lt;std::vector&lt;int64_t&gt;, value_type&gt;::value</span>
+<span id="L95"><span class="lineNum">      95</span>              :                     || std::is_same&lt;std::string, value_type&gt;::value</span>
+<span id="L96"><span class="lineNum">      96</span>              :                     || std::is_same&lt;bool, value_type&gt;::value</span>
+<span id="L97"><span class="lineNum">      97</span>              :                     || std::is_same&lt;dnnl::impl::graph::dnnl_impl::fusion_info_t,</span>
+<span id="L98"><span class="lineNum">      98</span>              :                             value_type&gt;::value,</span>
+<span id="L99"><span class="lineNum">      99</span>              :             &quot;value_type should be one of int64_t, float, string, &quot;</span>
+<span id="L100"><span class="lineNum">     100</span>              :             &quot;bool, vector&lt;float&gt;, vector&lt;int64_t&gt; or fusion_info_t class &quot;</span>
+<span id="L101"><span class="lineNum">     101</span>              :             &quot;type.&quot;);</span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">    19302938 :     return attribute_value_traits_t&lt;base_value_type&lt;value_type&gt;&gt;::kind;</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : }</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              : template &lt;typename value_type&gt;</span>
+<span id="L107"><span class="lineNum">     107</span>              : class attribute_value_cell_imp_t;</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span>              : // Interface to cells the hold specific C++ types</span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">    10870824 : class attribute_value_cell_t {</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : protected:</span>
+<span id="L112"><span class="lineNum">     112</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L113"><span class="lineNum">     113</span>              :     using imp_class = attribute_value_cell_imp_t&lt;base_value_type&lt;value_type&gt;&gt;;</span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span>              : public:</span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">     2487346 :     virtual ~attribute_value_cell_t() = default;</span></span>
+<span id="L117"><span class="lineNum">     117</span>              :     virtual attribute_kind_t get_kind() const = 0;</span>
+<span id="L118"><span class="lineNum">     118</span>              :     // Copy the underlying value</span>
+<span id="L119"><span class="lineNum">     119</span>              :     virtual std::unique_ptr&lt;attribute_value_cell_t&gt; duplicate() const = 0;</span>
+<span id="L120"><span class="lineNum">     120</span>              :     virtual bool operator==(const attribute_value_cell_t &amp;other) const = 0;</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L123"><span class="lineNum">     123</span>              :     attribute_value_cell_t &amp;operator=(value_type &amp;&amp;value) {</span>
+<span id="L124"><span class="lineNum">     124</span>              :         if (get_kind() == get_attribute_kind&lt;value_type&gt;()) {</span>
+<span id="L125"><span class="lineNum">     125</span>              :             static_cast&lt;imp_class&lt;value_type&gt; &amp;&gt;(*this).set(</span>
+<span id="L126"><span class="lineNum">     126</span>              :                     std::forward&lt;value_type&gt;(value));</span>
+<span id="L127"><span class="lineNum">     127</span>              :             return *this;</span>
+<span id="L128"><span class="lineNum">     128</span>              :         } else {</span>
+<span id="L129"><span class="lineNum">     129</span>              :             throw std::runtime_error(</span>
+<span id="L130"><span class="lineNum">     130</span>              :                     &quot;Attempt to set attribute to invalid type.\n&quot;);</span>
+<span id="L131"><span class="lineNum">     131</span>              :         }</span>
+<span id="L132"><span class="lineNum">     132</span>              :     }</span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">    12273905 :     value_type &amp;get() {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">    12273905 :         if (get_kind() == get_attribute_kind&lt;value_type&gt;()) {</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">    12273905 :             return static_cast&lt;imp_class&lt;value_type&gt; &amp;&gt;(*this).get();</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :         } else {</span>
+<span id="L139"><span class="lineNum">     139</span>              :             throw std::runtime_error(</span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :                     &quot;Attempt to get attribute using invalid type.\n&quot;);</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :         }</span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L145"><span class="lineNum">     145</span>              :     const value_type &amp;get() const {</span>
+<span id="L146"><span class="lineNum">     146</span>              :         if (get_kind() == get_attribute_kind&lt;value_type&gt;()) {</span>
+<span id="L147"><span class="lineNum">     147</span>              :             return static_cast&lt;imp_class&lt;value_type&gt; &amp;&gt;(*this).get();</span>
+<span id="L148"><span class="lineNum">     148</span>              :         } else {</span>
+<span id="L149"><span class="lineNum">     149</span>              :             throw std::runtime_error(</span>
+<span id="L150"><span class="lineNum">     150</span>              :                     &quot;Attempt to get attribute using invalid type.\n&quot;);</span>
+<span id="L151"><span class="lineNum">     151</span>              :         }</span>
+<span id="L152"><span class="lineNum">     152</span>              :     }</span>
+<span id="L153"><span class="lineNum">     153</span>              : };</span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span>              : // Type-specific instantiations of attribute_value_cell_t API</span>
+<span id="L156"><span class="lineNum">     156</span>              : template &lt;typename value_type&gt;</span>
+<span id="L157"><span class="lineNum">     157</span>              : class attribute_value_cell_imp_t : public attribute_value_cell_t {</span>
+<span id="L158"><span class="lineNum">     158</span>              : public:</span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">     5287970 :     attribute_value_cell_imp_t(const value_type &amp;value) : value_(value) {}</span></span>
+<span id="L160"><span class="lineNum">     160</span>              :     attribute_value_cell_imp_t(value_type &amp;&amp;value) : value_(std::move(value)) {}</span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">    52165686 :     attribute_kind_t get_kind() const override {</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">    52165686 :         return get_attribute_kind&lt;value_type&gt;();</span></span>
+<span id="L163"><span class="lineNum">     163</span>              :     }</span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">     9204792 :     std::unique_ptr&lt;attribute_value_cell_t&gt; duplicate() const override {</span></span>
+<span id="L165"><span class="lineNum">     165</span>              :         return std::unique_ptr&lt;attribute_value_cell_t&gt;(</span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">    11168148 :                 new attribute_value_cell_imp_t&lt;value_type&gt;(value_));</span></span>
+<span id="L167"><span class="lineNum">     167</span>              :     }</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">     5903431 :     bool operator==(const attribute_value_cell_t &amp;other) const override {</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">     5903431 :         return (other.get_kind() == get_kind())</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     7612284 :                 &amp;&amp; static_cast&lt;const attribute_value_cell_imp_t&lt;value_type&gt; &amp;&gt;(</span></span>
+<span id="L171"><span class="lineNum">     171</span>              :                            other)</span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     5903431 :                            .value_</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">     7612284 :                 == value_;</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :     }</span>
+<span id="L175"><span class="lineNum">     175</span>              :     void set(const value_type &amp;value) { value_ = value; }</span>
+<span id="L176"><span class="lineNum">     176</span>              :     void set(value_type &amp;&amp;value) { value_ = std::move(value); }</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">    12273905 :     value_type &amp;get() { return value_; }</span></span>
+<span id="L178"><span class="lineNum">     178</span>              :     const value_type &amp;get() const { return value_; }</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              : protected:</span>
+<span id="L181"><span class="lineNum">     181</span>              :     value_type value_;</span>
+<span id="L182"><span class="lineNum">     182</span>              : };</span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span>              : // Wrapper for a unique_ptr to an attribute_value_cell_t</span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">     6375196 : class attribute_value_t {</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : public:</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">     1176981 :     attribute_value_t() = default;</span></span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">     4276956 :     attribute_value_t(const value_type &amp;value)</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">     4990627 :         : value_cell_(new attribute_value_cell_imp_t&lt;value_type&gt;(value)) {}</span></span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">     3603211 :     attribute_value_t(attribute_value_t &amp;&amp;orig)</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">     3603211 :         : value_cell_(std::move(orig.value_cell_)) {}</span></span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">     9439098 :     attribute_value_t(const attribute_value_t &amp;orig) {</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">     9439098 :         if (orig.value_cell_) {</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">     9204773 :             this-&gt;value_cell_ = orig.value_cell_-&gt;duplicate();</span></span>
+<span id="L199"><span class="lineNum">     199</span>              :         }</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">     9439098 :     }</span></span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span>              :     // Serialize</span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :     status_t save(dnnl::impl::graph::utils::json::json_writer_t *writer) const {</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :         writer-&gt;begin_object();</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaUNC">           0 :         if (check_type&lt;bool&gt;()) {</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;type&quot;, std::string(&quot;bool&quot;));</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;value&quot;, get&lt;bool&gt;());</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaUNC">           0 :         } else if (check_type&lt;int64_t&gt;()) {</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;type&quot;, std::string(&quot;s64&quot;));</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;value&quot;, get&lt;int64_t&gt;());</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaUNC">           0 :         } else if (check_type&lt;float&gt;()) {</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;type&quot;, std::string(&quot;f32&quot;));</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;value&quot;, get&lt;float&gt;());</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaUNC">           0 :         } else if (check_type&lt;std::vector&lt;float&gt;&gt;()) {</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;type&quot;, std::string(&quot;f32[]&quot;));</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;value&quot;, get&lt;std::vector&lt;float&gt;&gt;());</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaUNC">           0 :         } else if (check_type&lt;std::vector&lt;int64_t&gt;&gt;()) {</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;type&quot;, std::string(&quot;s64[]&quot;));</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;value&quot;, get&lt;std::vector&lt;int64_t&gt;&gt;());</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaUNC">           0 :         } else if (check_type&lt;std::string&gt;()) {</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;type&quot;, std::string(&quot;string&quot;));</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaUNC">           0 :             writer-&gt;write_keyvalue(&quot;value&quot;, get&lt;std::string&gt;());</span></span>
+<span id="L223"><span class="lineNum">     223</span>              :         } else {</span>
+<span id="L224"><span class="lineNum">     224</span>              :         }</span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaUNC">           0 :         writer-&gt;end_object();</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaUNC">           0 :         return graph::status::success;</span></span>
+<span id="L227"><span class="lineNum">     227</span>              :     }</span>
+<span id="L228"><span class="lineNum">     228</span>              : </span>
+<span id="L229"><span class="lineNum">     229</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L230"><span class="lineNum">     230</span>              :     attribute_value_t &amp;operator=(value_type &amp;&amp;value) {</span>
+<span id="L231"><span class="lineNum">     231</span>              :         *value_cell_ = std::forward&lt;value_type&gt;(value);</span>
+<span id="L232"><span class="lineNum">     232</span>              :         return *this;</span>
+<span id="L233"><span class="lineNum">     233</span>              :     }</span>
+<span id="L234"><span class="lineNum">     234</span>              : </span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">     1453820 :     attribute_value_t &amp;operator=(attribute_value_t &amp;&amp;orig) {</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">     3117474 :         value_cell_ = std::move(orig.value_cell_);</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">     1169983 :         return *this;</span></span>
+<span id="L238"><span class="lineNum">     238</span>              :     }</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">          38 :     attribute_value_t &amp;operator=(const attribute_value_t &amp;orig) {</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">          38 :         if (&amp;orig != this &amp;&amp; orig.value_cell_) {</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">          38 :             this-&gt;value_cell_ = orig.value_cell_-&gt;duplicate();</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :         }</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">          38 :         return *this;</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :     }</span>
+<span id="L246"><span class="lineNum">     246</span>              : </span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">     5903431 :     bool operator==(const attribute_value_t &amp;value) const {</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">     5903412 :         return *value_cell_ == *value.value_cell_;</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :     }</span>
+<span id="L250"><span class="lineNum">     250</span>              : </span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">        1102 :     bool operator!=(const attribute_value_t &amp;value) const {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        1102 :         return !operator==(value);</span></span>
+<span id="L253"><span class="lineNum">     253</span>              :     }</span>
+<span id="L254"><span class="lineNum">     254</span>              : </span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">    28084926 :     attribute_kind_t get_kind() const { return value_cell_-&gt;get_kind(); }</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaUNC">           0 :     bool check_type() const {</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaUNC">           0 :         return value_cell_-&gt;get_kind() == get_attribute_kind&lt;value_type&gt;();</span></span>
+<span id="L260"><span class="lineNum">     260</span>              :     }</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :     template &lt;typename value_type&gt;</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">    12273905 :     value_type &amp;get() const {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">    12273905 :         return value_cell_-&gt;get&lt;value_type&gt;();</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :     }</span>
+<span id="L266"><span class="lineNum">     266</span>              : </span>
+<span id="L267"><span class="lineNum">     267</span>              : private:</span>
+<span id="L268"><span class="lineNum">     268</span>              :     std::unique_ptr&lt;attribute_value_cell_t&gt; value_cell_;</span>
+<span id="L269"><span class="lineNum">     269</span>              : };</span>
+<span id="L270"><span class="lineNum">     270</span>              : } // namespace utils</span>
+<span id="L271"><span class="lineNum">     271</span>              : } // namespace graph</span>
+<span id="L272"><span class="lineNum">     272</span>              : } // namespace impl</span>
+<span id="L273"><span class="lineNum">     273</span>              : } // namespace dnnl</span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

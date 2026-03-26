@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/rnn/jit_uni_gru_lbr_cell_postgemm_bwd.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/rnn">src/cpu/x64/rnn</a> - jit_uni_gru_lbr_cell_postgemm_bwd.hpp<span style="font-size: 80%;"> (source / <a href="jit_uni_gru_lbr_cell_postgemm_bwd.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">200</td>
+            <td class="headerCovTableEntry">200</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">19.0&nbsp;%</td>
+            <td class="headerCovTableEntry">210</td>
+            <td class="headerCovTableEntry">40</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_RNN_JIT_UNI_GRU_LBR_CELL_POSTGEMM_BWD_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_RNN_JIT_UNI_GRU_LBR_CELL_POSTGEMM_BWD_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;cpu/x64/rnn/jit_uni_rnn_common_postgemm.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace dnnl {</span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace impl {</span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace cpu {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace x64 {</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : template &lt;cpu_isa_t isa, impl::data_type_t src_data_t,</span>
+<span id="L28"><span class="lineNum">      28</span>              :         impl::data_type_t scratch_data_t&gt;</span>
+<span id="L29"><span class="lineNum">      29</span>              : struct jit_uni_gru_lbr_cell_postgemm_bwd : public jit_uni_rnn_postgemm_t {</span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">        6642 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_gru_lbr_cell_postgemm_bwd)</span></span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">        2214 :     jit_uni_gru_lbr_cell_postgemm_bwd(</span></span>
+<span id="L33"><span class="lineNum">      33</span>              :             const rnn_utils::rnn_conf_t &amp;rnn, const rnn_pd_t *pd)</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">        2214 :         : jit_uni_rnn_postgemm_t(rnn, pd, jit_name()) {}</span></span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        4428 :     ~jit_uni_gru_lbr_cell_postgemm_bwd() override = default;</span></span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        2214 :     status_t init(data_type_t sdt) override {</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        2214 :         CHECK(jit_uni_rnn_postgemm_t::init(src_data_t));</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">        2214 :         return create_kernel();</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :     }</span>
+<span id="L42"><span class="lineNum">      42</span>              : </span>
+<span id="L43"><span class="lineNum">      43</span>              : protected:</span>
+<span id="L44"><span class="lineNum">      44</span>              :     // register size in bytes</span>
+<span id="L45"><span class="lineNum">      45</span>              :     using Vmm = typename cpu_isa_traits_t&lt;isa&gt;::Vmm;</span>
+<span id="L46"><span class="lineNum">      46</span>              :     static constexpr size_t vlen = cpu_isa_traits_t&lt;isa&gt;::vlen;</span>
+<span id="L47"><span class="lineNum">      47</span>              :     static constexpr size_t hstate_dt_size = sizeof(float);</span>
+<span id="L48"><span class="lineNum">      48</span>              :     const size_t vlen_scratch</span>
+<span id="L49"><span class="lineNum">      49</span>              :             = vlen / (sizeof(float) / types::data_type_size(scratch_data_t));</span>
+<span id="L50"><span class="lineNum">      50</span>              :     const size_t gate_dt_size = types::data_type_size(scratch_data_t);</span>
+<span id="L51"><span class="lineNum">      51</span>              :     const size_t scratch_dt_size = types::data_type_size(scratch_data_t);</span>
+<span id="L52"><span class="lineNum">      52</span>              : </span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        2214 :     void generate() override {</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :         using namespace Xbyak;</span>
+<span id="L55"><span class="lineNum">      55</span>              : </span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">        2214 :         const bool is_augru = pd_-&gt;cell_kind() == alg_kind::lbr_augru;</span></span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span>              :         // Labels declaration</span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        4428 :         Label vector_loop_start_label, vector_loop_inc_regs,</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        4428 :                 vector_loop_end_label;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        4428 :         Label rem_loop_start_label, rem_loop_inc_regs, rem_loop_end_label;</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        4428 :         Label table_label;</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span>              :         // Register map</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        2214 :         const Reg64 table_reg(rbx); // used to load ones before the loop</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        2214 :         const Reg64 loop_cnt(</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :                 rbx); // loop counter, can be aliased with table_reg</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              :         // We skip vmm0 as it can be used by the injector for masks on sse4.1</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        2214 :         const int dG0_idx = 1, dG1_idx = 2, dG2_idx = 3, G0_idx = 4, G1_idx = 5,</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">        2214 :                   G2_idx = 6, h_idx = 7, dHt_idx = 8, one_idx = 9,</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">        2214 :                   tmp1_idx = 10, tmp2_idx = 11, dattn_acc_idx = 12,</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        2214 :                   attn_idx = 13;</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">        2214 :         const Vmm one_vmm(one_idx);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        2214 :         const Xmm one_xmm(one_idx);</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              :         // constant table map</span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">        2214 :         const Address one_addr = ptr[table_reg];</span></span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span>              :         // We start code generations here</span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">        2214 :         preamble();</span></span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span>              :         // extract addresses passed as parameter</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">        2214 :         const auto addr_ws_gates_reg = abi_param1;</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">        2214 :         const auto addr_scratch_gates_reg = abi_param2;</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">        2214 :         const auto addr_diff_states_t_lp1_reg = abi_param3;</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">        2214 :         const auto addr_diff_states_tp1_l_reg = abi_param4;</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">        2214 :         const auto addr_attn_reg = r14;</span></span>
+<span id="L89"><span class="lineNum">      89</span>              : #ifdef _WIN32</span>
+<span id="L90"><span class="lineNum">      90</span>              :         const auto addr_diff_states_t_l_reg = r10;</span>
+<span id="L91"><span class="lineNum">      91</span>              :         const auto addr_states_tm1_l_reg = r11;</span>
+<span id="L92"><span class="lineNum">      92</span>              :         const auto addr_scratch_cell_reg = r12;</span>
+<span id="L93"><span class="lineNum">      93</span>              :         const auto addr_ws_grid_reg = rsi;</span>
+<span id="L94"><span class="lineNum">      94</span>              :         const auto base_args = get_stack_params_address();</span>
+<span id="L95"><span class="lineNum">      95</span>              :         mov(addr_diff_states_t_l_reg, ptr[base_args]);</span>
+<span id="L96"><span class="lineNum">      96</span>              :         mov(addr_states_tm1_l_reg, ptr[base_args + 8]);</span>
+<span id="L97"><span class="lineNum">      97</span>              :         mov(addr_scratch_cell_reg, ptr[base_args + 16]);</span>
+<span id="L98"><span class="lineNum">      98</span>              :         mov(addr_ws_grid_reg, ptr[base_args + 24]);</span>
+<span id="L99"><span class="lineNum">      99</span>              :         if (is_augru) mov(addr_attn_reg, ptr[base_args + 48]);</span>
+<span id="L100"><span class="lineNum">     100</span>              : #else</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        2214 :         const auto addr_diff_states_t_l_reg = abi_param5;</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">        2214 :         const auto addr_states_tm1_l_reg = abi_param6;</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">        2214 :         const auto addr_scratch_cell_reg = r10;</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">        2214 :         const auto addr_ws_grid_reg = r11;</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">        2214 :         const auto base_args = get_stack_params_address();</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">        2214 :         mov(addr_scratch_cell_reg, ptr[base_args]);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">        2214 :         mov(addr_ws_grid_reg, ptr[base_args + 8]);</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">        2214 :         if (is_augru) mov(addr_attn_reg, ptr[base_args + 32]);</span></span>
+<span id="L109"><span class="lineNum">     109</span>              : #endif</span>
+<span id="L110"><span class="lineNum">     110</span>              : </span>
+<span id="L111"><span class="lineNum">     111</span>              :         // helper lambda to address the gates and biases</span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">       42066 :         const auto sg_addr = [&amp;](int i) {</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">       26568 :             return ptr[addr_scratch_gates_reg + i * rnn_.dhc * scratch_dt_size];</span></span>
+<span id="L114"><span class="lineNum">     114</span>              :         };</span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">       42066 :         const auto wg_addr = [&amp;](int i) {</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">       26568 :             return ptr[addr_ws_gates_reg + i * rnn_.dhc * gate_dt_size];</span></span>
+<span id="L117"><span class="lineNum">     117</span>              :         };</span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">       42066 :         const auto sc_addr = [&amp;](int i) {</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">       26568 :             return ptr[addr_scratch_cell_reg + i * rnn_.dhc * scratch_dt_size];</span></span>
+<span id="L120"><span class="lineNum">     120</span>              :         };</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :         // initialize registers with addresses and constants</span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">        2214 :         mov(table_reg, table_label);</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">        2214 :         init_regs(vlen);</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">        2214 :         uni_vmovups(one_vmm, one_addr);</span></span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">        2214 :         if (is_augru) {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">         102 :             uni_vpxor(</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :                     Vmm(dattn_acc_idx), Vmm(dattn_acc_idx), Vmm(dattn_acc_idx));</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">         102 :             const Xmm attn1s(attn_idx);</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">         102 :             to_float(attn1s, ptr[addr_attn_reg], src_data_t, hstate_dt_size);</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :         }</span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">        2214 :         mov(loop_cnt, rnn_.dhc * scratch_dt_size);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        2214 :         cmp(loop_cnt, vlen_scratch);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        2214 :         jl(vector_loop_end_label, Xbyak::CodeGenerator::T_NEAR);</span></span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        2214 :         if (is_augru) {</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">         102 :             const Xmm attn1s(attn_idx);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">         102 :             const Vmm attn(attn_idx);</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">         102 :             uni_vbroadcastss(attn, attn1s);</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :         }</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        2214 :         L(vector_loop_start_label);</span></span>
+<span id="L145"><span class="lineNum">     145</span>              :         {</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        2214 :             const Vmm dG0(dG0_idx), dG1(dG1_idx), dG2(dG2_idx), G0(G0_idx),</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        2214 :                     G1(G1_idx), G2(G2_idx), dHt(dHt_idx), tmp1(tmp1_idx),</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">        2214 :                     tmp2(tmp2_idx), h(h_idx), diff_attn_acc(dattn_acc_idx),</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        2214 :                     attn(attn_idx);</span></span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        2214 :             to_float(G0, wg_addr(0), src_data_t, vlen);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        2214 :             to_float(G1, wg_addr(1), src_data_t, vlen);</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        2214 :             to_float(G2, wg_addr(2), src_data_t, vlen);</span></span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span>              :             // compute dHt</span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        2214 :             uni_vmovups(dHt, ptr[addr_diff_states_tp1_l_reg]);</span></span>
+<span id="L157"><span class="lineNum">     157</span>              :             // assumption: the diff_states_t_lp1 address is already offset by rnn.n_states</span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        2214 :             uni_vmovups(tmp1, ptr[addr_diff_states_t_lp1_reg]);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        2214 :             uni_vaddps(dHt, dHt, tmp1);</span></span>
+<span id="L160"><span class="lineNum">     160</span>              : </span>
+<span id="L161"><span class="lineNum">     161</span>              :             // compute dG0</span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        2214 :             to_float(h, ptr[addr_states_tm1_l_reg], src_data_t, vlen);</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">        2214 :             uni_vmovups(dG0, G0);</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        2214 :             uni_vmovups(tmp1, G0);</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">        2214 :             uni_vfnmadd231ps(dG0, tmp1, tmp1); // (G0 - G0^2)</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">        2214 :             uni_vsubps(h, h, G2); // (h - G2)</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">        2214 :             uni_vmulps(dG0, dG0, h);</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        2214 :             uni_vmulps(dG0, dG0, dHt); // (h - G2) * (G0 - G0^2) * dHt</span></span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">        2214 :             if (is_augru) {</span></span>
+<span id="L171"><span class="lineNum">     171</span>              :                 // Compute diff_attention</span>
+<span id="L172"><span class="lineNum">     172</span>              :                 // 1. compute dAttention = -dG0 * G</span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">         102 :                 uni_vfnmadd231ps(diff_attn_acc, dG0, G0, tmp2);</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :                 // 2. Compute dG0 *= 1 - Attention</span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         102 :                 uni_vsubps(tmp1, one_vmm, attn, tmp2);</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">         102 :                 uni_vmulps(dG0, dG0, tmp1);</span></span>
+<span id="L177"><span class="lineNum">     177</span>              :             }</span>
+<span id="L178"><span class="lineNum">     178</span>              :             // compute dG2</span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">        2214 :             uni_vmovups(tmp1, one_vmm);</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">        2214 :             uni_vsubps(tmp1, tmp1, G0); // (1 - G0)</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">        2214 :             uni_vmovups(dG2, one_vmm);</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">        2214 :             uni_vmovups(tmp2, G2);</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">        2214 :             uni_vfnmadd231ps(dG2, tmp2, tmp2); // (1 - G2^2)</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">        2214 :             uni_vmulps(dG2, dG2, tmp1);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">        2214 :             uni_vmulps(dG2, dG2, dHt); //(1 - G0) * (1 - G2^2) * dHt</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span>              :             // compute dG1</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">        2214 :             to_float(tmp1, ptr[addr_ws_grid_reg], src_data_t, vlen);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">        2214 :             uni_vmovups(dG1, G1);</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">        2214 :             uni_vmovups(tmp2, G1);</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        2214 :             uni_vfnmadd231ps(dG1, tmp2, tmp2); // (G1 - G1^2)</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        2214 :             uni_vmulps(dG1, dG1, dG2);</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        2214 :             uni_vmulps(dG1, dG1, tmp1); // (G1 - G1^2) * dG2 * ws_grid</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              :             // compute diff_state_t_l</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        2214 :             uni_vmulps(dHt, dHt, G0);</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">        2214 :             uni_vmovups(ptr[addr_diff_states_t_l_reg], dHt);</span></span>
+<span id="L198"><span class="lineNum">     198</span>              : </span>
+<span id="L199"><span class="lineNum">     199</span>              :             // compute scratch_cell</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">        2214 :             uni_vmovups(tmp1, dG2);</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">        2214 :             uni_vmulps(tmp1, tmp1, G1);</span></span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :             // downconvert and write data</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        2214 :             to_src(sc_addr(0), dG0, scratch_data_t, vlen);</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :             // As to_src is called with write_only=true it's important for xf16</span>
+<span id="L206"><span class="lineNum">     206</span>              :             // src_dt to execute just after to_src method with write_only=false</span>
+<span id="L207"><span class="lineNum">     207</span>              :             // for the same Vmm</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">        2214 :             to_src(sg_addr(0), dG0, scratch_data_t, vlen, true);</span></span>
+<span id="L209"><span class="lineNum">     209</span>              : </span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">        2214 :             to_src(sc_addr(1), dG1, scratch_data_t, vlen);</span></span>
+<span id="L211"><span class="lineNum">     211</span>              :             // As to_src is called with write_only=true it's important for xf16</span>
+<span id="L212"><span class="lineNum">     212</span>              :             // src_dt to execute just after to_src method with write_only=false</span>
+<span id="L213"><span class="lineNum">     213</span>              :             // for the same Vmm</span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">        2214 :             to_src(sg_addr(1), dG1, scratch_data_t, vlen, true);</span></span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">        2214 :             to_src(sc_addr(2), tmp1, scratch_data_t, vlen);</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">        2214 :             to_src(sg_addr(2), dG2, scratch_data_t, vlen);</span></span>
+<span id="L218"><span class="lineNum">     218</span>              : </span>
+<span id="L219"><span class="lineNum">     219</span>              :             // increment address pointers</span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">        2214 :             add(addr_ws_gates_reg, vlen_scratch);</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">        2214 :             add(addr_scratch_gates_reg, vlen_scratch);</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">        2214 :             add(addr_diff_states_t_lp1_reg, vlen);</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">        2214 :             add(addr_diff_states_tp1_l_reg, vlen);</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">        2214 :             add(addr_diff_states_t_l_reg, vlen);</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">        2214 :             add(addr_states_tm1_l_reg, vlen_scratch);</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">        2214 :             add(addr_scratch_cell_reg, vlen_scratch);</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">        2214 :             add(addr_ws_grid_reg, vlen_scratch);</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">        2214 :             inc_regs(vlen);</span></span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span>              :             // increment loop counter</span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">        2214 :             sub(loop_cnt, vlen_scratch);</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">        2214 :             cmp(loop_cnt, vlen_scratch);</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">        2214 :             jge(vector_loop_start_label);</span></span>
+<span id="L234"><span class="lineNum">     234</span>              :         }</span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">        2214 :         L(vector_loop_end_label);</span></span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span>              :         // Reduce diff attention into XMM size. Otherwise accumulation</span>
+<span id="L238"><span class="lineNum">     238</span>              :         // using XMM will zero high part of YMM/ZMM.</span>
+<span id="L239"><span class="lineNum">     239</span>              :         if (vlen &gt;= cpu_isa_traits_t&lt;avx512_core&gt;::vlen) {</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">        1820 :             Zmm diff_attn_acc(dattn_acc_idx);</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">        1820 :             Ymm diff_attn_acc_high(tmp1_idx);</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">        1820 :             Ymm diff_attn_acc_low(dattn_acc_idx);</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">        1820 :             vextractf32x8(diff_attn_acc_high, diff_attn_acc, 1);</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">        1820 :             vaddps(diff_attn_acc_low, diff_attn_acc_low, diff_attn_acc_high);</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :         }</span>
+<span id="L246"><span class="lineNum">     246</span>              :         if (vlen &gt;= cpu_isa_traits_t&lt;avx2&gt;::vlen) {</span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">        1920 :             Ymm diff_attn_acc(dattn_acc_idx);</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        1920 :             Xmm diff_attn_acc_high(tmp1_idx);</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        1920 :             Xmm diff_attn_acc_low(dattn_acc_idx);</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">        1920 :             vextractf128(diff_attn_acc_high, diff_attn_acc, 1);</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">        1920 :             vaddps(diff_attn_acc_low, diff_attn_acc_low, diff_attn_acc_high);</span></span>
+<span id="L252"><span class="lineNum">     252</span>              :         }</span>
+<span id="L253"><span class="lineNum">     253</span>              : </span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">        2214 :         cmp(loop_cnt, 0);</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        2214 :         je(rem_loop_end_label, Xbyak::CodeGenerator::T_NEAR);</span></span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span>              :         // Same code as above, we just use movuss for accessing inputs</span>
+<span id="L258"><span class="lineNum">     258</span>              :         // TODO: smarter handling of tails with Zmm -&gt; Ymm -&gt; Xmm -&gt; scalar</span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">        2214 :         L(rem_loop_start_label);</span></span>
+<span id="L260"><span class="lineNum">     260</span>              :         {</span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">        2214 :             const Xmm dG0(dG0_idx), dG1(dG1_idx), dG2(dG2_idx), G0(G0_idx),</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">        2214 :                     G1(G1_idx), G2(G2_idx), dHt(dHt_idx), tmp1(tmp1_idx),</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">        2214 :                     tmp2(tmp2_idx), h(h_idx), diff_attn_acc(dattn_acc_idx),</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        2214 :                     attn(attn_idx);</span></span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">        2214 :             to_float(G0, wg_addr(0), src_data_t, hstate_dt_size);</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">        2214 :             to_float(G1, wg_addr(1), src_data_t, hstate_dt_size);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">        2214 :             to_float(G2, wg_addr(2), src_data_t, hstate_dt_size);</span></span>
+<span id="L269"><span class="lineNum">     269</span>              : </span>
+<span id="L270"><span class="lineNum">     270</span>              :             // compute dHt</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">        2214 :             uni_vmovss(dHt, ptr[addr_diff_states_tp1_l_reg]);</span></span>
+<span id="L272"><span class="lineNum">     272</span>              :             // assumption: the diff_states_t_lp1 address is already offset by rnn.n_states</span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        2214 :             uni_vmovss(tmp1, ptr[addr_diff_states_t_lp1_reg]);</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">        2214 :             uni_vaddss(dHt, dHt, tmp1);</span></span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span>              :             // compute dG0</span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">        2214 :             to_float(h, ptr[addr_states_tm1_l_reg], src_data_t, hstate_dt_size);</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">        2214 :             uni_vmovss(dG0, G0);</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">        2214 :             uni_vmovss(tmp1, dG0);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        2214 :             uni_vfnmadd231ps(dG0, tmp1, tmp1); // (G0 - G0^2)</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">        2214 :             uni_vsubss(h, h, G2); // (h - G2)</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        2214 :             uni_vmulss(dG0, dG0, h);</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">        2214 :             uni_vmulss(dG0, dG0, dHt); // (h - G2) * (G0 - G0^2) * dHt</span></span>
+<span id="L284"><span class="lineNum">     284</span>              : </span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">        2214 :             if (is_augru) {</span></span>
+<span id="L286"><span class="lineNum">     286</span>              :                 // compute diff_attention</span>
+<span id="L287"><span class="lineNum">     287</span>              :                 // 1. compute tmp2 = dG0 * G</span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">         102 :                 uni_vmovss(tmp2, dG0);</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">         102 :                 uni_vmulss(tmp2, tmp2, G0);</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :                 // 2. Store dAttention</span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">         102 :                 uni_vsubss(diff_attn_acc, diff_attn_acc, tmp2);</span></span>
+<span id="L292"><span class="lineNum">     292</span>              :                 // 3. Compute dG0 *= 1 - attention</span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">         102 :                 uni_vmovss(tmp1, one_xmm);</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">         102 :                 uni_vsubss(tmp1, tmp1, attn);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">         102 :                 uni_vmulss(dG0, dG0, tmp1);</span></span>
+<span id="L296"><span class="lineNum">     296</span>              :             }</span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span>              :             // compute dG2</span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">        2214 :             uni_vmovss(tmp1, one_xmm);</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        2214 :             uni_vsubss(tmp1, tmp1, G0); // (1 - G0)</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        2214 :             uni_vmovss(dG2, one_xmm);</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">        2214 :             uni_vmovss(tmp2, G2);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">        2214 :             uni_vfnmadd231ps(dG2, tmp2, tmp2); // (1 - G2^2)</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">        2214 :             uni_vmulss(dG2, dG2, tmp1);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">        2214 :             uni_vmulss(dG2, dG2, dHt); //(1 - G0) * (1 - G2^2) * dHt</span></span>
+<span id="L307"><span class="lineNum">     307</span>              : </span>
+<span id="L308"><span class="lineNum">     308</span>              :             // compute dG1</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">        2214 :             to_float(tmp1, ptr[addr_ws_grid_reg], src_data_t, hstate_dt_size);</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">        2214 :             uni_vmovss(dG1, G1);</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">        2214 :             uni_vmovss(tmp2, G1);</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">        2214 :             uni_vfnmadd231ps(dG1, tmp2, tmp2); // (G1 - G1^2)</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">        2214 :             uni_vmulss(dG1, dG1, dG2);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">        2214 :             uni_vmulss(dG1, dG1, tmp1); // (G1 - G1^2) * dG2 * ws_grid</span></span>
+<span id="L315"><span class="lineNum">     315</span>              : </span>
+<span id="L316"><span class="lineNum">     316</span>              :             // compute diff_state_t_l</span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        2214 :             uni_vmulss(dHt, dHt, G0);</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">        2214 :             uni_vmovss(ptr[addr_diff_states_t_l_reg], dHt);</span></span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span>              :             // compute scratch_cell</span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">        2214 :             uni_vmovss(tmp1, dG2);</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">        2214 :             uni_vmulss(tmp1, tmp1, G1);</span></span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              :             // downconvert and write data</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">        2214 :             to_src(sc_addr(0), dG0, scratch_data_t, hstate_dt_size);</span></span>
+<span id="L326"><span class="lineNum">     326</span>              :             // As to_src is called with write_only=true it's important for xf16</span>
+<span id="L327"><span class="lineNum">     327</span>              :             // src_dt to execute just after to_src method with write_only=false</span>
+<span id="L328"><span class="lineNum">     328</span>              :             // for the same Vmm</span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">        2214 :             to_src(sg_addr(0), dG0, scratch_data_t, hstate_dt_size, true);</span></span>
+<span id="L330"><span class="lineNum">     330</span>              : </span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">        2214 :             to_src(sc_addr(1), dG1, scratch_data_t, hstate_dt_size);</span></span>
+<span id="L332"><span class="lineNum">     332</span>              :             // As to_src is called with write_only=true it's important for xf16</span>
+<span id="L333"><span class="lineNum">     333</span>              :             // src_dt to execute just after to_src method with write_only=false</span>
+<span id="L334"><span class="lineNum">     334</span>              :             // for the same Vmm</span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">        2214 :             to_src(sg_addr(1), dG1, scratch_data_t, hstate_dt_size, true);</span></span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">        2214 :             to_src(sc_addr(2), tmp1, scratch_data_t, hstate_dt_size);</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">        2214 :             to_src(sg_addr(2), dG2, scratch_data_t, hstate_dt_size);</span></span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span>              :             // increment address pointers</span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">        2214 :             add(addr_ws_gates_reg, scratch_dt_size);</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">        2214 :             add(addr_scratch_gates_reg, scratch_dt_size);</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">        2214 :             add(addr_diff_states_t_lp1_reg, hstate_dt_size);</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">        2214 :             add(addr_diff_states_tp1_l_reg, hstate_dt_size);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">        2214 :             add(addr_diff_states_t_l_reg, hstate_dt_size);</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">        2214 :             add(addr_states_tm1_l_reg, scratch_dt_size);</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">        2214 :             add(addr_scratch_cell_reg, scratch_dt_size);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">        2214 :             add(addr_ws_grid_reg, scratch_dt_size);</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaGNC">        2214 :             inc_regs(hstate_dt_size);</span></span>
+<span id="L350"><span class="lineNum">     350</span>              : </span>
+<span id="L351"><span class="lineNum">     351</span>              :             // increment loop counter</span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">        2214 :             sub(loop_cnt, scratch_dt_size);</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">        2214 :             cmp(loop_cnt, 0);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">        2214 :             jg(rem_loop_start_label);</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :         }</span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">        2214 :         L(rem_loop_end_label);</span></span>
+<span id="L357"><span class="lineNum">     357</span>              : </span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">        2214 :         if (is_augru) {</span></span>
+<span id="L359"><span class="lineNum">     359</span>              :             // Complete diff attention reduction</span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">         102 :             Xmm diff_attn_acc(dattn_acc_idx);</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">         102 :             uni_vhaddps(diff_attn_acc, diff_attn_acc, diff_attn_acc);</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">         102 :             uni_vhaddps(diff_attn_acc, diff_attn_acc, diff_attn_acc);</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">         102 :             const auto base_args = get_stack_params_address();</span></span>
+<span id="L364"><span class="lineNum">     364</span>              : #ifdef _WIN32</span>
+<span id="L365"><span class="lineNum">     365</span>              :             mov(addr_attn_reg, ptr[base_args + 56]);</span>
+<span id="L366"><span class="lineNum">     366</span>              : #else</span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">         102 :             mov(addr_attn_reg, ptr[base_args + 40]);</span></span>
+<span id="L368"><span class="lineNum">     368</span>              : #endif</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">         102 :             uni_vmovss(ptr[addr_attn_reg], diff_attn_acc);</span></span>
+<span id="L370"><span class="lineNum">     370</span>              :         }</span>
+<span id="L371"><span class="lineNum">     371</span>              : </span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">        2214 :         postamble();</span></span>
+<span id="L373"><span class="lineNum">     373</span>              : </span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">        2214 :         init_table(vlen);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">        2214 :         L(table_label);</span></span>
+<span id="L376"><span class="lineNum">     376</span>              :         {</span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">       33310 :             for (size_t i = 0; i &lt; vlen / sizeof(float); i++)</span></span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">       31096 :                 dd(float2int(1.0f));</span></span>
+<span id="L379"><span class="lineNum">     379</span>              :         }</span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">        2214 :     }</span></span>
+<span id="L381"><span class="lineNum">     381</span>              : }; // namespace cpu</span>
+<span id="L382"><span class="lineNum">     382</span>              : </span>
+<span id="L383"><span class="lineNum">     383</span>              : } // namespace x64</span>
+<span id="L384"><span class="lineNum">     384</span>              : } // namespace cpu</span>
+<span id="L385"><span class="lineNum">     385</span>              : } // namespace impl</span>
+<span id="L386"><span class="lineNum">     386</span>              : } // namespace dnnl</span>
+<span id="L387"><span class="lineNum">     387</span>              : </span>
+<span id="L388"><span class="lineNum">     388</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

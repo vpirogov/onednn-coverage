@@ -1,0 +1,1129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/utils.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - utils.hpp<span style="font-size: 80%;"> (source / <a href="utils.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">97.1&nbsp;%</td>
+            <td class="headerCovTableEntry">307</td>
+            <td class="headerCovTableEntry">298</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">89.1&nbsp;%</td>
+            <td class="headerCovTableEntry">3183</td>
+            <td class="headerCovTableEntry">2835</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2016 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef COMMON_UTILS_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define COMMON_UTILS_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;atomic&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;cassert&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;climits&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;cmath&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;cstddef&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;cstdint&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &lt;cstdio&gt;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &lt;cstdlib&gt;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &lt;locale&gt;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &lt;sstream&gt;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &lt;string&gt;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &lt;memory&gt;</span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &lt;string&gt;</span>
+<span id="L34"><span class="lineNum">      34</span>              : #include &lt;tuple&gt;</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : #define MSAN_ENABLED 0</span>
+<span id="L37"><span class="lineNum">      37</span>              : #define ATTR_NO_MSAN</span>
+<span id="L38"><span class="lineNum">      38</span>              : #if defined(__has_feature)</span>
+<span id="L39"><span class="lineNum">      39</span>              : #if __has_feature(memory_sanitizer)</span>
+<span id="L40"><span class="lineNum">      40</span>              : #undef MSAN_ENABLED</span>
+<span id="L41"><span class="lineNum">      41</span>              : #define MSAN_ENABLED 1</span>
+<span id="L42"><span class="lineNum">      42</span>              : #undef ATTR_NO_MSAN</span>
+<span id="L43"><span class="lineNum">      43</span>              : #define ATTR_NO_MSAN __attribute__((no_sanitize(&quot;memory&quot;)))</span>
+<span id="L44"><span class="lineNum">      44</span>              : #include &lt;sanitizer/msan_interface.h&gt;</span>
+<span id="L45"><span class="lineNum">      45</span>              : #endif</span>
+<span id="L46"><span class="lineNum">      46</span>              : #endif</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : #include &quot;c_types_map.hpp&quot;</span>
+<span id="L49"><span class="lineNum">      49</span>              : #include &quot;nstl.hpp&quot;</span>
+<span id="L50"><span class="lineNum">      50</span>              : #include &quot;z_magic.hpp&quot;</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              : namespace dnnl {</span>
+<span id="L53"><span class="lineNum">      53</span>              : namespace impl {</span>
+<span id="L54"><span class="lineNum">      54</span>              : </span>
+<span id="L55"><span class="lineNum">      55</span>              : #define DNNL_SHORT_CIRCUIT_SELF_ASSIGN(other) \</span>
+<span id="L56"><span class="lineNum">      56</span>              :     do { \</span>
+<span id="L57"><span class="lineNum">      57</span>              :         if (this == &amp;(other)) return *this; \</span>
+<span id="L58"><span class="lineNum">      58</span>              :     } while (0)</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              : #define DNNL_SHORT_CIRCUIT_SELF_COMPARISON(other) \</span>
+<span id="L61"><span class="lineNum">      61</span>              :     do { \</span>
+<span id="L62"><span class="lineNum">      62</span>              :         if (this == &amp;(other)) return true; \</span>
+<span id="L63"><span class="lineNum">      63</span>              :     } while (0)</span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span>              : #define DNNL_DISALLOW_COPY_AND_ASSIGN(T) \</span>
+<span id="L66"><span class="lineNum">      66</span>              :     T(const T &amp;) = delete; \</span>
+<span id="L67"><span class="lineNum">      67</span>              :     void operator=(const T &amp;) = delete;</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              : // Sanity check for 64 bits</span>
+<span id="L70"><span class="lineNum">      70</span>              : static_assert(sizeof(void *) == 8, &quot;oneDNN supports 64-bit architectures only&quot;);</span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span>              : // Note: if `f` has any explicit templated arguments, e.g., func&lt;A, B&gt;, then</span>
+<span id="L73"><span class="lineNum">      73</span>              : // compiler returns `error: macro &quot;CHECK&quot; passed 2 arguments, but takes just 1`.</span>
+<span id="L74"><span class="lineNum">      74</span>              : // The solution is to use an alias, e.g. `using func_alias = func&lt;A, B&gt;;` and</span>
+<span id="L75"><span class="lineNum">      75</span>              : // use `func_alias` in CHECK, then it compiles.</span>
+<span id="L76"><span class="lineNum">      76</span>              : #define CHECK(f) \</span>
+<span id="L77"><span class="lineNum">      77</span>              :     do { \</span>
+<span id="L78"><span class="lineNum">      78</span>              :         dnnl::impl::status_t _status_ = f; \</span>
+<span id="L79"><span class="lineNum">      79</span>              :         if (_status_ != dnnl::impl::status::success) return _status_; \</span>
+<span id="L80"><span class="lineNum">      80</span>              :     } while (0)</span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span>              : #define CHECK_BOOL(f) \</span>
+<span id="L83"><span class="lineNum">      83</span>              :     do { \</span>
+<span id="L84"><span class="lineNum">      84</span>              :         dnnl::impl::status_t _status_ = f; \</span>
+<span id="L85"><span class="lineNum">      85</span>              :         if (_status_ != dnnl::impl::status::success) return false; \</span>
+<span id="L86"><span class="lineNum">      86</span>              :     } while (0)</span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span>              : #define UNUSED_STATUS(f) \</span>
+<span id="L89"><span class="lineNum">      89</span>              :     do { \</span>
+<span id="L90"><span class="lineNum">      90</span>              :         dnnl::impl::status_t _status_ = f; \</span>
+<span id="L91"><span class="lineNum">      91</span>              :         assert(_status_ == dnnl::impl::status::success); \</span>
+<span id="L92"><span class="lineNum">      92</span>              :         MAYBE_UNUSED(_status_); \</span>
+<span id="L93"><span class="lineNum">      93</span>              :     } while (0)</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span>              : #define IMPLICATION(cause, effect) (!(cause) || !!(effect))</span>
+<span id="L96"><span class="lineNum">      96</span>              : </span>
+<span id="L97"><span class="lineNum">      97</span>              : #if defined(_MSC_VER) || defined(__INTEL_COMPILER) \</span>
+<span id="L98"><span class="lineNum">      98</span>              :         || defined(__INTEL_LLVM_COMPILER)</span>
+<span id="L99"><span class="lineNum">      99</span>              : #define ALWAYS_INLINE __forceinline</span>
+<span id="L100"><span class="lineNum">     100</span>              : #elif defined(__clang__) || defined(__GNUC__)</span>
+<span id="L101"><span class="lineNum">     101</span>              : #define ALWAYS_INLINE inline __attribute__((always_inline))</span>
+<span id="L102"><span class="lineNum">     102</span>              : #else</span>
+<span id="L103"><span class="lineNum">     103</span>              : #define ALWAYS_INLINE inline</span>
+<span id="L104"><span class="lineNum">     104</span>              : #endif</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              : namespace utils {</span>
+<span id="L107"><span class="lineNum">     107</span>              : </span>
+<span id="L108"><span class="lineNum">     108</span>              : /* a bunch of std:: analogues to be compliant with any msvs version</span>
+<span id="L109"><span class="lineNum">     109</span>              :  *</span>
+<span id="L110"><span class="lineNum">     110</span>              :  * Rationale: msvs c++ (and even some c) headers contain special pragma that</span>
+<span id="L111"><span class="lineNum">     111</span>              :  * injects msvs-version check into object files in order to abi-mismatches</span>
+<span id="L112"><span class="lineNum">     112</span>              :  * during the static linking. This makes sense if e.g. std:: objects are passed</span>
+<span id="L113"><span class="lineNum">     113</span>              :  * through between application and library, which is not the case for oneDNN</span>
+<span id="L114"><span class="lineNum">     114</span>              :  * (since there is no any c++-rt dependent stuff, ideally...). */</span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span>              : /* SFINAE helper -- analogue to std::enable_if */</span>
+<span id="L117"><span class="lineNum">     117</span>              : template &lt;bool expr, class T = void&gt;</span>
+<span id="L118"><span class="lineNum">     118</span>              : struct enable_if {}; // NOLINT(readability-identifier-naming)</span>
+<span id="L119"><span class="lineNum">     119</span>              : </span>
+<span id="L120"><span class="lineNum">     120</span>              : template &lt;class T&gt;</span>
+<span id="L121"><span class="lineNum">     121</span>              : struct enable_if&lt;true, T&gt; {</span>
+<span id="L122"><span class="lineNum">     122</span>              :     using type = T;</span>
+<span id="L123"><span class="lineNum">     123</span>              : };</span>
+<span id="L124"><span class="lineNum">     124</span>              : </span>
+<span id="L125"><span class="lineNum">     125</span>              : // Replacement implementation of std::enable_if_t from C++14, included here for</span>
+<span id="L126"><span class="lineNum">     126</span>              : // interoperability with C++11</span>
+<span id="L127"><span class="lineNum">     127</span>              : template &lt;bool B, class T = void&gt;</span>
+<span id="L128"><span class="lineNum">     128</span>              : using enable_if_t = typename enable_if&lt;B, T&gt;::type;</span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span>              : template &lt;typename T&gt;</span>
+<span id="L131"><span class="lineNum">     131</span>              : using is_vector = std::is_same&lt;T, typename std::vector&lt;typename T::value_type&gt;&gt;;</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span>              : /* analogue std::conditional */</span>
+<span id="L134"><span class="lineNum">     134</span>              : template &lt;bool, typename, typename&gt;</span>
+<span id="L135"><span class="lineNum">     135</span>              : struct conditional {}; // NOLINT(readability-identifier-naming)</span>
+<span id="L136"><span class="lineNum">     136</span>              : template &lt;typename T, typename F&gt;</span>
+<span id="L137"><span class="lineNum">     137</span>              : struct conditional&lt;true, T, F&gt; {</span>
+<span id="L138"><span class="lineNum">     138</span>              :     using type = T;</span>
+<span id="L139"><span class="lineNum">     139</span>              : };</span>
+<span id="L140"><span class="lineNum">     140</span>              : template &lt;typename T, typename F&gt;</span>
+<span id="L141"><span class="lineNum">     141</span>              : struct conditional&lt;false, T, F&gt; {</span>
+<span id="L142"><span class="lineNum">     142</span>              :     using type = F;</span>
+<span id="L143"><span class="lineNum">     143</span>              : };</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span>              : template &lt;bool, typename, bool, typename, typename&gt;</span>
+<span id="L146"><span class="lineNum">     146</span>              : struct conditional3 {}; // NOLINT(readability-identifier-naming)</span>
+<span id="L147"><span class="lineNum">     147</span>              : template &lt;typename T, typename FT, typename FF&gt;</span>
+<span id="L148"><span class="lineNum">     148</span>              : struct conditional3&lt;true, T, false, FT, FF&gt; {</span>
+<span id="L149"><span class="lineNum">     149</span>              :     using type = T;</span>
+<span id="L150"><span class="lineNum">     150</span>              : };</span>
+<span id="L151"><span class="lineNum">     151</span>              : template &lt;typename T, typename FT, typename FF&gt;</span>
+<span id="L152"><span class="lineNum">     152</span>              : struct conditional3&lt;false, T, true, FT, FF&gt; {</span>
+<span id="L153"><span class="lineNum">     153</span>              :     using type = FT;</span>
+<span id="L154"><span class="lineNum">     154</span>              : };</span>
+<span id="L155"><span class="lineNum">     155</span>              : template &lt;typename T, typename FT, typename FF&gt;</span>
+<span id="L156"><span class="lineNum">     156</span>              : struct conditional3&lt;false, T, false, FT, FF&gt; {</span>
+<span id="L157"><span class="lineNum">     157</span>              :     using type = FF;</span>
+<span id="L158"><span class="lineNum">     158</span>              : };</span>
+<span id="L159"><span class="lineNum">     159</span>              : </span>
+<span id="L160"><span class="lineNum">     160</span>              : template &lt;bool, typename U, U, U&gt;</span>
+<span id="L161"><span class="lineNum">     161</span>              : struct conditional_v {}; // NOLINT(readability-identifier-naming)</span>
+<span id="L162"><span class="lineNum">     162</span>              : template &lt;typename U, U t, U f&gt;</span>
+<span id="L163"><span class="lineNum">     163</span>              : struct conditional_v&lt;true, U, t, f&gt; {</span>
+<span id="L164"><span class="lineNum">     164</span>              :     static constexpr U value = t;</span>
+<span id="L165"><span class="lineNum">     165</span>              : };</span>
+<span id="L166"><span class="lineNum">     166</span>              : template &lt;typename U, U t, U f&gt;</span>
+<span id="L167"><span class="lineNum">     167</span>              : struct conditional_v&lt;false, U, t, f&gt; {</span>
+<span id="L168"><span class="lineNum">     168</span>              :     static constexpr U value = f;</span>
+<span id="L169"><span class="lineNum">     169</span>              : };</span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span>              : template &lt;typename T&gt;</span>
+<span id="L172"><span class="lineNum">     172</span>              : struct remove_reference { // NOLINT(readability-identifier-naming)</span>
+<span id="L173"><span class="lineNum">     173</span>              :     using type = T;</span>
+<span id="L174"><span class="lineNum">     174</span>              : };</span>
+<span id="L175"><span class="lineNum">     175</span>              : template &lt;typename T&gt;</span>
+<span id="L176"><span class="lineNum">     176</span>              : struct remove_reference&lt;T &amp;&gt; {</span>
+<span id="L177"><span class="lineNum">     177</span>              :     using type = T;</span>
+<span id="L178"><span class="lineNum">     178</span>              : };</span>
+<span id="L179"><span class="lineNum">     179</span>              : template &lt;typename T&gt;</span>
+<span id="L180"><span class="lineNum">     180</span>              : struct remove_reference&lt;T &amp;&amp;&gt; {</span>
+<span id="L181"><span class="lineNum">     181</span>              :     using type = T;</span>
+<span id="L182"><span class="lineNum">     182</span>              : };</span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span>              : template &lt;typename T&gt;</span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC"> >24283*10^8 : inline T &amp;&amp;forward(typename utils::remove_reference&lt;T&gt;::type &amp;t) {</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC"> >19384*10^8 :     return static_cast&lt;T &amp;&amp;&gt;(t);</span></span>
+<span id="L187"><span class="lineNum">     187</span>              : }</span>
+<span id="L188"><span class="lineNum">     188</span>              : template &lt;typename T&gt;</span>
+<span id="L189"><span class="lineNum">     189</span>              : inline T &amp;&amp;forward(typename utils::remove_reference&lt;T&gt;::type &amp;&amp;t) {</span>
+<span id="L190"><span class="lineNum">     190</span>              :     return static_cast&lt;T &amp;&amp;&gt;(t);</span>
+<span id="L191"><span class="lineNum">     191</span>              : }</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span>              : template &lt;typename T&gt;</span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">   169226793 : inline typename remove_reference&lt;T&gt;::type zero() {</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">   169226793 :     auto zero = typename remove_reference&lt;T&gt;::type();</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">   169226793 :     return zero;</span></span>
+<span id="L197"><span class="lineNum">     197</span>              : }</span>
+<span id="L198"><span class="lineNum">     198</span>              : </span>
+<span id="L199"><span class="lineNum">     199</span>              : template &lt;typename T, typename... Args&gt;</span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">   616726225 : std::unique_ptr&lt;T&gt; make_unique(Args &amp;&amp;...args) {</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">   616726225 :     return std::unique_ptr&lt;T&gt;(new T(std::forward&lt;Args&gt;(args)...));</span></span>
+<span id="L202"><span class="lineNum">     202</span>              : }</span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span>              : // NOLINTBEGIN(performance-unnecessary-value-param)</span>
+<span id="L205"><span class="lineNum">     205</span>              : template &lt;typename T, typename P&gt;</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">   816603441 : constexpr bool everyone_is(T val, P item) {</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">   816602294 :     return val == item;</span></span>
+<span id="L208"><span class="lineNum">     208</span>              : }</span>
+<span id="L209"><span class="lineNum">     209</span>              : template &lt;typename T, typename P, typename... Args&gt;</span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC"> >19282*10^7 : constexpr bool everyone_is(T val, P item, Args... item_others) {</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC"> >19282*10^7 :     return val == item &amp;&amp; everyone_is(val, item_others...);</span></span>
+<span id="L212"><span class="lineNum">     212</span>              : }</span>
+<span id="L213"><span class="lineNum">     213</span>              : // NOLINTEND(performance-unnecessary-value-param)</span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span>              : // NOLINTBEGIN(performance-unnecessary-value-param)</span>
+<span id="L216"><span class="lineNum">     216</span>              : template &lt;typename T, typename P&gt;</span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC"> >15280*10^9 : constexpr bool one_of(T val, P item) {</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC"> >15280*10^9 :     return val == item;</span></span>
+<span id="L219"><span class="lineNum">     219</span>              : }</span>
+<span id="L220"><span class="lineNum">     220</span>              : template &lt;typename T, typename P, typename... Args&gt;</span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC"> >15363*10^9 : constexpr bool one_of(T val, P item, Args... item_others) {</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC"> >15363*10^9 :     return val == item || one_of(val, item_others...);</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : }</span>
+<span id="L224"><span class="lineNum">     224</span>              : // NOLINTEND(performance-unnecessary-value-param)</span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span>              : template &lt;typename T, typename P&gt;</span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">      625471 : constexpr P map(T pat, P def) {</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">      625471 :     return def;</span></span>
+<span id="L229"><span class="lineNum">     229</span>              : }</span>
+<span id="L230"><span class="lineNum">     230</span>              : template &lt;typename T, typename P, typename... Args&gt;</span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">   334699240 : constexpr P map(T pat, P def, T item, P ival, Args... item_others) {</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">   334699240 :     return pat == item ? ival : map(pat, def, item_others...);</span></span>
+<span id="L233"><span class="lineNum">     233</span>              : }</span>
+<span id="L234"><span class="lineNum">     234</span>              : </span>
+<span id="L235"><span class="lineNum">     235</span>              : template &lt;typename... Args&gt;</span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC"> >15150*10^9 : constexpr bool any_null(Args... ptrs) {</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC"> >15150*10^9 :     return one_of(nullptr, ptrs...);</span></span>
+<span id="L238"><span class="lineNum">     238</span>              : }</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span>              : // For some unknown reason, GCC 11.x and beyond can't compile specific places</span>
+<span id="L241"><span class="lineNum">     241</span>              : // of the library that involve this routine. It's connected to the fact that</span>
+<span id="L242"><span class="lineNum">     242</span>              : // this function is inline and defined in a header.</span>
+<span id="L243"><span class="lineNum">     243</span>              : #if defined(__GNUC__) &amp;&amp; __GNUC__ &gt; 8 &amp;&amp; !defined(__clang__)</span>
+<span id="L244"><span class="lineNum">     244</span>              : #pragma GCC diagnostic push</span>
+<span id="L245"><span class="lineNum">     245</span>              : #pragma GCC diagnostic ignored &quot;-Wrestrict&quot;</span>
+<span id="L246"><span class="lineNum">     246</span>              : // /usr/include/bits/string_fortified.h:29:33: warning: ‘void* __builtin_memcpy(</span>
+<span id="L247"><span class="lineNum">     247</span>              : //     void*, const void*, long unsigned int)’ accessing 18446744056529682432 or</span>
+<span id="L248"><span class="lineNum">     248</span>              : //     more bytes at offsets 320 and 0 overlaps 9223372002495037441 bytes at</span>
+<span id="L249"><span class="lineNum">     249</span>              : //     offset -9223372019674906625 [-Wrestrict]</span>
+<span id="L250"><span class="lineNum">     250</span>              : #pragma GCC diagnostic ignored &quot;-Wstringop-overflow&quot;</span>
+<span id="L251"><span class="lineNum">     251</span>              : // warning: ‘void* __builtin_memcpy(void*, const void*, long unsigned int)’</span>
+<span id="L252"><span class="lineNum">     252</span>              : //     specified bound between 18446744056529682432 and 18446744073709551608</span>
+<span id="L253"><span class="lineNum">     253</span>              : //     exceeds maximum object size 9223372036854775807 [-Wstringop-overflow=]</span>
+<span id="L254"><span class="lineNum">     254</span>              : #endif</span>
+<span id="L255"><span class="lineNum">     255</span>              : template &lt;typename T&gt;</span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC"> >19260*10^7 : inline void array_copy(T *dst, const T *src, size_t size) {</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC"> >75081*10^7 :     for (size_t i = 0; i &lt; size; ++i)</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC"> >55821*10^7 :         dst[i] = src[i];</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC"> >19260*10^7 : }</span></span>
+<span id="L260"><span class="lineNum">     260</span>              : #if defined(__GNUC__) &amp;&amp; __GNUC__ &gt; 8 &amp;&amp; !defined(__clang__)</span>
+<span id="L261"><span class="lineNum">     261</span>              : #pragma GCC diagnostic pop</span>
+<span id="L262"><span class="lineNum">     262</span>              : #endif</span>
+<span id="L263"><span class="lineNum">     263</span>              : </span>
+<span id="L264"><span class="lineNum">     264</span>              : template &lt;typename T&gt;</span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">  1131336393 : inline bool array_cmp(const T *a1, const T *a2, size_t size) {</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">  4094854214 :     for (size_t i = 0; i &lt; size; ++i)</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">  2969648045 :         if (a1[i] != a2[i]) return false;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">  1122042215 :     return true;</span></span>
+<span id="L269"><span class="lineNum">     269</span>              : }</span>
+<span id="L270"><span class="lineNum">     270</span>              : template &lt;typename T, typename U&gt;</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">  2556450234 : inline void array_set(T *arr, const U &amp;val, size_t size) {</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC"> 28426378724 :     for (size_t i = 0; i &lt; size; ++i)</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC"> 25869931155 :         arr[i] = static_cast&lt;T&gt;(val);</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">  2556450234 : }</span></span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span>              : namespace product_impl {</span>
+<span id="L277"><span class="lineNum">     277</span>              : template &lt;size_t&gt;</span>
+<span id="L278"><span class="lineNum">     278</span>              : struct int2type {}; // NOLINT(readability-identifier-naming)</span>
+<span id="L279"><span class="lineNum">     279</span>              : </span>
+<span id="L280"><span class="lineNum">     280</span>              : template &lt;typename T&gt;</span>
+<span id="L281"><span class="lineNum">     281</span>              : constexpr int product_impl(const T *arr, int2type&lt;0&gt;) {</span>
+<span id="L282"><span class="lineNum">     282</span>              :     return arr[0];</span>
+<span id="L283"><span class="lineNum">     283</span>              : }</span>
+<span id="L284"><span class="lineNum">     284</span>              : </span>
+<span id="L285"><span class="lineNum">     285</span>              : template &lt;typename T, size_t num&gt;</span>
+<span id="L286"><span class="lineNum">     286</span>              : constexpr T product_impl(const T *arr, int2type&lt;num&gt;) {</span>
+<span id="L287"><span class="lineNum">     287</span>              :     return arr[0] * product_impl(arr + 1, int2type&lt;num - 1&gt;());</span>
+<span id="L288"><span class="lineNum">     288</span>              : }</span>
+<span id="L289"><span class="lineNum">     289</span>              : } // namespace product_impl</span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span>              : template &lt;size_t num, typename T&gt;</span>
+<span id="L292"><span class="lineNum">     292</span>              : constexpr T array_product(const T *arr) {</span>
+<span id="L293"><span class="lineNum">     293</span>              :     return product_impl::product_impl(arr, product_impl::int2type&lt;num - 1&gt;());</span>
+<span id="L294"><span class="lineNum">     294</span>              : }</span>
+<span id="L295"><span class="lineNum">     295</span>              : </span>
+<span id="L296"><span class="lineNum">     296</span>              : template &lt;typename T, typename R = T&gt;</span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">   608821005 : inline R array_product(const T *arr, size_t size) {</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">   608821005 :     R prod = 1;</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">  2492989577 :     for (size_t i = 0; i &lt; size; ++i)</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">  1884171549 :         prod *= arr[i];</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">   608821005 :     return prod;</span></span>
+<span id="L302"><span class="lineNum">     302</span>              : }</span>
+<span id="L303"><span class="lineNum">     303</span>              : </span>
+<span id="L304"><span class="lineNum">     304</span>              : template &lt;typename T, typename R = T&gt;</span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaUNC">           0 : inline R array_product(const std::vector&lt;T&gt; &amp;v) {</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaUNC">           0 :     return array_product&lt;T, R&gt;(v.data(), v.size());</span></span>
+<span id="L307"><span class="lineNum">     307</span>              : }</span>
+<span id="L308"><span class="lineNum">     308</span>              : </span>
+<span id="L309"><span class="lineNum">     309</span>              : template &lt;typename T, typename R = T&gt;</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">      999042 : inline R array_min(const T *arr, size_t size) {</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">      999042 :     R min = std::numeric_limits&lt;R&gt;::max();</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">     2570953 :     for (size_t i = 0; i &lt; size; ++i)</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">     1571911 :         min = std::min(min, arr[i]);</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">      999042 :     return min;</span></span>
+<span id="L315"><span class="lineNum">     315</span>              : }</span>
+<span id="L316"><span class="lineNum">     316</span>              : </span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">   255706388 : inline bool equal_with_nan(float v1, float v2) {</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">   255706160 :     return (v1 == v2) || (std::isnan(v1) &amp;&amp; std::isnan(v2));</span></span>
+<span id="L319"><span class="lineNum">     319</span>              : }</span>
+<span id="L320"><span class="lineNum">     320</span>              : </span>
+<span id="L321"><span class="lineNum">     321</span>              : /* Sorts an array of @p vals using @p comparator. Uses @p vals_2nd_level as a</span>
+<span id="L322"><span class="lineNum">     322</span>              :  * second level comparing criteria in case comparator returns 0 (equal values)</span>
+<span id="L323"><span class="lineNum">     323</span>              :  * for @p vals elements.</span>
+<span id="L324"><span class="lineNum">     324</span>              :  * While sorting the array of @p vals, the function permutes an array of</span>
+<span id="L325"><span class="lineNum">     325</span>              :  * @p vals_2nd_level and @p keys accordingly.</span>
+<span id="L326"><span class="lineNum">     326</span>              :  */</span>
+<span id="L327"><span class="lineNum">     327</span>              : template &lt;typename T, typename U, typename F&gt;</span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">    37837043 : inline void simultaneous_sort(</span></span>
+<span id="L329"><span class="lineNum">     329</span>              :         T *vals, T *vals_2nd_level, U *keys, size_t size, F comparator) {</span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">    37837043 :     if (size == 0) return;</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">     8340632 :     for (size_t i = 0; i &lt; size - 1; ++i) {</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">     7660741 :         bool swapped = false;</span></span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">    26033628 :         for (size_t j = 0; j &lt; size - i - 1; j++) {</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">    18372889 :             auto res = comparator(vals[j], vals[j + 1]);</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">    18372889 :             if (res == 0)</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">     1015400 :                 res = comparator(vals_2nd_level[j], vals_2nd_level[j + 1]);</span></span>
+<span id="L339"><span class="lineNum">     339</span>              : </span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">    18372889 :             if (res &gt; 0) {</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">     6977873 :                 nstl::swap(vals[j], vals[j + 1]);</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">     6977873 :                 nstl::swap(vals_2nd_level[j], vals_2nd_level[j + 1]);</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">     6977873 :                 nstl::swap(keys[j], keys[j + 1]);</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">     6977873 :                 swapped = true;</span></span>
+<span id="L345"><span class="lineNum">     345</span>              :             }</span>
+<span id="L346"><span class="lineNum">     346</span>              :         }</span>
+<span id="L347"><span class="lineNum">     347</span>              : </span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">     7660741 :         if (swapped == false) break;</span></span>
+<span id="L349"><span class="lineNum">     349</span>              :     }</span>
+<span id="L350"><span class="lineNum">     350</span>              : }</span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span>              : template &lt;typename T&gt;</span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">  1563231511 : constexpr const T &amp;saturate(const T &amp;low, const T &amp;upper, const T &amp;a) {</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">  1563231511 :     return nstl::max(low, nstl::min(upper, a));</span></span>
+<span id="L355"><span class="lineNum">     355</span>              : }</span>
+<span id="L356"><span class="lineNum">     356</span>              : </span>
+<span id="L357"><span class="lineNum">     357</span>              : template &lt;typename T, typename U&gt;</span>
+<span id="L358"><span class="lineNum">     358</span>              : inline enable_if_t&lt;std::is_integral&lt;T&gt;::value</span>
+<span id="L359"><span class="lineNum">     359</span>              :                 &amp;&amp; (std::is_integral&lt;U&gt;::value || std::is_enum&lt;U&gt;::value),</span>
+<span id="L360"><span class="lineNum">     360</span>              :         typename remove_reference&lt;T&gt;::type&gt;</span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC"> 29672520613 : div_up(const T a, const U b) {</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC"> 29672520613 :     assert(b &gt; 0);</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC"> 27372212022 :     assert(a &gt;= 0);</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC"> 29672520613 :     if (a &lt;= 0) return 0;</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC"> 26468793267 :     return static_cast&lt;typename remove_reference&lt;T&gt;::type&gt;(1 + (a - 1) / b);</span></span>
+<span id="L366"><span class="lineNum">     366</span>              : }</span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span>              : template &lt;typename T, typename U&gt;</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">  8127124681 : inline typename remove_reference&lt;T&gt;::type rnd_up(const T a, const U b) {</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">  8127124681 :     return static_cast&lt;typename remove_reference&lt;T&gt;::type&gt;(div_up(a, b) * b);</span></span>
+<span id="L371"><span class="lineNum">     371</span>              : }</span>
+<span id="L372"><span class="lineNum">     372</span>              : </span>
+<span id="L373"><span class="lineNum">     373</span>              : template &lt;typename T, typename U&gt;</span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">   225845516 : constexpr typename remove_reference&lt;T&gt;::type rnd_dn(const T a, const U b) {</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">   225845516 :     return static_cast&lt;typename remove_reference&lt;T&gt;::type&gt;((a / b) * b);</span></span>
+<span id="L376"><span class="lineNum">     376</span>              : }</span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span>              : template &lt;typename T&gt;</span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">    17756910 : inline typename remove_reference&lt;T&gt;::type rnd_up_pow2(const T a) {</span></span>
+<span id="L380"><span class="lineNum">     380</span>              :     using R = typename remove_reference&lt;T&gt;::type;</span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">    17756910 :     if (a &lt;= 0)</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">       15225 :         return static_cast&lt;R&gt;(1);</span></span>
+<span id="L383"><span class="lineNum">     383</span>              :     else {</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">    17741685 :         T b = a - 1;</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">   106627155 :         for (size_t v = 1; v &lt; sizeof(T) * CHAR_BIT; v &lt;&lt;= 1)</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">    88885340 :             b |= (b &gt;&gt; v);</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">    17741685 :         return static_cast&lt;R&gt;(b + 1);</span></span>
+<span id="L388"><span class="lineNum">     388</span>              :     }</span>
+<span id="L389"><span class="lineNum">     389</span>              : }</span>
+<span id="L390"><span class="lineNum">     390</span>              : </span>
+<span id="L391"><span class="lineNum">     391</span>              : template &lt;typename T&gt;</span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">     6134010 : inline typename remove_reference&lt;T&gt;::type rnd_down_pow2(const T a) {</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">     6134010 :     auto ret = rnd_up_pow2(a);</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">     6134010 :     return ret == a ? ret : ret / 2;</span></span>
+<span id="L395"><span class="lineNum">     395</span>              : }</span>
+<span id="L396"><span class="lineNum">     396</span>              : </span>
+<span id="L397"><span class="lineNum">     397</span>              : template &lt;typename T, typename U&gt;</span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">      727762 : inline typename remove_reference&lt;T&gt;::type max_div(const T a, const U b) {</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">      727762 :     U div = b;</span></span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">    13830442 :     while (div &gt; 1) {</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">    13612376 :         if (a % div == 0) return div;</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">    13102688 :         div--;</span></span>
+<span id="L403"><span class="lineNum">     403</span>              :     }</span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">      218063 :     return static_cast&lt;typename remove_reference&lt;T&gt;::type&gt;(div);</span></span>
+<span id="L405"><span class="lineNum">     405</span>              : }</span>
+<span id="L406"><span class="lineNum">     406</span>              : </span>
+<span id="L407"><span class="lineNum">     407</span>              : template &lt;typename T&gt;</span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">      367080 : inline typename remove_reference&lt;T&gt;::type max_pow2_div(const T a) {</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">      367080 :     return static_cast&lt;typename remove_reference&lt;T&gt;::type&gt;(((a - 1) &amp; ~a) + 1);</span></span>
+<span id="L410"><span class="lineNum">     410</span>              : }</span>
+<span id="L411"><span class="lineNum">     411</span>              : </span>
+<span id="L412"><span class="lineNum">     412</span>              : template &lt;typename T&gt;</span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">  1060058643 : T *align_ptr(T *ptr, uintptr_t alignment) {</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">  1060058643 :     return (T *)(((uintptr_t)ptr + alignment - 1) &amp; ~(alignment - 1));</span></span>
+<span id="L415"><span class="lineNum">     415</span>              : }</span>
+<span id="L416"><span class="lineNum">     416</span>              : </span>
+<span id="L417"><span class="lineNum">     417</span>              : template &lt;typename T, typename U, typename V&gt;</span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">   350675982 : inline typename remove_reference&lt;U&gt;::type this_block_size(</span></span>
+<span id="L419"><span class="lineNum">     419</span>              :         const T offset, const U max, const V block_size) {</span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">   350675982 :     assert(offset &lt; max);</span></span>
+<span id="L421"><span class="lineNum">     421</span>              :     // TODO (Roma): can't use nstl::max() due to circular dependency... we</span>
+<span id="L422"><span class="lineNum">     422</span>              :     // need to fix this</span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">   350675982 :     const T block_boundary = offset + block_size;</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">   350675982 :     if (block_boundary &gt; max)</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">    33494144 :         return max - offset;</span></span>
+<span id="L426"><span class="lineNum">     426</span>              :     else</span>
+<span id="L427"><span class="lineNum">     427</span> <span class="tlaGNC">   317181956 :         return block_size;</span></span>
+<span id="L428"><span class="lineNum">     428</span>              : }</span>
+<span id="L429"><span class="lineNum">     429</span>              : </span>
+<span id="L430"><span class="lineNum">     430</span>              : template &lt;typename T&gt;</span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">  1630567216 : inline T nd_iterator_init(T start) {</span></span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">  1017862599 :     return start;</span></span>
+<span id="L433"><span class="lineNum">     433</span>              : }</span>
+<span id="L434"><span class="lineNum">     434</span>              : template &lt;typename T, typename U, typename W, typename... Args&gt;</span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">  3840282613 : inline T nd_iterator_init(T start, U &amp;x, const W &amp;X, Args &amp;&amp;...tuple) {</span></span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">  3840282613 :     start = nd_iterator_init(start, utils::forward&lt;Args&gt;(tuple)...);</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">  3840282613 :     x = start % X;</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">  3840282613 :     return start / X;</span></span>
+<span id="L439"><span class="lineNum">     439</span>              : }</span>
+<span id="L440"><span class="lineNum">     440</span>              : </span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC"> >63166*10^7 : inline bool nd_iterator_step() {</span></span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC"> >63166*10^7 :     return true;</span></span>
+<span id="L443"><span class="lineNum">     443</span>              : }</span>
+<span id="L444"><span class="lineNum">     444</span>              : template &lt;typename U, typename W, typename... Args&gt;</span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC"> >10533*10^8 : inline bool nd_iterator_step(U &amp;x, const W &amp;X, Args &amp;&amp;...tuple) {</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC"> >86944*10^7 :     if (nd_iterator_step(utils::forward&lt;Args&gt;(tuple)...)) {</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC"> >68638*10^7 :         if (++x - X == 0) {</span></span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC"> 81545181747 :             x = 0;</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC"> 54742022689 :             return true;</span></span>
+<span id="L450"><span class="lineNum">     450</span>              :         }</span>
+<span id="L451"><span class="lineNum">     451</span>              :     }</span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC"> >50926*10^7 :     return false;</span></span>
+<span id="L453"><span class="lineNum">     453</span>              : }</span>
+<span id="L454"><span class="lineNum">     454</span>              : </span>
+<span id="L455"><span class="lineNum">     455</span>              : template &lt;typename U, typename W, typename Y&gt;</span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">    81766348 : inline bool nd_iterator_jump(U &amp;cur, const U end, W &amp;x, const Y &amp;X) {</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">    81766348 :     U max_jump = end - cur;</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">    81766348 :     U dim_jump = X - x;</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">    81766348 :     if (dim_jump &lt;= max_jump) {</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">    38315303 :         x = 0;</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">    38315303 :         cur += dim_jump;</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">    38315303 :         return true;</span></span>
+<span id="L463"><span class="lineNum">     463</span>              :     } else {</span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">    43451054 :         cur += max_jump;</span></span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">    43451054 :         x += max_jump;</span></span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">    43451054 :         return false;</span></span>
+<span id="L467"><span class="lineNum">     467</span>              :     }</span>
+<span id="L468"><span class="lineNum">     468</span>              : }</span>
+<span id="L469"><span class="lineNum">     469</span>              : template &lt;typename U, typename W, typename Y, typename... Args&gt;</span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">   213177416 : inline bool nd_iterator_jump(</span></span>
+<span id="L471"><span class="lineNum">     471</span>              :         U &amp;cur, const U end, W &amp;x, const Y &amp;X, Args &amp;&amp;...tuple) {</span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">   213177416 :     if (nd_iterator_jump(cur, end, utils::forward&lt;Args&gt;(tuple)...)) {</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">    55376220 :         if (++x - X == 0) {</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">    27222654 :             x = 0;</span></span>
+<span id="L475"><span class="lineNum">     475</span> <span class="tlaGNC">    27222654 :             return true;</span></span>
+<span id="L476"><span class="lineNum">     476</span>              :         }</span>
+<span id="L477"><span class="lineNum">     477</span>              :     }</span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">   185954806 :     return false;</span></span>
+<span id="L479"><span class="lineNum">     479</span>              : }</span>
+<span id="L480"><span class="lineNum">     480</span>              : </span>
+<span id="L481"><span class="lineNum">     481</span>              : template &lt;typename T&gt;</span>
+<span id="L482"><span class="lineNum">     482</span> <span class="tlaGNC">    90276375 : constexpr T pick(size_t i, const T &amp;x0) {</span></span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">    90276375 :     return x0;</span></span>
+<span id="L484"><span class="lineNum">     484</span>              : }</span>
+<span id="L485"><span class="lineNum">     485</span>              : template &lt;typename T, typename... Args&gt;</span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">   374287243 : constexpr T pick(size_t i, const T &amp;x0, Args &amp;&amp;...args) {</span></span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">   374287243 :     return i == 0 ? x0 : pick(i - 1, utils::forward&lt;Args&gt;(args)...);</span></span>
+<span id="L488"><span class="lineNum">     488</span>              : }</span>
+<span id="L489"><span class="lineNum">     489</span>              : </span>
+<span id="L490"><span class="lineNum">     490</span>              : template &lt;typename T&gt;</span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">    81160099 : T pick_by_prop_kind(prop_kind_t prop_kind, const T &amp;val_fwd_inference,</span></span>
+<span id="L492"><span class="lineNum">     492</span>              :         const T &amp;val_fwd_training, const T &amp;val_bwd_d, const T &amp;val_bwd_w) {</span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">    81160099 :     switch (prop_kind) {</span></span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">       33290 :         case prop_kind::forward_inference: return val_fwd_inference;</span></span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">    78430322 :         case prop_kind::forward_training: return val_fwd_training;</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">     1042971 :         case prop_kind::backward_data: return val_bwd_d;</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">     1653490 :         case prop_kind::backward_weights: return val_bwd_w;</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaUNC">           0 :         default: assert(!&quot;unsupported prop_kind&quot;);</span></span>
+<span id="L499"><span class="lineNum">     499</span>              :     }</span>
+<span id="L500"><span class="lineNum">     500</span>              :     return T();</span>
+<span id="L501"><span class="lineNum">     501</span>              : }</span>
+<span id="L502"><span class="lineNum">     502</span>              : </span>
+<span id="L503"><span class="lineNum">     503</span>              : template &lt;typename T&gt;</span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">    81160099 : T pick_by_prop_kind(prop_kind_t prop_kind, const T &amp;val_fwd, const T &amp;val_bwd_d,</span></span>
+<span id="L505"><span class="lineNum">     505</span>              :         const T &amp;val_bwd_w) {</span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">    81160099 :     return pick_by_prop_kind(prop_kind, val_fwd, val_fwd, val_bwd_d, val_bwd_w);</span></span>
+<span id="L507"><span class="lineNum">     507</span>              : }</span>
+<span id="L508"><span class="lineNum">     508</span>              : </span>
+<span id="L509"><span class="lineNum">     509</span>              : template &lt;typename Telem, size_t Tdims&gt;</span>
+<span id="L510"><span class="lineNum">     510</span>              : struct array_offset_calculator { // NOLINT(readability-identifier-naming)</span>
+<span id="L511"><span class="lineNum">     511</span>              :     template &lt;typename... Targs&gt;</span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">    89749565 :     array_offset_calculator(Telem *base, Targs... Fargs)</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">    89749565 :         : _base_ptr(base), _dims {Fargs...} {}</span></span>
+<span id="L514"><span class="lineNum">     514</span>              : </span>
+<span id="L515"><span class="lineNum">     515</span>              :     template &lt;typename... Targs&gt;</span>
+<span id="L516"><span class="lineNum">     516</span>              :     array_offset_calculator(std::nullptr_t, Targs... Fargs) = delete;</span>
+<span id="L517"><span class="lineNum">     517</span>              : </span>
+<span id="L518"><span class="lineNum">     518</span>              :     template &lt;typename... Targs&gt;</span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">   532488658 :     inline Telem &amp;operator()(Targs... Fargs) const {</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">   532488658 :         assert(static_cast&lt;bool&gt;(_base_ptr));</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaGNC">   532488658 :         return *(_base_ptr + _offset(1, Fargs...));</span></span>
+<span id="L522"><span class="lineNum">     522</span>              :     }</span>
+<span id="L523"><span class="lineNum">     523</span>              : </span>
+<span id="L524"><span class="lineNum">     524</span>              : private:</span>
+<span id="L525"><span class="lineNum">     525</span>              :     template &lt;typename... Targs&gt;</span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">       36888 :     inline size_t _offset(size_t const dimension, size_t element) const {</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">       36888 :         return element;</span></span>
+<span id="L528"><span class="lineNum">     528</span>              :     }</span>
+<span id="L529"><span class="lineNum">     529</span>              : </span>
+<span id="L530"><span class="lineNum">     530</span>              :     template &lt;typename... Targs&gt;</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">   532451706 :     inline size_t _offset(</span></span>
+<span id="L532"><span class="lineNum">     532</span>              :             size_t const dimension, size_t theta, size_t element) const {</span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">   532451706 :         return element + (_dims[dimension] * theta);</span></span>
+<span id="L534"><span class="lineNum">     534</span>              :     }</span>
+<span id="L535"><span class="lineNum">     535</span>              : </span>
+<span id="L536"><span class="lineNum">     536</span>              :     template &lt;typename... Targs&gt;</span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">   413638094 :     inline size_t _offset(size_t const dimension, size_t theta, size_t element,</span></span>
+<span id="L538"><span class="lineNum">     538</span>              :             Targs... Fargs) const {</span>
+<span id="L539"><span class="lineNum">     539</span> <span class="tlaGNC">   413638094 :         size_t t_prime = element + (_dims[dimension] * theta);</span></span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">   413638094 :         return _offset(dimension + 1, t_prime, Fargs...);</span></span>
+<span id="L541"><span class="lineNum">     541</span>              :     }</span>
+<span id="L542"><span class="lineNum">     542</span>              : </span>
+<span id="L543"><span class="lineNum">     543</span>              :     Telem *_base_ptr;</span>
+<span id="L544"><span class="lineNum">     544</span>              :     const dim_t _dims[Tdims];</span>
+<span id="L545"><span class="lineNum">     545</span>              : };</span>
+<span id="L546"><span class="lineNum">     546</span>              : </span>
+<span id="L547"><span class="lineNum">     547</span>              : template &lt;typename derived_type, typename base_type&gt;</span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">   756501932 : inline derived_type downcast(base_type *base) {</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">   756501932 :     assert(dynamic_cast&lt;derived_type&gt;(base) == base);</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">   756501932 :     return static_cast&lt;derived_type&gt;(base);</span></span>
+<span id="L551"><span class="lineNum">     551</span>              : }</span>
+<span id="L552"><span class="lineNum">     552</span>              : </span>
+<span id="L553"><span class="lineNum">     553</span>              : template &lt;typename T,</span>
+<span id="L554"><span class="lineNum">     554</span>              :         typename std::enable_if&lt;!std::is_same&lt;typename std::decay&lt;T&gt;::type,</span>
+<span id="L555"><span class="lineNum">     555</span>              :                 std::string&gt;::value&gt;::type * = nullptr&gt;</span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">   447141371 : auto format_cvt_impl(T &amp;&amp;t) -&gt; decltype(std::forward&lt;T&gt;(t)) {</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">   447141371 :     return std::forward&lt;T&gt;(t);</span></span>
+<span id="L558"><span class="lineNum">     558</span>              : }</span>
+<span id="L559"><span class="lineNum">     559</span>              : </span>
+<span id="L560"><span class="lineNum">     560</span>              : template &lt;typename T,</span>
+<span id="L561"><span class="lineNum">     561</span>              :         typename std::enable_if&lt;std::is_same&lt;typename std::decay&lt;T&gt;::type,</span>
+<span id="L562"><span class="lineNum">     562</span>              :                 std::string&gt;::value&gt;::type * = nullptr&gt;</span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">     4397877 : const char *format_cvt_impl(T &amp;&amp;t) {</span></span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">     4397877 :     return std::forward&lt;T&gt;(t).c_str();</span></span>
+<span id="L565"><span class="lineNum">     565</span>              : }</span>
+<span id="L566"><span class="lineNum">     566</span>              : </span>
+<span id="L567"><span class="lineNum">     567</span>              : template &lt;typename... Args&gt;</span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">   187356263 : std::string format_impl(const char *fmt, Args... args) {</span></span>
+<span id="L569"><span class="lineNum">     569</span>              :     // volatile here is a workaround for GCC 8 format-truncation warning e.g.:</span>
+<span id="L570"><span class="lineNum">     570</span>              :     // ‘%d’ directive output truncated writing 1 byte into a region of size 0</span>
+<span id="L571"><span class="lineNum">     571</span>              :     // triggered by overaggressive optmization in '-O3'; fixed in GCC 9+</span>
+<span id="L572"><span class="lineNum">     572</span>              : #if defined(__GNUC__) &amp;&amp; __GNUC__ == 8 &amp;&amp; !defined(__clang__)</span>
+<span id="L573"><span class="lineNum">     573</span>              :     volatile size_t sz = snprintf(nullptr, 0, fmt, args...);</span>
+<span id="L574"><span class="lineNum">     574</span>              : #else</span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">   187356263 :     size_t sz = snprintf(nullptr, 0, fmt, args...);</span></span>
+<span id="L576"><span class="lineNum">     576</span>              : #endif</span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">   187356263 :     std::string buf(sz + 1, '\0');</span></span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">   187356263 :     snprintf(&amp;buf[0], sz + 1, fmt, args...);</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">   187356263 :     buf.resize(sz);</span></span>
+<span id="L580"><span class="lineNum">     580</span> <span class="tlaGNC">   187356263 :     return buf;</span></span>
+<span id="L581"><span class="lineNum">     581</span>              : }</span>
+<span id="L582"><span class="lineNum">     582</span>              : </span>
+<span id="L583"><span class="lineNum">     583</span>              : template &lt;typename... Args&gt;</span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">   187356255 : std::string format(const char *fmt, Args &amp;&amp;...args) {</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaGNC">   187356255 :     return format_impl(fmt, format_cvt_impl(std::forward&lt;Args&gt;(args))...);</span></span>
+<span id="L586"><span class="lineNum">     586</span>              : }</span>
+<span id="L587"><span class="lineNum">     587</span>              : </span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaGNC">      852672 : inline bool need_src_or_dst_check(</span></span>
+<span id="L589"><span class="lineNum">     589</span>              :         bool is_fwd, dim_t o, dim_t i, dim_t k, dim_t p, dim_t s, dim_t d) {</span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaGNC">      852672 :     if (is_fwd) {</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">      150335 :         dim_t i_min = -p;</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaGNC">      150335 :         dim_t i_max = (o - 1) * s - p + (k - 1) * (1 + d);</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaGNC">      150335 :         return (i_min &lt; 0) || (i_max &gt;= i);</span></span>
+<span id="L594"><span class="lineNum">     594</span>              :     }</span>
+<span id="L595"><span class="lineNum">     595</span>              :     // Backward.</span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaGNC">      702337 :     dim_t os_min = p - (k - 1) * (1 + d);</span></span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaGNC">      702337 :     dim_t os_max = (i - 1) + p;</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaGNC">      702337 :     return (os_min &lt; 0) || (os_max &gt;= o * s);</span></span>
+<span id="L599"><span class="lineNum">     599</span>              : }</span>
+<span id="L600"><span class="lineNum">     600</span>              : </span>
+<span id="L601"><span class="lineNum">     601</span>              : // transforms @param l(ogical)_offset into a @param dims_pos based on input</span>
+<span id="L602"><span class="lineNum">     602</span>              : // dimensions @param dims and @param ndims.</span>
+<span id="L603"><span class="lineNum">     603</span> <span class="tlaGNC"> >21156*10^8 : inline void l_dims_by_l_offset(</span></span>
+<span id="L604"><span class="lineNum">     604</span>              :         dims_t dims_pos, dim_t l_offset, const dims_t dims, int ndims) {</span>
+<span id="L605"><span class="lineNum">     605</span> <span class="tlaGNC"> >98967*10^8 :     for (int rd = 0; rd &lt; ndims; ++rd) {</span></span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaGNC"> >77810*10^8 :         const int d = ndims - 1 - rd;</span></span>
+<span id="L607"><span class="lineNum">     607</span>              :         /* switch to faster 32-bit division when possible. */</span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaGNC"> >77810*10^8 :         if (l_offset &lt;= INT32_MAX &amp;&amp; dims[d] &lt;= INT32_MAX) {</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC"> >77196*10^8 :             dims_pos[d] = (int32_t)l_offset % (int32_t)dims[d];</span></span>
+<span id="L610"><span class="lineNum">     610</span> <span class="tlaGNC"> >77196*10^8 :             l_offset = (int32_t)l_offset / (int32_t)dims[d];</span></span>
+<span id="L611"><span class="lineNum">     611</span>              :         } else {</span>
+<span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC"> 61453170000 :             dims_pos[d] = l_offset % dims[d];</span></span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC"> 61453170000 :             l_offset /= dims[d];</span></span>
+<span id="L614"><span class="lineNum">     614</span>              :         }</span>
+<span id="L615"><span class="lineNum">     615</span>              :     }</span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC"> >21156*10^8 : }</span></span>
+<span id="L617"><span class="lineNum">     617</span>              : </span>
+<span id="L618"><span class="lineNum">     618</span> <span class="tlaGNC"> 29832685129 : inline int get_dims_mask(const dims_t dims1, const dims_t dims2, int ndims,</span></span>
+<span id="L619"><span class="lineNum">     619</span>              :         bool skip_dim_of_one = false) {</span>
+<span id="L620"><span class="lineNum">     620</span> <span class="tlaGNC"> 29832685129 :     int mask = 0;</span></span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC"> >14134*10^7 :     for (int d = 0; d &lt; ndims; ++d) {</span></span>
+<span id="L622"><span class="lineNum">     622</span>              :         // Disable mask_bit for dimensions of `1` by request.</span>
+<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC"> >11151*10^7 :         int mask_bit = skip_dim_of_one &amp;&amp; dims1[d] == 1 ? 0 : (1 &lt;&lt; d);</span></span>
+<span id="L624"><span class="lineNum">     624</span> <span class="tlaGNC"> >11151*10^7 :         mask += dims1[d] == dims2[d] ? mask_bit : 0;</span></span>
+<span id="L625"><span class="lineNum">     625</span>              :     }</span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC"> 29832685129 :     return mask;</span></span>
+<span id="L627"><span class="lineNum">     627</span>              : }</span>
+<span id="L628"><span class="lineNum">     628</span>              : </span>
+<span id="L629"><span class="lineNum">     629</span>              : // The function can be used to get dimensions for memory descriptors or</span>
+<span id="L630"><span class="lineNum">     630</span>              : // dimensions for logical offset. First ones are happy to have ones when mask</span>
+<span id="L631"><span class="lineNum">     631</span>              : // is not applied. This allows to initialize them with existing functions using</span>
+<span id="L632"><span class="lineNum">     632</span>              : // tags/strides. Latter ones are not nappy with ones and must have zeros as</span>
+<span id="L633"><span class="lineNum">     633</span>              : // logical offsets starts with 0. `fill_with_one` flag regulates the behavior</span>
+<span id="L634"><span class="lineNum">     634</span>              : // between them.</span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC"> >25345*10^7 : inline void copy_dims_with_mask(dims_t ddims, const dims_t sdims, int ndims,</span></span>
+<span id="L636"><span class="lineNum">     636</span>              :         int mask, bool fill_with_one = false) {</span>
+<span id="L637"><span class="lineNum">     637</span> <span class="tlaGNC"> >10481*10^8 :     for (int d = 0; d &lt; ndims; ++d) {</span></span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC"> >79464*10^7 :         ddims[d] = (mask &amp; (1 &lt;&lt; d)) ? sdims[d]</span></span>
+<span id="L639"><span class="lineNum">     639</span> <span class="tlaGNC"> >79464*10^7 :                                      : static_cast&lt;dim_t&gt;(fill_with_one);</span></span>
+<span id="L640"><span class="lineNum">     640</span>              :     }</span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC"> >25345*10^7 : }</span></span>
+<span id="L642"><span class="lineNum">     642</span>              : </span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC"> >25094*10^7 : inline void apply_mask_on_dims(</span></span>
+<span id="L644"><span class="lineNum">     644</span>              :         dims_t dims, int ndims, int mask, bool fill_with_one = false) {</span>
+<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC"> >25094*10^7 :     copy_dims_with_mask(dims, dims, ndims, mask, fill_with_one);</span></span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC"> >25094*10^7 : }</span></span>
+<span id="L647"><span class="lineNum">     647</span>              : </span>
+<span id="L648"><span class="lineNum">     648</span> <span class="tlaGNC">  1181149134 : inline void dim_iterator(const dims_t dims, dims_t indices, int ndims) {</span></span>
+<span id="L649"><span class="lineNum">     649</span> <span class="tlaGNC">  1181149134 :     while (--ndims &gt;= 0 &amp;&amp; ++indices[ndims] &gt;= dims[ndims]) {</span></span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">   120182700 :         indices[ndims] = 0;</span></span>
+<span id="L651"><span class="lineNum">     651</span>              :     }</span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">  1060966178 : }</span></span>
+<span id="L653"><span class="lineNum">     653</span>              : </span>
+<span id="L654"><span class="lineNum">     654</span>              : template &lt;typename T, size_t S&gt;</span>
+<span id="L655"><span class="lineNum">     655</span>              : inline size_t array_size(T (&amp;t)[S]) {</span>
+<span id="L656"><span class="lineNum">     656</span>              :     return S;</span>
+<span id="L657"><span class="lineNum">     657</span>              : }</span>
+<span id="L658"><span class="lineNum">     658</span>              : </span>
+<span id="L659"><span class="lineNum">     659</span> <span class="tlaGNC">       75489 : inline bool validate_dims(int ndims, const dims_t dims) {</span></span>
+<span id="L660"><span class="lineNum">     660</span> <span class="tlaGNC">      226293 :     for (int d = 0; d &lt; ndims; ++d)</span></span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">      150804 :         if (dims[d] &lt;= 0) return false;</span></span>
+<span id="L662"><span class="lineNum">     662</span> <span class="tlaGNC">       75489 :     return true;</span></span>
+<span id="L663"><span class="lineNum">     663</span>              : }</span>
+<span id="L664"><span class="lineNum">     664</span>              : </span>
+<span id="L665"><span class="lineNum">     665</span>              : } // namespace utils</span>
+<span id="L666"><span class="lineNum">     666</span>              : </span>
+<span id="L667"><span class="lineNum">     667</span>              : int32_t fetch_and_add(int32_t *dst, int32_t val);</span>
+<span id="L668"><span class="lineNum">     668</span>              : inline void yield_thread() {}</span>
+<span id="L669"><span class="lineNum">     669</span>              : bool is_destroying_cache_safe();</span>
+<span id="L670"><span class="lineNum">     670</span>              : </span>
+<span id="L671"><span class="lineNum">     671</span>              : // Reads an environment variable 'name' and stores its string value in the</span>
+<span id="L672"><span class="lineNum">     672</span>              : // 'buffer' of 'buffer_size' bytes (including the terminating zero) on</span>
+<span id="L673"><span class="lineNum">     673</span>              : // success.</span>
+<span id="L674"><span class="lineNum">     674</span>              : //</span>
+<span id="L675"><span class="lineNum">     675</span>              : // - Returns the length of the environment variable string value (excluding</span>
+<span id="L676"><span class="lineNum">     676</span>              : // the terminating 0) if it is set and its contents (including the terminating</span>
+<span id="L677"><span class="lineNum">     677</span>              : // 0) can be stored in the 'buffer' without truncation.</span>
+<span id="L678"><span class="lineNum">     678</span>              : //</span>
+<span id="L679"><span class="lineNum">     679</span>              : // - Returns negated length of environment variable string value and writes</span>
+<span id="L680"><span class="lineNum">     680</span>              : // &quot;\0&quot; to the buffer (if it is not NULL) if the 'buffer_size' is to small to</span>
+<span id="L681"><span class="lineNum">     681</span>              : // store the value (including the terminating 0) without truncation.</span>
+<span id="L682"><span class="lineNum">     682</span>              : //</span>
+<span id="L683"><span class="lineNum">     683</span>              : // - Returns 0 and writes &quot;\0&quot; to the buffer (if not NULL) if the environment</span>
+<span id="L684"><span class="lineNum">     684</span>              : // variable is not set.</span>
+<span id="L685"><span class="lineNum">     685</span>              : //</span>
+<span id="L686"><span class="lineNum">     686</span>              : // - Returns INT_MIN if the 'name' is NULL.</span>
+<span id="L687"><span class="lineNum">     687</span>              : //</span>
+<span id="L688"><span class="lineNum">     688</span>              : // - Returns INT_MIN if the 'buffer_size' is negative.</span>
+<span id="L689"><span class="lineNum">     689</span>              : //</span>
+<span id="L690"><span class="lineNum">     690</span>              : // - Returns INT_MIN if the 'buffer' is NULL and 'buffer_size' is greater than</span>
+<span id="L691"><span class="lineNum">     691</span>              : // zero. Passing NULL 'buffer' with 'buffer_size' set to 0 can be used to</span>
+<span id="L692"><span class="lineNum">     692</span>              : // retrieve the length of the environment variable value string.</span>
+<span id="L693"><span class="lineNum">     693</span>              : //</span>
+<span id="L694"><span class="lineNum">     694</span>              : int getenv(const char *name, char *buffer, int buffer_size);</span>
+<span id="L695"><span class="lineNum">     695</span>              : // Reads an integer from the environment. For internal needs.</span>
+<span id="L696"><span class="lineNum">     696</span>              : int getenv_int(const char *name, int default_value = 0);</span>
+<span id="L697"><span class="lineNum">     697</span>              : // Reads an integer from user environment. Takes a var name without</span>
+<span id="L698"><span class="lineNum">     698</span>              : // prefix and checks both supported variants - with &quot;ONEDNN_&quot; (primary) and</span>
+<span id="L699"><span class="lineNum">     699</span>              : // &quot;DNNL_&quot; (secondary) prefixes.</span>
+<span id="L700"><span class="lineNum">     700</span>              : int getenv_int_user(const char *name, int default_value = 0);</span>
+<span id="L701"><span class="lineNum">     701</span>              : // Reads a string literal from user environment. Takes a var name without</span>
+<span id="L702"><span class="lineNum">     702</span>              : // prefix and checks both supported variants - with &quot;ONEDNN_&quot; (primary) and</span>
+<span id="L703"><span class="lineNum">     703</span>              : // &quot;DNNL_&quot; (secondary) prefixes.</span>
+<span id="L704"><span class="lineNum">     704</span>              : std::string getenv_string_user(const char *name);</span>
+<span id="L705"><span class="lineNum">     705</span>              : </span>
+<span id="L706"><span class="lineNum">     706</span>              : // These are locale-invariant wrappers to define streaming objects for</span>
+<span id="L707"><span class="lineNum">     707</span>              : // string manipulation. Use these instead of the std library variants, namely,</span>
+<span id="L708"><span class="lineNum">     708</span>              : // std::stringstream, std::istringstream and std::ostringstream to ensure</span>
+<span id="L709"><span class="lineNum">     709</span>              : // locale-independent string behavior.</span>
+<span id="L710"><span class="lineNum">     710</span>              : struct stringstream_t : public std::stringstream {</span>
+<span id="L711"><span class="lineNum">     711</span>              :     template &lt;typename... Args&gt;</span>
+<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">    61768941 :     stringstream_t(Args &amp;&amp;...args)</span></span>
+<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">    61768941 :         : std::stringstream(std::forward&lt;Args&gt;(args)...) {</span></span>
+<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">    61768941 :         this-&gt;imbue(std::locale::classic());</span></span>
+<span id="L715"><span class="lineNum">     715</span> <span class="tlaGNC">    61768941 :     }</span></span>
+<span id="L716"><span class="lineNum">     716</span>              : </span>
+<span id="L717"><span class="lineNum">     717</span>              :     stringstream_t(const stringstream_t &amp;) = delete;</span>
+<span id="L718"><span class="lineNum">     718</span>              :     stringstream_t &amp;operator=(const stringstream_t &amp;) = delete;</span>
+<span id="L719"><span class="lineNum">     719</span>              : </span>
+<span id="L720"><span class="lineNum">     720</span>              :     stringstream_t(stringstream_t &amp;&amp;) = delete;</span>
+<span id="L721"><span class="lineNum">     721</span>              :     stringstream_t &amp;operator=(stringstream_t &amp;&amp;) = delete;</span>
+<span id="L722"><span class="lineNum">     722</span>              : </span>
+<span id="L723"><span class="lineNum">     723</span>              : private:</span>
+<span id="L724"><span class="lineNum">     724</span>              :     using std::stringstream::imbue;</span>
+<span id="L725"><span class="lineNum">     725</span>              : };</span>
+<span id="L726"><span class="lineNum">     726</span>              : </span>
+<span id="L727"><span class="lineNum">     727</span>              : struct istringstream_t : public std::istringstream {</span>
+<span id="L728"><span class="lineNum">     728</span>              :     template &lt;typename... Args&gt;</span>
+<span id="L729"><span class="lineNum">     729</span> <span class="tlaGNC">      119802 :     istringstream_t(Args &amp;&amp;...args)</span></span>
+<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">      119802 :         : std::istringstream(std::forward&lt;Args&gt;(args)...) {</span></span>
+<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">      119802 :         this-&gt;imbue(std::locale::classic());</span></span>
+<span id="L732"><span class="lineNum">     732</span> <span class="tlaGNC">      119802 :     }</span></span>
+<span id="L733"><span class="lineNum">     733</span>              : </span>
+<span id="L734"><span class="lineNum">     734</span>              :     istringstream_t(const istringstream_t &amp;) = delete;</span>
+<span id="L735"><span class="lineNum">     735</span>              :     istringstream_t &amp;operator=(const istringstream_t &amp;) = delete;</span>
+<span id="L736"><span class="lineNum">     736</span>              : </span>
+<span id="L737"><span class="lineNum">     737</span>              :     istringstream_t(istringstream_t &amp;&amp;) = delete;</span>
+<span id="L738"><span class="lineNum">     738</span>              :     istringstream_t &amp;operator=(istringstream_t &amp;&amp;) = delete;</span>
+<span id="L739"><span class="lineNum">     739</span>              : </span>
+<span id="L740"><span class="lineNum">     740</span>              : private:</span>
+<span id="L741"><span class="lineNum">     741</span>              :     using std::istringstream::imbue;</span>
+<span id="L742"><span class="lineNum">     742</span>              : };</span>
+<span id="L743"><span class="lineNum">     743</span>              : </span>
+<span id="L744"><span class="lineNum">     744</span>              : struct ostringstream_t : public std::ostringstream {</span>
+<span id="L745"><span class="lineNum">     745</span>              :     template &lt;typename... Args&gt;</span>
+<span id="L746"><span class="lineNum">     746</span> <span class="tlaGNC">      938507 :     ostringstream_t(Args &amp;&amp;...args)</span></span>
+<span id="L747"><span class="lineNum">     747</span> <span class="tlaGNC">      938507 :         : std::ostringstream(std::forward&lt;Args&gt;(args)...) {</span></span>
+<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">      938507 :         this-&gt;imbue(std::locale::classic());</span></span>
+<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">      938507 :     }</span></span>
+<span id="L750"><span class="lineNum">     750</span>              : </span>
+<span id="L751"><span class="lineNum">     751</span>              :     ostringstream_t(const ostringstream_t &amp;) = delete;</span>
+<span id="L752"><span class="lineNum">     752</span>              :     ostringstream_t &amp;operator=(const ostringstream_t &amp;) = delete;</span>
+<span id="L753"><span class="lineNum">     753</span>              : </span>
+<span id="L754"><span class="lineNum">     754</span>              :     ostringstream_t(ostringstream_t &amp;&amp;) = delete;</span>
+<span id="L755"><span class="lineNum">     755</span>              :     ostringstream_t &amp;operator=(ostringstream_t &amp;&amp;) = delete;</span>
+<span id="L756"><span class="lineNum">     756</span>              : </span>
+<span id="L757"><span class="lineNum">     757</span>              : private:</span>
+<span id="L758"><span class="lineNum">     758</span>              :     using std::ostringstream::imbue;</span>
+<span id="L759"><span class="lineNum">     759</span>              : };</span>
+<span id="L760"><span class="lineNum">     760</span>              : </span>
+<span id="L761"><span class="lineNum">     761</span>              : // Various getter for profiling info</span>
+<span id="L762"><span class="lineNum">     762</span>              : bool get_jit_dump();</span>
+<span id="L763"><span class="lineNum">     763</span>              : unsigned get_jit_profiling_flags();</span>
+<span id="L764"><span class="lineNum">     764</span>              : std::string get_jit_profiling_jitdumpdir();</span>
+<span id="L765"><span class="lineNum">     765</span>              : // Checks if the filepath is a valid path and not a symlink to ensure</span>
+<span id="L766"><span class="lineNum">     766</span>              : // the application only processes secure files.</span>
+<span id="L767"><span class="lineNum">     767</span>              : status_t check_for_symlinks(const char *filename, bool *res);</span>
+<span id="L768"><span class="lineNum">     768</span>              : FILE *fopen(const char *filename, const char *mode);</span>
+<span id="L769"><span class="lineNum">     769</span>              : int getpagesize();</span>
+<span id="L770"><span class="lineNum">     770</span>              : </span>
+<span id="L771"><span class="lineNum">     771</span>              : // return current library fpmath_mode</span>
+<span id="L772"><span class="lineNum">     772</span>              : fpmath_mode_t get_fpmath_mode();</span>
+<span id="L773"><span class="lineNum">     773</span>              : // checks if an fpmath_mode is valid</span>
+<span id="L774"><span class="lineNum">     774</span>              : status_t check_fpmath_mode(fpmath_mode_t mode);</span>
+<span id="L775"><span class="lineNum">     775</span>              : // Returns true if values reprensented by type sub_dt can all be</span>
+<span id="L776"><span class="lineNum">     776</span>              : // represented in dt. return false eotherwise</span>
+<span id="L777"><span class="lineNum">     777</span>              : bool is_fpsubtype(data_type_t sub_dt, data_type_t dt);</span>
+<span id="L778"><span class="lineNum">     778</span>              : </span>
+<span id="L779"><span class="lineNum">     779</span>              : constexpr int msan_enabled = MSAN_ENABLED;</span>
+<span id="L780"><span class="lineNum">     780</span> <span class="tlaGNC"> >64508*10^7 : inline void msan_unpoison(void *ptr, size_t size) {</span></span>
+<span id="L781"><span class="lineNum">     781</span>              : #if MSAN_ENABLED</span>
+<span id="L782"><span class="lineNum">     782</span>              :     __msan_unpoison(ptr, size);</span>
+<span id="L783"><span class="lineNum">     783</span>              : #endif</span>
+<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC"> >64508*10^7 : }</span></span>
+<span id="L785"><span class="lineNum">     785</span>              : </span>
+<span id="L786"><span class="lineNum">     786</span>              : // Helper to avoid #ifdefs for DNNL_DEV_MODE related code</span>
+<span id="L787"><span class="lineNum">     787</span> <span class="tlaGNC">   231482088 : static constexpr bool is_dev_mode() {</span></span>
+<span id="L788"><span class="lineNum">     788</span>              : #ifdef DNNL_DEV_MODE</span>
+<span id="L789"><span class="lineNum">     789</span>              :     return true;</span>
+<span id="L790"><span class="lineNum">     790</span>              : #else</span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">   231482088 :     return false;</span></span>
+<span id="L792"><span class="lineNum">     792</span>              : #endif</span>
+<span id="L793"><span class="lineNum">     793</span>              : }</span>
+<span id="L794"><span class="lineNum">     794</span>              : </span>
+<span id="L795"><span class="lineNum">     795</span>              : // std::optional? std::maybe? std::whatever</span>
+<span id="L796"><span class="lineNum">     796</span>              : template &lt;typename T&gt;</span>
+<span id="L797"><span class="lineNum">     797</span>              : struct setting_t {</span>
+<span id="L798"><span class="lineNum">     798</span>              : private:</span>
+<span id="L799"><span class="lineNum">     799</span>              :     T value_;</span>
+<span id="L800"><span class="lineNum">     800</span>              :     bool initialized_;</span>
+<span id="L801"><span class="lineNum">     801</span>              : </span>
+<span id="L802"><span class="lineNum">     802</span>              : public:</span>
+<span id="L803"><span class="lineNum">     803</span> <span class="tlaGNC">        7065 :     constexpr setting_t() : value_ {}, initialized_ {false} {}</span></span>
+<span id="L804"><span class="lineNum">     804</span>              :     constexpr setting_t(const T init) : value_ {init}, initialized_ {false} {}</span>
+<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">   520084563 :     bool initialized() { return initialized_; }</span></span>
+<span id="L806"><span class="lineNum">     806</span> <span class="tlaGNC">   613660583 :     T get() { return value_; }</span></span>
+<span id="L807"><span class="lineNum">     807</span> <span class="tlaGNC">       27026 :     void set(const T &amp;new_value) {</span></span>
+<span id="L808"><span class="lineNum">     808</span> <span class="tlaGNC">       27026 :         value_ = new_value;</span></span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">       27026 :         initialized_ = true;</span></span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">       27026 :     }</span></span>
+<span id="L811"><span class="lineNum">     811</span>              :     DNNL_DISALLOW_COPY_AND_ASSIGN(setting_t);</span>
+<span id="L812"><span class="lineNum">     812</span>              : };</span>
+<span id="L813"><span class="lineNum">     813</span>              : </span>
+<span id="L814"><span class="lineNum">     814</span>              : // The following code is derived from Boost C++ library</span>
+<span id="L815"><span class="lineNum">     815</span>              : // Copyright 2005-2014 Daniel James.</span>
+<span id="L816"><span class="lineNum">     816</span>              : // Distributed under the Boost Software License, Version 1.0. (See accompanying</span>
+<span id="L817"><span class="lineNum">     817</span>              : // file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)</span>
+<span id="L818"><span class="lineNum">     818</span>              : template &lt;typename T&gt;</span>
+<span id="L819"><span class="lineNum">     819</span> <span class="tlaGNC"> 16752359520 : static size_t hash_combine(size_t seed, const T &amp;v) {</span></span>
+<span id="L820"><span class="lineNum">     820</span> <span class="tlaGNC"> 16752359280 :     return seed ^= std::hash&lt;T&gt; {}(v) + 0x9e3779b9 + (seed &lt;&lt; 6) + (seed &gt;&gt; 2);</span></span>
+<span id="L821"><span class="lineNum">     821</span>              : }</span>
+<span id="L822"><span class="lineNum">     822</span>              : </span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">    38285676 : inline int float2int(float x) {</span></span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">    38285676 :     return utils::bit_cast&lt;int&gt;(x);</span></span>
+<span id="L825"><span class="lineNum">     825</span>              : }</span>
+<span id="L826"><span class="lineNum">     826</span>              : </span>
+<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">    37624040 : inline float int2float(int x) {</span></span>
+<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">    37624040 :     return utils::bit_cast&lt;float&gt;(x);</span></span>
+<span id="L829"><span class="lineNum">     829</span>              : }</span>
+<span id="L830"><span class="lineNum">     830</span>              : </span>
+<span id="L831"><span class="lineNum">     831</span>              : // A setting (basically a value) that can be set() multiple times until the</span>
+<span id="L832"><span class="lineNum">     832</span>              : // time first time the get() method is called. The set() method is expected to</span>
+<span id="L833"><span class="lineNum">     833</span>              : // be as expensive as a busy-waiting spinlock. The get() method is expected to</span>
+<span id="L834"><span class="lineNum">     834</span>              : // be asymptotically as expensive as a single lock-prefixed memory read. The</span>
+<span id="L835"><span class="lineNum">     835</span>              : // get() method also has a 'soft' mode when the setting is not locked for</span>
+<span id="L836"><span class="lineNum">     836</span>              : // re-setting. This is used for testing purposes.</span>
+<span id="L837"><span class="lineNum">     837</span>              : template &lt;typename T&gt;</span>
+<span id="L838"><span class="lineNum">     838</span>              : struct set_once_before_first_get_setting_t {</span>
+<span id="L839"><span class="lineNum">     839</span>              : private:</span>
+<span id="L840"><span class="lineNum">     840</span>              :     T value_;</span>
+<span id="L841"><span class="lineNum">     841</span>              :     std::atomic&lt;unsigned&gt; state_;</span>
+<span id="L842"><span class="lineNum">     842</span>              :     enum : unsigned { idle = 0, busy_setting = 1, locked = 2 };</span>
+<span id="L843"><span class="lineNum">     843</span>              : </span>
+<span id="L844"><span class="lineNum">     844</span>              : public:</span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">        6725 :     set_once_before_first_get_setting_t(T init)</span></span>
+<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">        6725 :         : value_ {init}, state_ {idle} {}</span></span>
+<span id="L847"><span class="lineNum">     847</span>              : </span>
+<span id="L848"><span class="lineNum">     848</span> <span class="tlaGNC">         270 :     bool set(T new_value) {</span></span>
+<span id="L849"><span class="lineNum">     849</span> <span class="tlaGNC">         540 :         if (state_.load() == locked) return false;</span></span>
+<span id="L850"><span class="lineNum">     850</span>              : </span>
+<span id="L851"><span class="lineNum">     851</span> <span class="tlaUNC">           0 :         while (true) {</span></span>
+<span id="L852"><span class="lineNum">     852</span> <span class="tlaGNC">         116 :             unsigned expected = idle;</span></span>
+<span id="L853"><span class="lineNum">     853</span> <span class="tlaGNC">         232 :             if (state_.compare_exchange_weak(expected, busy_setting)) break;</span></span>
+<span id="L854"><span class="lineNum">     854</span> <span class="tlaUNC">           0 :             if (expected == locked) return false;</span></span>
+<span id="L855"><span class="lineNum">     855</span>              :         }</span>
+<span id="L856"><span class="lineNum">     856</span>              : </span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">         116 :         value_ = new_value;</span></span>
+<span id="L858"><span class="lineNum">     858</span> <span class="tlaGNC">         116 :         state_.store(locked);</span></span>
+<span id="L859"><span class="lineNum">     859</span> <span class="tlaGNC">         116 :         return true;</span></span>
+<span id="L860"><span class="lineNum">     860</span>              :     }</span>
+<span id="L861"><span class="lineNum">     861</span>              : </span>
+<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC"> >21333*10^8 :     T get(bool soft = false) {</span></span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC"> >42666*10^8 :         if (!soft &amp;&amp; state_.load() != locked) {</span></span>
+<span id="L864"><span class="lineNum">     864</span> <span class="tlaUNC">           0 :             while (true) {</span></span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">        6608 :                 unsigned expected = idle;</span></span>
+<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">       13244 :                 if (state_.compare_exchange_weak(expected, locked)) break;</span></span>
+<span id="L867"><span class="lineNum">     867</span> <span class="tlaGNC">          28 :                 if (expected == locked) break;</span></span>
+<span id="L868"><span class="lineNum">     868</span>              :             }</span>
+<span id="L869"><span class="lineNum">     869</span>              :         }</span>
+<span id="L870"><span class="lineNum">     870</span> <span class="tlaGNC"> >21333*10^8 :         return value_;</span></span>
+<span id="L871"><span class="lineNum">     871</span>              :     }</span>
+<span id="L872"><span class="lineNum">     872</span>              : };</span>
+<span id="L873"><span class="lineNum">     873</span>              : </span>
+<span id="L874"><span class="lineNum">     874</span> <span class="tlaGNC">    44428713 : inline bool is_native_runtime(runtime_kind_t kind) {</span></span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">    44428713 :     return utils::one_of(kind, runtime_kind::seq, runtime_kind::omp,</span></span>
+<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">    44428713 :             runtime_kind::tbb, runtime_kind::threadpool);</span></span>
+<span id="L877"><span class="lineNum">     877</span>              : }</span>
+<span id="L878"><span class="lineNum">     878</span>              : </span>
+<span id="L879"><span class="lineNum">     879</span>              : // Convenience wrapper to choose at compile-time between std::unique_ptr's</span>
+<span id="L880"><span class="lineNum">     880</span>              : // default deleter and a no-op one.</span>
+<span id="L881"><span class="lineNum">     881</span>              : //</span>
+<span id="L882"><span class="lineNum">     882</span>              : // This is useful for static pointers to objects with non-trivial destructors.</span>
+<span id="L883"><span class="lineNum">     883</span>              : // In some environments (e.g. tests where not all threads are joined at exit</span>
+<span id="L884"><span class="lineNum">     884</span>              : // time) these destructors can result in sanitizer failures (e.g. races in</span>
+<span id="L885"><span class="lineNum">     885</span>              : // thread sanitizer) when destructing unique_ptr's, but not with raw pointers.</span>
+<span id="L886"><span class="lineNum">     886</span>              : // Of course in a shared library environment using raw pointers (that are</span>
+<span id="L887"><span class="lineNum">     887</span>              : // therefore never freed) would result in memory leaks; this is why</span>
+<span id="L888"><span class="lineNum">     888</span>              : // DNNL_MAYBE_UNIQUE_PTR_IS_UNIQUE defaults to 1.</span>
+<span id="L889"><span class="lineNum">     889</span>              : #ifndef DNNL_MAYBE_UNIQUE_PTR_IS_UNIQUE</span>
+<span id="L890"><span class="lineNum">     890</span>              : #define DNNL_MAYBE_UNIQUE_PTR_IS_UNIQUE 1</span>
+<span id="L891"><span class="lineNum">     891</span>              : #endif</span>
+<span id="L892"><span class="lineNum">     892</span>              : </span>
+<span id="L893"><span class="lineNum">     893</span>              : #if DNNL_MAYBE_UNIQUE_PTR_IS_UNIQUE</span>
+<span id="L894"><span class="lineNum">     894</span>              : template &lt;typename T&gt;</span>
+<span id="L895"><span class="lineNum">     895</span>              : using maybe_unique_ptr = std::unique_ptr&lt;T&gt;;</span>
+<span id="L896"><span class="lineNum">     896</span>              : #else</span>
+<span id="L897"><span class="lineNum">     897</span>              : struct nop_deleter_t {</span>
+<span id="L898"><span class="lineNum">     898</span>              :     template &lt;typename T&gt;</span>
+<span id="L899"><span class="lineNum">     899</span>              :     void operator()(T const &amp;) const noexcept {}</span>
+<span id="L900"><span class="lineNum">     900</span>              : };</span>
+<span id="L901"><span class="lineNum">     901</span>              : template &lt;typename T&gt;</span>
+<span id="L902"><span class="lineNum">     902</span>              : using maybe_unique_ptr = std::unique_ptr&lt;T, nop_deleter_t&gt;;</span>
+<span id="L903"><span class="lineNum">     903</span>              : #endif // DNNL_MAYBE_UNIQUE_PTR_IS_UNIQUE</span>
+<span id="L904"><span class="lineNum">     904</span>              : </span>
+<span id="L905"><span class="lineNum">     905</span>              : // Common abstraction to manipulate nibbles in memory as pairs</span>
+<span id="L906"><span class="lineNum">     906</span>              : struct nibble2_t {</span>
+<span id="L907"><span class="lineNum">     907</span>              : </span>
+<span id="L908"><span class="lineNum">     908</span>              :     // constructs a nibble pair from a pair of uint8_t values</span>
+<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">  7317425895 :     nibble2_t(uint8_t low_, uint8_t high_) : low(low_), high(high_) {}</span></span>
+<span id="L910"><span class="lineNum">     910</span>              : </span>
+<span id="L911"><span class="lineNum">     911</span>              :     // constructs a nibble pairs from an uin8_t, taking its low and high part</span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC"> 50840556759 :     nibble2_t(uint8_t pack_) : low(pack_ &amp; 0xf), high((pack_ &gt;&gt; 4) &amp; 0xf) {}</span></span>
+<span id="L913"><span class="lineNum">     913</span>              : </span>
+<span id="L914"><span class="lineNum">     914</span>              :     // sets low (idx=0) or high (idx=1)  nibble.</span>
+<span id="L915"><span class="lineNum">     915</span> <span class="tlaGNC">    20015744 :     inline void set(uint8_t val, int idx) {</span></span>
+<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">    20015744 :         switch (idx) {</span></span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">    10007872 :             case 0: low = val; return;</span></span>
+<span id="L918"><span class="lineNum">     918</span> <span class="tlaGNC">    10007872 :             case 1: high = val; return;</span></span>
+<span id="L919"><span class="lineNum">     919</span> <span class="tlaUNC">           0 :             default: assert(!&quot;Out of range index&quot;); return;</span></span>
+<span id="L920"><span class="lineNum">     920</span>              :         }</span>
+<span id="L921"><span class="lineNum">     921</span>              :     }</span>
+<span id="L922"><span class="lineNum">     922</span>              : </span>
+<span id="L923"><span class="lineNum">     923</span>              :     // returns low (idx = 0) or high (idx = 1) nibble in a uint8_t</span>
+<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC"> 50993529784 :     inline uint8_t get(int idx) const {</span></span>
+<span id="L925"><span class="lineNum">     925</span> <span class="tlaGNC"> 50993529784 :         switch (idx) {</span></span>
+<span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC"> 25496761911 :             case 0: return low;</span></span>
+<span id="L927"><span class="lineNum">     927</span> <span class="tlaGNC"> 25496788734 :             case 1: return high;</span></span>
+<span id="L928"><span class="lineNum">     928</span> <span class="tlaUNC">           0 :             default: assert(!&quot;out of range index&quot;); return 0;</span></span>
+<span id="L929"><span class="lineNum">     929</span>              :         }</span>
+<span id="L930"><span class="lineNum">     930</span>              :     }</span>
+<span id="L931"><span class="lineNum">     931</span>              : </span>
+<span id="L932"><span class="lineNum">     932</span>              :     // returns pair of nibbles as uint8t</span>
+<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">  7317425895 :     inline uint8_t get() const { return static_cast&lt;uint8_t&gt;(high &lt;&lt; 4 | low); }</span></span>
+<span id="L934"><span class="lineNum">     934</span>              : </span>
+<span id="L935"><span class="lineNum">     935</span>              : private:</span>
+<span id="L936"><span class="lineNum">     936</span>              :     uint8_t low : 4;</span>
+<span id="L937"><span class="lineNum">     937</span>              :     uint8_t high : 4;</span>
+<span id="L938"><span class="lineNum">     938</span>              : };</span>
+<span id="L939"><span class="lineNum">     939</span>              : static_assert(sizeof(nibble2_t) == 1, &quot;nibble2_t must be 1 byte&quot;);</span>
+<span id="L940"><span class="lineNum">     940</span>              : </span>
+<span id="L941"><span class="lineNum">     941</span>              : /// Iterates through a binary integer</span>
+<span id="L942"><span class="lineNum">     942</span>              : /// usage:</span>
+<span id="L943"><span class="lineNum">     943</span>              : ///</span>
+<span id="L944"><span class="lineNum">     944</span>              : /// for(int idx : mask_iterator(13)) { // 13 == 1101</span>
+<span id="L945"><span class="lineNum">     945</span>              : ///     printf(&quot;%d\t&quot;, idx);</span>
+<span id="L946"><span class="lineNum">     946</span>              : /// }</span>
+<span id="L947"><span class="lineNum">     947</span>              : /// output: 0  2  3</span>
+<span id="L948"><span class="lineNum">     948</span>              : class mask_iterator { // NOLINT(readability-identifier-naming)</span>
+<span id="L949"><span class="lineNum">     949</span>              :     int mask_;</span>
+<span id="L950"><span class="lineNum">     950</span>              :     int index_;</span>
+<span id="L951"><span class="lineNum">     951</span>              : </span>
+<span id="L952"><span class="lineNum">     952</span>              : public:</span>
+<span id="L953"><span class="lineNum">     953</span>              :     using iterator_category = std::input_iterator_tag;</span>
+<span id="L954"><span class="lineNum">     954</span>              :     using difference_type = int;</span>
+<span id="L955"><span class="lineNum">     955</span>              :     using value_type = int;</span>
+<span id="L956"><span class="lineNum">     956</span>              :     using pointer = value_type *;</span>
+<span id="L957"><span class="lineNum">     957</span>              :     using reference = value_type &amp;;</span>
+<span id="L958"><span class="lineNum">     958</span>              :     mask_iterator() : mask_(0), index_(0) {}</span>
+<span id="L959"><span class="lineNum">     959</span> <span class="tlaGNC">        1706 :     mask_iterator(int mask) : mask_(mask), index_(0) {</span></span>
+<span id="L960"><span class="lineNum">     960</span> <span class="tlaGNC">        1706 :         if ((mask_ &amp; 0x1) == 0) { ++(*this); }</span></span>
+<span id="L961"><span class="lineNum">     961</span> <span class="tlaGNC">        1706 :     }</span></span>
+<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">         853 :     mask_iterator &amp;begin() { return *this; }</span></span>
+<span id="L963"><span class="lineNum">     963</span> <span class="tlaGNC">         853 :     mask_iterator end() const { return 0; }</span></span>
+<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">        3396 :     value_type operator*() const { return index_; }</span></span>
+<span id="L965"><span class="lineNum">     965</span> <span class="tlaGNC">        4253 :     mask_iterator &amp;operator++() {</span></span>
+<span id="L966"><span class="lineNum">     966</span> <span class="tlaUNC">           0 :         do {</span></span>
+<span id="L967"><span class="lineNum">     967</span> <span class="tlaGNC">        4253 :             index_++;</span></span>
+<span id="L968"><span class="lineNum">     968</span> <span class="tlaGNC">        4253 :             mask_ &gt;&gt;= 1;</span></span>
+<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">        4253 :         } while ((mask_ &amp; 0x1) == 0 &amp;&amp; mask_ != 0);</span></span>
+<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">        4253 :         if (mask_ == 0) { index_ = 0; }</span></span>
+<span id="L971"><span class="lineNum">     971</span> <span class="tlaGNC">        4253 :         return *this;</span></span>
+<span id="L972"><span class="lineNum">     972</span>              :     }</span>
+<span id="L973"><span class="lineNum">     973</span> <span class="tlaGNC">        4249 :     bool operator!=(const mask_iterator &amp;other) const {</span></span>
+<span id="L974"><span class="lineNum">     974</span> <span class="tlaGNC">        4249 :         return mask_ != other.mask_ || index_ != other.index_;</span></span>
+<span id="L975"><span class="lineNum">     975</span>              :     }</span>
+<span id="L976"><span class="lineNum">     976</span>              : };</span>
+<span id="L977"><span class="lineNum">     977</span>              : </span>
+<span id="L978"><span class="lineNum">     978</span>              : /** returns true if fp32 value denotes DNNL_RUNTIME_F32_VAL */</span>
+<span id="L979"><span class="lineNum">     979</span> <span class="tlaGNC">  2916401885 : inline bool is_runtime_value(float val) {</span></span>
+<span id="L980"><span class="lineNum">     980</span> <span class="tlaGNC">  2916402683 :     return utils::bit_cast&lt;unsigned&gt;(val) == DNNL_RUNTIME_F32_VAL_REP.u;</span></span>
+<span id="L981"><span class="lineNum">     981</span>              : }</span>
+<span id="L982"><span class="lineNum">     982</span>              : </span>
+<span id="L983"><span class="lineNum">     983</span>              : /** returns true if s32 value denotes DNNL_RUNTIME_S32_VAL */</span>
+<span id="L984"><span class="lineNum">     984</span>              : inline bool is_runtime_value(int val) {</span>
+<span id="L985"><span class="lineNum">     985</span>              :     return val == DNNL_RUNTIME_S32_VAL;</span>
+<span id="L986"><span class="lineNum">     986</span>              : }</span>
+<span id="L987"><span class="lineNum">     987</span>              : </span>
+<span id="L988"><span class="lineNum">     988</span>              : /** returns true if dim_t value denotes DNNL_RUNTIME_DIM_VAL */</span>
+<span id="L989"><span class="lineNum">     989</span> <span class="tlaGNC"> >21934*10^7 : inline bool is_runtime_value(dim_t val) {</span></span>
+<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC"> >21934*10^7 :     return val == DNNL_RUNTIME_DIM_VAL;</span></span>
+<span id="L991"><span class="lineNum">     991</span>              : }</span>
+<span id="L992"><span class="lineNum">     992</span>              : </span>
+<span id="L993"><span class="lineNum">     993</span>              : /** returns true if size_t value denotes DNNL_RUNTIME_SIZE_VAL */</span>
+<span id="L994"><span class="lineNum">     994</span> <span class="tlaGNC">   139043763 : inline bool is_runtime_value(size_t val) {</span></span>
+<span id="L995"><span class="lineNum">     995</span> <span class="tlaGNC">   139043763 :     return val == DNNL_RUNTIME_SIZE_VAL;</span></span>
+<span id="L996"><span class="lineNum">     996</span>              : }</span>
+<span id="L997"><span class="lineNum">     997</span>              : </span>
+<span id="L998"><span class="lineNum">     998</span>              : template &lt;typename T&gt;</span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">  1608184937 : constexpr bool any_runtime_value(T item) {</span></span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">  1608184937 :     return is_runtime_value(item);</span></span>
+<span id="L1001"><span class="lineNum">    1001</span>              : }</span>
+<span id="L1002"><span class="lineNum">    1002</span>              : template &lt;typename T, typename... Args&gt;</span>
+<span id="L1003"><span class="lineNum">    1003</span> <span class="tlaGNC">  1610573279 : bool any_runtime_value(T item, Args... item_others) {</span></span>
+<span id="L1004"><span class="lineNum">    1004</span> <span class="tlaGNC">  1610573279 :     return is_runtime_value(item) || any_runtime_value(item_others...);</span></span>
+<span id="L1005"><span class="lineNum">    1005</span>              : }</span>
+<span id="L1006"><span class="lineNum">    1006</span>              : </span>
+<span id="L1007"><span class="lineNum">    1007</span>              : template &lt;typename T&gt;</span>
+<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">       51456 : constexpr bool all_runtime_values(T item) {</span></span>
+<span id="L1009"><span class="lineNum">    1009</span> <span class="tlaGNC">       51456 :     return is_runtime_value(item);</span></span>
+<span id="L1010"><span class="lineNum">    1010</span>              : }</span>
+<span id="L1011"><span class="lineNum">    1011</span>              : template &lt;typename T, typename... Args&gt;</span>
+<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">      102941 : constexpr bool all_runtime_values(T item, Args... item_others) {</span></span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">      102941 :     return is_runtime_value(item) &amp;&amp; all_runtime_values(item_others...);</span></span>
+<span id="L1014"><span class="lineNum">    1014</span>              : }</span>
+<span id="L1015"><span class="lineNum">    1015</span>              : </span>
+<span id="L1016"><span class="lineNum">    1016</span>              : template &lt;typename T&gt;</span>
+<span id="L1017"><span class="lineNum">    1017</span>              : constexpr T runtime_value_for() {</span>
+<span id="L1018"><span class="lineNum">    1018</span>              :     static_assert(sizeof(T) == 0, &quot;no runtime value defined for this type&quot;);</span>
+<span id="L1019"><span class="lineNum">    1019</span>              :     return T {};</span>
+<span id="L1020"><span class="lineNum">    1020</span>              : }</span>
+<span id="L1021"><span class="lineNum">    1021</span>              : </span>
+<span id="L1022"><span class="lineNum">    1022</span>              : template &lt;&gt;</span>
+<span id="L1023"><span class="lineNum">    1023</span>              : inline float runtime_value_for&lt;float&gt;() {</span>
+<span id="L1024"><span class="lineNum">    1024</span>              :     return DNNL_RUNTIME_F32_VAL;</span>
+<span id="L1025"><span class="lineNum">    1025</span>              : }</span>
+<span id="L1026"><span class="lineNum">    1026</span>              : </span>
+<span id="L1027"><span class="lineNum">    1027</span>              : template &lt;&gt;</span>
+<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">           8 : constexpr int runtime_value_for&lt;int&gt;() {</span></span>
+<span id="L1029"><span class="lineNum">    1029</span> <span class="tlaGNC">           8 :     return DNNL_RUNTIME_S32_VAL;</span></span>
+<span id="L1030"><span class="lineNum">    1030</span>              : }</span>
+<span id="L1031"><span class="lineNum">    1031</span>              : </span>
+<span id="L1032"><span class="lineNum">    1032</span>              : template &lt;&gt;</span>
+<span id="L1033"><span class="lineNum">    1033</span> <span class="tlaGNC">     5099491 : constexpr dim_t runtime_value_for&lt;dim_t&gt;() {</span></span>
+<span id="L1034"><span class="lineNum">    1034</span> <span class="tlaGNC">     5099491 :     return DNNL_RUNTIME_DIM_VAL;</span></span>
+<span id="L1035"><span class="lineNum">    1035</span>              : }</span>
+<span id="L1036"><span class="lineNum">    1036</span>              : </span>
+<span id="L1037"><span class="lineNum">    1037</span>              : template &lt;&gt;</span>
+<span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">      553563 : constexpr size_t runtime_value_for&lt;size_t&gt;() {</span></span>
+<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">      553563 :     return DNNL_RUNTIME_SIZE_VAL;</span></span>
+<span id="L1040"><span class="lineNum">    1040</span>              : }</span>
+<span id="L1041"><span class="lineNum">    1041</span>              : </span>
+<span id="L1042"><span class="lineNum">    1042</span>              : /** returns the runtime placeholder constant for the argument type T */</span>
+<span id="L1043"><span class="lineNum">    1043</span>              : template &lt;typename T&gt;</span>
+<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">     5096423 : inline T runtime_value_for(T) {</span></span>
+<span id="L1045"><span class="lineNum">    1045</span> <span class="tlaGNC">     5096423 :     return runtime_value_for&lt;typename utils::remove_reference&lt;T&gt;::type&gt;();</span></span>
+<span id="L1046"><span class="lineNum">    1046</span>              : }</span>
+<span id="L1047"><span class="lineNum">    1047</span>              : </span>
+<span id="L1048"><span class="lineNum">    1048</span>              : } // namespace impl</span>
+<span id="L1049"><span class="lineNum">    1049</span>              : } // namespace dnnl</span>
+<span id="L1050"><span class="lineNum">    1050</span>              : </span>
+<span id="L1051"><span class="lineNum">    1051</span>              : #endif</span>
+<span id="L1052"><span class="lineNum">    1052</span>              : </span>
+<span id="L1053"><span class="lineNum">    1053</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

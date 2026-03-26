@@ -1,0 +1,660 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/jit/ir/epilogue.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/jit/ir">src/gpu/intel/jit/ir</a> - epilogue.cpp<span style="font-size: 80%;"> (<a href="epilogue.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">85.7&nbsp;%</td>
+            <td class="headerCovTableEntry">642</td>
+            <td class="headerCovTableEntry">550</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">90.4&nbsp;%</td>
+            <td class="headerCovTableEntry">73</td>
+            <td class="headerCovTableEntry">66</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="epilogue.cpp.func-c.html"><img src="../../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L1175">dnnl::impl::gpu::intel::jit::create_epilogue_stmt(gemmstone::dsl::kernel::options_t const&amp;, gemmstone::dsl::ir::ir_context_t&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t const&amp;, bool, dnnl::impl::gpu::intel::jit::post_op_context_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int&amp;)</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L846">dnnl::impl::gpu::intel::jit::epilogue_builder_t::build(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L905">dnnl::impl::gpu::intel::jit::epilogue_builder_t::build(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)::{lambda(gemmstone::dsl::icoord_t const&amp;)#1}::operator()(gemmstone::dsl::icoord_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">231603</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L1090">dnnl::impl::gpu::intel::jit::epilogue_builder_t::build_post_op_block_stmt(std::vector&lt;dnnl::impl::gpu::intel::jit::post_op_tensor_t, std::allocator&lt;dnnl::impl::gpu::intel::jit::post_op_tensor_t&gt; &gt;&amp;, int, int) const</a></td>
+              
+              <td class="coverFnHi">203027</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L954">dnnl::impl::gpu::intel::jit::epilogue_builder_t::build_tile(dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">231603</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L769">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_reg_buf_size() const</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L809">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::buf_base() const</a></td>
+              
+              <td class="coverFnHi">1496328</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L779">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::c_stage_t(gemmstone::dsl::layout_t const&amp;, int, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">653178</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L821">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::max_off_bytes() const</a></td>
+              
+              <td class="coverFnHi">421575</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L822">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::max_off_bytes() const::{lambda()#1}::operator()() const</a></td>
+              
+              <td class="coverFnHi">421575</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L836">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::prepend_stmt(gemmstone::dsl::ir::stmt_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">8145</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L803">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::set_buf(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">87697</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L783">dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t::set_next(gemmstone::dsl::ir::ir_context_t&amp;, dnnl::impl::gpu::intel::jit::epilogue_builder_t::c_stage_t*, bool)</a></td>
+              
+              <td class="coverFnHi">653178</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L707">dnnl::impl::gpu::intel::jit::epilogue_builder_t::epilogue_builder_t(gemmstone::dsl::ir::ir_context_t&amp;, gemmstone::dsl::kernel::options_t const&amp;, dnnl::impl::gpu::intel::jit::gemm_schedule_t const&amp;, bool, dnnl::impl::gpu::intel::jit::post_op_context_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;, gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;, int, int)</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L772">dnnl::impl::gpu::intel::jit::epilogue_builder_t::make_c_tmp_buffer() const</a></td>
+              
+              <td class="coverFnHi">422729</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L767">dnnl::impl::gpu::intel::jit::epilogue_builder_t::stmt() const</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L648">dnnl::impl::gpu::intel::jit::find_tile_size(gemmstone::dsl::kernel::options_t const&amp;, dnnl::impl::gpu::intel::jit::post_op_context_t const&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;, gemmstone::dsl::layout_t const&amp;, int, int)</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L634">dnnl::impl::gpu::intel::jit::get_post_op_mem_usage(dnnl::impl::gpu::intel::jit::post_op_tensor_info_t const&amp;, int, dnnl::impl::gpu::intel::jit::view_t const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">343881</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L476">dnnl::impl::gpu::intel::jit::post_op_bcast_mutator_t::_mutate(gemmstone::dsl::ir::float_imm_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">663268</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L480">dnnl::impl::gpu::intel::jit::post_op_bcast_mutator_t::_mutate(gemmstone::dsl::ir::int_imm_t const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L484">dnnl::impl::gpu::intel::jit::post_op_bcast_mutator_t::_mutate(gemmstone::dsl::ir::var_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">8254691</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L493">dnnl::impl::gpu::intel::jit::post_op_bcast_mutator_t::make_bcast(gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">8917958</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L472">dnnl::impl::gpu::intel::jit::post_op_bcast_mutator_t::post_op_bcast_mutator_t(int, std::unordered_map&lt;gemmstone::dsl::ir::object_t, gemmstone::dsl::ir::object_t, gemmstone::dsl::ir::object_id_hash_t, gemmstone::dsl::ir::object_id_equal_t, std::allocator&lt;std::pair&lt;gemmstone::dsl::ir::object_t const, gemmstone::dsl::ir::object_t&gt; &gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">3940293</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L512">dnnl::impl::gpu::intel::jit::post_op_builder_t::build_tile_stmt(std::unordered_map&lt;gemmstone::dsl::ir::expr_t, dnnl::impl::gpu::intel::jit::post_op_tensor_t*, gemmstone::dsl::ir::object_id_hash_t, gemmstone::dsl::ir::object_id_equal_t, std::allocator&lt;std::pair&lt;gemmstone::dsl::ir::expr_t const, dnnl::impl::gpu::intel::jit::post_op_tensor_t*&gt; &gt; &gt; const&amp;, dnnl::impl::gpu::intel::jit::zero_pad_builder_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">512687</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L616">dnnl::impl::gpu::intel::jit::post_op_builder_t::compute_post_op_expr(gemmstone::dsl::ir::expr_t const&amp;, dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, unsigned long, std::unordered_map&lt;gemmstone::dsl::ir::expr_t, dnnl::impl::gpu::intel::jit::post_op_tensor_t*, gemmstone::dsl::ir::object_id_hash_t, gemmstone::dsl::ir::object_id_equal_t, std::allocator&lt;std::pair&lt;gemmstone::dsl::ir::expr_t const, dnnl::impl::gpu::intel::jit::post_op_tensor_t*&gt; &gt; &gt; const&amp;) const</a></td>
+              
+              <td class="coverFnHi">3940293</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L574">dnnl::impl::gpu::intel::jit::post_op_builder_t::find_1d_tile(gemmstone::dsl::type_t const&amp;, std::unordered_map&lt;gemmstone::dsl::ir::expr_t, dnnl::impl::gpu::intel::jit::post_op_tensor_t*, gemmstone::dsl::ir::object_id_hash_t, gemmstone::dsl::ir::object_id_equal_t, std::allocator&lt;std::pair&lt;gemmstone::dsl::ir::expr_t const, dnnl::impl::gpu::intel::jit::post_op_tensor_t*&gt; &gt; &gt; const&amp;, gemmstone::dsl::idx_t&amp;) const</a></td>
+              
+              <td class="coverFnHi">422056</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L509">dnnl::impl::gpu::intel::jit::post_op_builder_t::post_op() const</a></td>
+              
+              <td class="coverFnHi">2834724</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L506">dnnl::impl::gpu::intel::jit::post_op_builder_t::post_op_builder_t(gemmstone::dsl::hw_t const&amp;, dnnl::impl::gpu::intel::jit::post_op_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">384476</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L411">dnnl::impl::gpu::intel::jit::post_op_tensor_t::allocs() const</a></td>
+              
+              <td class="coverFnHi">707941</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L224">dnnl::impl::gpu::intel::jit::post_op_tensor_t::apply_mask(dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">1374434</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L303">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_compute_stmt(std::vector&lt;dnnl::impl::gpu::intel::jit::post_op_tensor_t, std::allocator&lt;dnnl::impl::gpu::intel::jit::post_op_tensor_t&gt; &gt; const&amp;)</a></td>
+              
+              <td class="coverFnHi">64090</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L283">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_convert_stmt()</a></td>
+              
+              <td class="coverFnHi">126032</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L258">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_load_stmt(dnnl::impl::gpu::intel::jit::view_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">345162</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L271">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_prefetch_stmt(dnnl::impl::gpu::intel::jit::view_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">27539</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L330">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_reduce_stmt()</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L355">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_slm_load_stmt()</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L347">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_slm_store_stmt(dnnl::impl::gpu::intel::jit::grid_info_t const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L371">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_store_stmt() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L325">dnnl::impl::gpu::intel::jit::post_op_tensor_t::build_zero_out_stmt() const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L199">dnnl::impl::gpu::intel::jit::post_op_tensor_t::compute_expr() const</a></td>
+              
+              <td class="coverFnHi">64090</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L152">dnnl::impl::gpu::intel::jit::post_op_tensor_t::create_sub_tensor(dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">1374434</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L222">dnnl::impl::gpu::intel::jit::post_op_tensor_t::do_preload() const</a></td>
+              
+              <td class="coverFnHi">2158933</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L207">dnnl::impl::gpu::intel::jit::post_op_tensor_t::estimate_grf_consumption() const</a></td>
+              
+              <td class="coverFnHi">306757</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L441">dnnl::impl::gpu::intel::jit::post_op_tensor_t::get_cache_hint(dnnl::impl::gpu::intel::jit::view_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">367917</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L234">dnnl::impl::gpu::intel::jit::post_op_tensor_t::init_output_buffer(gemmstone::dsl::tile_t const&amp;)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L201">dnnl::impl::gpu::intel::jit::post_op_tensor_t::is_broadcast_dim(unsigned long) const</a></td>
+              
+              <td class="coverFnHi">31768384</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L166">dnnl::impl::gpu::intel::jit::post_op_tensor_t::is_f32_scalar() const</a></td>
+              
+              <td class="coverFnHi">128456</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L381">dnnl::impl::gpu::intel::jit::post_op_tensor_t::load_expr(dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, unsigned long) const</a></td>
+              
+              <td class="coverFnHi">17934034</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L414">dnnl::impl::gpu::intel::jit::post_op_tensor_t::make_tmp_reg_buffer()</a></td>
+              
+              <td class="coverFnHi">535284</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L143">dnnl::impl::gpu::intel::jit::post_op_tensor_t::mask() const</a></td>
+              
+              <td class="coverFnHi">33484450</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L138">dnnl::impl::gpu::intel::jit::post_op_tensor_t::mem_buf() const</a></td>
+              
+              <td class="coverFnHi">3808299</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L136">dnnl::impl::gpu::intel::jit::post_op_tensor_t::mem_view() const</a></td>
+              
+              <td class="coverFnHi">46058899</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L197">dnnl::impl::gpu::intel::jit::post_op_tensor_t::needs_compute() const</a></td>
+              
+              <td class="coverFnHi">746852</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L180">dnnl::impl::gpu::intel::jit::post_op_tensor_t::needs_f32_convert() const</a></td>
+              
+              <td class="coverFnHi">777951</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L170">dnnl::impl::gpu::intel::jit::post_op_tensor_t::needs_load() const</a></td>
+              
+              <td class="coverFnHi">2676386</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L178">dnnl::impl::gpu::intel::jit::post_op_tensor_t::needs_masked_update() const</a></td>
+              
+              <td class="coverFnHi">4696055</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L185">dnnl::impl::gpu::intel::jit::post_op_tensor_t::needs_reduction() const</a></td>
+              
+              <td class="coverFnHi">482890</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L176">dnnl::impl::gpu::intel::jit::post_op_tensor_t::needs_store() const</a></td>
+              
+              <td class="coverFnHi">1856016</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L146">dnnl::impl::gpu::intel::jit::post_op_tensor_t::op_var() const</a></td>
+              
+              <td class="coverFnHi">22785075</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L123">dnnl::impl::gpu::intel::jit::post_op_tensor_t::post_op_tensor_t(gemmstone::dsl::ir::ir_context_t&amp;, dnnl::impl::gpu::intel::jit::post_op_tensor_info_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">618672</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L150">dnnl::impl::gpu::intel::jit::post_op_tensor_t::reg_buf() const</a></td>
+              
+              <td class="coverFnHi">119919</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L148">dnnl::impl::gpu::intel::jit::post_op_tensor_t::reg_layout() const</a></td>
+              
+              <td class="coverFnHi">6265258</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L427">dnnl::impl::gpu::intel::jit::post_op_tensor_t::register_buffer(gemmstone::dsl::ir::expr_t const&amp;, unsigned int)</a></td>
+              
+              <td class="coverFnHi">535284</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L220">dnnl::impl::gpu::intel::jit::post_op_tensor_t::set_preload(bool)</a></td>
+              
+              <td class="coverFnHi">255893</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L218">dnnl::impl::gpu::intel::jit::post_op_tensor_t::set_reg_buf(gemmstone::dsl::ir::expr_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">181827</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L216">dnnl::impl::gpu::intel::jit::post_op_tensor_t::set_reg_layout(gemmstone::dsl::layout_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">181827</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L394">dnnl::impl::gpu::intel::jit::post_op_tensor_t::store_stmt(dnnl::impl::gpu::intel::jit::tile_coord_t const&amp;, unsigned long, gemmstone::dsl::ir::expr_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">3940293</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L54">dnnl::impl::gpu::intel::jit::zero_pad_builder_t::build_stmt(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::ir::expr_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">17444</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L42">dnnl::impl::gpu::intel::jit::zero_pad_builder_t::create_mask(gemmstone::dsl::layout_t const&amp;, gemmstone::dsl::tile_t const&amp;, gemmstone::dsl::coord_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">172976</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L75">dnnl::impl::gpu::intel::jit::zero_pad_builder_t::fill_mask_impl(dnnl::impl::gpu::intel::jit::mask_tensor_t&amp;, unsigned int, gemmstone::dsl::icoord_t&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;, gemmstone::dsl::layout_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">11474924</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L40">dnnl::impl::gpu::intel::jit::zero_pad_builder_t::is_empty() const</a></td>
+              
+              <td class="coverFnHi">172976</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L32">dnnl::impl::gpu::intel::jit::zero_pad_builder_t::zero_pad_builder_t()</a></td>
+              
+              <td class="coverFnHi">199825</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="epilogue.cpp.gcov.html#L34">dnnl::impl::gpu::intel::jit::zero_pad_builder_t::zero_pad_builder_t(gemmstone::dsl::ir::ir_context_t&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;, dnnl::impl::gpu::intel::jit::view_t const&amp;)</a></td>
+              
+              <td class="coverFnHi">9299</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

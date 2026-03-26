@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/gemm/s8x8s32/jit_avx512_core_kernel_gemv_s8x8s32_kern.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/gemm/s8x8s32">src/cpu/x64/gemm/s8x8s32</a> - jit_avx512_core_kernel_gemv_s8x8s32_kern.cpp<span style="font-size: 80%;"> (source / <a href="jit_avx512_core_kernel_gemv_s8x8s32_kern.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">198</td>
+            <td class="headerCovTableEntry">198</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;cpu/x64/gemm/s8x8s32/jit_avx512_core_kernel_gemv_s8x8s32_kern.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #ifdef _WIN32</span>
+<span id="L20"><span class="lineNum">      20</span>              : #define is_windows 1</span>
+<span id="L21"><span class="lineNum">      21</span>              : #else</span>
+<span id="L22"><span class="lineNum">      22</span>              : #define is_windows 0</span>
+<span id="L23"><span class="lineNum">      23</span>              : #endif</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace dnnl {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace impl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace cpu {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace x64 {</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : using namespace Xbyak;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">      102272 : void jit_avx512_core_gemv_s8x8s32_kern_t::vnni(</span></span>
+<span id="L33"><span class="lineNum">      33</span>              :         Zmm acc, Zmm a, Zmm b, vnni_op_t op) {</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">      102272 :     if (isa == avx512_core_vnni) {</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">       77248 :         if (op == vnni_op_t::sub) vxorps(acc, acc, zmm_1_u1); // acc = -acc</span></span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       77248 :         if (ver == ver_t::u8s8)</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       19312 :             vpdpbusd(acc, a, b);</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :         else</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">       57936 :             vpdpbusd(acc, b, a);</span></span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       77248 :         if (op == vnni_op_t::sub) vxorps(acc, acc, zmm_1_u1); // acc = -acc</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :     } else {</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       25024 :         assert(isa == avx512_core);</span></span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       25024 :         if (ver == ver_t::u8s8)</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">        6256 :             vpmaddubsw(zmm_tmp, a, b);</span></span>
+<span id="L48"><span class="lineNum">      48</span>              :         else</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       18768 :             vpmaddubsw(zmm_tmp, b, a);</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       25024 :         vpmaddwd(zmm_tmp, zmm_tmp, zmm_1_s16);</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       25024 :         if (op == vnni_op_t::sub)</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        6256 :             vpsubd(acc, acc, zmm_tmp);</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :         else</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       18768 :             vpaddd(acc, zmm_tmp, acc);</span></span>
+<span id="L56"><span class="lineNum">      56</span>              :     }</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      102272 : }</span></span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">        9024 : void jit_avx512_core_gemv_s8x8s32_kern_t::n_loop_body(int nreg_acc, Reg64 A,</span></span>
+<span id="L60"><span class="lineNum">      60</span>              :         Reg64 lda, Reg64 X, int use_mask, Opmask mask_n) {</span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">        9024 :     const int nreg_A = nreg_acc / 2 + (nreg_acc % 2);</span></span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span>              :     // load X + j</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        9024 :     if (use_mask)</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        4512 :         vmovdqu8(zmm_b | mask_n | T_z, ptr[X]);</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :     else</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">        4512 :         vmovdqu8(zmm_b, ptr[X]);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        9024 :     if (ver == ver_t::s8s8) vxorps(zmm_b, zmm_b, zmm_128_u8);</span></span>
+<span id="L69"><span class="lineNum">      69</span>              : </span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        9024 :     xor_(r14, r14);</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :     // load values of A</span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       49632 :     for (int i = 0; i &lt; nreg_A; i++) {</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       40608 :         if (use_mask)</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">       20304 :             vmovdqu8(zmm_a(i) | mask_n | T_z, ptr[A + r14]);</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :         else</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       20304 :             vmovdqu8(zmm_a(i), ptr[A + r14]);</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       40608 :         add(r14, lda);</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :     }</span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">       49632 :     for (int i = 0; i &lt; nreg_A; i++)</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">       40608 :         vnni(zmm_acc(i), zmm_a(i), zmm_b, vnni_op_t::add);</span></span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">        9024 :     if (ver == ver_t::s8s8)</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       16544 :         for (int i = 0; i &lt; nreg_A; i++)</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       13536 :             vnni(zmm_acc(i), zmm_a(i), zmm_128_u8, vnni_op_t::sub);</span></span>
+<span id="L86"><span class="lineNum">      86</span>              : </span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       45120 :     for (int i = 0; i &lt; nreg_A - (nreg_acc % 2); i++) {</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">       36096 :         if (use_mask)</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">       18048 :             vmovdqu8(zmm_a(i) | mask_n | T_z, ptr[A + r14]);</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :         else</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       18048 :             vmovdqu8(zmm_a(i), ptr[A + r14]);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       36096 :         add(r14, lda);</span></span>
+<span id="L93"><span class="lineNum">      93</span>              :     }</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">       45120 :     for (int i = 0; i &lt; nreg_A - (nreg_acc % 2); i++)</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       36096 :         vnni(zmm_acc(nreg_A + i), zmm_a(i), zmm_b, vnni_op_t::add);</span></span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">        9024 :     if (ver == ver_t::s8s8)</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       15040 :         for (int i = 0; i &lt; nreg_A - (nreg_acc % 2); i++)</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       12032 :             vnni(zmm_acc(nreg_A + i), zmm_a(i), zmm_128_u8, vnni_op_t::sub);</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">        9024 : }</span></span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">       12408 : void jit_avx512_core_gemv_s8x8s32_kern_t::shuffle_and_add(</span></span>
+<span id="L104"><span class="lineNum">     104</span>              :         Zmm dest, Zmm A, Zmm B, Zmm C, Zmm D) {</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">       12408 :     vshufi32x4(dest, A, C, 0x44);</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">       12408 :     vshufi32x4(A, A, C, 0xEE);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">       12408 :     vpaddd(C, dest, A); // C = A0 + A2|A1 + A3|C0 + C2|C1 + C3</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">       12408 :     vshufi32x4(dest, B, D, 0x44);</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       12408 :     vshufi32x4(B, B, D, 0xEE);</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">       12408 :     vpaddd(D, dest, B); // D = B0 + B2|B1 + B3|D0 + D2|D1 + D3</span></span>
+<span id="L112"><span class="lineNum">     112</span>              : </span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">       12408 :     vshufi32x4(A, C, D, 0x88);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       12408 :     vshufi32x4(B, C, D, 0xDD);</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">       12408 :     vpaddd(dest, A, B); // dest = SAi|SBi|SCi|SDi</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">       12408 : }</span></span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">        4512 : void jit_avx512_core_gemv_s8x8s32_kern_t::update_c(</span></span>
+<span id="L119"><span class="lineNum">     119</span>              :         int nreg_acc, Reg64 Y, int use_mask, Opmask mask_m) {</span>
+<span id="L120"><span class="lineNum">     120</span>              :     int l, i, k, j, last_it;</span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">        9024 :     Label store_label;</span></span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">      116184 :     auto ymm_c = [&amp;](int i) { return Ymm(zmm_a(i).getIdx()); };</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">       37224 :     auto zmm_c = [&amp;](int i) { return zmm_a(i); };</span></span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        4512 :     l = 0;</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       11280 :     for (k = 0; k &lt; nreg_acc; k += 8) {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       20304 :         for (i = 0, j = k; i &lt; 8; i += 4, j += 2) {</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       13536 :             if (j &lt; nreg_acc) {</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :                 // shuffle per block of 4 registers</span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       12408 :                 shuffle_and_add(zmm_c(l), // desc</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :                         zmm_acc(j), // A = acc0</span>
+<span id="L133"><span class="lineNum">     133</span>              :                         zmm_acc(1 + j), // B = acc1</span>
+<span id="L134"><span class="lineNum">     134</span>              :                         zmm_acc(4 + j), // C = acc4</span>
+<span id="L135"><span class="lineNum">     135</span>              :                         zmm_acc(5 + j)); // D = acc5</span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span>              :                 // extract low and high from dest and hadd</span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">       12408 :                 vextracti32x8(ymm_c(l + 1), zmm_c(l), 0);</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       12408 :                 vextracti32x8(ymm_c(l + 2), zmm_c(l), 1);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       12408 :                 vphaddd(ymm_c(l), ymm_c(l + 1), ymm_c(l + 2));</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :             }</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">       13536 :             l++;</span></span>
+<span id="L143"><span class="lineNum">     143</span>              :         }</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        6768 :         vphaddd(ymm_c(l), ymm_c(l - 2), ymm_c(l - 1));</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        6768 :         l++;</span></span>
+<span id="L147"><span class="lineNum">     147</span>              :     }</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              :     // eventually add with C and store new value</span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        4512 :     Xmm xmm_zero = Xmm(zmm_tmp.getIdx());</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        4512 :     vxorps(xmm_zero, xmm_zero, xmm_zero);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        4512 :     vucomiss(xmm_beta, xmm_zero);</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        4512 :     je(store_label, T_NEAR);</span></span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span>              :     // beta = 1</span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       11280 :     for (k = 0, l = 2; k &lt; nreg_acc; k += 8, l += 3) {</span></span>
+<span id="L157"><span class="lineNum">     157</span>              :         // load Y and add</span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        6768 :         last_it = (k + 8) &gt; nreg_acc;</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        6768 :         if (use_mask &amp;&amp; last_it)</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">        3948 :             vmovdqu32(ymm_c(k / 8) | mask_m | T_z, ptr[Y + (k / 8) * 32]);</span></span>
+<span id="L161"><span class="lineNum">     161</span>              :         else</span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        2820 :             vmovdqu32(ymm_c(k / 8), ptr[Y + (k / 8) * 32]);</span></span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">        6768 :         vpaddd(ymm_c(l), ymm_c(l), ymm_c(k / 8));</span></span>
+<span id="L165"><span class="lineNum">     165</span>              :     }</span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span>              :     // store</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">        4512 :     L_aligned(store_label);</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       11280 :     for (k = 0, l = 2; k &lt; nreg_acc; k += 8, l += 3) {</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">        6768 :         last_it = (k + 8) &gt; nreg_acc;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">        6768 :         if (use_mask &amp;&amp; last_it)</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">        3948 :             vmovdqu32(ptr[Y + (k / 8) * 32], ymm_c(l) | mask_m);</span></span>
+<span id="L173"><span class="lineNum">     173</span>              :         else</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">        2820 :             vmovdqu32(ptr[Y + (k / 8) * 32], ymm_c(l));</span></span>
+<span id="L175"><span class="lineNum">     175</span>              :     }</span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">        4512 : }</span></span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">         282 : void jit_avx512_core_gemv_s8x8s32_kern_t::generate() {</span></span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">         282 :     const int vec_len = 64; // bytes</span></span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">         282 :     isa = mayiuse(avx512_core_vnni) ? avx512_core_vnni : avx512_core;</span></span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">         282 :     assert(ver != ver_t::undef);</span></span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">         282 :     Opmask mask_n = k1, mask_m = k2;</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">         564 :     Label one_label, m_tail_label, m_loop_label, n_loop_label;</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">         564 :     Label n_tail_label, update_c_label, end_label;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">         282 :     constexpr unsigned int n_labels = (1 &lt;&lt; unroll_m_) - 1;</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">        9024 :     Label m_tail_label_case[n_labels];</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">        9024 :     Label n_loop_label_case[n_labels];</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">        9024 :     Label n_tail_label_case[n_labels];</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        9024 :     Label update_c_label_case[n_labels];</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">         282 :     Reg64 n = abi_param2, m = abi_param1;</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">         282 :     Reg64 A = is_windows ? abi_param4 : abi_param3;</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">         282 :     Reg64 lda = is_windows ? abi_param3 : abi_param4;</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">         282 :     Reg64 X = is_windows ? rdi : r8;</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">         282 :     Reg64 Y = is_windows ? rsi : r9;</span></span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">         282 :     preamble();</span></span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :     if (is_windows) {</span>
+<span id="L204"><span class="lineNum">     204</span>              :         // Windows: read on the stack lda, X, beta, Y</span>
+<span id="L205"><span class="lineNum">     205</span>              :         mov(lda, ptr[rsp + get_size_of_abi_save_regs() + 40]);</span>
+<span id="L206"><span class="lineNum">     206</span>              :         mov(X, ptr[rsp + get_size_of_abi_save_regs() + 48]);</span>
+<span id="L207"><span class="lineNum">     207</span>              :         movss(xmm_beta, ptr[rsp + get_size_of_abi_save_regs() + 56]);</span>
+<span id="L208"><span class="lineNum">     208</span>              :         mov(Y, ptr[rsp + get_size_of_abi_save_regs() + 64]);</span>
+<span id="L209"><span class="lineNum">     209</span>              :     }</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">         282 :     mov(rax, (1 &lt;&lt; unroll_n_) - 1);</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">         282 :     kmovq(k3, rax);</span></span>
+<span id="L213"><span class="lineNum">     213</span>              : </span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">         282 :     and_(rax, n); // rax contains n &amp; ((1 &lt;&lt; unroll_n_) - 1)</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">         282 :     mov(rbx, 1);</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">         282 :     shlx(rbx, rbx, rax);</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">         282 :     sub(rbx, 1);</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">         282 :     kmovq(mask_n, rbx);</span></span>
+<span id="L219"><span class="lineNum">     219</span>              :     // mask_n set (AVX512 only), can use rax and rbx again</span>
+<span id="L220"><span class="lineNum">     220</span>              : </span>
+<span id="L221"><span class="lineNum">     221</span>              :     // set mask_m for update of the C matrix</span>
+<span id="L222"><span class="lineNum">     222</span>              :     // load/store on the C matrix use Ymm so tail according to Ymm size</span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">         282 :     mov(rax, 7); // 8 * 32 = 256 Ymm size</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">         282 :     and_(rax, m); // rax contains m &amp; 7</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">         282 :     mov(rbx, 1);</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">         282 :     shlx(rbx, rbx, rax);</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">         282 :     sub(rbx, 1);</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">         282 :     kmovq(mask_m, rbx);</span></span>
+<span id="L229"><span class="lineNum">     229</span>              :     // mask_m set (AVX512 only), can use rax and rbx again</span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span>              :     // setup const registers</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">         282 :     if (isa == avx512_core)</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">          69 :         vmovdqu16(zmm_1_s16, ptr[rip + one_label + 0 * vec_len]);</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">         282 :     if (isa == avx512_core_vnni &amp;&amp; ver == ver_t::s8s8)</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">          71 :         vmovdqu16(zmm_1_u1, ptr[rip + one_label + 1 * vec_len]);</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">         282 :     if (ver == ver_t::s8s8)</span></span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">          94 :         vmovdqu16(zmm_128_u8, ptr[rip + one_label + 2 * vec_len]);</span></span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">         282 :     assert(zmm_1_s16 == zmm_1_u1);</span></span>
+<span id="L240"><span class="lineNum">     240</span>              : </span>
+<span id="L241"><span class="lineNum">     241</span>              :     // M loop</span>
+<span id="L242"><span class="lineNum">     242</span>              :     // base pointer for A rax contains a + i * lda</span>
+<span id="L243"><span class="lineNum">     243</span>              :     // Loop stop when rax &gt;= a + (m &amp; mask_um) * lda = rbx</span>
+<span id="L244"><span class="lineNum">     244</span>              :     // loop increment r10 = um * lda</span>
+<span id="L245"><span class="lineNum">     245</span>              :     // rbp = Y + i</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">         282 :     const int mask_um = 0xFFFFFFF0;</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">         282 :     mov(rax, A); // i = 0</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">         282 :     mov(rbx, m);</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">         282 :     and_(rbx, mask_um);</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">         282 :     imul(rbx, lda);</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">         282 :     add(rbx, A);</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         282 :     mov(r10, lda);</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">         282 :     sal(r10, unroll_m_);</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">         282 :     mov(rbp, Y);</span></span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span>              :     // N loop</span>
+<span id="L257"><span class="lineNum">     257</span>              :     // base pointer for X r11 contains x + j</span>
+<span id="L258"><span class="lineNum">     258</span>              :     // Loop stop when r11 &gt;= x + n &amp; mask_un = r12</span>
+<span id="L259"><span class="lineNum">     259</span>              :     // loop increment un</span>
+<span id="L260"><span class="lineNum">     260</span>              :     // r13 = rax + j = A + i * lda + j</span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">         282 :     const int mask_un = 0xFFFFFFC0;</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">         282 :     mov(r12, n);</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">         282 :     and_(r12, mask_un);</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">         282 :     add(r12, X);</span></span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span>              :     // M loop</span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">         282 :     L_aligned(m_loop_label);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">         282 :     cmp(rax, rbx);</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">         282 :     jge(m_tail_label, T_NEAR);</span></span>
+<span id="L270"><span class="lineNum">     270</span>              : </span>
+<span id="L271"><span class="lineNum">     271</span>              :     // enter M loop</span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">        4794 :     for (int i = 0; i &lt; zmm_acc_idx_count; i++)</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">        4512 :         vpxorq(zmm_acc(i), zmm_acc(i), zmm_acc(i));</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span>              :     // N loop</span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">         282 :     mov(r11, X); // j = 0</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">         282 :     mov(r13, rax);</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">         282 :     L_aligned(n_loop_label);</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">         282 :     cmp(r11, r12);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">         282 :     jge(n_tail_label, T_NEAR);</span></span>
+<span id="L281"><span class="lineNum">     281</span>              : </span>
+<span id="L282"><span class="lineNum">     282</span>              :     // enter N loop</span>
+<span id="L283"><span class="lineNum">     283</span>              : </span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">         282 :     n_loop_body(zmm_acc_idx_count, r13, lda, r11, 0, mask_n);</span></span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span>              :     // increment rax with un</span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">         282 :     add(r11, 1 &lt;&lt; unroll_n_);</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">         282 :     add(r13, 1 &lt;&lt; unroll_n_);</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">         282 :     jmp(n_loop_label, T_NEAR);</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :     // end N loop</span>
+<span id="L291"><span class="lineNum">     291</span>              : </span>
+<span id="L292"><span class="lineNum">     292</span>              :     // N tail</span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">         282 :     L_aligned(n_tail_label);</span></span>
+<span id="L294"><span class="lineNum">     294</span>              : </span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">         282 :     ktestq(mask_n, k3);</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">         282 :     je(update_c_label, T_NEAR);</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">         282 :     n_loop_body(zmm_acc_idx_count, r13, lda, r11, 1, mask_n);</span></span>
+<span id="L298"><span class="lineNum">     298</span>              : </span>
+<span id="L299"><span class="lineNum">     299</span>              :     // update C matrix</span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">         282 :     L_aligned(update_c_label);</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">         282 :     update_c(zmm_acc_idx_count, rbp, 0, mask_m);</span></span>
+<span id="L303"><span class="lineNum">     303</span>              : </span>
+<span id="L304"><span class="lineNum">     304</span>              :     // increment rax with um * lda</span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">         282 :     add(rax, r10);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">         282 :     add(rbp, 1 &lt;&lt; (unroll_m_ + 2));</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">         282 :     jmp(m_loop_label, T_NEAR);</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :     // end M loop</span>
+<span id="L309"><span class="lineNum">     309</span>              : </span>
+<span id="L310"><span class="lineNum">     310</span>              :     // M tail</span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">         282 :     L_aligned(m_tail_label);</span></span>
+<span id="L312"><span class="lineNum">     312</span>              : </span>
+<span id="L313"><span class="lineNum">     313</span>              :     // r10 will contain m_tail = m % unroll_m_ = m &amp; (1 &lt;&lt; unroll_m_) - 1</span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">         282 :     mov(r10, m);</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">         282 :     and_(r10, (1 &lt;&lt; unroll_m_) - 1);</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">        4512 :     for (int ii = 1; ii &lt; 1 &lt;&lt; unroll_m_; ii++) {</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        4230 :         L_aligned(m_tail_label_case[ii - 1]);</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">        4230 :         cmp(r10, ii);</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">        4230 :         if (ii == (1 &lt;&lt; unroll_m_) - 1)</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">         282 :             jne(end_label, T_NEAR);</span></span>
+<span id="L321"><span class="lineNum">     321</span>              :         else</span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">        3948 :             jne(m_tail_label_case[ii], T_NEAR);</span></span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              :         // m_tail = i, use i accumulators</span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       38070 :         for (int i = 0; i &lt; ii; i++)</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">       33840 :             vpxorq(zmm_acc(i), zmm_acc(i), zmm_acc(i));</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              :         // N loop</span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">        4230 :         mov(r11, X); // j = 0</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">        4230 :         mov(r13, rax);</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">        4230 :         L_aligned(n_loop_label_case[ii - 1]);</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">        4230 :         cmp(r11, r12);</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">        4230 :         jge(n_tail_label_case[ii - 1], T_NEAR);</span></span>
+<span id="L335"><span class="lineNum">     335</span>              : </span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">        4230 :         n_loop_body(ii, r13, lda, r11, 0, mask_n);</span></span>
+<span id="L337"><span class="lineNum">     337</span>              : </span>
+<span id="L338"><span class="lineNum">     338</span>              :         // increment rax with un</span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">        4230 :         add(r11, 1 &lt;&lt; unroll_n_);</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">        4230 :         add(r13, 1 &lt;&lt; unroll_n_);</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">        4230 :         jmp(n_loop_label_case[ii - 1], T_NEAR);</span></span>
+<span id="L342"><span class="lineNum">     342</span>              :         // end N loop</span>
+<span id="L343"><span class="lineNum">     343</span>              : </span>
+<span id="L344"><span class="lineNum">     344</span>              :         // N tail</span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">        4230 :         L_aligned(n_tail_label_case[ii - 1]);</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">        4230 :         ktestq(mask_n, k3);</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaGNC">        4230 :         je(update_c_label_case[ii - 1], T_NEAR);</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">        4230 :         n_loop_body(ii, r13, lda, r11, 1, mask_n);</span></span>
+<span id="L349"><span class="lineNum">     349</span>              : </span>
+<span id="L350"><span class="lineNum">     350</span>              :         // update C matrix</span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">        4230 :         L_aligned(update_c_label_case[ii - 1]);</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">        4230 :         update_c(ii, rbp, 1, mask_m);</span></span>
+<span id="L353"><span class="lineNum">     353</span>              : </span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">        4230 :         if (ii &lt; ((1 &lt;&lt; unroll_m_) - 1)) jmp(end_label, T_NEAR);</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :     }</span>
+<span id="L356"><span class="lineNum">     356</span>              : </span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">         282 :     L_aligned(end_label);</span></span>
+<span id="L358"><span class="lineNum">     358</span>              : </span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">         282 :     postamble();</span></span>
+<span id="L360"><span class="lineNum">     360</span>              : </span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">         282 :     L_aligned(one_label);</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">        9306 :     for (int i = 0; i &lt; vec_len / 2; i++) // 1_s16</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">        9024 :         dw((int16_t)0x0001);</span></span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">        9306 :     for (int i = 0; i &lt; vec_len / 2; i++) // 1_u1</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">        9024 :         dw((int16_t)0xffff);</span></span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">        9306 :     for (int i = 0; i &lt; vec_len / 2; i++) // 128_u8</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">        9024 :         dw((int16_t)0x8080);</span></span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">         282 : }</span></span>
+<span id="L369"><span class="lineNum">     369</span>              : </span>
+<span id="L370"><span class="lineNum">     370</span>              : } // namespace x64</span>
+<span id="L371"><span class="lineNum">     371</span>              : } // namespace cpu</span>
+<span id="L372"><span class="lineNum">     372</span>              : } // namespace impl</span>
+<span id="L373"><span class="lineNum">     373</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

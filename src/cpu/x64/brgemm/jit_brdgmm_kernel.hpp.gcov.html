@@ -1,0 +1,490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/brgemm/jit_brdgmm_kernel.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/brgemm">src/cpu/x64/brgemm</a> - jit_brdgmm_kernel.hpp<span style="font-size: 80%;"> (source / <a href="jit_brdgmm_kernel.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.4&nbsp;%</td>
+            <td class="headerCovTableEntry">137</td>
+            <td class="headerCovTableEntry">132</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">87.3&nbsp;%</td>
+            <td class="headerCovTableEntry">110</td>
+            <td class="headerCovTableEntry">96</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_BRGEMM_JIT_BRDGMM_KERNEL_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_BRGEMM_JIT_BRDGMM_KERNEL_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;common/nstl.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;cpu/x64/brgemm/brgemm_types.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;cpu/x64/cpu_barrier.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;cpu/x64/injectors/jit_uni_postops_injector.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/x64/jit_avx512_core_bf16cvt.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace dnnl {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace impl {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace cpu {</span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace x64 {</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : template &lt;typename Wmm&gt;</span>
+<span id="L37"><span class="lineNum">      37</span>              : struct jit_brdgmm_kernel_base_t : public jit_base_brgemm_kernel_t {</span>
+<span id="L38"><span class="lineNum">      38</span>              :     jit_brdgmm_kernel_base_t(const brgemm_desc_t &amp;abrd);</span>
+<span id="L39"><span class="lineNum">      39</span>              : </span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      747306 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_brdgmm_kernel_base_t)</span></span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span>              :     brgemm_desc_t brg;</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">     4322679 :     static bool is_fast_vnni_int8(const brgemm_desc_t &amp;brg) {</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">     4322679 :         return brg.is_dgmm &amp;&amp; brg.is_int8 &amp;&amp; brg.isa_impl == avx512_core_vnni</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">     8645358 :                 &amp;&amp; brg.ldb_tail /*n_vlen_tail*/ == 0;</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :     }</span>
+<span id="L48"><span class="lineNum">      48</span>              : </span>
+<span id="L49"><span class="lineNum">      49</span>              :     struct vmm_allocator_helper_t {</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">     1040510 :         vmm_allocator_helper_t(const brgemm_desc_t &amp;brg)</span></span>
+<span id="L51"><span class="lineNum">      51</span>              :             : aux_vmm_count_(0)</span>
+<span id="L52"><span class="lineNum">      52</span>              :             , vmm_tmp_count_(0)</span>
+<span id="L53"><span class="lineNum">      53</span>              :             , compute_vmm_base_idx_(-1)</span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">     1040510 :             , compute_vmm_count_((grouped_bs(brg) ? 0 : 1)</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">     1040510 :                       + (!is_fma_embd(brg))</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">     1040510 :                               * brg.ld_block2 /*n_block*/) // vmm_a + vmm_b</span></span>
+<span id="L57"><span class="lineNum">      57</span>              :             , idx_vmm_a_(-1)</span>
+<span id="L58"><span class="lineNum">      58</span>              :             , idx_vmm_b_(-1)</span>
+<span id="L59"><span class="lineNum">      59</span>              :             , idx_vmm_permute_(-1)</span>
+<span id="L60"><span class="lineNum">      60</span>              :             , idx_vmm_shift_(-1)</span>
+<span id="L61"><span class="lineNum">      61</span>              :             , idx_vmm_zp_comp_(-1)</span>
+<span id="L62"><span class="lineNum">      62</span>              :             , idx_vmm_bcast_(-1)</span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">     1040510 :             , idx_vmm_s8s8_comp_(-1) {</span></span>
+<span id="L64"><span class="lineNum">      64</span>              : </span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">     1040510 :             if (brg.with_sum || brg.with_wei_scales) vmm_tmp_count_ = 2;</span></span>
+<span id="L66"><span class="lineNum">      66</span>              : </span>
+<span id="L67"><span class="lineNum">      67</span>              :             // assign aux vmms</span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">     1040510 :             if (is_fast_vnni_int8(brg)) idx_vmm_permute_ = aux_vmm_count_++;</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">     1040510 :             if (brg.req_s8s8_compensation) {</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">       54580 :                 idx_vmm_shift_ = aux_vmm_count_;</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       54580 :                 idx_vmm_s8s8_comp_ = aux_vmm_count_++;</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       54580 :                 assert(idx_vmm_shift_ == idx_vmm_s8s8_comp_);</span></span>
+<span id="L73"><span class="lineNum">      73</span>              :             }</span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">     1040510 :             const bool compute_src_zp</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">     1040510 :                     = brg.zp_type_a != brgemm_broadcast_t::none;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">     1040510 :             if (compute_src_zp) {</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">       21178 :                 idx_vmm_zp_comp_ = aux_vmm_count_++;</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       21178 :                 if (!is_superset(brg.isa_impl, avx512_core))</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       16059 :                     idx_vmm_bcast_ = aux_vmm_count_++;</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     2038664 :             } else if (brg.with_sum</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">     1019332 :                     &amp;&amp; (!is_superset(brg.isa_impl, avx512_core))) {</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       24894 :                 const bool p_sum_scale_reg_set = brg.sum_scale != 1.f;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">       24894 :                 if (p_sum_scale_reg_set)</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       24678 :                     idx_vmm_bcast_</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       24678 :                             = aux_vmm_count_++; // need extra vmm for broadcast</span></span>
+<span id="L86"><span class="lineNum">      86</span>              :             }</span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">     1040510 :             compute_vmm_base_idx_ = aux_vmm_count_;</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span>              :             // assign compute vmms</span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">     1040510 :             idx_vmm_a_ = compute_vmm_base_idx_;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">     1040510 :             const int max_m = brg.bd_block2 + brg.bs_group - 1;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">     1040510 :             const int max_n = brg.ld_block2;</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">     1040510 :             idx_vmm_b_</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">     1040510 :                     = vmm_a_idx(brg, max_m - 1, max_n - 1) + !is_fma_embd(brg);</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">     1040510 :         }</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">    70269681 :         int vnni_substep(const brgemm_desc_t &amp;brg) const {</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">    70269681 :             return brg.isa_impl == avx2_vnni_2 &amp;&amp; brg.is_xf16() ? 2 : 1;</span></span>
+<span id="L98"><span class="lineNum">      98</span>              :         }</span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">    14823530 :         int vmm_a_idx(const brgemm_desc_t &amp;brg, int m, int n) const {</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">    14823530 :             const auto idx_offset = grouped_bs(brg)</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">    14823530 :                     ? (m * brg.ld_block2 + n) * vnni_substep(brg)</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :                     : 0;</span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">    14823530 :             return idx_vmm_a_ + idx_offset;</span></span>
+<span id="L104"><span class="lineNum">     104</span>              :         }</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">      395704 :         int get_compute_vmm_count() { return compute_vmm_count_; }</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">      395704 :         int get_aux_vmm_count() {</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">      395704 :             return nstl::max(vmm_tmp_count_, aux_vmm_count_);</span></span>
+<span id="L109"><span class="lineNum">     109</span>              :         }</span>
+<span id="L110"><span class="lineNum">     110</span>              :         int get_idx_vmm_a() {</span>
+<span id="L111"><span class="lineNum">     111</span>              :             assert(idx_vmm_a_ &gt;= 0);</span>
+<span id="L112"><span class="lineNum">     112</span>              :             return idx_vmm_a_;</span>
+<span id="L113"><span class="lineNum">     113</span>              :         }</span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">    43398338 :         int get_idx_vmm_b() {</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">    43398338 :             assert(idx_vmm_b_ &gt;= 0);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">    43398338 :             return idx_vmm_b_;</span></span>
+<span id="L117"><span class="lineNum">     117</span>              :         }</span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">       74552 :         int get_idx_vmm_permute() {</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">       74552 :             assert(idx_vmm_permute_ &gt;= 0);</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">       74552 :             return idx_vmm_permute_;</span></span>
+<span id="L121"><span class="lineNum">     121</span>              :         }</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      147931 :         int get_idx_vmm_shift() {</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">      147931 :             assert(idx_vmm_shift_ &gt;= 0);</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      147931 :             return idx_vmm_shift_;</span></span>
+<span id="L125"><span class="lineNum">     125</span>              :         }</span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">        8038 :         int get_idx_vmm_zp_comp() {</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">        8038 :             assert(idx_vmm_zp_comp_ &gt;= 0);</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">        8038 :             return idx_vmm_zp_comp_;</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :         }</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaUNC">           0 :         int get_idx_vmm_bcast() {</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaUNC">           0 :             assert(idx_vmm_bcast_ &gt;= 0);</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaUNC">           0 :             return idx_vmm_bcast_;</span></span>
+<span id="L133"><span class="lineNum">     133</span>              :         }</span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">       35274 :         int get_idx_vmm_s8s8_comp() {</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       35274 :             assert(idx_vmm_s8s8_comp_ &gt;= 0);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       35274 :             return idx_vmm_s8s8_comp_;</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :         }</span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span>              :     private:</span>
+<span id="L140"><span class="lineNum">     140</span>              :         int aux_vmm_count_;</span>
+<span id="L141"><span class="lineNum">     141</span>              :         int vmm_tmp_count_;</span>
+<span id="L142"><span class="lineNum">     142</span>              :         int compute_vmm_base_idx_;</span>
+<span id="L143"><span class="lineNum">     143</span>              :         int compute_vmm_count_;</span>
+<span id="L144"><span class="lineNum">     144</span>              :         int idx_vmm_a_;</span>
+<span id="L145"><span class="lineNum">     145</span>              :         int idx_vmm_b_;</span>
+<span id="L146"><span class="lineNum">     146</span>              :         int idx_vmm_permute_;</span>
+<span id="L147"><span class="lineNum">     147</span>              :         int idx_vmm_shift_;</span>
+<span id="L148"><span class="lineNum">     148</span>              :         int idx_vmm_zp_comp_;</span>
+<span id="L149"><span class="lineNum">     149</span>              :         int idx_vmm_bcast_;</span>
+<span id="L150"><span class="lineNum">     150</span>              :         int idx_vmm_s8s8_comp_;</span>
+<span id="L151"><span class="lineNum">     151</span>              :     };</span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      395704 :     static int get_aux_vmm_count(const brgemm_desc_t &amp;brg) {</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      395704 :         auto vmm_alloc = vmm_allocator_helper_t(brg);</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">      791408 :         return vmm_alloc.get_aux_vmm_count();</span></span>
+<span id="L156"><span class="lineNum">     156</span>              :     }</span>
+<span id="L157"><span class="lineNum">     157</span>              : </span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      395704 :     static int get_compute_vmm_count(const brgemm_desc_t &amp;brg) {</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">      395704 :         auto vmm_alloc = vmm_allocator_helper_t(brg);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">      791408 :         return vmm_alloc.get_compute_vmm_count();</span></span>
+<span id="L161"><span class="lineNum">     161</span>              :     }</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaUNC">           0 :     const brgemm_desc_t &amp;get_brg() const override { return brg; }</span></span>
+<span id="L164"><span class="lineNum">     164</span>              : </span>
+<span id="L165"><span class="lineNum">     165</span>              : private:</span>
+<span id="L166"><span class="lineNum">     166</span>              :     // note: this kernel doesn't yet support TMM's. We differentiate Wmm and Vmm</span>
+<span id="L167"><span class="lineNum">     167</span>              :     // just to follow same template style as brgemm_kernel.</span>
+<span id="L168"><span class="lineNum">     168</span>              :     using Vmm =</span>
+<span id="L169"><span class="lineNum">     169</span>              :             typename utils::conditional&lt;std::is_same&lt;Wmm, Xbyak::Tmm&gt;::value,</span>
+<span id="L170"><span class="lineNum">     170</span>              :                     Xbyak::Zmm, Wmm&gt;::type;</span>
+<span id="L171"><span class="lineNum">     171</span>              :     using Vmm_low_t = typename vreg_traits_t&lt;Vmm&gt;::Vmm_lower_t;</span>
+<span id="L172"><span class="lineNum">     172</span>              :     using po_injector_t = injector::jit_uni_postops_injector_base_t&lt;Vmm&gt;;</span>
+<span id="L173"><span class="lineNum">     173</span>              :     std::unique_ptr&lt;po_injector_t&gt; postops_injector_;</span>
+<span id="L174"><span class="lineNum">     174</span>              :     std::unique_ptr&lt;bf16_emulation_t&gt; bf16_emu_;</span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :     Xbyak::Label permute_index_table;</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              :     enum class compute_pad_kernel_t { s8s8_kernel, zero_point_kernel };</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :     injector_utils::registry_scratchpad_t regscratchpad_ {*this, brg.isa_impl};</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span>              :     using reg64_t = const Xbyak::Reg64;</span>
+<span id="L183"><span class="lineNum">     183</span>              :     // Register decomposition</span>
+<span id="L184"><span class="lineNum">     184</span>              :     const reg64_t param1 = abi_param1;</span>
+<span id="L185"><span class="lineNum">     185</span>              :     const reg64_t reg_A = abi_not_param1;</span>
+<span id="L186"><span class="lineNum">     186</span>              :     const reg64_t reg_B = r8;</span>
+<span id="L187"><span class="lineNum">     187</span>              :     // reg_aux_batch_addr changed in advance_A_B_matrices,</span>
+<span id="L188"><span class="lineNum">     188</span>              :     // so need to be savable</span>
+<span id="L189"><span class="lineNum">     189</span>              :     const injector_utils::reg64_savable_t reg_aux_batch_addr {</span>
+<span id="L190"><span class="lineNum">     190</span>              :             regscratchpad_, r15};</span>
+<span id="L191"><span class="lineNum">     191</span>              :     const reg64_t reg_BS = rsi;</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span>              :     // loop variables</span>
+<span id="L194"><span class="lineNum">     194</span>              :     const reg64_t reg_BS_loop = r12;</span>
+<span id="L195"><span class="lineNum">     195</span>              :     const reg64_t reg_aux_M = r13;</span>
+<span id="L196"><span class="lineNum">     196</span>              :     const reg64_t reg_aux_D = rbx;</span>
+<span id="L197"><span class="lineNum">     197</span>              :     const injector_utils::reg64_savable_t reg_aux_C {</span>
+<span id="L198"><span class="lineNum">     198</span>              :             regscratchpad_, rdx, rdx, may_use_rbp()};</span>
+<span id="L199"><span class="lineNum">     199</span>              :     const reg64_t reg_aux_A = r10;</span>
+<span id="L200"><span class="lineNum">     200</span>              :     const reg64_t reg_aux_B = abi_param1;</span>
+<span id="L201"><span class="lineNum">     201</span>              :     const injector_utils::reg64_savable_t reg_aux1_A {</span>
+<span id="L202"><span class="lineNum">     202</span>              :             regscratchpad_, abi_not_param1}; // brgemm_strd</span>
+<span id="L203"><span class="lineNum">     203</span>              :     const injector_utils::reg64_savable_t reg_aux1_B {</span>
+<span id="L204"><span class="lineNum">     204</span>              :             regscratchpad_, r8}; // brgemm_strd</span>
+<span id="L205"><span class="lineNum">     205</span>              :     const reg64_t reg_a_offset = r9;</span>
+<span id="L206"><span class="lineNum">     206</span>              :     const reg64_t reg_aux_N = r11;</span>
+<span id="L207"><span class="lineNum">     207</span>              : </span>
+<span id="L208"><span class="lineNum">     208</span>              :     const reg64_t reg_aux_A_vpad_top = r14;</span>
+<span id="L209"><span class="lineNum">     209</span>              :     const injector_utils::reg64_savable_t reg_aux_A_vpad_bottom {</span>
+<span id="L210"><span class="lineNum">     210</span>              :             regscratchpad_, rdx, rbp, may_use_rbp()};</span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span>              :     const reg64_t reg_table_base = rax;</span>
+<span id="L213"><span class="lineNum">     213</span>              :     const reg64_t reg_tmp = reg_table_base;</span>
+<span id="L214"><span class="lineNum">     214</span>              :     const reg64_t reg_total_padding = reg_table_base;</span>
+<span id="L215"><span class="lineNum">     215</span>              :     // reg_aux_bias changed in store_accumulators_apply_post_ops</span>
+<span id="L216"><span class="lineNum">     216</span>              :     const injector_utils::reg64_savable_t reg_aux_bias {regscratchpad_, rax};</span>
+<span id="L217"><span class="lineNum">     217</span>              :     const injector_utils::reg64_savable_t reg_aux_src_scales {</span>
+<span id="L218"><span class="lineNum">     218</span>              :             regscratchpad_, rax};</span>
+<span id="L219"><span class="lineNum">     219</span>              :     // reg_aux_wei_scales changed in store_accumulators_apply_post_ops,</span>
+<span id="L220"><span class="lineNum">     220</span>              :     // so need to be savable</span>
+<span id="L221"><span class="lineNum">     221</span>              :     const injector_utils::reg64_savable_t reg_aux_wei_scales {</span>
+<span id="L222"><span class="lineNum">     222</span>              :             regscratchpad_, rax};</span>
+<span id="L223"><span class="lineNum">     223</span>              :     const injector_utils::reg64_savable_t reg_aux_dst_scales {</span>
+<span id="L224"><span class="lineNum">     224</span>              :             regscratchpad_, rax, r22};</span>
+<span id="L225"><span class="lineNum">     225</span>              :     const injector_utils::reg64_savable_t reg_dst_zero_point {</span>
+<span id="L226"><span class="lineNum">     226</span>              :             regscratchpad_, rax, r23};</span>
+<span id="L227"><span class="lineNum">     227</span>              :     const injector_utils::reg64_savable_t reg_src_zero_point {</span>
+<span id="L228"><span class="lineNum">     228</span>              :             regscratchpad_, rax, r24};</span>
+<span id="L229"><span class="lineNum">     229</span>              :     const injector_utils::reg64_savable_t reg_zp_compensation {</span>
+<span id="L230"><span class="lineNum">     230</span>              :             regscratchpad_, r12, r25};</span>
+<span id="L231"><span class="lineNum">     231</span>              :     // abi_param1 is used in post-ops injector and by reg_aux_B,</span>
+<span id="L232"><span class="lineNum">     232</span>              :     // so need to be savable or use other registers</span>
+<span id="L233"><span class="lineNum">     233</span>              :     const injector_utils::reg64_savable_t reg_binary_params {</span>
+<span id="L234"><span class="lineNum">     234</span>              :             regscratchpad_, abi_param1};</span>
+<span id="L235"><span class="lineNum">     235</span>              :     const injector_utils::reg64_savable_t reg_ptr_sum_scale {</span>
+<span id="L236"><span class="lineNum">     236</span>              :             regscratchpad_, r14, r27};</span>
+<span id="L237"><span class="lineNum">     237</span>              :     const injector_utils::reg64_savable_t reg_ptr_sum_zp {</span>
+<span id="L238"><span class="lineNum">     238</span>              :             regscratchpad_, rax, r28};</span>
+<span id="L239"><span class="lineNum">     239</span>              :     const injector_utils::reg64_savable_t reg_s8s8_comp {</span>
+<span id="L240"><span class="lineNum">     240</span>              :             regscratchpad_, r14, r29};</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span>              :     Xbyak::Opmask k_mask = Xbyak::Opmask(2);</span>
+<span id="L243"><span class="lineNum">     243</span>              :     Xbyak::Opmask k_tail_mask = Xbyak::Opmask(3);</span>
+<span id="L244"><span class="lineNum">     244</span>              :     Xbyak::Opmask kblend_mask = Xbyak::Opmask(4);</span>
+<span id="L245"><span class="lineNum">     245</span>              : </span>
+<span id="L246"><span class="lineNum">     246</span>              :     /* used for bfloat16 */</span>
+<span id="L247"><span class="lineNum">     247</span>              :     reg64_t bf16_emu_scratch = reg_table_base;</span>
+<span id="L248"><span class="lineNum">     248</span>              :     Xbyak::Zmm bf16_emu_reserv_1 = Xbyak::Zmm(0);</span>
+<span id="L249"><span class="lineNum">     249</span>              :     Xbyak::Zmm bf16_emu_reserv_2 = Xbyak::Zmm(1);</span>
+<span id="L250"><span class="lineNum">     250</span>              :     Xbyak::Zmm bf16_emu_reserv_3 = Xbyak::Zmm(2);</span>
+<span id="L251"><span class="lineNum">     251</span>              :     Xbyak::Zmm bf16_emu_reserv_4 = Xbyak::Zmm(3);</span>
+<span id="L252"><span class="lineNum">     252</span>              :     // note 1: zmm reserv_5 is not necessary since it's only used for</span>
+<span id="L253"><span class="lineNum">     253</span>              :     // 'vdpbf16ps'</span>
+<span id="L254"><span class="lineNum">     254</span>              :     // note 2: zmm0 collides with vmm_permute, hence need to write this value</span>
+<span id="L255"><span class="lineNum">     255</span>              :     // before every loop.</span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span>              :     const int simd_w_;</span>
+<span id="L258"><span class="lineNum">     258</span>              :     const int max_vmms_;</span>
+<span id="L259"><span class="lineNum">     259</span>              :     const bool compute_dst_zp_, compute_src_zp_;</span>
+<span id="L260"><span class="lineNum">     260</span>              :     const bool is_src_zp_bcast_;</span>
+<span id="L261"><span class="lineNum">     261</span>              :     const bool compute_compensation_; // code-path for either s8s8 or src_zp</span>
+<span id="L262"><span class="lineNum">     262</span>              :     const bool has_vpad_; // vertical padding w.r.t. M dimension</span>
+<span id="L263"><span class="lineNum">     263</span>              :     const bool has_bpad_; // batch pad is computed for the overlap between the</span>
+<span id="L264"><span class="lineNum">     264</span>              :             // weights and input height padding</span>
+<span id="L265"><span class="lineNum">     265</span>              : </span>
+<span id="L266"><span class="lineNum">     266</span>              :     vmm_allocator_helper_t vmm_alloc;</span>
+<span id="L267"><span class="lineNum">     267</span>              : </span>
+<span id="L268"><span class="lineNum">     268</span>              :     bool with_binary_non_scalar_bcast_ = false;</span>
+<span id="L269"><span class="lineNum">     269</span>              : </span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      603302 :     inline int M() { return brg.bcast_dim; }</span></span>
+<span id="L271"><span class="lineNum">     271</span>              :     inline int N() { return brg.load_dim; }</span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">    19360380 :     inline int m_block2() { return brg.bd_block2; }</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">      249102 :     inline int nb_m_block2() { return brg.bdb2; }</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">      538015 :     inline int m_block2_tail() { return brg.bdb2_tail; }</span></span>
+<span id="L275"><span class="lineNum">     275</span>              : </span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">    10317194 :     inline int n_block1() { return brg.ld_block; }</span></span>
+<span id="L277"><span class="lineNum">     277</span>              :     inline int nb_n_block1() { return brg.ldb; }</span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">     4221807 :     inline int n_block1_tail() { return brg.ldb_tail; }</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">    46707167 :     inline int n_block2() { return brg.ld_block2; }</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">      529905 :     inline int nb_n_block2() { return brg.ldb2; }</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">    29669792 :     inline int n_block2_tail() { return brg.ldb2_tail; }</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">      292799 :     int tail_length() { return n_block1_tail() % simd_w_; }</span></span>
+<span id="L283"><span class="lineNum">     283</span>              : </span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">     1344332 :     inline int bs_group() const { return brg.bs_group; }</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">    55011170 :     static bool grouped_bs(const brgemm_desc_t &amp;brg) {</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">    55011170 :         return brg.bs_group &gt; 1;</span></span>
+<span id="L287"><span class="lineNum">     287</span>              :     }</span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">    12344613 :     inline bool grouped_bs() const { return grouped_bs(brg); }</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">    26802506 :     static bool is_fma_embd(const brgemm_desc_t &amp;brg) {</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :         return grouped_bs(brg)</span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">    34128104 :                 ? false</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">    34128104 :                 : brg.is_f32 &amp;&amp; is_superset(brg.isa_impl, avx512_core);</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :     }</span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">    24721480 :     bool is_fma_embd() { return is_fma_embd(brg); }</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">     3282169 :     bool is_fast_vnni_int8() { return is_fast_vnni_int8(brg); }</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">      738160 :     bool is_slow_bf16_vnni() {</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :         // On avx512_core_amx machines, the bf16 vnni is found to be slower.</span>
+<span id="L298"><span class="lineNum">     298</span>              :         // TODO: Check the above limitations on new cpus</span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">      738160 :         return brg.is_bf16 &amp;&amp; mayiuse(avx512_core_amx);</span></span>
+<span id="L300"><span class="lineNum">     300</span>              :     }</span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">      554870 :     bool req_vmm_reload() { return brg.is_bf16_emu; }</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">      249102 :     bool assign_data_vmm_once() { return !req_vmm_reload(); }</span></span>
+<span id="L304"><span class="lineNum">     304</span>              : </span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">    58379534 :     int vnni_substep() { return vmm_alloc.vnni_substep(brg); }</span></span>
+<span id="L306"><span class="lineNum">     306</span>              : </span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">    25442534 :     int get_substep_simd(int n_i, int v_i, bool has_n_tail) {</span></span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">    25442534 :         const int last_n_block_sz</span></span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">    25442534 :                 = n_block2_tail() &gt; 0 ? n_block2_tail() : n_block2();</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">    25442534 :         if (has_n_tail &amp;&amp; n_i + 1 == last_n_block_sz) {</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">     2892321 :             return nstl::min(simd_w_, n_block1_tail() - v_i * simd_w_);</span></span>
+<span id="L312"><span class="lineNum">     312</span>              :         } else {</span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">    22550222 :             return simd_w_;</span></span>
+<span id="L314"><span class="lineNum">     314</span>              :         }</span>
+<span id="L315"><span class="lineNum">     315</span>              :     }</span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">    13783038 :     Vmm vmm_a(int m, int n) {</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">    13783038 :         const auto idx_a = vmm_alloc.vmm_a_idx(brg, m, n);</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">    13783038 :         assert(idx_a &lt; (vmm_alloc.get_idx_vmm_b() + is_fma_embd()));</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">    13783038 :         return Vmm(idx_a);</span></span>
+<span id="L320"><span class="lineNum">     320</span>              :     }</span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">    29615292 :     Vmm vmm_b(int bi = 0) { return Vmm(vmm_alloc.get_idx_vmm_b() + bi); }</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">    17344346 :     Vmm accm(int m_blocks, int n_blocks, int m, int n, int vnni_idx) {</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">    17344346 :         assert(m_blocks &lt;= m_block2() &amp;&amp; m &lt; m_blocks);</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">    17344346 :         assert(n_blocks &lt;= n_block2() &amp;&amp; n &lt; n_blocks);</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">    17344346 :         const int accm_start = max_vmms_ - m_blocks * n_blocks * vnni_substep();</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">    17344346 :         const int accm_rel_idx</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">    17344346 :                 = m * n_blocks * vnni_substep() + n * vnni_substep() + vnni_idx;</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">    17344346 :         const int idx = accm_start + accm_rel_idx;</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">    17344346 :         assert(idx &lt; max_vmms_ &amp;&amp; idx &gt; vmm_b(0).getIdx());</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">    17344346 :         return Vmm(idx);</span></span>
+<span id="L331"><span class="lineNum">     331</span>              :     }</span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">       74552 :     Vmm vmm_permute() { return Vmm(vmm_alloc.get_idx_vmm_permute()); }</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">      147931 :     Vmm vmm_shift() { // -128's</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">      147931 :         return Vmm(vmm_alloc.get_idx_vmm_shift());</span></span>
+<span id="L335"><span class="lineNum">     335</span>              :     }</span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">       35274 :     Vmm vmm_s8s8_comp() { return Vmm(vmm_alloc.get_idx_vmm_s8s8_comp()); }</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">        8038 :     Vmm vmm_zp_comp() { return Vmm(vmm_alloc.get_idx_vmm_zp_comp()); }</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaUNC">           0 :     Vmm vmm_bcast() { return Vmm(vmm_alloc.get_idx_vmm_bcast()); }</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">     1236625 :     Vmm vmm_tmp(int i) {</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">     1236625 :         const int idx</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">     1236625 :                 = max_vmms_ - m_block2() * n_block2() * vnni_substep() - 1 - i;</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">     1236625 :         assert(idx &gt; (is_fast_vnni_int8() - 1));</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">     1236625 :         return Vmm(idx);</span></span>
+<span id="L344"><span class="lineNum">     344</span>              :     }</span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span>              :     template &lt;typename U&gt;</span>
+<span id="L347"><span class="lineNum">     347</span>              :     U maybe_mask(const U umm_in, bool mask_flag, bool store);</span>
+<span id="L348"><span class="lineNum">     348</span>              :     void init_masks();</span>
+<span id="L349"><span class="lineNum">     349</span>              :     void read_params();</span>
+<span id="L350"><span class="lineNum">     350</span>              :     void load_permute_vmm();</span>
+<span id="L351"><span class="lineNum">     351</span>              :     void load_accumulators(int m_blocks, int n_blocks);</span>
+<span id="L352"><span class="lineNum">     352</span>              :     void restore_A_B_matrices();</span>
+<span id="L353"><span class="lineNum">     353</span>              :     void set_A_B_matrices();</span>
+<span id="L354"><span class="lineNum">     354</span>              :     void advance_A_B_matrices();</span>
+<span id="L355"><span class="lineNum">     355</span>              :     void load_a(Vmm vmma, int m_i, int n_i, int v_i, bool has_n_tail);</span>
+<span id="L356"><span class="lineNum">     356</span>              :     void load_b(</span>
+<span id="L357"><span class="lineNum">     357</span>              :             Vmm vmmb, int n_i, int v_i, bool has_n_tail, bool wei_zp = false);</span>
+<span id="L358"><span class="lineNum">     358</span>              :     void comp_dot_product(compute_pad_kernel_t kernel_type, Vmm vmm_acc,</span>
+<span id="L359"><span class="lineNum">     359</span>              :             Vmm vmmb, int n,</span>
+<span id="L360"><span class="lineNum">     360</span>              :             bool is_tail_block); // int8 compensation dot_product (zp and s8s8)</span>
+<span id="L361"><span class="lineNum">     361</span>              :     void pad_comp_kernel(compute_pad_kernel_t kernel_type, int m_blocks,</span>
+<span id="L362"><span class="lineNum">     362</span>              :             int n_blocks, int padding, const Xbyak::Reg64 reg_pad,</span>
+<span id="L363"><span class="lineNum">     363</span>              :             const std::function&lt;int(int)&gt; &amp;get_mi, bool has_tail = false);</span>
+<span id="L364"><span class="lineNum">     364</span>              :     void vertical_pad_kernel(int m_blocks, int n_blocks, bool has_tail);</span>
+<span id="L365"><span class="lineNum">     365</span>              :     void batch_pad_kernel(int m_blocks, int n_blocks, bool has_tail = false);</span>
+<span id="L366"><span class="lineNum">     366</span>              :     void brdgmm_microkernel(int m_blocks, int n_blocks, bool has_top_padding,</span>
+<span id="L367"><span class="lineNum">     367</span>              :             bool has_bottom_padding, bool has_tail, int shift_a);</span>
+<span id="L368"><span class="lineNum">     368</span>              :     void compute_loop();</span>
+<span id="L369"><span class="lineNum">     369</span>              :     void get_batch_padding_info();</span>
+<span id="L370"><span class="lineNum">     370</span>              :     void get_vertical_padding_info(const int m_blocks);</span>
+<span id="L371"><span class="lineNum">     371</span>              :     void call_brdgmm_microkernel(const int m_blocks, const int n_blocks,</span>
+<span id="L372"><span class="lineNum">     372</span>              :             bool has_n_tail, int shift_a);</span>
+<span id="L373"><span class="lineNum">     373</span>              :     void batch_loop(const int m_blocks, const int n_blocks, bool has_n_tail);</span>
+<span id="L374"><span class="lineNum">     374</span>              :     void cvt2ps(data_type_t type_in, const Vmm vmm_in, const Xbyak::Operand &amp;op,</span>
+<span id="L375"><span class="lineNum">     375</span>              :             bool mask_flag, bool store);</span>
+<span id="L376"><span class="lineNum">     376</span>              :     void apply_post_ops(int m_blocks, int n_blocks, bool has_n_tail);</span>
+<span id="L377"><span class="lineNum">     377</span>              :     void maybe_transpose_interleaved_vnni_to_plain(</span>
+<span id="L378"><span class="lineNum">     378</span>              :             int m_blocks, int n_blocks, bool has_n_tail);</span>
+<span id="L379"><span class="lineNum">     379</span>              :     void load_src_zp();</span>
+<span id="L380"><span class="lineNum">     380</span>              :     void compute_int8_compensation(int m_blocks, int n_blocks, bool has_n_tail);</span>
+<span id="L381"><span class="lineNum">     381</span>              :     void store_accumulators(int m_blocks, int n_blocks, bool has_n_tail);</span>
+<span id="L382"><span class="lineNum">     382</span>              :     void store_accumulators_without_post_ops(</span>
+<span id="L383"><span class="lineNum">     383</span>              :             int m_blocks, int n_blocks, bool has_n_tail);</span>
+<span id="L384"><span class="lineNum">     384</span>              :     void store_accumulators_apply_post_ops(</span>
+<span id="L385"><span class="lineNum">     385</span>              :             int m_blocks, int n_blocks, bool has_n_tail);</span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">      487486 :     bool check_effective_padding() { return has_vpad_ &amp;&amp; M() &gt; m_block2(); }</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">      288913 :     int oc_logical_offset(int n) { return n * n_block1(); }</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">     4761174 :     int A_offset(int m, int n) {</span></span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">     4761174 :         return brg.typesize_A * (m * brg.LDA + n * n_block1());</span></span>
+<span id="L390"><span class="lineNum">     390</span>              :     }</span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">     2008193 :     int B_offset(int n) { return brg.typesize_B * n * n_block1(); }</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">     1359098 :     int C_offset(int m, int n, int v) {</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">     1359098 :         return brg.typesize_C * (m * brg.LDC + n * n_block1() + v * simd_w_);</span></span>
+<span id="L394"><span class="lineNum">     394</span>              :     }</span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">     1235798 :     int D_offset(int m, int n, int v) {</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">     1235798 :         return brg.typesize_D * (m * brg.LDD + n * n_block1() + v * simd_w_);</span></span>
+<span id="L397"><span class="lineNum">     397</span>              :     }</span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">      162822 :     int bias_offset(int n, int v) {</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">      162822 :         return brg.typesize_bias * (n * n_block1() + v * simd_w_);</span></span>
+<span id="L400"><span class="lineNum">     400</span>              :     }</span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">      202264 :     int wei_scales_offset(int n, int v) {</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">      202264 :         return sizeof(float) * brg.is_oc_scale * (n * n_block1() + v * simd_w_);</span></span>
+<span id="L403"><span class="lineNum">     403</span>              :     }</span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">       10019 :     size_t comp_offset(int n) { return sizeof(int32_t) * n * n_block1(); }</span></span>
+<span id="L405"><span class="lineNum">     405</span>              : </span>
+<span id="L406"><span class="lineNum">     406</span>              :     void generate() override;</span>
+<span id="L407"><span class="lineNum">     407</span>              : };</span>
+<span id="L408"><span class="lineNum">     408</span>              : </span>
+<span id="L409"><span class="lineNum">     409</span>              : } // namespace x64</span>
+<span id="L410"><span class="lineNum">     410</span>              : } // namespace cpu</span>
+<span id="L411"><span class="lineNum">     411</span>              : } // namespace impl</span>
+<span id="L412"><span class="lineNum">     412</span>              : } // namespace dnnl</span>
+<span id="L413"><span class="lineNum">     413</span>              : </span>
+<span id="L414"><span class="lineNum">     414</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

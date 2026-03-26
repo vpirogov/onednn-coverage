@@ -1,0 +1,539 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/conv/jit/lookup_table_data.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/conv/jit">src/gpu/intel/conv/jit</a> - lookup_table_data.cpp<span style="font-size: 80%;"> (source / <a href="lookup_table_data.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2023 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : namespace dnnl {</span>
+<span id="L18"><span class="lineNum">      18</span>              : namespace impl {</span>
+<span id="L19"><span class="lineNum">      19</span>              : namespace gpu {</span>
+<span id="L20"><span class="lineNum">      20</span>              : namespace intel {</span>
+<span id="L21"><span class="lineNum">      21</span>              : namespace conv {</span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace jit {</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : // clang-format off</span>
+<span id="L25"><span class="lineNum">      25</span> <span class="tlaGNC">         225 : const char** get_lookup_table_entries() {</span></span>
+<span id="L26"><span class="lineNum">      26</span>              :     static const char *entries[] = {</span>
+<span id="L27"><span class="lineNum">      27</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic896iw64oc128ow64kw1pw0 simd=16 l=ic7 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L28"><span class="lineNum">      28</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb24 ic2048iw49oc2048ow49kw1pw0 simd=16 l=ow49 T=ic4oc4 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L29"><span class="lineNum">      29</span>              :         &quot;xehpg dpas bwd_w x16:any:x16 mb1 ic3ih224oc128oh56kh4sh4ph0 simd=8 l=oh8 T=oc2 i=ic4kw4oc8ow16 bufs=0&quot;,</span>
+<span id="L30"><span class="lineNum">      30</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic64iw3136oc256ow3136kw1pw0 simd=8 l=ic2 T=ow8 i=ic32mb32oc32 bufs=2&quot;,</span>
+<span id="L31"><span class="lineNum">      31</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic320iw2304oc640ow2304kw1pw0 simd=8 l=ic20 T=oc4ow8 i=ic16oc32ow24&quot;,</span>
+<span id="L32"><span class="lineNum">      32</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280ih24oc1280oh24kh3ph1 simd=8 l=ic80kh3kw3 T=oc4 i=ic16oc32ow24&quot;,</span>
+<span id="L33"><span class="lineNum">      33</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic960iw9216oc320ow9216kw1pw0 simd=8 l=ic60 T=oc4ow8 i=ic16oc32ow32&quot;,</span>
+<span id="L34"><span class="lineNum">      34</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic128ih56oc128oh28kh3sh2ph1 simd=8 l=ic4kh3kw3 T=oc4ow8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L35"><span class="lineNum">      35</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic64ih56oc64oh56kh3ph1 simd=8 l=ic2kh3kw3 T=oc2ow8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L36"><span class="lineNum">      36</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic1024iw196oc256ow196kw1pw0 simd=8 l=ic32 T=oc8ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L37"><span class="lineNum">      37</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic256ih5oc12oh5kh3ph1 simd=16 l=ic2kh3kw3 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L38"><span class="lineNum">      38</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb32 ic8id25oc8od23kd5pd1 simd=16 l=ow23 T=x i=ic8mb16oc16 bufs=0&quot;,</span>
+<span id="L39"><span class="lineNum">      39</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1920iw2304oc640ow2304kw1pw0 simd=8 l=ic120 T=oc4ow8 i=ic16oc32ow24&quot;,</span>
+<span id="L40"><span class="lineNum">      40</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320ih66oc320oh64kh3ph0 simd=8 l=ic20kh3kw3 T=oc8ow2 i=ic16oc16ow32 bufs=0&quot;,</span>
+<span id="L41"><span class="lineNum">      41</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic320ih48oc640oh48kh3ph1 simd=8 l=ic20kh3kw3 T=ow4 i=ic16mb2oc32ow12 bufs=0&quot;,</span>
+<span id="L42"><span class="lineNum">      42</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic960iw4096oc320ow4096kw1pw0 simd=16 l=ic30 T=oc4ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L43"><span class="lineNum">      43</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic960iw4096oc320ow4096kw1pw0 simd=16 l=ic30 T=oc2ow8 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L44"><span class="lineNum">      44</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb64b ic128iw252oc256ow237kw16pw0 simd=16 l=mb2ow79 T=ic4oc2 i=ic32mb8oc64 bufs=2&quot;,</span>
+<span id="L45"><span class="lineNum">      45</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640ih48oc640oh48kh3ph1 simd=8 l=ic40kh3kw3 T=ow4 i=ic16mb2oc32ow12 bufs=0&quot;,</span>
+<span id="L46"><span class="lineNum">      46</span>              :         &quot;xehpc mad fwd f32:f32:any mb2048 ic8ih10oc8oh8kh3ph0 simd=16 l=kh3 T=x i=ic8kw3oc16ow8 bufs=0&quot;,</span>
+<span id="L47"><span class="lineNum">      47</span>              :         &quot;xehpc mad fwd f64:f64:any mb2048 ic8ih10oc8oh8kh3ph0 simd=8 l=kh3 T=x i=ic8kw3oc8ow8 bufs=0&quot;,</span>
+<span id="L48"><span class="lineNum">      48</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih7oc32oh7kh3ph1 simd=16 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L49"><span class="lineNum">      49</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic128ih7oc32oh7kh3ph1 simd=16 l=kh3kw3 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L50"><span class="lineNum">      50</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic320ih96oc320oh96kh3ph1 simd=8 l=ic20kh3kw3 T=ow2 i=ic16mb2oc32ow16 bufs=0&quot;,</span>
+<span id="L51"><span class="lineNum">      51</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic960ih48oc640oh48kh3ph1 simd=8 l=ic60kh3kw3 T=ow4 i=ic16mb2oc32ow12&quot;,</span>
+<span id="L52"><span class="lineNum">      52</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic16ih16oc16oh14kh3ph0 simd=8 l=kh3kw2 T=ow2 i=ic16kw2oc8ow8 bufs=3&quot;,</span>
+<span id="L53"><span class="lineNum">      53</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic32ih232oc3oh224kh9ph0 simd=8 l=kh9kw9 T=ow2 i=ic32oc8ow28 bufs=1&quot;,</span>
+<span id="L54"><span class="lineNum">      54</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32 ic32ih232oc3oh224kh9ph0 simd=8 l=kh9kw9 T=ow4 i=ic32mb32oc8 bufs=1&quot;,</span>
+<span id="L55"><span class="lineNum">      55</span>              :         &quot;xehpg mad bwd_w f32:any:f32 mb2048 ic2ih10oc8oh8kh3ph0 simd=8 l=oh8 T=x i=ic8mb16oc8 bufs=0&quot;,</span>
+<span id="L56"><span class="lineNum">      56</span>              :         &quot;xehpg mad fwd x16:x16:any mb128 g144ic1ih151oc1oh75kh3sh2ph0 simd=8 l=kh3 T=x i=g64kw3mb8 bufs=0&quot;,</span>
+<span id="L57"><span class="lineNum">      57</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic320ih96oc320oh48kh3sh2ph1 simd=8 l=ic20kh3kw3 T=ow4 i=ic16mb2oc32ow12 bufs=0&quot;,</span>
+<span id="L58"><span class="lineNum">      58</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640ih16oc1280oh16kh3ph1 simd=16 l=ic5kh3kw3 T=ic4 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L59"><span class="lineNum">      59</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640ih16oc1280oh16kh3ph1 simd=16 l=ic20kh3kw3 T=oc2ow2 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L60"><span class="lineNum">      60</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic4ih96oc320oh96kh3ph1 simd=8 l=kh3 T=ow2 i=ic4kw4mb2oc32ow16&quot;,</span>
+<span id="L61"><span class="lineNum">      61</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic960ih96oc320oh96kh3ph1 simd=8 l=ic60kh3kw3 T=oc4ow4 i=ic16oc32ow24&quot;,</span>
+<span id="L62"><span class="lineNum">      62</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic1024ih38oc324oh38kh3ph1 simd=16 l=oh2ow38 T=oc4 i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L63"><span class="lineNum">      63</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb64 ic64iw1022oc128ow1007kw16pw0 simd=16 l=mb4ow7 T=ic2oc2 i=ic32oc64ow16&quot;,</span>
+<span id="L64"><span class="lineNum">      64</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih128oc8oh64kh3sh2ph0 simd=8 l=kh3 T=ow2 i=ic4kw8oc8ow8 bufs=3&quot;,</span>
+<span id="L65"><span class="lineNum">      65</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640ih32oc640oh16kh3sh2ph1 simd=16 l=ic20kh3kw3 T=oc8ow2 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L66"><span class="lineNum">      66</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640ih32oc640oh16kh3sh2ph1 simd=16 l=ic20kh3kw3 T=ow2 i=ic32mb2oc64ow8 bufs=3&quot;,</span>
+<span id="L67"><span class="lineNum">      67</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic960iw4096oc320ow4096kw1pw0 simd=8 l=ic60 T=oc4ow4 i=ic16oc32ow32&quot;,</span>
+<span id="L68"><span class="lineNum">      68</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic3ih224oc64oh112kh7sh2ph3 simd=8 l=kh7 T=oc2ow8 i=ic4kw8mb32oc32 bufs=3&quot;,</span>
+<span id="L69"><span class="lineNum">      69</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih32oc10oh30kh3ph0 simd=8 l=kh3kw3 T=ow4 i=ic32oc8ow8 bufs=3&quot;,</span>
+<span id="L70"><span class="lineNum">      70</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic1024ih38oc16oh38kh3ph1 simd=16 l=kh3kw3 T=ic2iw2 i=ic64mb16oc16 bufs=3&quot;,</span>
+<span id="L71"><span class="lineNum">      71</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb32 ic6id26ih28iw27oc6od26oh26ow26kd3kh3kw8pd1ph0pw3 simd=16 l=oh2ow26 T=ic2 i=kw8mb16oc16 bufs=0&quot;,</span>
+<span id="L72"><span class="lineNum">      72</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640iw256oc1280ow256kw1pw0 simd=8 l=ic40 T=oc8ow4 i=ic16oc16ow32&quot;,</span>
+<span id="L73"><span class="lineNum">      73</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic128iw15000oc1024ow15000kw1pw0 simd=16 l=ow250 T=ic4oc8 i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L74"><span class="lineNum">      74</span>              :         &quot;xehpg dpas bwd_d any:x16:x16 mb1 ic4ih1080iw1920oc36oh360ow640kh3kw3sh3sw3ph0pw0 simd=8 l=kh3kw3oc3 T=iw2 i=ic8iw30oc16&quot;,</span>
+<span id="L75"><span class="lineNum">      75</span>              :         &quot;xehpc mad fwd f32:f32:any mb100 ic1iw29532oc10ow5905kw10sw5pw0 simd=16 l=x T=x i=kw10mb10oc16 bufs=0&quot;,</span>
+<span id="L76"><span class="lineNum">      76</span>              :         &quot;xehpg mad bwd_w f32:any:f32 mb1 ic3ih224oc128oh56kh4sh4ph0 simd=16 l=oh28 T=x i=ic3oc32ow8 bufs=0&quot;,</span>
+<span id="L77"><span class="lineNum">      77</span>              :         &quot;xehpg mad fwd x8:x8:any mb1 g32ic2ih28oc2oh28kh3ph1 simd=8 l=kh3 T=ow2 i=ic2kw3oc8ow14 bufs=0&quot;,</span>
+<span id="L78"><span class="lineNum">      78</span>              :         &quot;xehpg mad fwd x16:x16:any mb128 g144ic1ih191oc1oh95kh3sh2ph0 simd=8 l=kh3 T=x i=g64kw3mb8 bufs=0&quot;,</span>
+<span id="L79"><span class="lineNum">      79</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb32 ic512ih19oc486oh19kh3ph1 simd=16 l=ow19 T=x i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L80"><span class="lineNum">      80</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic256iw5625oc128ow5625kw1pw0 simd=16 l=oc4 T=ic4 i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L81"><span class="lineNum">      81</span>              :         &quot;xehpc dpas fwd x8:x8:any mb128 ic64iw3136oc256ow3136kw1pw0 simd=16 l=x T=oc4 i=ic64oc64ow32 bufs=3&quot;,</span>
+<span id="L82"><span class="lineNum">      82</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280iw64oc1280ow64kw1pw0 simd=16 l=ic40 T=oc2ow2 i=ic32oc16ow16 bufs=3&quot;,</span>
+<span id="L83"><span class="lineNum">      83</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280iw64oc1280ow64kw1pw0 simd=16 l=ic40 T=oc2ow8 i=ic32oc32ow8 bufs=3&quot;,</span>
+<span id="L84"><span class="lineNum">      84</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic512ih14oc512oh7kh3sh2ph1 simd=8 l=ic16kh3kw3 T=mb4oc8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L85"><span class="lineNum">      85</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32b ic3ih416oc16oh416kh3ph1 simd=16 l=kh3 T=x i=ic4kw8mb32oc16 bufs=3&quot;,</span>
+<span id="L86"><span class="lineNum">      86</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32b ic3ih416oc16oh416kh3ph1 simd=16 l=kh3 T=ow8 i=ic4kw4mb32oc16 bufs=3&quot;,</span>
+<span id="L87"><span class="lineNum">      87</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1920ih48oc640oh48kh3ph1 simd=8 l=ic120kh3kw3 T=ow4 i=ic16mb2oc32ow12&quot;,</span>
+<span id="L88"><span class="lineNum">      88</span>              :         &quot;xehpg mad fwd x8:x8:any mb32b g224ic1iw3136oc1ow3136kw1pw0 simd=8 l=x T=x i=g32mb16 bufs=0&quot;,</span>
+<span id="L89"><span class="lineNum">      89</span>              :         &quot;xehpc mad fwd x8:x8:any mb1 g288ic1ih128iw256oc1oh128ow256kh5kw5dh3dw3ph8pw8 simd=16 l=kh5 T=x i=g16kw5ow16 bufs=0&quot;,</span>
+<span id="L90"><span class="lineNum">      90</span>              :         &quot;xehpc dpas fwd x8:x8:any mb128 ic128ih28oc128oh28kh3ph1 simd=16 l=ic2kh3kw3 T=oc2ow4 i=ic64mb32oc64 bufs=3&quot;,</span>
+<span id="L91"><span class="lineNum">      91</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic128ih28oc128oh28kh3ph1 simd=8 l=ic4kh3kw3 T=oc4ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L92"><span class="lineNum">      92</span>              :         &quot;xehpc dpas fwd x16:x16:any mb8 ic3ih224oc768oh14kh16sh16ph0 simd=16 l=kh16kw4 T=oc8 i=ic4kw4oc64ow14 bufs=3&quot;,</span>
+<span id="L93"><span class="lineNum">      93</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320ih32oc640oh32kh3ph1 simd=8 l=ic20kh3kw3 T=oc2 i=ic16oc32ow16&quot;,</span>
+<span id="L94"><span class="lineNum">      94</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640iw9216oc320ow9216kw1pw0 simd=8 l=ic40 T=oc2ow8 i=ic16oc32ow32&quot;,</span>
+<span id="L95"><span class="lineNum">      95</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic256iw3136oc128ow3136kw1pw0 simd=8 l=ic8 T=oc8ow4 i=ic32mb16oc16 bufs=3&quot;,</span>
+<span id="L96"><span class="lineNum">      96</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic512ih10oc486oh10kh3ph1 simd=16 l=oh10ow10 T=x i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L97"><span class="lineNum">      97</span>              :         &quot;xehpg dpas fwd x16:x16:any mb5 ic512ih14oc512oh14kh3ph1 simd=8 l=ic4kh3kw3 T=ic4 i=ic32oc16ow14 bufs=0&quot;,</span>
+<span id="L98"><span class="lineNum">      98</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih14oc32oh14kh3ph1 simd=16 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L99"><span class="lineNum">      99</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih32oc64oh32kh3ph1 simd=16 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L100"><span class="lineNum">     100</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1920ih24oc1280oh24kh3ph1 simd=8 l=ic120kh3kw3 T=oc4 i=ic16oc32ow24&quot;,</span>
+<span id="L101"><span class="lineNum">     101</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32 g32ic8ih28oc8oh28kh3ph1 simd=8 l=kh3 T=ow8 i=ic8kw4mb32oc8 bufs=2&quot;,</span>
+<span id="L102"><span class="lineNum">     102</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640ih16oc1280oh16kh3ph1 simd=8 l=ic20kh3kw3 T=ic2 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L103"><span class="lineNum">     103</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32b ic4ih1080iw1920oc1oh1080ow1920kh3kw3ph1pw1 simd=16 l=kh3 T=x i=ic4kw8mb32oc16 bufs=3&quot;,</span>
+<span id="L104"><span class="lineNum">     104</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32b ic4ih1080iw1920oc1oh1080ow1920kh3kw3ph1pw1 simd=16 l=kh3 T=ow8 i=ic4kw4mb32oc16 bufs=3&quot;,</span>
+<span id="L105"><span class="lineNum">     105</span>              :         &quot;xehpg dpas fwd x16:x16:any mb32b ic512ih13oc1024oh13kh3ph1 simd=8 l=ic32kh3kw3 T=oc8 i=ic16mb32oc32 bufs=2&quot;,</span>
+<span id="L106"><span class="lineNum">     106</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32b ic512ih13oc1024oh13kh3ph1 simd=8 l=ic16kh3kw3 T=oc8ow2 i=ic32mb32oc16 bufs=3&quot;,</span>
+<span id="L107"><span class="lineNum">     107</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280ih32oc1280oh32kh3ph1 simd=16 l=ic5kh3kw3 T=ic8 i=ic32oc32ow32 bufs=0&quot;,</span>
+<span id="L108"><span class="lineNum">     108</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280ih32oc1280oh32kh3ph1 simd=16 l=ic40kh3kw3 T=ow4 i=ic32mb2oc32ow8 bufs=3&quot;,</span>
+<span id="L109"><span class="lineNum">     109</span>              :         &quot;xehpg dpas bwd_d any:x16:x16 mb16 ic1088iw15000oc512ow15000kw1pw0 simd=8 l=oc16 T=ic4iw8 i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L110"><span class="lineNum">     110</span>              :         &quot;xehpg mad fwd x16:x16:any mb1 g512ic1iw32oc1ow32kw3dw1pw2 simd=8 l=x T=ow4 i=g8kw3ow8&quot;,</span>
+<span id="L111"><span class="lineNum">     111</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic128iw32oc256ow32kw1pw0 simd=8 l=ic2 T=oc8ow2 i=ic64oc8ow8&quot;,</span>
+<span id="L112"><span class="lineNum">     112</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic128iw32oc256ow32kw1pw0 simd=8 l=ic4 T=oc4ow4 i=ic32oc8ow8&quot;,</span>
+<span id="L113"><span class="lineNum">     113</span>              :         &quot;xehpc dpas fwd x16:x16:any mb16b ic32id17ih33iw33oc32od17oh33ow33kd3kh3kw3pd1ph1pw1 simd=16 l=ic2kd3kh3kw3 T=ow2 i=ic16mb16oc32 bufs=3&quot;,</span>
+<span id="L114"><span class="lineNum">     114</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640ih32oc640oh32kh3ph1 simd=16 l=ic20kh3kw3 T=oc8 i=ic32oc16ow32 bufs=3&quot;,</span>
+<span id="L115"><span class="lineNum">     115</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640ih32oc640oh32kh3ph1 simd=16 l=ic20kh3kw3 T=oc8 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L116"><span class="lineNum">     116</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic256ih14oc256oh14kh3ph1 simd=8 l=kh3kw3 T=ic8 i=ic32oc32ow8 bufs=0&quot;,</span>
+<span id="L117"><span class="lineNum">     117</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32 g32ic8ih28oc8oh28kh3ph1 simd=16 l=kh3kw3 T=ow4 i=ic32mb32oc16 bufs=3&quot;,</span>
+<span id="L118"><span class="lineNum">     118</span>              :         &quot;xehpc mad bwd_d any:f32:f32 mb2048 ic8ih10oc8oh8kh3ph0 simd=16 l=kh3kw3 T=iw2 i=ic16mb16oc8 bufs=0&quot;,</span>
+<span id="L119"><span class="lineNum">     119</span>              :         &quot;xehpc mad bwd_d any:f64:f64 mb2048 ic8ih10oc8oh8kh3ph0 simd=8 l=kh3kw3 T=iw2 i=ic8mb16oc8 bufs=0&quot;,</span>
+<span id="L120"><span class="lineNum">     120</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic1024ih100iw171oc512oh100ow171kh3kw3dh1dw1ph2pw2 simd=8 l=ic32kh3kw3 T=oc8 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L121"><span class="lineNum">     121</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic512ih19oc486oh19kh3ph1 simd=16 l=kh3kw3oc16 T=ic2iw8 i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L122"><span class="lineNum">     122</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic64id224ih224iw160oc32od224oh224ow160kd3kh3kw3pd1ph1pw1 simd=16 l=ic4kd3kh3kw3 T=x i=ic16oc32ow32 bufs=3&quot;,</span>
+<span id="L123"><span class="lineNum">     123</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic64id224ih224iw160oc32od224oh224ow160kd3kh3kw3pd1ph1pw1 simd=16 l=kd3kh3kw3 T=ic2 i=ic32oc32ow32 bufs=0&quot;,</span>
+<span id="L124"><span class="lineNum">     124</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic256ih512oc256oh512kh3ph1 simd=16 l=ic8kh3kw3 T=oc4ow4 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L125"><span class="lineNum">     125</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb32 ic8id25oc8od25kd5pd2 simd=16 l=ow25 T=x i=ic8mb16oc16 bufs=0&quot;,</span>
+<span id="L126"><span class="lineNum">     126</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic2048iw49oc512ow49kw1pw0 simd=8 l=ic64 T=oc4ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L127"><span class="lineNum">     127</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic960ih32oc640oh32kh3ph1 simd=8 l=ic60kh3kw3 T=oc8 i=ic16oc32ow16&quot;,</span>
+<span id="L128"><span class="lineNum">     128</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic256ih5oc486oh5kh3ph1 simd=16 l=oh5ow5 T=oc4 i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L129"><span class="lineNum">     129</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic2560iw64oc1280ow64kw1pw0 simd=8 l=ic20 T=ic8ow2 i=ic16oc16ow32 bufs=0&quot;,</span>
+<span id="L130"><span class="lineNum">     130</span>              :         &quot;xehpg dpas fwd x16:x16:any mb32b ic1280ih10oc546oh10kh3ph1 simd=8 l=ic80kh3kw3 T=oc8ow2 i=ic16mb32oc16 bufs=3&quot;,</span>
+<span id="L131"><span class="lineNum">     131</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640iw1024oc640ow1024kw1pw0 simd=16 l=ic20 T=oc4ow8 i=ic32oc64ow8 bufs=3&quot;,</span>
+<span id="L132"><span class="lineNum">     132</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640iw1024oc640ow1024kw1pw0 simd=16 l=ic20 T=oc4ow8 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L133"><span class="lineNum">     133</span>              :         &quot;xehpc dpas fwd x16:x16:any mb16 ic128ih75oc128oh38kh3sh2ph1 simd=16 l=ic4kh3kw3 T=oc2ow4 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L134"><span class="lineNum">     134</span>              :         &quot;xehpc dpas fwd x16:x16:any mb16 ic1024ih38oc324oh38kh3ph1 simd=16 l=ic32kh3kw3 T=oc2ow8 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L135"><span class="lineNum">     135</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32b ic144ih2oc144oh2kh3ph1 simd=16 l=ic5kh3kw3 T=mb2oc2 i=ic32mb16oc16 bufs=3&quot;,</span>
+<span id="L136"><span class="lineNum">     136</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic512ih10oc6oh10kh3ph1 simd=8 l=ic4kh3kw3 T=ic8 i=ic16oc8ow8 bufs=0&quot;,</span>
+<span id="L137"><span class="lineNum">     137</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640iw256oc1280ow256kw1pw0 simd=16 l=ic20 T=oc2ow8 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L138"><span class="lineNum">     138</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640iw256oc1280ow256kw1pw0 simd=16 l=ic20 T=oc8ow4 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L139"><span class="lineNum">     139</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic256ih38oc256oh38kh3ph1 simd=16 l=kh3kw3oc8 T=ic2iw8 i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L140"><span class="lineNum">     140</span>              :         &quot;xehpc dpas fwd x16:x16:any mb16 ic256ih75oc512oh38kh1sh2ph0 simd=16 l=ic8 T=oc4ow2 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L141"><span class="lineNum">     141</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic256ih38oc256oh38kh3ph1 simd=16 l=oh38ow2 T=ic8oc2 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L142"><span class="lineNum">     142</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32 g32ic4ih56oc4oh56kh3ph1 simd=16 l=kh3kw3 T=ow8 i=ic16mb32oc16 bufs=0&quot;,</span>
+<span id="L143"><span class="lineNum">     143</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic256ih14oc256oh14kh3ph1 simd=8 l=ic8kh3kw3 T=mb4oc4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L144"><span class="lineNum">     144</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb32b ic6id26ih28iw27oc6od26oh26ow26kd3kh3kw8pd1ph0pw3 simd=16 l=oh13ow26 T=x i=kw8mb16oc16 bufs=2&quot;,</span>
+<span id="L145"><span class="lineNum">     145</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic960iw2304oc640ow2304kw1pw0 simd=8 l=ic60 T=oc4ow8 i=ic16oc32ow24&quot;,</span>
+<span id="L146"><span class="lineNum">     146</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic256ih5oc6oh5kh3ph1 simd=8 l=ic2kh3kw3 T=ic8 i=ic16oc8ow8 bufs=0&quot;,</span>
+<span id="L147"><span class="lineNum">     147</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic64ih32oc1oh32kh3ph1 simd=16 l=ic2kh3kw3 T=ow4 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L148"><span class="lineNum">     148</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic512ih5oc24oh5kh3ph1 simd=8 l=ic4kh3kw3 T=ic8 i=ic16oc8ow8 bufs=0&quot;,</span>
+<span id="L149"><span class="lineNum">     149</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih16oc1280oh16kh3ph1 simd=8 l=ic40kh3kw3 T=ic2 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L150"><span class="lineNum">     150</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280ih16oc1280oh16kh3ph1 simd=8 l=ic80kh3kw3 T=oc2 i=ic16oc32ow16 bufs=2&quot;,</span>
+<span id="L151"><span class="lineNum">     151</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic960ih32oc640oh32kh3ph1 simd=16 l=ic30kh3kw3 T=oc2ow4 i=ic32oc32ow8 bufs=3&quot;,</span>
+<span id="L152"><span class="lineNum">     152</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic960ih32oc640oh32kh3ph1 simd=16 l=ic30kh3kw3 T=ow2 i=ic32mb2oc64ow16 bufs=3&quot;,</span>
+<span id="L153"><span class="lineNum">     153</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640iw576oc1280ow576kw1pw0 simd=8 l=ic40 T=oc8ow8 i=ic16oc32ow24 bufs=0&quot;,</span>
+<span id="L154"><span class="lineNum">     154</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic128ih32oc128oh32kh3ph1 simd=8 l=kh3kw3 T=ic8 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L155"><span class="lineNum">     155</span>              :         &quot;xehpg dpas bwd_w x16:any:x16 mb8 ic512iw73oc512ow35kw4sw2pw0 simd=8 l=mb8 T=ic8oc8 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L156"><span class="lineNum">     156</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1152oc48 simd=16 l=ic9 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L157"><span class="lineNum">     157</span>              :         &quot;xehpg mad fwd x16:x16:any mb1 g512ic1iw32oc1ow32kw3pw1 simd=8 l=x T=x i=g8kw3ow8 bufs=0&quot;,</span>
+<span id="L158"><span class="lineNum">     158</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb24 g32ic8ih56oc8oh56kh3ph1 simd=16 l=oh2ow14 T=x i=ic8mb32oc16 bufs=0&quot;,</span>
+<span id="L159"><span class="lineNum">     159</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320iw4096oc320ow4096kw1pw0 simd=8 l=ic20 T=oc4ow4 i=ic16oc32ow32&quot;,</span>
+<span id="L160"><span class="lineNum">     160</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic128ih75oc128oh38kh3sh2ph1 simd=16 l=oh19 T=ic4oc2 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L161"><span class="lineNum">     161</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic2560ih16oc1280oh16kh3ph1 simd=16 l=ic10kh3kw3 T=ic8 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L162"><span class="lineNum">     162</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic2560ih16oc1280oh16kh3ph1 simd=16 l=ic10kh3kw3 T=ic8 i=ic32mb2oc32ow16 bufs=0&quot;,</span>
+<span id="L163"><span class="lineNum">     163</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640ih64oc320oh64kh3ph1 simd=16 l=ic20kh3kw3 T=oc2ow4 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L164"><span class="lineNum">     164</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640ih64oc320oh64kh3ph1 simd=16 l=ic20kh3kw3 T=ow8 i=ic32mb2oc32ow8 bufs=3&quot;,</span>
+<span id="L165"><span class="lineNum">     165</span>              :         &quot;xehpg dpas fwd x16:x16:any mb6 ic512ih28iw21oc512oh28ow21kh3kw3ph1pw1 simd=8 l=ic8kh3kw3 T=ic2 i=ic32oc16ow21 bufs=0&quot;,</span>
+<span id="L166"><span class="lineNum">     166</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1920ih32oc640oh32kh3ph1 simd=8 l=ic120kh3kw3 T=oc8ow2 i=ic16oc32ow16&quot;,</span>
+<span id="L167"><span class="lineNum">     167</span>              :         &quot;xehpg mad fwd x16:x16:any mb128 g40ic1ih150oc1oh150kh3ph1 simd=8 l=kh3 T=ow8 i=g16kw3mb8 bufs=1&quot;,</span>
+<span id="L168"><span class="lineNum">     168</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic1024ih38oc324oh38kh3ph1 simd=16 l=kh3kw3oc11 T=ic4iw8 i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L169"><span class="lineNum">     169</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih232oc32oh224kh9ph0 simd=8 l=kh9kw2 T=oc2ow4 i=ic4kw8oc16ow28 bufs=1&quot;,</span>
+<span id="L170"><span class="lineNum">     170</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280iw1024oc640ow1024kw1pw0 simd=8 l=ic80 T=oc4ow8 i=ic16oc32ow32&quot;,</span>
+<span id="L171"><span class="lineNum">     171</span>              :         &quot;xehpc dpas fwd x16:x16:any mb64 ic128iw18oc128ow15kw4pw0 simd=16 l=ic4kw4 T=ow8 i=ic32mb8oc32&quot;,</span>
+<span id="L172"><span class="lineNum">     172</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih1024oc24oh256kh7sh4ph3 simd=8 l=kh7 T=oc2ow8 i=ic4kw8oc16ow32 bufs=1&quot;,</span>
+<span id="L173"><span class="lineNum">     173</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320ih64oc320oh64kh3ph1 simd=8 l=ic20kh3kw3 T=oc8ow4 i=ic16oc16ow16&quot;,</span>
+<span id="L174"><span class="lineNum">     174</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic128ih512oc128oh512kh3ph1 simd=8 l=ic4kh3kw3 T=oc4ow8 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L175"><span class="lineNum">     175</span>              :         &quot;xehpg dpas fwd x16:x16:any mb24 g32ic8ih56oc8oh56kh3ph1 simd=8 l=kh3 T=ow8 i=ic8kw4mb12oc8 bufs=2&quot;,</span>
+<span id="L176"><span class="lineNum">     176</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb64 ic128iw18oc128ow15kw4pw0 simd=16 l=mb64 T=ic2oc2 i=ic16oc16ow16&quot;,</span>
+<span id="L177"><span class="lineNum">     177</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280ih48oc1280oh48kh3ph1 simd=8 l=ic80kh3kw3 T=oc8ow2 i=ic16oc32ow24&quot;,</span>
+<span id="L178"><span class="lineNum">     178</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic32ih9oc32oh7kh3ph0 simd=8 l=kh3kw3 T=ic2 i=ic16oc16ow7 bufs=0&quot;,</span>
+<span id="L179"><span class="lineNum">     179</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320iw1024oc640ow1024kw1pw0 simd=8 l=ic20 T=oc8ow8 i=ic16oc16ow32 bufs=0&quot;,</span>
+<span id="L180"><span class="lineNum">     180</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb64b ic64iw1022oc128ow1007kw16pw0 simd=16 l=mb2ow19 T=ic2oc2 i=ic32mb8oc64 bufs=2&quot;,</span>
+<span id="L181"><span class="lineNum">     181</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic2560iw256oc1280ow256kw1pw0 simd=16 l=ic80 T=oc2ow8 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L182"><span class="lineNum">     182</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic2560iw256oc1280ow256kw1pw0 simd=16 l=ic80 T=oc2ow8 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L183"><span class="lineNum">     183</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1152oc48 simd=8 l=ic9 T=ic8 i=ic16oc8ow8 bufs=0&quot;,</span>
+<span id="L184"><span class="lineNum">     184</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic256iw32oc128ow32kw1pw0 simd=8 l=x T=ic4 i=ic64oc8ow16 bufs=0&quot;,</span>
+<span id="L185"><span class="lineNum">     185</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic256iw32oc128ow32kw1pw0 simd=8 l=x T=ic8 i=ic32oc8ow8 bufs=0&quot;,</span>
+<span id="L186"><span class="lineNum">     186</span>              :         &quot;xehpg mad fwd x8:x8:any mb32b g256ic1iw4096oc1ow4096kw1pw0 simd=8 l=x T=x i=g32mb16 bufs=0&quot;,</span>
+<span id="L187"><span class="lineNum">     187</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic128iw32oc512ow32kw1pw0 simd=8 l=x T=ic2 i=ic64oc8ow8 bufs=0&quot;,</span>
+<span id="L188"><span class="lineNum">     188</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic128iw32oc512ow32kw1pw0 simd=8 l=x T=ic8 i=ic16oc16ow16 bufs=0&quot;,</span>
+<span id="L189"><span class="lineNum">     189</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic512iw49oc2048ow49kw1pw0 simd=8 l=ic16 T=mb4oc8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L190"><span class="lineNum">     190</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280iw1024oc640ow1024kw1pw0 simd=16 l=ic40 T=oc4ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L191"><span class="lineNum">     191</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280iw1024oc640ow1024kw1pw0 simd=16 l=ic40 T=oc4ow8 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L192"><span class="lineNum">     192</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic2560ih8oc1280oh8kh3ph1 simd=16 l=ic80kh3kw3 T=oc2 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L193"><span class="lineNum">     193</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic2560ih8oc1280oh8kh3ph1 simd=16 l=ic80kh3kw3 T=oc2ow8 i=ic32mb2oc64 bufs=3&quot;,</span>
+<span id="L194"><span class="lineNum">     194</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic256iw262144oc128ow262144kw1pw0 simd=16 l=ic8 T=oc2ow2 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L195"><span class="lineNum">     195</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic3ih224oc128oh56kh4sh4ph0 simd=8 l=kh4 T=oc2 i=ic4kw4oc32ow8 bufs=0&quot;,</span>
+<span id="L196"><span class="lineNum">     196</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic256iw5625oc128ow5625kw1pw0 simd=16 l=ow125 T=ic8oc2 i=ic16mb16oc64 bufs=3&quot;,</span>
+<span id="L197"><span class="lineNum">     197</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic128ih75oc128oh38kh3sh2ph1 simd=16 l=kh3kw3oc4 T=x i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L198"><span class="lineNum">     198</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic4ih64oc320oh64kh3ph1 simd=16 l=kh3 T=x i=ic4kw4oc64ow16 bufs=3&quot;,</span>
+<span id="L199"><span class="lineNum">     199</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic4ih64oc320oh64kh3ph1 simd=16 l=kh3 T=ow4 i=ic4kw4mb2oc64ow8 bufs=3&quot;,</span>
+<span id="L200"><span class="lineNum">     200</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb32b ic8id25oc8od25kd5pd2 simd=16 l=oh25ow5 T=x i=ic8mb16oc16 bufs=2&quot;,</span>
+<span id="L201"><span class="lineNum">     201</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1920ih16oc1280oh16kh3ph1 simd=16 l=ic8kh3kw3 T=ic8 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L202"><span class="lineNum">     202</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1920ih16oc1280oh16kh3ph1 simd=16 l=ic60kh3kw3 T=ow2 i=ic32mb2oc64ow8 bufs=3&quot;,</span>
+<span id="L203"><span class="lineNum">     203</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih13oc32oh13kh3ph1 simd=16 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L204"><span class="lineNum">     204</span>              :         &quot;xehpc mad bwd_d any:f32:f32 mb2048 ic8ih10oc10oh8kh3ph0 simd=16 l=kh3kw3 T=x i=ic16mb16oc16 bufs=0&quot;,</span>
+<span id="L205"><span class="lineNum">     205</span>              :         &quot;xehpc mad bwd_d any:f64:f64 mb2048 ic8ih10oc10oh8kh3ph0 simd=8 l=kh3kw3 T=oc2 i=ic8mb16oc8 bufs=0&quot;,</span>
+<span id="L206"><span class="lineNum">     206</span>              :         &quot;xehpc dpas fwd x16:x16:any mb16 ic256ih38oc256oh38kh3ph1 simd=16 l=ic8kh3kw3 T=oc2ow8 i=ic32mb16oc64 bufs=3&quot;,</span>
+<span id="L207"><span class="lineNum">     207</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic2560iw144oc1280ow144kw1pw0 simd=8 l=ic80 T=ic2 i=ic16mb2oc16ow16 bufs=0&quot;,</span>
+<span id="L208"><span class="lineNum">     208</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic3ih300oc64oh150kh7sh2ph3 simd=16 l=oh2ow10 T=x i=ic4kw8mb16oc64 bufs=3&quot;,</span>
+<span id="L209"><span class="lineNum">     209</span>              :         &quot;xehpg dpas bwd_w x16:any:x16 mb4 ic256id8oc512od8kd3pd1 simd=8 l=oh8 T=ic2oc8 i=ic32oc8ow16 bufs=3&quot;,</span>
+<span id="L210"><span class="lineNum">     210</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32 ic32ih232oc3oh224kh9ph0 simd=16 l=kh9kw9 T=ow8 i=ic32mb32oc16 bufs=3&quot;,</span>
+<span id="L211"><span class="lineNum">     211</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32 ic32ih232oc3oh224kh9ph0 simd=16 l=kh9kw9 T=ow8 i=ic32mb32oc16 bufs=3&quot;,</span>
+<span id="L212"><span class="lineNum">     212</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640ih64oc640oh64kh3ph1 simd=16 l=ic20kh3kw3 T=oc2ow4 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L213"><span class="lineNum">     213</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640ih64oc640oh64kh3ph1 simd=16 l=ic20kh3kw3 T=ow8 i=ic32mb2oc64ow8 bufs=3&quot;,</span>
+<span id="L214"><span class="lineNum">     214</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic512ih28oc1024oh14kh1sh2ph0 simd=8 l=ic16 T=mb4oc8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L215"><span class="lineNum">     215</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic256iw196oc1024ow196kw1pw0 simd=8 l=ic8 T=oc8ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L216"><span class="lineNum">     216</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic640iw4096oc320ow4096kw1pw0 simd=16 l=ic20 T=oc2 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L217"><span class="lineNum">     217</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic640iw4096oc320ow4096kw1pw0 simd=16 l=ic20 T=oc2ow8 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L218"><span class="lineNum">     218</span>              :         &quot;xehpg dpas fwd x16:x16:any mb5 ic128ih56oc128oh56kh3ph1 simd=8 l=ic2kh3kw3 T=ic2 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L219"><span class="lineNum">     219</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb2048 ic8ih10oc10oh8kh3ph0 simd=16 l=oh4ow8 T=x i=ic8mb16oc16 bufs=0&quot;,</span>
+<span id="L220"><span class="lineNum">     220</span>              :         &quot;xehpc mad bwd_w f64:any:f64 mb2048 ic8ih10oc10oh8kh3ph0 simd=8 l=oh2ow8 T=x i=ic8mb8oc16 bufs=0&quot;,</span>
+<span id="L221"><span class="lineNum">     221</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic4ih64oc512oh64kh3ph1 simd=16 l=kh3 T=ow4 i=ic4kw4oc64ow16 bufs=3&quot;,</span>
+<span id="L222"><span class="lineNum">     222</span>              :         &quot;xehpc dpas fwd x8:x8:any mb128 ic512iw49oc2048ow49kw1pw0 simd=16 l=ic8 T=mb8oc4 i=ic64mb16oc64 bufs=3&quot;,</span>
+<span id="L223"><span class="lineNum">     223</span>              :         &quot;xehpg dpas fwd x16:x16:any mb32 ic32ih512oc3oh512kh3ph1 simd=8 l=kh3kw3 T=ow8 i=ic32mb16oc8 bufs=2&quot;,</span>
+<span id="L224"><span class="lineNum">     224</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32 ic32ih512oc3oh512kh3ph1 simd=8 l=kh3kw3 T=ow8 i=ic32mb16oc8 bufs=2&quot;,</span>
+<span id="L225"><span class="lineNum">     225</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280ih12oc1280oh12kh3ph1 simd=8 l=ic40kh3kw3 T=ic2ow2 i=ic16mb2oc32ow6&quot;,</span>
+<span id="L226"><span class="lineNum">     226</span>              :         &quot;xehpg mad bwd_w f32:any:f32 mb100 ic1iw29532oc10ow5905kw10sw5pw0 simd=16 l=ow5 T=x i=mb16oc16 bufs=0&quot;,</span>
+<span id="L227"><span class="lineNum">     227</span>              :         &quot;xehpc mad fwd f32:f32:any mb1024b g32ic4ih56oc4oh56kh3ph1 simd=16 l=kh3 T=ow8 i=ic4kw3mb16oc16 bufs=0&quot;,</span>
+<span id="L228"><span class="lineNum">     228</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640ih64oc640oh64kh3ph1 simd=8 l=ic40kh3kw3 T=oc8ow2 i=ic16oc16ow32&quot;,</span>
+<span id="L229"><span class="lineNum">     229</span>              :         &quot;xehpg mad fwd x8:x8:any mb1 g32ic2ih112oc2oh56kh3sh2ph1 simd=8 l=kh3 T=ow2 i=ic2kw3oc8ow14 bufs=0&quot;,</span>
+<span id="L230"><span class="lineNum">     230</span>              :         &quot;xehpc dpas fwd x8:x8:any mb128 ic512ih14oc512oh7kh3sh2ph1 simd=16 l=ic8kh3kw3 T=oc4ow8 i=ic64mb32oc64 bufs=3&quot;,</span>
+<span id="L231"><span class="lineNum">     231</span>              :         &quot;xehpg dpas bwd_d any:x16:x16 mb2 ic256ih100oc256oh100kh3ph1 simd=8 l=kh3kw3oc8 T=ic8iw4 i=ic16iw25oc32 bufs=3&quot;,</span>
+<span id="L232"><span class="lineNum">     232</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320ih64oc320oh32kh3sh2ph1 simd=8 l=ic20kh3kw3 T=oc8ow2 i=ic16oc16ow16&quot;,</span>
+<span id="L233"><span class="lineNum">     233</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic320iw1024oc640ow1024kw1pw0 simd=16 l=ic10 T=oc4ow8 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L234"><span class="lineNum">     234</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic320iw1024oc640ow1024kw1pw0 simd=16 l=ic10 T=oc2ow4 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L235"><span class="lineNum">     235</span>              :         &quot;xehpc dpas fwd x16:x16:any mb16 ic256ih38oc512oh19kh3sh2ph1 simd=16 l=ic8kh3kw3 T=oc4ow4 i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L236"><span class="lineNum">     236</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic4ih1080iw1920oc36oh360ow640kh3kw3sh3sw3ph0pw0 simd=8 l=kh3 T=oc2ow4 i=ic4kw4oc32ow16&quot;,</span>
+<span id="L237"><span class="lineNum">     237</span>              :         &quot;xehpg mad fwd x16:x16:any mb1 ic2ih56oc2oh56kh3ph1 simd=8 l=kh3 T=x i=ic2kw3oc8ow7 bufs=0&quot;,</span>
+<span id="L238"><span class="lineNum">     238</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280iw64oc1280ow64kw1pw0 simd=8 l=ic10 T=ic8ow2 i=ic16oc16ow32 bufs=0&quot;,</span>
+<span id="L239"><span class="lineNum">     239</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic2560iw64oc1280ow64kw1pw0 simd=16 l=ic20 T=ic4 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L240"><span class="lineNum">     240</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic2560iw64oc1280ow64kw1pw0 simd=16 l=ic80 T=oc2ow8 i=ic32oc32ow8 bufs=3&quot;,</span>
+<span id="L241"><span class="lineNum">     241</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic2560iw256oc1280ow256kw1pw0 simd=8 l=ic160 T=oc8ow4 i=ic16oc16ow32&quot;,</span>
+<span id="L242"><span class="lineNum">     242</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb4 ic8ih640iw1024oc8oh640ow1024kh3kw3ph1pw1 simd=16 l=oh32 T=x i=ic8kw3oc16ow16 bufs=3&quot;,</span>
+<span id="L243"><span class="lineNum">     243</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32 ic32ih512oc3oh512kh3ph1 simd=16 l=kh3kw3 T=ow8 i=ic32mb16oc16 bufs=3&quot;,</span>
+<span id="L244"><span class="lineNum">     244</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic32id224ih224iw160oc32od224oh224ow160kd3kh3kw3pd1ph1pw1 simd=8 l=kd3kh3kw3 T=oc2ow2 i=ic32oc16ow20 bufs=3&quot;,</span>
+<span id="L245"><span class="lineNum">     245</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb64b ic256iw90oc256ow59kw32pw0 simd=16 l=mb2ow59 T=ic8 i=ic32mb8oc64 bufs=2&quot;,</span>
+<span id="L246"><span class="lineNum">     246</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih32oc1280oh32kh3ph1 simd=8 l=ic80kh3kw3 T=oc4ow2 i=ic16oc16ow16&quot;,</span>
+<span id="L247"><span class="lineNum">     247</span>              :         &quot;xehpc mad bwd_d any:f32:f32 mb2048 ic2ih10oc8oh8kh3ph0 simd=16 l=kh3kw3 T=x i=ic16mb16oc8 bufs=0&quot;,</span>
+<span id="L248"><span class="lineNum">     248</span>              :         &quot;xehpc mad bwd_d any:f64:f64 mb2048 ic2ih10oc8oh8kh3ph0 simd=8 l=kh3kw3 T=iw2 i=ic8mb16oc8 bufs=0&quot;,</span>
+<span id="L249"><span class="lineNum">     249</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32b ic384ih26oc256oh26kh3ph1 simd=8 l=ic12kh3kw3 T=oc4ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L250"><span class="lineNum">     250</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1920iw576oc1280ow576kw1pw0 simd=8 l=ic120 T=oc8ow8 i=ic16oc32ow24 bufs=0&quot;,</span>
+<span id="L251"><span class="lineNum">     251</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic16ih208oc32oh208kh3ph1 simd=8 l=kh3kw3 T=oc2 i=ic32oc16ow16 bufs=3&quot;,</span>
+<span id="L252"><span class="lineNum">     252</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic320ih32oc640oh32kh3ph1 simd=16 l=ic10kh3kw3 T=oc2ow4 i=ic32oc32ow8 bufs=3&quot;,</span>
+<span id="L253"><span class="lineNum">     253</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic320ih32oc640oh32kh3ph1 simd=16 l=ic10kh3kw3 T=ow4 i=ic32mb2oc32ow8 bufs=3&quot;,</span>
+<span id="L254"><span class="lineNum">     254</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic320ih66oc4oh64kh3ph0 simd=8 l=ic3kh3kw3 T=ic4ow8 i=ic32oc8ow8&quot;,</span>
+<span id="L255"><span class="lineNum">     255</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1920ih16oc1280oh16kh3ph1 simd=8 l=ic60kh3kw3 T=ic2 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L256"><span class="lineNum">     256</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic32ih17oc32oh17kh3ph1 simd=16 l=ic2kh3kw3 T=oc2ow4 i=ic16oc16ow8 bufs=3&quot;,</span>
+<span id="L257"><span class="lineNum">     257</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic512ih64oc512oh64kh3ph1 simd=16 l=ic16kh3kw3 T=oc4ow4 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L258"><span class="lineNum">     258</span>              :         &quot;xehpg dpas fwd x16:x16:any mb32 g32ic4ih56oc4oh56kh3ph1 simd=8 l=kh3 T=ow8 i=ic4kw4mb32oc8 bufs=2&quot;,</span>
+<span id="L259"><span class="lineNum">     259</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32 g32ic4ih56oc4oh56kh3ph1 simd=8 l=kh3 T=ow8 i=ic8kw4mb32oc8 bufs=2&quot;,</span>
+<span id="L260"><span class="lineNum">     260</span>              :         &quot;xehpg mad fwd x16:x16:any mb1 g512ic1iw32oc1ow32kw3dw3pw4 simd=8 l=x T=ow4 i=g8kw3ow8&quot;,</span>
+<span id="L261"><span class="lineNum">     261</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic256ih56oc512oh28kh1sh2ph0 simd=8 l=ic8 T=oc8 i=ic32mb32oc32 bufs=2&quot;,</span>
+<span id="L262"><span class="lineNum">     262</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb1 ic3ih224oc128oh56kh4sh4ph0 simd=16 l=oh7 T=oc8 i=ic4kw4oc16ow8 bufs=2&quot;,</span>
+<span id="L263"><span class="lineNum">     263</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb1 ic3ih224oc128oh56kh4sh4ph0 simd=16 l=x T=oc2 i=ic8kw4oc16ow16 bufs=3&quot;,</span>
+<span id="L264"><span class="lineNum">     264</span>              :         &quot;xehpg dpas bwd_w x16:any:x16 mb16b ic1088iw1500oc512ow1500kw1pw0 simd=8 l=ow500 T=ic8oc8 i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L265"><span class="lineNum">     265</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1920ih32oc640oh32kh3ph1 simd=16 l=ic60kh3kw3 T=oc4ow2 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L266"><span class="lineNum">     266</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1920ih32oc640oh32kh3ph1 simd=16 l=ic60kh3kw3 T=ow2 i=ic32mb2oc64ow16 bufs=3&quot;,</span>
+<span id="L267"><span class="lineNum">     267</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic4iw4096oc4ow4096kw1pw0 simd=16 l=x T=ow2 i=ic4kw4oc16ow16 bufs=3&quot;,</span>
+<span id="L268"><span class="lineNum">     268</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32 g32ic16ih14oc16oh14kh3ph1 simd=16 l=kh3kw3 T=ow4 i=ic32mb32oc16 bufs=3&quot;,</span>
+<span id="L269"><span class="lineNum">     269</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic3ih224oc64oh112kh7sh2ph3 simd=8 l=kh7kw2 T=oc2ow4 i=ic4kw4oc16ow32 bufs=1&quot;,</span>
+<span id="L270"><span class="lineNum">     270</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih224oc64oh112kh7sh2ph3 simd=8 l=kh7 T=oc2ow4 i=ic4kw8oc16ow32 bufs=1&quot;,</span>
+<span id="L271"><span class="lineNum">     271</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic4ih64oc320oh64kh3ph1 simd=8 l=kh3 T=oc2 i=ic4kw4oc64ow16 bufs=0&quot;,</span>
+<span id="L272"><span class="lineNum">     272</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic320ih64oc4oh64kh3ph1 simd=16 l=ic10kh3kw3 T=ow2 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L273"><span class="lineNum">     273</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic320ih64oc4oh64kh3ph1 simd=16 l=ic10kh3kw3 T=x i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L274"><span class="lineNum">     274</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640ih34oc640oh32kh3ph0 simd=8 l=ic40kh3kw3 T=oc2 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L275"><span class="lineNum">     275</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic3ih300oc64oh150kh7sh2ph3 simd=8 l=kh7kw2 T=oc2 i=ic4kw4oc32ow15 bufs=0&quot;,</span>
+<span id="L276"><span class="lineNum">     276</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280ih16oc1280oh16kh3ph1 simd=16 l=ic5kh3kw3 T=ic8 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L277"><span class="lineNum">     277</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280ih16oc1280oh16kh3ph1 simd=16 l=ic5kh3kw3 T=ic8 i=ic32mb2oc32ow16 bufs=0&quot;,</span>
+<span id="L278"><span class="lineNum">     278</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280iw256oc1280ow256kw1pw0 simd=8 l=ic80 T=oc8ow4 i=ic16oc16ow32&quot;,</span>
+<span id="L279"><span class="lineNum">     279</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb2048 ic2ih10oc8oh8kh3ph0 simd=16 l=oh4ow8 T=x i=ic2kw3mb16oc16 bufs=0&quot;,</span>
+<span id="L280"><span class="lineNum">     280</span>              :         &quot;xehpc mad bwd_w f64:any:f64 mb2048 ic2ih10oc8oh8kh3ph0 simd=8 l=oh4ow8 T=x i=ic2kw3mb8oc8 bufs=0&quot;,</span>
+<span id="L281"><span class="lineNum">     281</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic1024ih38oc16oh38kh3ph1 simd=16 l=ow38 T=x i=ic32mb16oc16 bufs=3&quot;,</span>
+<span id="L282"><span class="lineNum">     282</span>              :         &quot;xehpg dpas bwd_w x16:any:x16 mb8 ic512iw299oc512ow73kw8sw4pw0 simd=8 l=mb8 T=ic8oc4 i=ic16oc64ow16 bufs=3&quot;,</span>
+<span id="L283"><span class="lineNum">     283</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640ih32oc640oh32kh3ph1 simd=8 l=ic40kh3kw3 T=oc8 i=ic16oc32ow16&quot;,</span>
+<span id="L284"><span class="lineNum">     284</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb16 ic64ih75oc64oh75kh3ph1 simd=16 l=oh5ow5 T=ic4 i=ic16mb16oc64 bufs=3&quot;,</span>
+<span id="L285"><span class="lineNum">     285</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb32 ic6id26oc1od25kd2pd0 simd=16 l=mb2ow25 T=x i=ic8kw2mb8oc16 bufs=0&quot;,</span>
+<span id="L286"><span class="lineNum">     286</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640ih64oc320oh64kh3ph1 simd=8 l=ic40kh3kw3 T=oc8ow4 i=ic16oc16ow16&quot;,</span>
+<span id="L287"><span class="lineNum">     287</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih18oc1280oh16kh3ph0 simd=8 l=ic40kh3kw3 T=ic2 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L288"><span class="lineNum">     288</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih608oc32oh608kh3ph1 simd=8 l=kh3 T=ow2 i=ic4kw8oc16ow32 bufs=3&quot;,</span>
+<span id="L289"><span class="lineNum">     289</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic256ih150oc256oh150kh3ph1 simd=8 l=ic16kh3kw3 T=oc4 i=ic16oc64ow16 bufs=3&quot;,</span>
+<span id="L290"><span class="lineNum">     290</span>              :         &quot;xehpg dpas fwd x16:x16:any mb3200b ic448iw64oc2080ow64kw1pw0 simd=8 l=ic28 T=oc2ow8 i=ic16mb32oc32 bufs=3&quot;,</span>
+<span id="L291"><span class="lineNum">     291</span>              :         &quot;xehpg dpas fwd x8:x8:any mb3200b ic448iw64oc2080ow64kw1pw0 simd=8 l=ic14 T=oc4ow8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L292"><span class="lineNum">     292</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih32oc640oh32kh3ph1 simd=8 l=ic80kh3kw3 T=oc8ow2 i=ic16oc32ow16&quot;,</span>
+<span id="L293"><span class="lineNum">     293</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb64 ic64iw1022oc128ow1007kw16pw0 simd=16 l=kw16oc4 T=iw8 i=ic64iw32oc32&quot;,</span>
+<span id="L294"><span class="lineNum">     294</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640iw1024oc640ow1024kw1pw0 simd=8 l=ic40 T=oc8ow8 i=ic16oc16ow32 bufs=0&quot;,</span>
+<span id="L295"><span class="lineNum">     295</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic320ih64oc320oh64kh3ph1 simd=16 l=ic10kh3kw3 T=oc2ow4 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L296"><span class="lineNum">     296</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic320ih64oc320oh64kh3ph1 simd=16 l=ic10kh3kw3 T=ow8 i=ic32mb2oc32ow8 bufs=3&quot;,</span>
+<span id="L297"><span class="lineNum">     297</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic32ih512oc32oh512kh3ph1 simd=8 l=ic2kh3kw3 T=oc2ow4 i=ic16oc16ow32 bufs=3&quot;,</span>
+<span id="L298"><span class="lineNum">     298</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic896iw49oc32ow49kw1pw0 simd=16 l=ic7 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L299"><span class="lineNum">     299</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1920iw1024oc640ow1024kw1pw0 simd=8 l=ic120 T=oc8ow4 i=ic16oc32ow32&quot;,</span>
+<span id="L300"><span class="lineNum">     300</span>              :         &quot;xehpc dpas fwd x8:x8:any mb32b ic3id8ih224iw224oc16od8oh112ow112kd1kh3kw3sh2sw2pd0ph1pw1 simd=16 l=kh3 T=x i=ic4kw8mb32oc16 bufs=3&quot;,</span>
+<span id="L301"><span class="lineNum">     301</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640ih32oc640oh16kh3sh2ph1 simd=8 l=ic10kh3kw3 T=ic4 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L302"><span class="lineNum">     302</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih8oc1280oh8kh3ph1 simd=8 l=ic20kh3kw3 T=ic2 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L303"><span class="lineNum">     303</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb64 ic256iw90oc256ow59kw32pw0 simd=16 l=mb64ow4 T=ic8oc4 i=ic16oc64ow16&quot;,</span>
+<span id="L304"><span class="lineNum">     304</span>              :         &quot;xehpg dpas bwd_w x16:any:x16 mb3 ic256ih10iw16oc256oh10ow16kh5kw5ph2pw2 simd=8 l=oh10 T=ic8oc4 i=ic16oc64ow16 bufs=3&quot;,</span>
+<span id="L305"><span class="lineNum">     305</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1920iw256oc1280ow256kw1pw0 simd=8 l=ic120 T=oc8ow4 i=ic16oc16ow32&quot;,</span>
+<span id="L306"><span class="lineNum">     306</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic32id17ih33iw33oc32od17oh33ow33kd3kh3kw3pd1ph1pw1 simd=16 l=kd3kh3kw3 T=x i=ic32mb16oc32 bufs=3&quot;,</span>
+<span id="L307"><span class="lineNum">     307</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb100 ic1iw29532oc10ow5905kw10sw5pw0 simd=16 l=ow64 T=x i=kw8mb10oc16 bufs=0&quot;,</span>
+<span id="L308"><span class="lineNum">     308</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic32id224ih224iw160oc32od224oh224ow160kd3kh3kw3pd1ph1pw1 simd=16 l=kd3kh3kw3 T=ic2 i=ic16oc32ow32 bufs=0&quot;,</span>
+<span id="L309"><span class="lineNum">     309</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic512iw784oc128ow784kw1pw0 simd=8 l=ic16 T=oc8 i=ic32mb32oc16 bufs=2&quot;,</span>
+<span id="L310"><span class="lineNum">     310</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280iw256oc1280ow256kw1pw0 simd=16 l=ic40 T=oc2ow8 i=ic32oc64ow8 bufs=3&quot;,</span>
+<span id="L311"><span class="lineNum">     311</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280iw256oc1280ow256kw1pw0 simd=16 l=ic40 T=oc4ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L312"><span class="lineNum">     312</span>              :         &quot;xehpc dpas bwd_w tf32:any:tf32 mb32b ic8id25oc8od23kd5pd1 simd=16 l=oh23 T=x i=ic8mb16oc16 bufs=2&quot;,</span>
+<span id="L313"><span class="lineNum">     313</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic256ih28oc256oh14kh3sh2ph1 simd=8 l=ic8kh3kw3 T=mb4oc8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L314"><span class="lineNum">     314</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic512iw784oc256ow784kw1pw0 simd=8 l=ic16 T=oc8 i=ic32mb32oc32 bufs=2&quot;,</span>
+<span id="L315"><span class="lineNum">     315</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic1024iw196oc512ow196kw1pw0 simd=8 l=ic32 T=oc8ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L316"><span class="lineNum">     316</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic512iw1444oc1024ow1444kw1pw0 simd=16 l=oc32 T=ic2iw8 i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L317"><span class="lineNum">     317</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic20ih6oc50oh4kh3ph0 simd=8 l=kh3kw3 T=x i=ic32oc8ow4 bufs=0&quot;,</span>
+<span id="L318"><span class="lineNum">     318</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic128ih512oc128oh512kh3ph1 simd=16 l=ic4kh3kw3 T=oc2ow2 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L319"><span class="lineNum">     319</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic960ih64oc320oh64kh3ph1 simd=8 l=ic60kh3kw3 T=oc8ow4 i=ic16oc16ow16&quot;,</span>
+<span id="L320"><span class="lineNum">     320</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32b ic4ih1080iw1920oc1oh1080ow1920kh3kw3ph1pw1 simd=8 l=kh3 T=ow2 i=ic4kw8mb32oc8 bufs=2&quot;,</span>
+<span id="L321"><span class="lineNum">     321</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640ih96oc320oh96kh3ph1 simd=8 l=ic40kh3kw3 T=ow2 i=ic16mb2oc32ow16 bufs=0&quot;,</span>
+<span id="L322"><span class="lineNum">     322</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic512ih256oc512oh256kh3ph1 simd=16 l=ic16kh3kw3 T=oc4ow8 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L323"><span class="lineNum">     323</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic2048oc128 simd=16 l=ic16 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L324"><span class="lineNum">     324</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih16oc1280oh8kh3sh2ph1 simd=8 l=ic20kh3kw3 T=ic2 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L325"><span class="lineNum">     325</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic256ih512oc128oh512kh3ph1 simd=16 l=ic8kh3kw3 T=oc4ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L326"><span class="lineNum">     326</span>              :         &quot;xehpc mad fwd f32:f32:any mb2048 ic2ih10oc8oh8kh3ph0 simd=16 l=kh3 T=x i=ic2kw3oc16ow8 bufs=0&quot;,</span>
+<span id="L327"><span class="lineNum">     327</span>              :         &quot;xehpc mad fwd f64:f64:any mb2048 ic2ih10oc8oh8kh3ph0 simd=8 l=kh3 T=x i=ic2kw3oc8ow8 bufs=0&quot;,</span>
+<span id="L328"><span class="lineNum">     328</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb64 ic128iw16oc64ow15kw2pw0 simd=16 l=x T=ic8 i=ic8kw2oc16ow16&quot;,</span>
+<span id="L329"><span class="lineNum">     329</span>              :         &quot;xehpg dpas fwd x8:x8:any mb32b ic10ih15oc20oh13kh3ph0 simd=8 l=kh3kw2 T=oc4ow4 i=ic16kw2mb32oc8 bufs=3&quot;,</span>
+<span id="L330"><span class="lineNum">     330</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic1280ih10oc1280oh8kh3ph0 simd=8 l=ic20kh3kw3 T=ic2 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L331"><span class="lineNum">     331</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb64 ic256iw90oc256ow59kw32pw0 simd=16 l=kw32oc8 T=ic8iw4 i=ic32iw30oc32&quot;,</span>
+<span id="L332"><span class="lineNum">     332</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640ih24oc1280oh24kh3ph1 simd=8 l=ic40kh3kw3 T=oc4 i=ic16oc32ow24&quot;,</span>
+<span id="L333"><span class="lineNum">     333</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32 ic64ih256oc3oh256kh9ph4 simd=16 l=ic2kh9kw9 T=ow8 i=ic32mb32oc16 bufs=3&quot;,</span>
+<span id="L334"><span class="lineNum">     334</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic512ih256oc256oh256kh3ph1 simd=16 l=ic16kh3kw3 T=oc4ow8 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L335"><span class="lineNum">     335</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1920iw1024oc640ow1024kw1pw0 simd=16 l=ic60 T=oc4ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L336"><span class="lineNum">     336</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1920iw1024oc640ow1024kw1pw0 simd=16 l=ic60 T=oc8ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L337"><span class="lineNum">     337</span>              :         &quot;xehpc mad fwd x16:x16:any mb1 ic2ih56oc2oh56kh3ph1 simd=16 l=kh3 T=ow8 i=ic2kw3oc16ow7 bufs=0&quot;,</span>
+<span id="L338"><span class="lineNum">     338</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280ih8oc1280oh8kh3ph1 simd=16 l=ic40kh3kw3 T=oc2 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L339"><span class="lineNum">     339</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280ih8oc1280oh8kh3ph1 simd=16 l=ic40kh3kw3 T=x i=ic32mb2oc32ow8 bufs=3&quot;,</span>
+<span id="L340"><span class="lineNum">     340</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic2560ih24oc1280oh24kh3ph1 simd=8 l=ic160kh3kw3 T=oc4 i=ic16oc32ow24&quot;,</span>
+<span id="L341"><span class="lineNum">     341</span>              :         &quot;xehpc dpas fwd x16:x16:any mb64 ic128iw252oc256ow237kw16pw0 simd=16 l=ic4kw16 T=oc4ow8 i=ic32oc64ow32&quot;,</span>
+<span id="L342"><span class="lineNum">     342</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280ih48oc640oh48kh3ph1 simd=8 l=ic80kh3kw3 T=ow4 i=ic16mb2oc32ow12&quot;,</span>
+<span id="L343"><span class="lineNum">     343</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb64 ic128iw252oc256ow237kw16pw0 simd=16 l=kw16oc8 T=ic4iw8 i=ic32iw32oc32&quot;,</span>
+<span id="L344"><span class="lineNum">     344</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic1024ih14oc2048oh7kh1sh2ph0 simd=8 l=ic32 T=mb4oc8 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L345"><span class="lineNum">     345</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic256iw3136oc64ow3136kw1pw0 simd=8 l=ic8 T=oc8ow2 i=ic32mb16oc8 bufs=3&quot;,</span>
+<span id="L346"><span class="lineNum">     346</span>              :         &quot;xehpc dpas fwd x16:x16:any mb64 ic256iw90oc256ow59kw32pw0 simd=16 l=ic8kw32 T=ow4 i=ic32oc32ow16&quot;,</span>
+<span id="L347"><span class="lineNum">     347</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic320ih96oc4oh96kh3ph1 simd=8 l=ic10kh3kw3 T=ow8 i=ic32oc8ow16 bufs=0&quot;,</span>
+<span id="L348"><span class="lineNum">     348</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32b ic3ih1024oc3oh512kh7sh2ph3 simd=16 l=kh7kw2 T=ow4 i=ic4kw4mb32oc16 bufs=3&quot;,</span>
+<span id="L349"><span class="lineNum">     349</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic128ih512oc3oh512kh3ph1 simd=16 l=ic4kh3kw3 T=ow4 i=ic32oc16ow32 bufs=3&quot;,</span>
+<span id="L350"><span class="lineNum">     350</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb64 ic128iw16oc64ow15kw2pw0 simd=16 l=kw2oc2 T=ic2 i=ic16iw16oc32&quot;,</span>
+<span id="L351"><span class="lineNum">     351</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic256ih75oc512oh38kh1sh2ph0 simd=16 l=oc16 T=x i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L352"><span class="lineNum">     352</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb64 ic128iw18oc128ow15kw4pw0 simd=16 l=kw4oc4 T=iw4 i=ic32iw8oc32&quot;,</span>
+<span id="L353"><span class="lineNum">     353</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb64 ic256iw18oc128ow15kw4pw0 simd=16 l=mb8 T=ic2oc8 i=ic32oc16ow16&quot;,</span>
+<span id="L354"><span class="lineNum">     354</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih6oc32oh6kh3ph1 simd=16 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L355"><span class="lineNum">     355</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih58oc128oh56kh3ph0 simd=16 l=ic4kh3kw3 T=oc2ow8 i=ic32oc32ow7 bufs=3&quot;,</span>
+<span id="L356"><span class="lineNum">     356</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic128ih58oc128oh56kh3ph0 simd=16 l=ic8kh3kw3 T=oc4ow4 i=ic16oc16ow14 bufs=3&quot;,</span>
+<span id="L357"><span class="lineNum">     357</span>              :         &quot;xehpc mad fwd f32:f32:any mb2048 ic8ih10oc10oh8kh3ph0 simd=16 l=kh3 T=x i=ic8kw3oc16ow8 bufs=0&quot;,</span>
+<span id="L358"><span class="lineNum">     358</span>              :         &quot;xehpc mad fwd f64:f64:any mb2048 ic8ih10oc10oh8kh3ph0 simd=16 l=kh3 T=x i=ic8kw3oc16ow8 bufs=0&quot;,</span>
+<span id="L359"><span class="lineNum">     359</span>              :         &quot;xehpc dpas fwd x16:x16:any mb64 ic64iw1022oc128ow1007kw16pw0 simd=16 l=ic2kw16 T=oc2ow2 i=ic32oc64ow32&quot;,</span>
+<span id="L360"><span class="lineNum">     360</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic512iw32oc128ow32kw1pw0 simd=8 l=x T=ic8 i=ic64oc8ow8 bufs=0&quot;,</span>
+<span id="L361"><span class="lineNum">     361</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic512iw32oc128ow32kw1pw0 simd=8 l=ic2 T=ic8 i=ic32oc8ow8 bufs=0&quot;,</span>
+<span id="L362"><span class="lineNum">     362</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32b ic1iw8192oc64ow8177kw16pw0 simd=16 l=kw2 T=x i=ic2kw8oc64ow13&quot;,</span>
+<span id="L363"><span class="lineNum">     363</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic3ih300oc32oh150kh3sh2ph1 simd=8 l=kh3 T=oc2ow2 i=ic4kw8oc16ow25 bufs=3&quot;,</span>
+<span id="L364"><span class="lineNum">     364</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1024oc64 simd=16 l=ic8 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L365"><span class="lineNum">     365</span>              :         &quot;xehpc mad fwd x16:x16:any mb1 g64ic1ih8oc1oh8kh3ph1 simd=16 l=kh3 T=x i=g16kw3ow8 bufs=0&quot;,</span>
+<span id="L366"><span class="lineNum">     366</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic320ih64oc320oh32kh3sh2ph1 simd=16 l=ic10kh3kw3 T=oc4ow2 i=ic32oc16ow16 bufs=3&quot;,</span>
+<span id="L367"><span class="lineNum">     367</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic320ih64oc320oh32kh3sh2ph1 simd=16 l=ic10kh3kw3 T=oc4ow2 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L368"><span class="lineNum">     368</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic320iw4096oc320ow4096kw1pw0 simd=16 l=ic10 T=oc2ow8 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L369"><span class="lineNum">     369</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic320iw4096oc320ow4096kw1pw0 simd=16 l=ic10 T=oc2ow8 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L370"><span class="lineNum">     370</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb32 ic1iw8192oc64ow8177kw16pw0 simd=16 l=mb2ow17 T=oc2 i=ic2kw16mb16oc16&quot;,</span>
+<span id="L371"><span class="lineNum">     371</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic4ih360iw640oc36oh360ow640kh3kw3ph1pw1 simd=8 l=kh3 T=ow2 i=ic4kw8oc16ow32&quot;,</span>
+<span id="L372"><span class="lineNum">     372</span>              :         &quot;xehpc dpas fwd x8:x8:any mb128 ic128iw784oc512ow784kw1pw0 simd=16 l=ic2 T=oc4 i=ic64oc64ow28 bufs=3&quot;,</span>
+<span id="L373"><span class="lineNum">     373</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic512iw65536oc256ow65536kw1pw0 simd=16 l=ic16 T=oc4ow2 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L374"><span class="lineNum">     374</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1024iw196oc2048ow196kw1pw0 simd=16 l=ic64 T=oc4ow4 i=ic16oc32ow7 bufs=3&quot;,</span>
+<span id="L375"><span class="lineNum">     375</span>              :         &quot;xehpc dpas fwd x16:x16:any mb64 ic256iw18oc128ow15kw4pw0 simd=16 l=ic8kw4 T=ow8 i=ic32mb8oc32&quot;,</span>
+<span id="L376"><span class="lineNum">     376</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic960iw1024oc640ow1024kw1pw0 simd=8 l=ic60 T=oc8ow8 i=ic16oc16ow32 bufs=0&quot;,</span>
+<span id="L377"><span class="lineNum">     377</span>              :         &quot;xehpg mad fwd x16:x16:any mb1 g512ic1iw32oc1ow48kw3dw7pw16 simd=8 l=x T=ow8 i=g8kw3ow8 bufs=0&quot;,</span>
+<span id="L378"><span class="lineNum">     378</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic256iw289oc32ow289kw1pw0 simd=16 l=ic2 T=ic8 i=ic16oc16ow8 bufs=0&quot;,</span>
+<span id="L379"><span class="lineNum">     379</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic464ih64oc160oh64kh3ph1 simd=8 l=ic15kh3kw3 T=oc4ow2 i=ic32oc16ow32 bufs=3&quot;,</span>
+<span id="L380"><span class="lineNum">     380</span>              :         &quot;xehpc dpas fwd x16:x16:any mb32b ic512ih13oc1024oh13kh3ph1 simd=16 l=ic32kh3kw3 T=oc2ow8 i=ic16mb32oc32 bufs=3&quot;,</span>
+<span id="L381"><span class="lineNum">     381</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic960ih64oc320oh64kh3ph1 simd=16 l=ic30kh3kw3 T=oc2ow4 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L382"><span class="lineNum">     382</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic960ih64oc320oh64kh3ph1 simd=16 l=ic30kh3kw3 T=ow8 i=ic32mb2oc32ow8 bufs=3&quot;,</span>
+<span id="L383"><span class="lineNum">     383</span>              :         &quot;xehpc mad bwd_w f32:any:f32 mb2048 ic8ih10oc8oh8kh3ph0 simd=16 l=oh8ow4 T=x i=ic8mb16oc16 bufs=0&quot;,</span>
+<span id="L384"><span class="lineNum">     384</span>              :         &quot;xehpc mad bwd_w f64:any:f64 mb2048 ic8ih10oc8oh8kh3ph0 simd=8 l=oh8ow2 T=x i=ic8mb8oc8 bufs=0&quot;,</span>
+<span id="L385"><span class="lineNum">     385</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic256ih256oc256oh256kh3ph1 simd=16 l=ic8kh3kw3 T=oc2ow4 i=ic32oc64ow32 bufs=3&quot;,</span>
+<span id="L386"><span class="lineNum">     386</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic128iw784oc512ow784kw1pw0 simd=8 l=ic4 T=oc8ow4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L387"><span class="lineNum">     387</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280ih24oc1280oh12kh3sh2ph1 simd=8 l=ic40kh3kw3 T=ic2ow2 i=ic16mb2oc32ow6&quot;,</span>
+<span id="L388"><span class="lineNum">     388</span>              :         &quot;xehpc dpas fwd x16:x16:any mb64 ic128iw16oc64ow15kw2pw0 simd=16 l=ic4kw2 T=mb4 i=ic32mb16oc32&quot;,</span>
+<span id="L389"><span class="lineNum">     389</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16b ic32id17ih33iw33oc32od17oh33ow33kd3kh3kw3pd1ph1pw1 simd=16 l=kd3kh3kw3oc2 T=iw2 i=ic32mb16oc16 bufs=3&quot;,</span>
+<span id="L390"><span class="lineNum">     390</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic2560ih16oc1280oh16kh3ph1 simd=8 l=ic80kh3kw3 T=ic2 i=ic16oc32ow16 bufs=0&quot;,</span>
+<span id="L391"><span class="lineNum">     391</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic2560ih16oc1280oh16kh3ph1 simd=8 l=ic160kh3kw3 T=oc4 i=ic16oc32ow16 bufs=2&quot;,</span>
+<span id="L392"><span class="lineNum">     392</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb8 ic512iw299oc512ow73kw8sw4pw0 simd=16 l=kw8oc32 T=ic8iw4 i=ic64iw16oc16 bufs=3&quot;,</span>
+<span id="L393"><span class="lineNum">     393</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic960iw1024oc640ow1024kw1pw0 simd=16 l=ic30 T=oc4ow4 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L394"><span class="lineNum">     394</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic960iw1024oc640ow1024kw1pw0 simd=16 l=ic30 T=oc4ow8 i=ic32oc32ow32 bufs=3&quot;,</span>
+<span id="L395"><span class="lineNum">     395</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic16id128oc16od128kd3pd1 simd=16 l=kd3kh3kw3 T=ow4 i=ic16oc16ow32 bufs=3&quot;,</span>
+<span id="L396"><span class="lineNum">     396</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic4ih1080iw1920oc1oh1080ow1920kh3kw3ph1pw1 simd=8 l=kh3 T=ow4 i=ic4kw8oc8ow32&quot;,</span>
+<span id="L397"><span class="lineNum">     397</span>              :         &quot;xehpc dpas fwd x8:x8:any mb1 ic128ih16oc128oh16kh3ph1 simd=16 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L398"><span class="lineNum">     398</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic2560iw576oc1280ow576kw1pw0 simd=8 l=ic160 T=oc8ow8 i=ic16oc32ow24 bufs=0&quot;,</span>
+<span id="L399"><span class="lineNum">     399</span>              :         &quot;xehpg mad fwd x16:x16:any mb1 g512ic1iw32oc1ow64kw3dw15pw32 simd=8 l=x T=ow8 i=g8kw3ow8 bufs=0&quot;,</span>
+<span id="L400"><span class="lineNum">     400</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1920iw256oc1280ow256kw1pw0 simd=16 l=ic60 T=oc4ow4 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L401"><span class="lineNum">     401</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1920iw256oc1280ow256kw1pw0 simd=16 l=ic60 T=oc4ow8 i=ic32oc32ow16 bufs=3&quot;,</span>
+<span id="L402"><span class="lineNum">     402</span>              :         &quot;xehpc dpas bwd_d any:tf32:tf32 mb32 ic1id25oc32od25kd5pd2 simd=16 l=kd5kh5kw5oc2 T=iw8 i=ic16mb32oc16 bufs=2&quot;,</span>
+<span id="L403"><span class="lineNum">     403</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic64iw3136oc64ow3136kw1pw0 simd=8 l=ic2 T=x i=ic32mb16oc64 bufs=0&quot;,</span>
+<span id="L404"><span class="lineNum">     404</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic1ih360iw640oc4oh360ow640kh3kw3ph1pw1 simd=8 l=kh3 T=ow4 i=ic4kw8oc8ow32&quot;,</span>
+<span id="L405"><span class="lineNum">     405</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb16 ic256iw1444oc1024ow1444kw1pw0 simd=16 l=oc32 T=ic2iw4 i=ic64mb16oc32 bufs=3&quot;,</span>
+<span id="L406"><span class="lineNum">     406</span>              :         &quot;xehpc dpas bwd_w x16:any:x16 mb64 ic128iw252oc256ow237kw16pw0 simd=16 l=mb4ow15 T=ic4oc4 i=ic32oc64ow16&quot;,</span>
+<span id="L407"><span class="lineNum">     407</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic2560ih12oc1280oh12kh3ph1 simd=8 l=ic160kh3kw3 T=ow2 i=ic16mb2oc16ow6&quot;,</span>
+<span id="L408"><span class="lineNum">     408</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic128ih32oc64oh32kh3ph1 simd=8 l=kh3kw3 T=ic4 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L409"><span class="lineNum">     409</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic640iw4096oc320ow4096kw1pw0 simd=8 l=ic40 T=oc4ow4 i=ic16oc32ow32&quot;,</span>
+<span id="L410"><span class="lineNum">     410</span>              :         &quot;xehpc mad fwd x16:x16:any mb1 g64ic1ih16oc1oh16kh3ph1 simd=16 l=kh3 T=ow2 i=g16kw3ow8 bufs=0&quot;,</span>
+<span id="L411"><span class="lineNum">     411</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640ih96oc640oh96kh3ph1 simd=8 l=ic40kh3kw3 T=oc4ow4 i=ic16oc32ow24&quot;,</span>
+<span id="L412"><span class="lineNum">     412</span>              :         &quot;xehpc dpas bwd_d any:x16:x16 mb64 ic256iw18oc128ow15kw4pw0 simd=16 l=kw4oc4 T=ic2iw8 i=ic32mb16oc32&quot;,</span>
+<span id="L413"><span class="lineNum">     413</span>              :         &quot;xehpg dpas fwd x8:x8:any mb1 ic10ih15oc20oh13kh3ph0 simd=8 l=kh3kw2 T=ow2 i=ic16kw2oc8ow8 bufs=3&quot;,</span>
+<span id="L414"><span class="lineNum">     414</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280ih16oc1280oh8kh3sh2ph1 simd=16 l=ic40kh3kw3 T=oc8 i=ic32oc16ow8 bufs=3&quot;,</span>
+<span id="L415"><span class="lineNum">     415</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280ih16oc1280oh8kh3sh2ph1 simd=16 l=ic40kh3kw3 T=oc2ow8 i=ic32mb2oc64 bufs=3&quot;,</span>
+<span id="L416"><span class="lineNum">     416</span>              :         &quot;xehpg dpas fwd x16:x16:any mb1 ic2560ih8oc1280oh8kh3ph1 simd=8 l=ic40kh3kw3 T=ic2 i=ic32oc16ow8 bufs=0&quot;,</span>
+<span id="L417"><span class="lineNum">     417</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic640ih48oc640oh24kh3sh2ph1 simd=8 l=ic40kh3kw3 T=oc8 i=ic16oc16ow24&quot;,</span>
+<span id="L418"><span class="lineNum">     418</span>              :         &quot;xehpg dpas fwd x8:x8:any mb128b ic512ih7oc512oh7kh3ph1 simd=8 l=ic16kh3kw3 T=mb4oc4 i=ic32mb32oc32 bufs=3&quot;,</span>
+<span id="L419"><span class="lineNum">     419</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic3ih224oc1024oh16kh14sh14ph0 simd=16 l=kh14kw2 T=oc8ow2 i=ic4kw8oc16ow8 bufs=0&quot;,</span>
+<span id="L420"><span class="lineNum">     420</span>              :         &quot;xehpg dpas fwd x16:x16:any mb8 ic3ih224oc768oh14kh16sh16ph0 simd=8 l=kh16kw4 T=oc2 i=ic4kw4oc64ow14 bufs=0&quot;,</span>
+<span id="L421"><span class="lineNum">     421</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic512ih128oc512oh128kh3ph1 simd=16 l=ic16kh3kw3 T=oc4ow8 i=ic32oc64ow16 bufs=3&quot;,</span>
+<span id="L422"><span class="lineNum">     422</span>              :         &quot;xehpg dpas fwd x16:x16:any mb2 ic1280iw2304oc640ow2304kw1pw0 simd=8 l=ic80 T=oc4ow8 i=ic16oc32ow24&quot;,</span>
+<span id="L423"><span class="lineNum">     423</span>              :         &quot;xehpc dpas fwd x16:x16:any mb1 ic1280ih32oc640oh32kh3ph1 simd=16 l=ic40kh3kw3 T=oc2ow4 i=ic32oc64ow8 bufs=3&quot;,</span>
+<span id="L424"><span class="lineNum">     424</span>              :         &quot;xehpc dpas fwd x16:x16:any mb2 ic1280ih32oc640oh32kh3ph1 simd=16 l=ic40kh3kw3 T=ow2 i=ic32mb2oc64ow16 bufs=3&quot;,</span>
+<span id="L425"><span class="lineNum">     425</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512ih7oc512oh7kh3ph1 simd=8 l=ic2kh3kw3 T=ic8 i=ic32oc64ow8 bufs=0&quot;,</span>
+<span id="L426"><span class="lineNum">     426</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512ih14oc512oh7kh3sh2ph1 simd=8 l=ic2kh3kw3 T=ic8 i=ic32oc64ow7 bufs=0&quot;,</span>
+<span id="L427"><span class="lineNum">     427</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512iw784oc128ow784kw1pw0 simd=8 l=ic16 T=oc4 i=ic32oc16ow16 bufs=0&quot;,</span>
+<span id="L428"><span class="lineNum">     428</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256iw3136oc128ow3136kw1pw0 simd=8 l=ic8 T=oc4 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L429"><span class="lineNum">     429</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256iw3136oc64ow3136kw1pw0 simd=8 l=ic8 T=oc4ow2 i=ic32oc16ow28 bufs=0&quot;,</span>
+<span id="L430"><span class="lineNum">     430</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic64iw3136oc64ow3136kw1pw0 simd=8 l=ic2 T=oc2 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L431"><span class="lineNum">     431</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512iw49oc2048ow49kw1pw0 simd=8 l=ic16 T=oc8 i=ic32oc16ow16&quot;,</span>
+<span id="L432"><span class="lineNum">     432</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic1024ih14oc2048oh7kh1sh2ph0 simd=8 l=ic16 T=ic2 i=ic32oc64ow8 bufs=0&quot;,</span>
+<span id="L433"><span class="lineNum">     433</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256ih14oc256oh14kh3ph1 simd=8 l=ic2kh3kw3 T=ic4 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L434"><span class="lineNum">     434</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512ih28oc1024oh14kh1sh2ph0 simd=8 l=ic16 T=oc8 i=ic32oc32ow16&quot;,</span>
+<span id="L435"><span class="lineNum">     435</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic128iw784oc512ow784kw1pw0 simd=8 l=ic4 T=oc2 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L436"><span class="lineNum">     436</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic1024iw196oc512ow196kw1pw0 simd=8 l=ic32 T=oc2ow2 i=ic32oc16ow14 bufs=0&quot;,</span>
+<span id="L437"><span class="lineNum">     437</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic2048iw49oc512ow49kw1pw0 simd=8 l=ic8 T=ic8 i=ic32oc32ow16 bufs=0&quot;,</span>
+<span id="L438"><span class="lineNum">     438</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic128ih28oc512oh28kh1ph0 simd=8 l=ic4 T=oc2 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L439"><span class="lineNum">     439</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512ih7oc2048oh7kh1ph0 simd=8 l=ic8 T=ic2 i=ic32oc64ow7 bufs=0&quot;,</span>
+<span id="L440"><span class="lineNum">     440</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic1024iw196oc256ow196kw1pw0 simd=8 l=ic8 T=ic4 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L441"><span class="lineNum">     441</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic64ih56oc256oh56kh1ph0 simd=8 l=ic2 T=oc2 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L442"><span class="lineNum">     442</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256ih28oc256oh14kh3sh2ph1 simd=8 l=ic4kh3kw3 T=oc8 i=ic64oc16ow8&quot;,</span>
+<span id="L443"><span class="lineNum">     443</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic64iw3136oc256ow3136kw1pw0 simd=8 l=ic2 T=oc8ow2 i=ic32oc32ow28 bufs=0&quot;,</span>
+<span id="L444"><span class="lineNum">     444</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256ih14oc1024oh14kh1ph0 simd=8 l=ic8 T=oc2 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L445"><span class="lineNum">     445</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic3ih224oc64oh112kh7sh2ph3 simd=8 l=kh7 T=oc2 i=ic4kw8oc32ow14 bufs=0&quot;,</span>
+<span id="L446"><span class="lineNum">     446</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic512iw784oc256ow784kw1pw0 simd=8 l=ic16 T=oc8ow2 i=ic32oc16ow28 bufs=0&quot;,</span>
+<span id="L447"><span class="lineNum">     447</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256ih56oc512oh28kh1sh2ph0 simd=8 l=ic8 T=oc8 i=ic32oc64ow14&quot;,</span>
+<span id="L448"><span class="lineNum">     448</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic64ih56oc64oh56kh3ph1 simd=8 l=ic2kh3kw3 T=oc2 i=ic32oc32ow16&quot;,</span>
+<span id="L449"><span class="lineNum">     449</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic128ih28oc128oh28kh3ph1 simd=8 l=ic2kh3kw3 T=ic2 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L450"><span class="lineNum">     450</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic128ih56oc128oh28kh3sh2ph1 simd=8 l=ic4kh3kw3 T=oc8 i=ic32oc16ow16&quot;,</span>
+<span id="L451"><span class="lineNum">     451</span>              :         &quot;xehpg:arl dpas fwd x8:x8:any mb1 ic256iw196oc1024ow196kw1pw0 simd=8 l=ic8 T=oc4ow2 i=ic32oc32ow14 bufs=0&quot;,</span>
+<span id="L452"><span class="lineNum">     452</span>              :         nullptr,</span>
+<span id="L453"><span class="lineNum">     453</span>              :     };</span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">         225 :     return entries;</span></span>
+<span id="L455"><span class="lineNum">     455</span>              : };</span>
+<span id="L456"><span class="lineNum">     456</span>              : // clang-format on</span>
+<span id="L457"><span class="lineNum">     457</span>              : </span>
+<span id="L458"><span class="lineNum">     458</span>              : } // namespace jit</span>
+<span id="L459"><span class="lineNum">     459</span>              : } // namespace conv</span>
+<span id="L460"><span class="lineNum">     460</span>              : } // namespace intel</span>
+<span id="L461"><span class="lineNum">     461</span>              : } // namespace gpu</span>
+<span id="L462"><span class="lineNum">     462</span>              : } // namespace impl</span>
+<span id="L463"><span class="lineNum">     463</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

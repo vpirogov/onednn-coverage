@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_uni_binary_kernel.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_uni_binary_kernel.hpp<span style="font-size: 80%;"> (source / <a href="jit_uni_binary_kernel.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">52.5&nbsp;%</td>
+            <td class="headerCovTableEntry">59</td>
+            <td class="headerCovTableEntry">31</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_JIT_UNI_BINARY_KERNEL_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_JIT_UNI_BINARY_KERNEL_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;cassert&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;cpu/x64/cpu_isa_traits.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;cpu/x64/injectors/jit_uni_postops_injector.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/x64/jit_primitive_conf.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;cpu/x64/utils/jit_io_helper.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/cpu_binary_pd.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace dnnl {</span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace impl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace cpu {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace x64 {</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span>              : using namespace Xbyak;</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : struct binary_kernel_t : public jit_generator_t {</span>
+<span id="L42"><span class="lineNum">      42</span>              :     using op_t = binary_op_t;</span>
+<span id="L43"><span class="lineNum">      43</span>              :     using bcast_t = binary_bcast_t;</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span>              :     binary_kernel_t(const size_t vlen, const binary_pd_t *pd,</span>
+<span id="L46"><span class="lineNum">      46</span>              :             const jit_binary_conf_t &amp;conf, const char *name,</span>
+<span id="L47"><span class="lineNum">      47</span>              :             bool tail_kernel = false);</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       74450 :     ~binary_kernel_t() override = default;</span></span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">    29110518 :     void operator()(jit_uni_binary_args_t *p) {</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">    29110518 :         jit_generator_t::operator()(p);</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">    29110518 :     }</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">      306816 :     size_t simd_w() const noexcept { return simd_w_; }</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :     size_t vlen() const noexcept { return vlen_; }</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span>              : protected:</span>
+<span id="L58"><span class="lineNum">      58</span>              :     size_t get_tail_size() const;</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              :     const size_t vlen_;</span>
+<span id="L61"><span class="lineNum">      61</span>              :     const size_t simd_w_;</span>
+<span id="L62"><span class="lineNum">      62</span>              :     constexpr static int vmm_start_idx_ = 1;</span>
+<span id="L63"><span class="lineNum">      63</span>              :     const binary_pd_t *pd_;</span>
+<span id="L64"><span class="lineNum">      64</span>              :     const jit_binary_conf_t conf_;</span>
+<span id="L65"><span class="lineNum">      65</span>              :     const bool is_tail_kernel_;</span>
+<span id="L66"><span class="lineNum">      66</span>              :     const bool is_src1_outer_dims_tail_;</span>
+<span id="L67"><span class="lineNum">      67</span>              :     const size_t tail_size_;</span>
+<span id="L68"><span class="lineNum">      68</span>              :     const size_t padding_tail_size_;</span>
+<span id="L69"><span class="lineNum">      69</span>              : };</span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span>              : template &lt;cpu_isa_t isa, typename Vmm&gt;</span>
+<span id="L72"><span class="lineNum">      72</span>              : struct jit_uni_binary_kernel_t : public binary_kernel_t {</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">      223350 :     DECLARE_CPU_JIT_AUX_FUNCTIONS(jit_uni_binary_kernel_t)</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              :     const AddressFrame &amp;vmmword = (std::is_same&lt;Vmm, Xmm&gt;::value)</span>
+<span id="L76"><span class="lineNum">      76</span>              :             ? xword</span>
+<span id="L77"><span class="lineNum">      77</span>              :             : ((std::is_same&lt;Vmm, Ymm&gt;::value) ? yword : zword);</span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span>              :     const bool is_avx512 = is_superset(isa, avx512_core);</span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              :     const Reg64 reg_param_ = abi_param1;</span>
+<span id="L82"><span class="lineNum">      82</span>              :     const Reg64 reg_src0_ = r8;</span>
+<span id="L83"><span class="lineNum">      83</span>              :     const Reg64 reg_src1_ = r9;</span>
+<span id="L84"><span class="lineNum">      84</span>              :     const Reg64 reg_src2_ = rsi;</span>
+<span id="L85"><span class="lineNum">      85</span>              :     const Reg64 reg_dst_ = r10;</span>
+<span id="L86"><span class="lineNum">      86</span>              :     // Note: for ternary operations, only src2 identical to src0 is supported.</span>
+<span id="L87"><span class="lineNum">      87</span>              :     // It means the processing of elements in both tensors is identical, thus,</span>
+<span id="L88"><span class="lineNum">      88</span>              :     // if the offset is in number of elements and not in bytes, multiplying such</span>
+<span id="L89"><span class="lineNum">      89</span>              :     // offset both src0 and src2 offsets by correspondent dt_size allows to</span>
+<span id="L90"><span class="lineNum">      90</span>              :     // compute them independently. This allows us to save a GPR (there's no</span>
+<span id="L91"><span class="lineNum">      91</span>              :     // `reg_offt_src2_` so far) until the moment a random broadcast for src2 is</span>
+<span id="L92"><span class="lineNum">      92</span>              :     // supported. There's no spare GPRs to use at the moment without code</span>
+<span id="L93"><span class="lineNum">      93</span>              :     // modifications.</span>
+<span id="L94"><span class="lineNum">      94</span>              :     const Reg64 reg_offt_src0_ = r11;</span>
+<span id="L95"><span class="lineNum">      95</span>              :     const Reg64 reg_outer_dims_range_ = r12;</span>
+<span id="L96"><span class="lineNum">      96</span>              :     const Reg64 reg_offt_src1_ = rax;</span>
+<span id="L97"><span class="lineNum">      97</span>              :     const Reg64 reg_src1_stride_range_ = r15;</span>
+<span id="L98"><span class="lineNum">      98</span>              :     const Reg64 reg_reverse_src1_stride_range_ = rax;</span>
+<span id="L99"><span class="lineNum">      99</span>              :     const Reg64 reg_reverse_spat_offt_ = r13;</span>
+<span id="L100"><span class="lineNum">     100</span>              :     const Reg64 reg_tmp_ = r14;</span>
+<span id="L101"><span class="lineNum">     101</span>              :     const Reg64 reg_tmp1_ = abi_not_param1;</span>
+<span id="L102"><span class="lineNum">     102</span>              :     const Reg64 reg_elt_inj_table_ = r15;</span>
+<span id="L103"><span class="lineNum">     103</span>              :     const Reg64 reg_off_rhs_postops_ = rdx;</span>
+<span id="L104"><span class="lineNum">     104</span>              :     const Reg64 reg_scales_src0_ = rbx;</span>
+<span id="L105"><span class="lineNum">     105</span>              :     const Reg64 reg_scales_src1_ = rbp;</span>
+<span id="L106"><span class="lineNum">     106</span>              :     const Reg64 reg_offt_dst_ = rdx;</span>
+<span id="L107"><span class="lineNum">     107</span>              :     const Opmask tail_opmask_ = k2;</span>
+<span id="L108"><span class="lineNum">     108</span>              :     const Opmask cmp_mask = k3;</span>
+<span id="L109"><span class="lineNum">     109</span>              :     const Opmask full_mask_ = k4;</span>
+<span id="L110"><span class="lineNum">     110</span>              :     const Vmm vmm_tail_vmask_ = Vmm(0);</span>
+<span id="L111"><span class="lineNum">     111</span>              :     const Vmm vreg_sum_scale_ = Vmm(is_avx512 ? 17 : 9);</span>
+<span id="L112"><span class="lineNum">     112</span>              :     const Xmm xreg_sum_scale_ = Xmm(9);</span>
+<span id="L113"><span class="lineNum">     113</span>              :     const Vmm vreg_zero_ = Vmm(is_avx512 ? 18 : 10);</span>
+<span id="L114"><span class="lineNum">     114</span>              :     const Vmm vreg_one_ = Vmm(is_avx512 ? 19 : 11);</span>
+<span id="L115"><span class="lineNum">     115</span>              :     const Vmm vreg_saturation_ubound_ = Vmm(is_avx512 ? 20 : 12);</span>
+<span id="L116"><span class="lineNum">     116</span>              :     const Vmm vreg_bcast_src1_ = Vmm(is_avx512 ? 21 : 13);</span>
+<span id="L117"><span class="lineNum">     117</span>              :     const Xmm xreg_bcast_src1_ = Xmm(13);</span>
+<span id="L118"><span class="lineNum">     118</span>              :     const Vmm vreg_scales_src0_ = Vmm(is_avx512 ? 22 : 14);</span>
+<span id="L119"><span class="lineNum">     119</span>              :     const Vmm vreg_scales_src1_ = Vmm(is_avx512 ? 23 : 15);</span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span>              :     const Zmm vreg_bf16_emu_1_ = Zmm(26);</span>
+<span id="L122"><span class="lineNum">     122</span>              :     const Zmm vreg_bf16_emu_2_ = Zmm(27);</span>
+<span id="L123"><span class="lineNum">     123</span>              :     const Zmm vreg_bf16_emu_3_ = Zmm(28);</span>
+<span id="L124"><span class="lineNum">     124</span>              :     const Zmm vreg_bf16_emu_4_ = Zmm(29);</span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span>              :     const Vmm vmm_full_mask_ = Vmm(is_avx512 ? 24 : 5);</span>
+<span id="L127"><span class="lineNum">     127</span>              :     const Vmm vmm_tmp_gather_ = Vmm(is_avx512 ? 25 : 6);</span>
+<span id="L128"><span class="lineNum">     128</span>              :     const Vmm vmm_indices_ = Vmm(is_avx512 ? 30 : 7);</span>
+<span id="L129"><span class="lineNum">     129</span>              :     const Vmm vmm_gathered_src_ = Vmm(is_avx512 ? 31 : 8);</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :     // For the ternary select operation, a conditional value is required</span>
+<span id="L132"><span class="lineNum">     132</span>              :     // for computation in addition to src0 and src1. The number of unroll</span>
+<span id="L133"><span class="lineNum">     133</span>              :     // registers are adjusted to accomodate for the extra input.</span>
+<span id="L134"><span class="lineNum">     134</span>              :     const size_t unroll_regs_ = is_avx512 ? (conf_.is_ternary_op ? 3 : 8)</span>
+<span id="L135"><span class="lineNum">     135</span>              :                                           : (conf_.is_ternary_op ? 1 : 4);</span>
+<span id="L136"><span class="lineNum">     136</span>              :     const size_t offt_src0_;</span>
+<span id="L137"><span class="lineNum">     137</span>              :     const size_t offt_src1_;</span>
+<span id="L138"><span class="lineNum">     138</span>              :     const size_t offt_src2_;</span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span>              :     static constexpr cpu_isa_t inject_isa</span>
+<span id="L141"><span class="lineNum">     141</span>              :             = isa == avx512_core_bf16 ? avx512_core : isa;</span>
+<span id="L142"><span class="lineNum">     142</span>              :     io::jit_io_multi_dt_helper_t&lt;Vmm&gt; io_;</span>
+<span id="L143"><span class="lineNum">     143</span>              :     std::unique_ptr&lt;injector::jit_uni_postops_injector_t&lt;inject_isa, Vmm&gt;&gt;</span>
+<span id="L144"><span class="lineNum">     144</span>              :             postops_injector_;</span>
+<span id="L145"><span class="lineNum">     145</span>              :     const Opmask elt_inj_opmask_ = k1;</span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span>              :     void init();</span>
+<span id="L148"><span class="lineNum">     148</span>              :     void init_post_ops_injector();</span>
+<span id="L149"><span class="lineNum">     149</span>              :     void apply_postops(int unroll, bool tail);</span>
+<span id="L150"><span class="lineNum">     150</span>              :     void load_kernel_params();</span>
+<span id="L151"><span class="lineNum">     151</span>              :     Address src0_ptr(size_t offt = 0);</span>
+<span id="L152"><span class="lineNum">     152</span>              :     Address src1_ptr(size_t offt = 0);</span>
+<span id="L153"><span class="lineNum">     153</span>              :     Address src2_ptr(size_t offt = 0);</span>
+<span id="L154"><span class="lineNum">     154</span>              :     Address dst_ptr(size_t offt = 0);</span>
+<span id="L155"><span class="lineNum">     155</span>              :     Opmask get_select_opmask(int reg_idx);</span>
+<span id="L156"><span class="lineNum">     156</span>              :     unsigned int cmp_predicate(alg_kind_t alg);</span>
+<span id="L157"><span class="lineNum">     157</span>              :     void perform_op(</span>
+<span id="L158"><span class="lineNum">     158</span>              :             const Vmm &amp;v0, const Vmm &amp;v1, const Vmm &amp;s_src0, const Vmm &amp;s_src1);</span>
+<span id="L159"><span class="lineNum">     159</span>              :     void perform_ternary_op(const Vmm &amp;v0, const Vmm &amp;v1, const Vmm &amp;cond,</span>
+<span id="L160"><span class="lineNum">     160</span>              :             const Vmm &amp;s_src0, const Vmm &amp;s_src1, int reg_idx);</span>
+<span id="L161"><span class="lineNum">     161</span>              :     void prepare_isa_kernel();</span>
+<span id="L162"><span class="lineNum">     162</span>              :     void compute_bcast(bool tail);</span>
+<span id="L163"><span class="lineNum">     163</span>              :     void load_src1(const Vmm &amp;vreg_src1, const int offt, bool tail);</span>
+<span id="L164"><span class="lineNum">     164</span>              :     void store(int unroll, bool tail);</span>
+<span id="L165"><span class="lineNum">     165</span>              :     void compute_ne_xf16_dst_body(int unroll, bool tail);</span>
+<span id="L166"><span class="lineNum">     166</span>              :     void compute_dst_body(int unroll, bool tail);</span>
+<span id="L167"><span class="lineNum">     167</span>              :     void compute_dst(int unroll, bool tail);</span>
+<span id="L168"><span class="lineNum">     168</span>              :     void forward();</span>
+<span id="L169"><span class="lineNum">     169</span>              :     void forward_over_outer_dims();</span>
+<span id="L170"><span class="lineNum">     170</span>              :     void generate() override;</span>
+<span id="L171"><span class="lineNum">     171</span>              : </span>
+<span id="L172"><span class="lineNum">     172</span>              :     jit_uni_binary_kernel_t(const binary_pd_t *pd,</span>
+<span id="L173"><span class="lineNum">     173</span>              :             const jit_binary_conf_t &amp;conf, bool tail_kernel = false);</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">      148900 :     ~jit_uni_binary_kernel_t() override = default;</span></span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span>              :     std::map&lt;data_type_t, io::io_saturation_conf_t&gt;</span>
+<span id="L177"><span class="lineNum">     177</span>              :     create_saturation_vmm_map() const;</span>
+<span id="L178"><span class="lineNum">     178</span>              : };</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              : } // namespace x64</span>
+<span id="L181"><span class="lineNum">     181</span>              : } // namespace cpu</span>
+<span id="L182"><span class="lineNum">     182</span>              : } // namespace impl</span>
+<span id="L183"><span class="lineNum">     183</span>              : } // namespace dnnl</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

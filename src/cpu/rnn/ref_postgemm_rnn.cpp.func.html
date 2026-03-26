@@ -1,0 +1,612 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/rnn/ref_postgemm_rnn.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/rnn">src/cpu/rnn</a> - ref_postgemm_rnn.cpp<span style="font-size: 80%;"> (<a href="ref_postgemm_rnn.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">70.6&nbsp;%</td>
+            <td class="headerCovTableEntry">85</td>
+            <td class="headerCovTableEntry">60</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">56.4&nbsp;%</td>
+            <td class="headerCovTableEntry">55</td>
+            <td class="headerCovTableEntry">31</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="ref_postgemm_rnn.cpp.func-c.html"><img src="../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L32">dnnl::impl::cpu::activation(dnnl_alg_kind_t, dnnl_prop_kind_t, float, float, float)</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L57">dnnl::impl::cpu::linear(float, float, float)</a></td>
+              
+              <td class="coverFnHi">4173840</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, float*, float*, float*, float*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnHi">14352</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::float16_t, float, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::float16_t, float, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">4416</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">5520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, float*, float*, float*, float*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L156">dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, float*, float*, float*, float*)::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">4416</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">2968064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">927520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">927520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L74">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1113024</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnHi">71552</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">21664</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">20704</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L88">dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)::{lambda(long)#2}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">29184</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L168">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">624</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L168">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">192</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L168">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L168">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">192</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L178">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}::operator()(float) const</a></td>
+              
+              <td class="coverFnHi">1205776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L178">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}::operator()(float) const</a></td>
+              
+              <td class="coverFnAliasHi">371008</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L178">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}::operator()(float) const</a></td>
+              
+              <td class="coverFnAliasHi">463760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L178">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}::operator()(float) const</a></td>
+              
+              <td class="coverFnAliasHi">371008</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L171">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L171">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L171">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L171">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L175">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnHi">1205776</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L175">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasHi">371008</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L175">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasHi">463760</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L175">dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasHi">371008</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L106">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">4848</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L106">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1568</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L106">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1392</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L106">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1888</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L109">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L109">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L109">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L109">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L113">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnHi">2968064</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L113">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasHi">927520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L113">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasHi">927520</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L113">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}::operator()(float, float, float) const</a></td>
+              
+              <td class="coverFnAliasHi">1113024</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L137">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)5, (dnnl_data_type_t)4, (dnnl_data_type_t)4&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, signed char*, int*, signed char*, float*, int) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L132">dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)6, (dnnl_data_type_t)4, (dnnl_data_type_t)4&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const</a></td>
+              
+              <td class="coverFnLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, float*, float*, float*, float*)</a></td>
+              
+              <td class="coverFnHi">624</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::float16_t, float, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::float16_t, float, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)1, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*)</a></td>
+              
+              <td class="coverFnAliasHi">192</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)2, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*)</a></td>
+              
+              <td class="coverFnAliasHi">240</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, float*, float*, float*, float*)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L143">void dnnl::impl::cpu::rnn_bwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::cpu::rnn_postgemm_bwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float)#3}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, float*, float*, float*, float*)</a></td>
+              
+              <td class="coverFnAliasHi">192</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)</a></td>
+              
+              <td class="coverFnHi">4848</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)1, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)</a></td>
+              
+              <td class="coverFnAliasHi">1568</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)2, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)</a></td>
+              
+              <td class="coverFnAliasHi">1392</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#1} const*, void const*, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="ref_postgemm_rnn.cpp.gcov.html#L62">void dnnl::impl::cpu::rnn_fwd_postgemm_template&lt;dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, float, float&gt;(dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2}, float const*, float, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float, float, dnnl::impl::cpu::rnn_postgemm_fwd_t&lt;(dnnl_data_type_t)3, (dnnl_data_type_t)3, (dnnl_data_type_t)3&gt;::rnn_postgemm(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(float, float, float)#2} const*, void const*, int)</a></td>
+              
+              <td class="coverFnAliasHi">1888</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

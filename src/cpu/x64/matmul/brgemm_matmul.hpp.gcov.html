@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/matmul/brgemm_matmul.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/matmul">src/cpu/x64/matmul</a> - brgemm_matmul.hpp<span style="font-size: 80%;"> (source / <a href="brgemm_matmul.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">88</td>
+            <td class="headerCovTableEntry">88</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_MATMUL_BRGEMM_MATMUL_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_MATMUL_BRGEMM_MATMUL_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;common/primitive.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;cpu/matmul/cpu_matmul_pd.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;cpu/x64/brgemm/brgemm.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;cpu/x64/brgemm/brgemm_containers.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/x64/brgemm/brgemm_utils.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/x64/cpu_reducer.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;cpu/x64/jit_avx512_sparse_decompress_kernel.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &quot;cpu/x64/jit_brgemm_post_ops.hpp&quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              : #include &quot;cpu/x64/matmul/brgemm_matmul_copy_utils.hpp&quot;</span>
+<span id="L33"><span class="lineNum">      33</span>              : #include &quot;cpu/x64/matmul/brgemm_matmul_utils.hpp&quot;</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span>              : namespace dnnl {</span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace impl {</span>
+<span id="L37"><span class="lineNum">      37</span>              : namespace cpu {</span>
+<span id="L38"><span class="lineNum">      38</span>              : namespace x64 {</span>
+<span id="L39"><span class="lineNum">      39</span>              : namespace matmul {</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : constexpr int dynamic_m_tails[] = {32, 16, 8, 1};</span>
+<span id="L42"><span class="lineNum">      42</span>              : constexpr int max_num_dynamic_m_tails</span>
+<span id="L43"><span class="lineNum">      43</span>              :         = sizeof(dynamic_m_tails) / sizeof(dynamic_m_tails[0]);</span>
+<span id="L44"><span class="lineNum">      44</span>              : constexpr int dynamic_n_tails[] = {32, 16, 8, 1};</span>
+<span id="L45"><span class="lineNum">      45</span>              : constexpr int max_num_dynamic_n_tails</span>
+<span id="L46"><span class="lineNum">      46</span>              :         = sizeof(dynamic_n_tails) / sizeof(dynamic_n_tails[0]);</span>
+<span id="L47"><span class="lineNum">      47</span>              : constexpr int max_num_brg_kernels_matmul = 2 * 2 * 2</span>
+<span id="L48"><span class="lineNum">      48</span>              :         * (max_num_dynamic_n_tails + 1 /* main kernel size */)</span>
+<span id="L49"><span class="lineNum">      49</span>              :         * (max_num_dynamic_m_tails + 1 /* main kernel size */)</span>
+<span id="L50"><span class="lineNum">      50</span>              :         * 2; //prefetching on/off</span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              : template &lt;cpu_isa_t isa&gt;</span>
+<span id="L53"><span class="lineNum">      53</span>              : struct brgemm_matmul_t : public primitive_t {</span>
+<span id="L54"><span class="lineNum">      54</span>              :     struct pd_t : public ::dnnl::impl::cpu::matmul::cpu_matmul_pd_t {</span>
+<span id="L55"><span class="lineNum">      55</span>              :         using ::dnnl::impl::cpu::matmul::cpu_matmul_pd_t::cpu_matmul_pd_t;</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">     1422624 :         DECLARE_COMMON_PD_T(</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :                 JIT_IMPL_NAME_HELPER(&quot;brg_matmul:&quot;, isa, &quot;&quot;), brgemm_matmul_t);</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              :         status_t init(engine_t *engine);</span>
+<span id="L61"><span class="lineNum">      61</span>              :         int get_brg_kernel_idx(bool is_bs_tail, bool do_initialization,</span>
+<span id="L62"><span class="lineNum">      62</span>              :                 int m_ker_idx, int n_ker_idx, bool is_K_tail,</span>
+<span id="L63"><span class="lineNum">      63</span>              :                 bool is_prefetching) const;</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">   226274089 :         const brgemm_desc_t &amp;get_brg_desc(int idx) const {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">   226274089 :             return brg_descs_[idx];</span></span>
+<span id="L66"><span class="lineNum">      66</span>              :         }</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">   461753710 :         const brgemm_matmul_conf_t &amp;get_brgemm_matmul_conf() const {</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">   461753710 :             return bgmmc_;</span></span>
+<span id="L69"><span class="lineNum">      69</span>              :         }</span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span>              :     private:</span>
+<span id="L72"><span class="lineNum">      72</span>              :         brgemm_desc_t brg_descs_[max_num_brg_kernels_matmul];</span>
+<span id="L73"><span class="lineNum">      73</span>              :         brgemm_matmul_conf_t bgmmc_;</span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span>              :         /**</span>
+<span id="L76"><span class="lineNum">      76</span>              :          * This function checks whether the current problem can be handled by</span>
+<span id="L77"><span class="lineNum">      77</span>              :          * the GEMM-based matmul implementation to avoid falling back to the</span>
+<span id="L78"><span class="lineNum">      78</span>              :          * reference implementation.</span>
+<span id="L79"><span class="lineNum">      79</span>              :          */</span>
+<span id="L80"><span class="lineNum">      80</span>              :         bool can_use_gemm_fallback(engine_t *engine) const;</span>
+<span id="L81"><span class="lineNum">      81</span>              :     };</span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">      134753 :     brgemm_matmul_t(const pd_t *apd) : primitive_t(apd) {}</span></span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span>              :     status_t init(engine_t *engine) override;</span>
+<span id="L86"><span class="lineNum">      86</span>              :     static constexpr data_type_t acc_type = data_type::s32;</span>
+<span id="L87"><span class="lineNum">      87</span>              : </span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">     1892352 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">     1892352 :         return execute_body(ctx);</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :     }</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span>              : private:</span>
+<span id="L93"><span class="lineNum">      93</span>              :     struct brg_matmul_exec_ctx_t;</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">  1207193892 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :     status_t execute_body(const exec_ctx_t &amp;ctx) const;</span>
+<span id="L97"><span class="lineNum">      97</span>              :     void compute_kernel(const brg_matmul_exec_ctx_t &amp;brgmm_ctx,</span>
+<span id="L98"><span class="lineNum">      98</span>              :             const char *A_data_batch_ptr, const char *B_data_batch_ptr,</span>
+<span id="L99"><span class="lineNum">      99</span>              :             int ithr, int b_idx, int m_blk_idx, int n_blk_idx, int k_blk_idx,</span>
+<span id="L100"><span class="lineNum">     100</span>              :             bool do_init, int &amp;prev_ker_idx, bool prefetch) const;</span>
+<span id="L101"><span class="lineNum">     101</span>              : </span>
+<span id="L102"><span class="lineNum">     102</span>              :     bool determine_prefetch(const int mc, const int m_end, const int nc,</span>
+<span id="L103"><span class="lineNum">     103</span>              :             const int n_end, const brgemm_matmul_conf_t &amp;bgmmc,</span>
+<span id="L104"><span class="lineNum">     104</span>              :             const brg_matmul_exec_ctx_t &amp;brgmm_ctx) const;</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span>              :     void copy_a_chunk_in_buffer(const brg_matmul_exec_ctx_t &amp;brgmm_ctx,</span>
+<span id="L107"><span class="lineNum">     107</span>              :             const char *A_data_batch_ptr, int ithr, int m_blk_idx,</span>
+<span id="L108"><span class="lineNum">     108</span>              :             int k_blk_idx) const;</span>
+<span id="L109"><span class="lineNum">     109</span>              :     void copy_b_chunk_in_buffer(const brg_matmul_exec_ctx_t &amp;brgmm_ctx,</span>
+<span id="L110"><span class="lineNum">     110</span>              :             const char *B_data_batch_ptr, int ithr, int b_idx, int n_blk_idx,</span>
+<span id="L111"><span class="lineNum">     111</span>              :             int k_blk_idx) const;</span>
+<span id="L112"><span class="lineNum">     112</span>              :     void maybe_reduce_partial_results_and_apply_postops(</span>
+<span id="L113"><span class="lineNum">     113</span>              :             const std::shared_ptr&lt;brg_matmul_exec_ctx_t&gt; &amp;brgmm_ctx_ptr) const;</span>
+<span id="L114"><span class="lineNum">     114</span>              :     void maybe_reduce_A(const brg_matmul_exec_ctx_t &amp;brgmm_ctx, int ithr,</span>
+<span id="L115"><span class="lineNum">     115</span>              :             int gemm_batch, int m_blk_idx, int n_blk_idx, int k_chunk_idx,</span>
+<span id="L116"><span class="lineNum">     116</span>              :             bool do_init, bool has_K_tail, bool do_K_tail) const;</span>
+<span id="L117"><span class="lineNum">     117</span>              :     void maybe_reduce_and_convert_partial_results_A(</span>
+<span id="L118"><span class="lineNum">     118</span>              :             const std::shared_ptr&lt;brg_matmul_exec_ctx_t&gt; &amp;brgmm_ctx_ptr) const;</span>
+<span id="L119"><span class="lineNum">     119</span>              :     void accumulate(</span>
+<span id="L120"><span class="lineNum">     120</span>              :             char *result_ptr, const char *reduce_ptr, size_t size) const;</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :     std::unique_ptr&lt;brgemm_kernel_t&gt; brg_kernels_[max_num_brg_kernels_matmul];</span>
+<span id="L123"><span class="lineNum">     123</span>              :     brgemm_containers::brgemm_palette_container_t brgemm_palettes_ {</span>
+<span id="L124"><span class="lineNum">     124</span>              :             max_num_brg_kernels_matmul};</span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span>              :     std::unique_ptr&lt;jit_brgemm_matmul_copy_b_t&gt; copy_B_kernel_;</span>
+<span id="L127"><span class="lineNum">     127</span>              :     std::unique_ptr&lt;jit_brgemm_matmul_copy_a_t&gt; copy_A_kernel_;</span>
+<span id="L128"><span class="lineNum">     128</span>              :     std::unique_ptr&lt;cpu_accumulator_1d_t&lt;data_type::f32&gt;&gt; acc_ker_f32_;</span>
+<span id="L129"><span class="lineNum">     129</span>              :     std::unique_ptr&lt;cpu_accumulator_1d_t&lt;data_type::s32&gt;&gt; acc_ker_s32_;</span>
+<span id="L130"><span class="lineNum">     130</span>              :     std::unique_ptr&lt;jit_avx512_sparse_decompress_kernel_t&gt;</span>
+<span id="L131"><span class="lineNum">     131</span>              :             sparse_decompress_kernel_;</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span>              :     using reducer_t = x64::jit_brgemm_kernel_diff_bias_t&lt;</span>
+<span id="L134"><span class="lineNum">     134</span>              :             typename cpu_isa_traits_t&lt;isa&gt;::Vmm&gt;;</span>
+<span id="L135"><span class="lineNum">     135</span>              :     std::unique_ptr&lt;reducer_t&gt; reducers_[2][2];</span>
+<span id="L136"><span class="lineNum">     136</span>              : };</span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span>              : } // namespace matmul</span>
+<span id="L139"><span class="lineNum">     139</span>              : } // namespace x64</span>
+<span id="L140"><span class="lineNum">     140</span>              : } // namespace cpu</span>
+<span id="L141"><span class="lineNum">     141</span>              : } // namespace impl</span>
+<span id="L142"><span class="lineNum">     142</span>              : } // namespace dnnl</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

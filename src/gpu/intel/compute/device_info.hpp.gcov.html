@@ -1,0 +1,423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/compute/device_info.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/compute">src/gpu/intel/compute</a> - device_info.hpp<span style="font-size: 80%;"> (source / <a href="device_info.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">91.6&nbsp;%</td>
+            <td class="headerCovTableEntry">83</td>
+            <td class="headerCovTableEntry">76</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">27</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GPU_INTEL_COMPUTE_DEVICE_INFO_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GPU_INTEL_COMPUTE_DEVICE_INFO_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;stdint.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;stdlib.h&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;string.h&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/serialization.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;common/z_magic.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;xpu/utils.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : #include &quot;oneapi/dnnl/dnnl_config.h&quot;</span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace ngen {</span>
+<span id="L34"><span class="lineNum">      34</span>              : enum class Core;</span>
+<span id="L35"><span class="lineNum">      35</span>              : using HW = Core;</span>
+<span id="L36"><span class="lineNum">      36</span>              : } // namespace ngen</span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span>              : namespace dnnl {</span>
+<span id="L39"><span class="lineNum">      39</span>              : namespace impl {</span>
+<span id="L40"><span class="lineNum">      40</span>              : namespace gpu {</span>
+<span id="L41"><span class="lineNum">      41</span>              : namespace intel {</span>
+<span id="L42"><span class="lineNum">      42</span>              : namespace compute {</span>
+<span id="L43"><span class="lineNum">      43</span>              : </span>
+<span id="L44"><span class="lineNum">      44</span>              : enum class gpu_arch_t {</span>
+<span id="L45"><span class="lineNum">      45</span>              :     unknown,</span>
+<span id="L46"><span class="lineNum">      46</span>              :     xe_lp,</span>
+<span id="L47"><span class="lineNum">      47</span>              :     xe_hp,</span>
+<span id="L48"><span class="lineNum">      48</span>              :     xe_hpg,</span>
+<span id="L49"><span class="lineNum">      49</span>              :     xe_hpc,</span>
+<span id="L50"><span class="lineNum">      50</span>              :     xe2,</span>
+<span id="L51"><span class="lineNum">      51</span>              :     xe3,</span>
+<span id="L52"><span class="lineNum">      52</span>              :     xe3p_35_10,</span>
+<span id="L53"><span class="lineNum">      53</span>              :     xe3p_35_11,</span>
+<span id="L54"><span class="lineNum">      54</span>              :     xe3p_35_unknown,</span>
+<span id="L55"><span class="lineNum">      55</span>              : };</span>
+<span id="L56"><span class="lineNum">      56</span>              : </span>
+<span id="L57"><span class="lineNum">      57</span>              : // Memory for storing ngen::Product to avoid directly including nGEN because of</span>
+<span id="L58"><span class="lineNum">      58</span>              : // header dependencies outside of src/gpu/intel.</span>
+<span id="L59"><span class="lineNum">      59</span>              : struct alignas(int) gpu_product_t {</span>
+<span id="L60"><span class="lineNum">      60</span>              :     unsigned char data[12];</span>
+<span id="L61"><span class="lineNum">      61</span>              : };</span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">          10 : static inline const char *to_string(gpu_arch_t arch) {</span></span>
+<span id="L64"><span class="lineNum">      64</span>              : #define CASE(_case) \</span>
+<span id="L65"><span class="lineNum">      65</span>              :     if (arch == gpu_arch_t::_case) return STRINGIFY(_case)</span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          10 :     CASE(xe_lp);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           8 :     CASE(xe_hp);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">           8 :     CASE(xe_hpg);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">           4 :     CASE(xe_hpc);</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">           2 :     CASE(xe2);</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaUNC">           0 :     CASE(xe3);</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaUNC">           0 :     CASE(xe3p_35_10);</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaUNC">           0 :     CASE(xe3p_35_11);</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaUNC">           0 :     CASE(xe3p_35_unknown);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaUNC">           0 :     return &quot;unknown&quot;;</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : #undef CASE</span>
+<span id="L77"><span class="lineNum">      77</span>              : }</span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span>              : static inline gpu_arch_t str2gpu_arch(const char *str) {</span>
+<span id="L80"><span class="lineNum">      80</span>              : #define CASE(_case) \</span>
+<span id="L81"><span class="lineNum">      81</span>              :     if (!strcmp(STRINGIFY(_case), str)) return gpu_arch_t::_case</span>
+<span id="L82"><span class="lineNum">      82</span>              :     CASE(xe_lp);</span>
+<span id="L83"><span class="lineNum">      83</span>              :     CASE(xe_hp);</span>
+<span id="L84"><span class="lineNum">      84</span>              :     CASE(xe_hpg);</span>
+<span id="L85"><span class="lineNum">      85</span>              :     CASE(xe_hpc);</span>
+<span id="L86"><span class="lineNum">      86</span>              :     CASE(xe2);</span>
+<span id="L87"><span class="lineNum">      87</span>              :     CASE(xe3);</span>
+<span id="L88"><span class="lineNum">      88</span>              :     CASE(xe3p_35_10);</span>
+<span id="L89"><span class="lineNum">      89</span>              :     CASE(xe3p_35_11);</span>
+<span id="L90"><span class="lineNum">      90</span>              :     CASE(xe3p_35_unknown);</span>
+<span id="L91"><span class="lineNum">      91</span>              :     return gpu_arch_t::unknown;</span>
+<span id="L92"><span class="lineNum">      92</span>              : #undef CASE</span>
+<span id="L93"><span class="lineNum">      93</span>              : }</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span>              : enum class device_ext_t : uint64_t {</span>
+<span id="L96"><span class="lineNum">      96</span>              :     // clang-format off</span>
+<span id="L97"><span class="lineNum">      97</span>              :     // OpenCL data types</span>
+<span id="L98"><span class="lineNum">      98</span>              :     khr_fp16 = 1ull &lt;&lt; 0,</span>
+<span id="L99"><span class="lineNum">      99</span>              :     khr_fp64 = 1ull &lt;&lt; 1,</span>
+<span id="L100"><span class="lineNum">     100</span>              :     // OpenCL atomics</span>
+<span id="L101"><span class="lineNum">     101</span>              :     khr_global_int32_base_atomics     = 1ull &lt;&lt; 2,</span>
+<span id="L102"><span class="lineNum">     102</span>              :     khr_global_int32_extended_atomics = 1ull &lt;&lt; 3,</span>
+<span id="L103"><span class="lineNum">     103</span>              :     khr_int64_base_atomics            = 1ull &lt;&lt; 4,</span>
+<span id="L104"><span class="lineNum">     104</span>              :     khr_int64_extended_atomics        = 1ull &lt;&lt; 5,</span>
+<span id="L105"><span class="lineNum">     105</span>              :     khr_local_int32_base_atomics      = 1ull &lt;&lt; 6,</span>
+<span id="L106"><span class="lineNum">     106</span>              :     khr_local_int32_extended_atomics  = 1ull &lt;&lt; 7,</span>
+<span id="L107"><span class="lineNum">     107</span>              :     ext_float_atomics                 = 1ull &lt;&lt; 8,</span>
+<span id="L108"><span class="lineNum">     108</span>              :     // Intel specific Xe_LP+</span>
+<span id="L109"><span class="lineNum">     109</span>              :     intel_subgroups               = 1ull &lt;&lt; 16,</span>
+<span id="L110"><span class="lineNum">     110</span>              :     intel_required_subgroup_size  = 1ull &lt;&lt; 17,</span>
+<span id="L111"><span class="lineNum">     111</span>              :     intel_subgroups_char          = 1ull &lt;&lt; 18,</span>
+<span id="L112"><span class="lineNum">     112</span>              :     intel_subgroups_short         = 1ull &lt;&lt; 19,</span>
+<span id="L113"><span class="lineNum">     113</span>              :     intel_subgroups_long          = 1ull &lt;&lt; 20,</span>
+<span id="L114"><span class="lineNum">     114</span>              :     intel_subgroup_local_block_io = 1ull &lt;&lt; 21,</span>
+<span id="L115"><span class="lineNum">     115</span>              :     intel_dot_accumulate          = 1ull &lt;&lt; 22,</span>
+<span id="L116"><span class="lineNum">     116</span>              :     // Intel specific Xe_HP+</span>
+<span id="L117"><span class="lineNum">     117</span>              :     intel_global_float_atomics                      = 1ull &lt;&lt; 23,</span>
+<span id="L118"><span class="lineNum">     118</span>              :     intel_subgroup_matrix_multiply_accumulate       = 1ull &lt;&lt; 24,</span>
+<span id="L119"><span class="lineNum">     119</span>              :     intel_subgroup_split_matrix_multiply_accumulate = 1ull &lt;&lt; 25,</span>
+<span id="L120"><span class="lineNum">     120</span>              :     intel_variable_eu_thread_count                  = 1ull &lt;&lt; 26,</span>
+<span id="L121"><span class="lineNum">     121</span>              :     intel_unified_shared_memory                     = 1ull &lt;&lt; 27,</span>
+<span id="L122"><span class="lineNum">     122</span>              :     // Future extensions</span>
+<span id="L123"><span class="lineNum">     123</span>              :     future_bf16_cvt                                 = 1ull &lt;&lt; 31,</span>
+<span id="L124"><span class="lineNum">     124</span>              :     last</span>
+<span id="L125"><span class="lineNum">     125</span>              :     // clang-format on</span>
+<span id="L126"><span class="lineNum">     126</span>              : };</span>
+<span id="L127"><span class="lineNum">     127</span>              : </span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">     4721312 : static inline const char *ext2cl_str(device_ext_t ext) {</span></span>
+<span id="L129"><span class="lineNum">     129</span>              : #define CASE(x) \</span>
+<span id="L130"><span class="lineNum">     130</span>              :     case device_ext_t::x: return STRINGIFY(CONCAT2(cl_, x));</span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">     4721312 :     switch (ext) {</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">        1294 :         CASE(khr_fp16)</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">        1294 :         CASE(khr_fp64)</span></span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">        1294 :         CASE(khr_global_int32_base_atomics)</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">        1294 :         CASE(khr_global_int32_extended_atomics)</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">        1294 :         CASE(khr_int64_base_atomics)</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">        1294 :         CASE(khr_int64_extended_atomics)</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">        1294 :         CASE(khr_local_int32_base_atomics)</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">        1294 :         CASE(khr_local_int32_extended_atomics)</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">        1294 :         CASE(ext_float_atomics)</span></span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">        1294 :         CASE(intel_subgroups)</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">        1294 :         CASE(intel_required_subgroup_size)</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">        1294 :         CASE(intel_subgroups_char)</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">        1294 :         CASE(intel_subgroups_short)</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">        1294 :         CASE(intel_subgroups_long)</span></span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        1294 :         CASE(intel_subgroup_local_block_io)</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">     1153198 :         CASE(intel_dot_accumulate)</span></span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">      883294 :         CASE(intel_global_float_atomics)</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      883294 :         CASE(intel_subgroup_matrix_multiply_accumulate)</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      883294 :         CASE(intel_subgroup_split_matrix_multiply_accumulate)</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">        1294 :         CASE(intel_variable_eu_thread_count)</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        1294 :         CASE(intel_unified_shared_memory)</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">      883294 :         CASE(future_bf16_cvt)</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       12940 :         default: return nullptr;</span></span>
+<span id="L159"><span class="lineNum">     159</span>              :     }</span>
+<span id="L160"><span class="lineNum">     160</span>              : #undef CASE</span>
+<span id="L161"><span class="lineNum">     161</span>              : }</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span>              : enum class native_ext_t : uint64_t {</span>
+<span id="L164"><span class="lineNum">     164</span>              :     // clang-format off</span>
+<span id="L165"><span class="lineNum">     165</span>              :     // OpenCL data types</span>
+<span id="L166"><span class="lineNum">     166</span>              :     fp32_atomic_add = 1ull &lt;&lt; 0,                   </span>
+<span id="L167"><span class="lineNum">     167</span>              :     fp32_atomic_min_max = 1ull &lt;&lt; 1, </span>
+<span id="L168"><span class="lineNum">     168</span>              :     fp32_atomic_load_store = 1ull &lt;&lt; 2,  </span>
+<span id="L169"><span class="lineNum">     169</span>              :     fp16_atomic_add = 1ull &lt;&lt; 3,                   </span>
+<span id="L170"><span class="lineNum">     170</span>              :     fp16_atomic_min_max = 1ull &lt;&lt; 4,              </span>
+<span id="L171"><span class="lineNum">     171</span>              :     fp16_atomic_load_store = 1ull &lt;&lt; 5,  </span>
+<span id="L172"><span class="lineNum">     172</span>              :     fp64_atomic_add = 1ull &lt;&lt; 6,</span>
+<span id="L173"><span class="lineNum">     173</span>              :     fp64_atomic_min_max = 1ull &lt;&lt; 7,</span>
+<span id="L174"><span class="lineNum">     174</span>              :     fp64_atomic_load_store = 1ull &lt;&lt; 8,  </span>
+<span id="L175"><span class="lineNum">     175</span>              :     last</span>
+<span id="L176"><span class="lineNum">     176</span>              : };</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span>              : // Needed workaround for future HW extensions</span>
+<span id="L179"><span class="lineNum">     179</span>              : uint64_t get_future_extensions(</span>
+<span id="L180"><span class="lineNum">     180</span>              :         compute::gpu_arch_t gpu_arch, bool mayiuse_systolic);</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span>              : struct device_info_t {</span>
+<span id="L183"><span class="lineNum">     183</span>              : public:</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">        1270 :     virtual ~device_info_t() = default;</span></span>
+<span id="L185"><span class="lineNum">     185</span>              : </span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">        1294 :     status_t init(</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :             impl::engine_t *engine, const std::vector&lt;uint8_t&gt; &amp;cache_blob = {}) {</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">        1294 :         if (!cache_blob.empty()) {</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaUNC">           0 :             CHECK(init_from_cache_blob(cache_blob));</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0 :             return init_serialized_device_info(cache_blob);</span></span>
+<span id="L191"><span class="lineNum">     191</span>              :         }</span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">        1294 :         CHECK(init_device_name(engine));</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">        1294 :         CHECK(init_arch(engine));</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">        1294 :         CHECK(init_runtime_version(engine));</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">        1294 :         CHECK(init_extensions(engine));</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">        1294 :         CHECK(init_attributes(engine));</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">        1294 :         fixup_l3_cache_size();</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">        1294 :         CHECK(init_attributes_common(engine));</span></span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">        1294 :         if (dnnl_version()-&gt;gpu_runtime == DNNL_RUNTIME_OCL) {</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">        1294 :             CHECK(init_serialized_device_info());</span></span>
+<span id="L204"><span class="lineNum">     204</span>              :         }</span>
+<span id="L205"><span class="lineNum">     205</span>              : </span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">        1294 :         return status::success;</span></span>
+<span id="L207"><span class="lineNum">     207</span>              :     }</span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span>              :     std::string get_cl_ext_options() const;</span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">    37944929 :     bool has(device_ext_t ext) const { return extensions_ &amp; (uint64_t)ext; }</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      496281 :     bool has_native(native_ext_t ext) const { return native_extensions_ &amp; (uint64_t)ext; }</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">     4474029 :     gpu_arch_t gpu_arch() const { return gpu_arch_; }</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      812358 :     const gpu_product_t &amp;gpu_product() const {return gpu_product_;}</span></span>
+<span id="L215"><span class="lineNum">     215</span>              :     ngen::HW ngen_hw() const;</span>
+<span id="L216"><span class="lineNum">     216</span>              :     int stepping_id() const;</span>
+<span id="L217"><span class="lineNum">     217</span>              :     uint64_t native_extensions() const { return native_extensions_; }</span>
+<span id="L218"><span class="lineNum">     218</span>              :     bool is_integrated() const;</span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">         478 :     uint32_t ip_version() const { return ip_version_; }</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">      122915 :     int max_eus_per_wg() const { return max_eus_per_wg_; }</span></span>
+<span id="L221"><span class="lineNum">     221</span>              :     static int max_eus_per_wg(gpu_arch_t gpu_arch);</span>
+<span id="L222"><span class="lineNum">     222</span>              : </span>
+<span id="L223"><span class="lineNum">     223</span>              :     static int max_exec_size(gpu_arch_t gpu_arch);</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">      124892 :     int max_exec_size() const { return max_exec_size(gpu_arch()); }</span></span>
+<span id="L226"><span class="lineNum">     226</span>              :     int max_subgroup_size(data_type_t type = data_type::undef) const;</span>
+<span id="L227"><span class="lineNum">     227</span>              :     static int max_subgroup_size(gpu_arch_t gpu_arch);</span>
+<span id="L228"><span class="lineNum">     228</span>              :     static int grf_size(gpu_arch_t gpu_arch);</span>
+<span id="L229"><span class="lineNum">     229</span>              :     int grf_size() const { return grf_size(gpu_arch_); };</span>
+<span id="L230"><span class="lineNum">     230</span>              :     int min_subgroup_size() const;</span>
+<span id="L231"><span class="lineNum">     231</span>              :     size_t max_wg_size(bool large_grf_mode, size_t subgroup_size = 0) const;</span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">     1168636 :     int eu_count() const { return eu_count_; }</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">     1045603 :     int hw_threads() const { return hw_threads_[0]; }</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">       86261 :     int hw_threads(bool large_grf_mode) const {</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       86261 :         return hw_threads_[large_grf_mode ? 1 : 0];</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :     }</span>
+<span id="L237"><span class="lineNum">     237</span>              :     static int threads_per_eu(gpu_arch_t gpu_arch, bool large_grf_mode = false);</span>
+<span id="L238"><span class="lineNum">     238</span>              :     static int max_slm_size(gpu_arch_t gpu_arch);</span>
+<span id="L239"><span class="lineNum">     239</span>              :     static int max_slm_size_per_tg(gpu_arch_t gpu_arch);</span>
+<span id="L240"><span class="lineNum">     240</span>              :     static int max_slm_size_per_tg(</span>
+<span id="L241"><span class="lineNum">     241</span>              :             gpu_arch_t gpu_arch, int tg_size, bool large_grf_mode = false);</span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">    13455398 :     size_t memory_size() const { return memory_size_; }</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">      496281 :     size_t l3_cache_size() const { return l3_cache_size_; }</span></span>
+<span id="L244"><span class="lineNum">     244</span>              :     size_t icache_size() const;</span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">     3703895 :     size_t max_kernel_param_size() const { return max_kernel_param_size_; }</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">     3704125 :     uint32_t device_address_bits() const { return device_address_bits_; }</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">    13649021 :     uint64_t max_allocation_size() const { return max_allocation_size_; }</span></span>
+<span id="L248"><span class="lineNum">     248</span>              : </span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">     2836178 :     const xpu::runtime_version_t &amp;runtime_version() const {</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">     2836178 :         return runtime_version_;</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :     }</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">     1890376 :     const std::string &amp;name() const { return name_; }</span></span>
+<span id="L253"><span class="lineNum">     253</span>              : </span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">      602905 :     bool mayiuse_ngen_kernels() const { return mayiuse_ngen_kernels_; }</span></span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">     1174866 :     bool mayiuse_systolic() const { return mayiuse_systolic_; }</span></span>
+<span id="L257"><span class="lineNum">     257</span>              : </span>
+<span id="L258"><span class="lineNum">     258</span>              :     bool mayiuse_non_uniform_work_groups() const {</span>
+<span id="L259"><span class="lineNum">     259</span>              :         return mayiuse_non_uniform_work_groups_;</span>
+<span id="L260"><span class="lineNum">     260</span>              :     }</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :     /// Returns true if the engine can directly access pointers from system allocators</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">           5 :     bool mayiuse_system_memory_allocators() const {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">           5 :         return mayiuse_system_memory_allocators_;</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :     }</span>
+<span id="L266"><span class="lineNum">     266</span>              : </span>
+<span id="L267"><span class="lineNum">     267</span>              :     bool mayiuse_sub_group(int size) const;</span>
+<span id="L268"><span class="lineNum">     268</span>              : </span>
+<span id="L269"><span class="lineNum">     269</span>              :     bool mayiuse_float_atomic_add(data_type_t type) const;</span>
+<span id="L270"><span class="lineNum">     270</span>              : </span>
+<span id="L271"><span class="lineNum">     271</span>              :     bool has_native(data_type_t type) const;</span>
+<span id="L272"><span class="lineNum">     272</span>              : </span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">      496281 :     bool is_efficient_64bit() const { return is_efficient_64bit_; }</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span>              :     const std::vector&lt;uint8_t&gt; &amp;get_cache_blob() const {</span>
+<span id="L276"><span class="lineNum">     276</span>              :         return serialized_device_info_.get_data();</span>
+<span id="L277"><span class="lineNum">     277</span>              :     }</span>
+<span id="L278"><span class="lineNum">     278</span>              : </span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">          35 :     status_t get_cache_blob_size(size_t *size) const {</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">          35 :         (*size) = serialized_device_info_.get_data().size();</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">          35 :         return status::success;</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :     }</span>
+<span id="L283"><span class="lineNum">     283</span>              : </span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">          35 :     status_t get_cache_blob(size_t size, uint8_t *cache_blob) const {</span></span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">          35 :         const auto &amp;cb = serialized_device_info_.get_data();</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">          35 :         if (size != cb.size()) return status::invalid_arguments;</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">          35 :         std::memcpy(cache_blob, cb.data(), size);</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">          35 :         return status::success;</span></span>
+<span id="L289"><span class="lineNum">     289</span>              :     }</span>
+<span id="L290"><span class="lineNum">     290</span>              : </span>
+<span id="L291"><span class="lineNum">     291</span>              : protected:</span>
+<span id="L292"><span class="lineNum">     292</span>              :     virtual status_t init_device_name(impl::engine_t *engine) = 0;</span>
+<span id="L293"><span class="lineNum">     293</span>              :     virtual status_t init_arch(impl::engine_t *engine) = 0;</span>
+<span id="L294"><span class="lineNum">     294</span>              :     virtual status_t init_runtime_version(impl::engine_t *engine) = 0;</span>
+<span id="L295"><span class="lineNum">     295</span>              :     virtual status_t init_extensions(impl::engine_t *engine) = 0;</span>
+<span id="L296"><span class="lineNum">     296</span>              :     virtual status_t init_attributes(impl::engine_t *engine) = 0;</span>
+<span id="L297"><span class="lineNum">     297</span>              : </span>
+<span id="L298"><span class="lineNum">     298</span>              :     gpu_arch_t gpu_arch_ = compute::gpu_arch_t::unknown;</span>
+<span id="L299"><span class="lineNum">     299</span>              :     gpu_product_t gpu_product_ = {};</span>
+<span id="L300"><span class="lineNum">     300</span>              :     uint32_t ip_version_ = 0;</span>
+<span id="L301"><span class="lineNum">     301</span>              :     bool mayiuse_systolic_ = false;</span>
+<span id="L302"><span class="lineNum">     302</span>              :     bool mayiuse_ngen_kernels_ = false;</span>
+<span id="L303"><span class="lineNum">     303</span>              :     bool mayiuse_system_memory_allocators_ = false;</span>
+<span id="L304"><span class="lineNum">     304</span>              :     bool is_efficient_64bit_ = false; // Efficient 64 bit addressing available</span>
+<span id="L305"><span class="lineNum">     305</span>              : </span>
+<span id="L306"><span class="lineNum">     306</span>              :     std::string name_;</span>
+<span id="L307"><span class="lineNum">     307</span>              :     xpu::runtime_version_t runtime_version_;</span>
+<span id="L308"><span class="lineNum">     308</span>              : </span>
+<span id="L309"><span class="lineNum">     309</span>              :     // total number of hardware threads:</span>
+<span id="L310"><span class="lineNum">     310</span>              :     // [0] - default mode</span>
+<span id="L311"><span class="lineNum">     311</span>              :     // [1] - large GRF mode</span>
+<span id="L312"><span class="lineNum">     312</span>              :     int32_t hw_threads_[2] = {0, 0};</span>
+<span id="L313"><span class="lineNum">     313</span>              :     int32_t eu_count_ = 0;</span>
+<span id="L314"><span class="lineNum">     314</span>              :     int32_t max_eus_per_wg_ = 0;</span>
+<span id="L315"><span class="lineNum">     315</span>              :     int32_t max_subgroup_size_ = 16;</span>
+<span id="L316"><span class="lineNum">     316</span>              :     int max_exec_size_ = 0;</span>
+<span id="L317"><span class="lineNum">     317</span>              :     size_t max_wg_size_ = 0;</span>
+<span id="L318"><span class="lineNum">     318</span>              :     size_t memory_size_ = 0;</span>
+<span id="L319"><span class="lineNum">     319</span>              :     size_t l3_cache_size_ = 0;</span>
+<span id="L320"><span class="lineNum">     320</span>              :     size_t max_kernel_param_size_ = 1024;</span>
+<span id="L321"><span class="lineNum">     321</span>              :     uint32_t device_address_bits_ = 64;</span>
+<span id="L322"><span class="lineNum">     322</span>              :     uint64_t max_allocation_size_ = UINT32_MAX;</span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span>              :     // extensions_ and gpu_arch_ describe effective extensions and GPU architecture.</span>
+<span id="L325"><span class="lineNum">     325</span>              :     uint64_t extensions_ = 0;</span>
+<span id="L326"><span class="lineNum">     326</span>              :     // native extensions, may differ from support reported by runtime.</span>
+<span id="L327"><span class="lineNum">     327</span>              :     uint64_t native_extensions_ = 0;</span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span>              : private:</span>
+<span id="L330"><span class="lineNum">     330</span>              :     status_t init_attributes_common(impl::engine_t *engine);</span>
+<span id="L331"><span class="lineNum">     331</span>              :     status_t init_serialized_device_info(</span>
+<span id="L332"><span class="lineNum">     332</span>              :             const std::vector&lt;uint8_t&gt; &amp;cache_blob = {});</span>
+<span id="L333"><span class="lineNum">     333</span>              :     status_t init_from_cache_blob(const std::vector&lt;uint8_t&gt; &amp;cache_blob);</span>
+<span id="L334"><span class="lineNum">     334</span>              :     void fixup_l3_cache_size();</span>
+<span id="L335"><span class="lineNum">     335</span>              : </span>
+<span id="L336"><span class="lineNum">     336</span>              :     bool mayiuse_non_uniform_work_groups_ = false;</span>
+<span id="L337"><span class="lineNum">     337</span>              : </span>
+<span id="L338"><span class="lineNum">     338</span>              :     serialization_stream_t serialized_device_info_;</span>
+<span id="L339"><span class="lineNum">     339</span>              : };</span>
+<span id="L340"><span class="lineNum">     340</span>              : </span>
+<span id="L341"><span class="lineNum">     341</span>              : } // namespace compute</span>
+<span id="L342"><span class="lineNum">     342</span>              : } // namespace intel</span>
+<span id="L343"><span class="lineNum">     343</span>              : } // namespace gpu</span>
+<span id="L344"><span class="lineNum">     344</span>              : } // namespace impl</span>
+<span id="L345"><span class="lineNum">     345</span>              : } // namespace dnnl</span>
+<span id="L346"><span class="lineNum">     346</span>              : </span>
+<span id="L347"><span class="lineNum">     347</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/graph/backend/dnnl/patterns/binary_fusion.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/graph/backend/dnnl/patterns">src/graph/backend/dnnl/patterns</a> - binary_fusion.cpp<span style="font-size: 80%;"> (source / <a href="binary_fusion.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">25</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;graph/backend/dnnl/kernels/binary.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;graph/backend/dnnl/patterns/fusions.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;graph/backend/dnnl/patterns/pattern_matcher_pass.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;graph/backend/dnnl/patterns/utils.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;graph/utils/pm/pbuilder.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace dnnl {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace impl {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace graph {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace dnnl_impl {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace pattern {</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace pm = graph::utils::pm;</span>
+<span id="L31"><span class="lineNum">      31</span>              : using in_edges_t = pm::in_edges_t;</span>
+<span id="L32"><span class="lineNum">      32</span>              : using pb_graph_t = pm::pb_graph_t;</span>
+<span id="L33"><span class="lineNum">      33</span>              : using FCreatePattern = graph::pass::FCreatePattern;</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        7065 : DNNL_BACKEND_REGISTER_PATTERN_DEF_BEGIN(binary_fusion)</span></span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       14130 : DNNL_BACKEND_REGISTER_PATTERN_MATCHER_PASS(dnnl, fp_reciprocal_multiply)</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">        7065 :         .set_priority(8.2f)</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">        7065 :         .set_kind(partition_kind_t::binary_post_ops)</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :         .set_attr&lt;FCreatePattern&gt;(&quot;FCreatePattern&quot;,</span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">        7065 :                 [](const std::shared_ptr&lt;pb_graph_t&gt; &amp;pgraph) -&gt; void {</span></span>
+<span id="L42"><span class="lineNum">      42</span>              :                     auto reciprocal</span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">        7065 :                             = pgraph-&gt;append_op(graph::op_kind::Reciprocal);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       14130 :                     pgraph-&gt;append_op(graph::op_kind::Multiply,</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       21195 :                             in_edges_t {in_edge(0, reciprocal, 0)});</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       21195 :                 })</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :         .set_attr&lt;FCreateKernel&gt;(&quot;FCreateKernel&quot;,</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">        7116 :                 []() -&gt; kernel_ptr { return std::make_shared&lt;binary_t&gt;(); });</span></span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span>              : // TODO(zitian): wait for the implementation of comparison ops:</span>
+<span id="L51"><span class="lineNum">      51</span>              : //      Gt, Ge, Le, Lt, Eq, Ne</span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       14130 : DNNL_BACKEND_REGISTER_PATTERN_MATCHER_PASS(dnnl, fp_binary_post_ops)</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        7065 :         .set_priority(8.3f)</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">        7065 :         .set_kind(partition_kind_t::binary_post_ops)</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :         .set_attr&lt;FCreatePattern&gt;(&quot;FCreatePattern&quot;,</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">        7065 :                 [](const std::shared_ptr&lt;pb_graph_t&gt; &amp;pgraph) -&gt; void {</span></span>
+<span id="L57"><span class="lineNum">      57</span>              :                     auto binary_op</span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">        7065 :                             = pgraph-&gt;append_alternation(get_binary_ops());</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">        7065 :                     auto post_subgraph = std::make_shared&lt;pb_graph_t&gt;();</span></span>
+<span id="L61"><span class="lineNum">      61</span>              :                     auto alternative_post_op</span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">        7065 :                             = post_subgraph-&gt;append_alternation(</span></span>
+<span id="L63"><span class="lineNum">      63</span>              :                                     get_unary_binary_ops());</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        7065 :                     alternative_post_op-&gt;allow_internal_inputs();</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        7065 :                     post_subgraph-&gt;create_input_port(0, alternative_post_op, 0);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        7065 :                     post_subgraph-&gt;create_output_port(</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :                             0, alternative_post_op, 0);</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">       14130 :                     pgraph-&gt;append_repetition(post_subgraph, {0, 0}, 1,</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">        7065 :                             MAX_REPETITION, {in_edge(0, binary_op, 0)});</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       21195 :                 })</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :         .set_attr&lt;FCreateKernel&gt;(&quot;FCreateKernel&quot;,</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">        9120 :                 []() -&gt; kernel_ptr { return std::make_shared&lt;binary_t&gt;(); });</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">        7065 : DNNL_BACKEND_REGISTER_PATTERN_DEF_END</span></span>
+<span id="L76"><span class="lineNum">      76</span>              : </span>
+<span id="L77"><span class="lineNum">      77</span>              : } // namespace pattern</span>
+<span id="L78"><span class="lineNum">      78</span>              : } // namespace dnnl_impl</span>
+<span id="L79"><span class="lineNum">      79</span>              : } // namespace graph</span>
+<span id="L80"><span class="lineNum">      80</span>              : } // namespace impl</span>
+<span id="L81"><span class="lineNum">      81</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

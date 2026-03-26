@@ -1,0 +1,1129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_avx512_common_1x1_convolution.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_avx512_common_1x1_convolution.cpp<span style="font-size: 80%;"> (source / <a href="jit_avx512_common_1x1_convolution.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">99.9&nbsp;%</td>
+            <td class="headerCovTableEntry">667</td>
+            <td class="headerCovTableEntry">666</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntry">26</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2017 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;cpu/x64/jit_avx512_common_1x1_convolution.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace dnnl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace impl {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace cpu {</span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace x64 {</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : using namespace dnnl::impl::status;</span>
+<span id="L32"><span class="lineNum">      32</span>              : using namespace dnnl::impl::memory_tracking::names;</span>
+<span id="L33"><span class="lineNum">      33</span>              : using namespace dnnl::impl::utils;</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span>              : #define data_blk_off(f, n, c, d, h, w) \</span>
+<span id="L36"><span class="lineNum">      36</span>              :     ((ndims == 3) ? (f).blk_off(n, c, w) \</span>
+<span id="L37"><span class="lineNum">      37</span>              :                   : ((ndims == 4) ? (f).blk_off(n, c, h, w) \</span>
+<span id="L38"><span class="lineNum">      38</span>              :                                   : (f).blk_off(n, c, d, h, w)))</span>
+<span id="L39"><span class="lineNum">      39</span>              : /* convolution forward */</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : template &lt;data_type_t src_type, data_type_t wei_type, data_type_t dst_type&gt;</span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       25393 : void jit_avx512_common_1x1_convolution_fwd_t&lt;src_type, wei_type,</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :         dst_type&gt;::execute_forward(const exec_ctx_t &amp;ctx) const {</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       25393 :     const auto &amp;jcp = kernel_-&gt;jcp;</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       25393 :     auto src = CTX_IN_MEM(const src_data_t *, DNNL_ARG_SRC);</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       25393 :     auto weights = CTX_IN_MEM(const wei_data_t *, DNNL_ARG_WEIGHTS);</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       25393 :     auto bias = CTX_IN_MEM(const dst_data_t *, DNNL_ARG_BIAS);</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       25393 :     auto dst = CTX_OUT_MEM(dst_data_t *, DNNL_ARG_DST);</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       25393 :     auto weights_dw = CTX_IN_MEM(</span></span>
+<span id="L50"><span class="lineNum">      50</span>              :             const wei_data_t *, DNNL_ARG_ATTR_POST_OP_DW | DNNL_ARG_WEIGHTS);</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       25393 :     auto bias_dw = CTX_IN_MEM(</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :             const dst_data_t *, DNNL_ARG_ATTR_POST_OP_DW | DNNL_ARG_BIAS);</span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">       25393 :     const auto post_ops_binary_rhs_arg_vec</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       25393 :             = binary_injector::prepare_binary_args(pd()-&gt;jcp_.post_ops, ctx);</span></span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC">       76179 :     const auto &amp;post_ops_binary_rhs_arg_vec_dw = pd()-&gt;dw_conv_pd_</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">       25393 :             ? binary_injector::prepare_binary_args(</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">          85 :                       pd()-&gt;dw_conv_pd_-&gt;jcp_.post_ops, ctx,</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">          85 :                       pd()-&gt;jcp_.post_ops.entry_.size() + 1)</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :             : std::vector&lt;const void *&gt; {};</span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       25393 :     const auto &amp;scratchpad = ctx.get_scratchpad_grantor();</span></span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">       25393 :     if (pd()-&gt;wants_padded_bias()) {</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       14506 :         auto padded_bias</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        7253 :                 = scratchpad.template get&lt;dst_data_t&gt;(key_conv_padded_bias);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        7253 :         utils::array_copy(padded_bias, bias, jcp.oc_without_padding);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       14506 :         utils::array_set(padded_bias + jcp.oc_without_padding, 0.f,</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">        7253 :                 jcp.oc - jcp.oc_without_padding);</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">        7253 :         bias = padded_bias;</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :     }</span>
+<span id="L71"><span class="lineNum">      71</span>              : </span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">       25393 :     parallel(jcp.nthr, [= COMPAT_THIS_CAPTURE](const int ithr, const int nthr) {</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">     2622573 :         execute_forward_thr(ithr, nthr, src, weights, bias, weights_dw, bias_dw,</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">     2622573 :                 dst, scratchpad, post_ops_binary_rhs_arg_vec.data(),</span></span>
+<span id="L75"><span class="lineNum">      75</span>              :                 post_ops_binary_rhs_arg_vec_dw.data());</span>
+<span id="L76"><span class="lineNum">      76</span>              :     });</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">       25393 :     if (pd()-&gt;wants_zero_pad_dst()) ctx.zero_pad_output(DNNL_ARG_DST);</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       25393 : }</span></span>
+<span id="L80"><span class="lineNum">      80</span>              : </span>
+<span id="L81"><span class="lineNum">      81</span>              : template &lt;data_type_t src_type, data_type_t wei_type, data_type_t dst_type&gt;</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">     2622573 : void jit_avx512_common_1x1_convolution_fwd_t&lt;src_type, wei_type,</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :         dst_type&gt;::execute_forward_thr(const int ithr, const int nthr,</span>
+<span id="L84"><span class="lineNum">      84</span>              :         const src_data_t *src, const wei_data_t *weights,</span>
+<span id="L85"><span class="lineNum">      85</span>              :         const dst_data_t *bias, const wei_data_t *weights_dw,</span>
+<span id="L86"><span class="lineNum">      86</span>              :         const dst_data_t *bias_dw, dst_data_t *dst,</span>
+<span id="L87"><span class="lineNum">      87</span>              :         const memory_tracking::grantor_t &amp;scratchpad,</span>
+<span id="L88"><span class="lineNum">      88</span>              :         const void *post_ops_binary_rhs_arg_vec,</span>
+<span id="L89"><span class="lineNum">      89</span>              :         const void *post_ops_binary_rhs_arg_vec_dw) const {</span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">     2622573 :     const memory_desc_wrapper src_d(pd()-&gt;src_md());</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">     2622573 :     const memory_desc_wrapper dst_d(pd()-&gt;dst_1x1_md());</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">     2622573 :     const memory_desc_wrapper weights_d(pd()-&gt;weights_md(0));</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">     2622573 :     const memory_desc_wrapper dw_dst_d(pd()-&gt;dst_md());</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">     2622573 :     const memory_desc_wrapper dw_weights_d(</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">     2622573 :             pd()-&gt;arg_md(DNNL_ARG_ATTR_POST_OP_DW | DNNL_ARG_WEIGHTS));</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">     2622573 :     const memory_desc_wrapper dw_bias_d(</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">     2622573 :             pd()-&gt;arg_md(DNNL_ARG_ATTR_POST_OP_DW | DNNL_ARG_BIAS));</span></span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">     2622573 :     const auto &amp;jcp = kernel_-&gt;jcp;</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">     2622573 :     auto rtus_space = pd()-&gt;rtus_.reduce_src_</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">     2622573 :             ? scratchpad.get&lt;src_data_t&gt;(key_conv_rtus_space)</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :             : nullptr;</span>
+<span id="L103"><span class="lineNum">     103</span>              : </span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">     2622573 :     const int ndims = src_d.ndims();</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">     2622573 :     const int stride_d = (ndims == 5) ? pd()-&gt;desc()-&gt;strides[0] : 1;</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">     2622573 :     const int stride_h = (ndims == 3) ? 1 : pd()-&gt;desc()-&gt;strides[ndims - 4];</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">     2622573 :     const int stride_w = pd()-&gt;desc()-&gt;strides[ndims - 3];</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">     6693217 :     auto step = [](int default_step, int remaining, int tail_step) {</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">     6693217 :         assert(default_step &lt;= tail_step);</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">     6693217 :         return remaining &lt; tail_step ? remaining : default_step;</span></span>
+<span id="L112"><span class="lineNum">     112</span>              :     };</span>
+<span id="L113"><span class="lineNum">     113</span>              : </span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">     2622573 :     auto p = jit_1x1_conv_args_t();</span></span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">     2622573 :     auto rp = rtus_driver_t&lt;avx512_core&gt;::call_params_t();</span></span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">     2622573 :     const int nb_oc = jcp.nb_load;</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">     2622573 :     const int nb_ic = jcp.nb_reduce;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">     2622573 :     const int nb_ic_blocking = jcp.nb_reduce_blocking;</span></span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span>              :     // override some constants for fused dw_conv</span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">     2622573 :     const int os_block = jcp.with_dw_conv ? jcp.ow : jcp.bcast_block;</span></span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">     2622573 :     const int nb_bcast = jcp.with_dw_conv ? jcp.oh : jcp.nb_bcast;</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     2622573 :     const int nb_bcast_blocking = jcp.with_dw_conv ? 1 : jcp.nb_bcast_blocking;</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">     2622573 :     const int nb_bcast_blocking_max</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">     2622573 :             = jcp.with_dw_conv ? 1 : jcp.nb_bcast_blocking_max;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">     2622573 :     const int nb_load_blocking = jcp.nb_load_blocking;</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">     2622573 :     const int nb_load_blocking_max = jcp.with_dw_conv</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :             ? jcp.nb_load_blocking</span>
+<span id="L131"><span class="lineNum">     131</span>              :             : jcp.nb_load_blocking_max;</span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">     5245146 :     const bool is_dst_layout_nxc = utils::one_of(</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">     2622573 :             jcp.dst_tag, format_tag::nwc, format_tag::nhwc, format_tag::ndhwc);</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">     5245146 :     const bool is_src_layout_nxc = utils::one_of(</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">     2622573 :             jcp.src_tag, format_tag::nwc, format_tag::nhwc, format_tag::ndhwc);</span></span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span>              :     // Begin: declare Variables needed for dw conv.</span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">     2622573 :     memory_tracking::grantor_t dw_scratchpad(</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">     2622573 :             scratchpad, memory_tracking::names::prefix_fusion);</span></span>
+<span id="L140"><span class="lineNum">     140</span>              :     dst_data_t *pbuf;</span>
+<span id="L141"><span class="lineNum">     141</span>              :     size_t row_offset;</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">     2622573 :     const int nb_buffer = jcp.nb_load_blocking;</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">     5245146 :     std::vector&lt;dst_data_t *&gt; addrs;</span></span>
+<span id="L144"><span class="lineNum">     144</span>              :     // End</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">     2622573 :     auto init_bcast</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">    14080800 :             = [&amp;](int iwork, int bcast_end, int &amp;n, int &amp;g, int &amp;bcast_step,</span></span>
+<span id="L148"><span class="lineNum">     148</span>              :                       int &amp;od, int &amp;oh, int &amp;ow, int &amp;id, int &amp;ih, int &amp;iw) {</span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">     3520197 :         int osb {0};</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">     3520197 :         nd_iterator_init(iwork, n, jcp.mb, g, jcp.ngroups, osb, nb_bcast);</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">     3520197 :         bcast_step = step(</span></span>
+<span id="L152"><span class="lineNum">     152</span>              :                 nb_bcast_blocking, nb_bcast - osb, nb_bcast_blocking_max);</span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">     3520197 :         bcast_step = nstl::min(bcast_step, bcast_end - iwork);</span></span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">     3520197 :         const int os = osb * os_block;</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">     3520197 :         od = os / (jcp.oh * jcp.ow);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">     3520197 :         int os_2d = os % (jcp.oh * jcp.ow);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">     3520197 :         oh = os_2d / jcp.ow;</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">     3520197 :         ow = os_2d % jcp.ow;</span></span>
+<span id="L160"><span class="lineNum">     160</span>              : </span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">     3520197 :         id = od * stride_d;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">     3520197 :         ih = oh * stride_h;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">     3520197 :         iw = ow * stride_w;</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">     3520197 :         rp.iw_start = iw;</span></span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">     3520197 :         p.bcast_dim = this_block_size(os, jcp.os, bcast_step * os_block);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">     3520197 :         rp.os = p.bcast_dim;</span></span>
+<span id="L168"><span class="lineNum">     168</span>              :     };</span>
+<span id="L169"><span class="lineNum">     169</span>              : </span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">    15314657 :     auto init_load = [&amp;](int ocb, int ocb_end, int &amp;load_step) {</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">     3173020 :         load_step = step(nb_load_blocking, ocb_end - ocb, nb_load_blocking_max);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     3173020 :         const auto max_oc</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">     3173020 :                 = nstl::min(ocb_end * jcp.oc_block, jcp.oc_without_padding);</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">     6346040 :         p.load_dim = this_block_size(</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">     3173020 :                 ocb * jcp.oc_block, max_oc, load_step * jcp.oc_block);</span></span>
+<span id="L176"><span class="lineNum">     176</span>              :     };</span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">    16571835 :     auto init_reduce = [&amp;](int icb) {</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">     3487313 :         const int nb_ic_blocking_step</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">     3487313 :                 = nstl::min(icb + nb_ic_blocking, nb_ic) - icb;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">     3487313 :         p.first_last_flag = 0 | (icb == 0 ? FLAG_REDUCE_FIRST : 0)</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">     3487313 :                 | (icb + nb_ic_blocking_step &gt;= nb_ic ? FLAG_REDUCE_LAST : 0);</span></span>
+<span id="L183"><span class="lineNum">     183</span>              : </span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">     6974626 :         p.reduce_dim = this_block_size(</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">     3487313 :                 icb * jcp.ic_block, jcp.ic, nb_ic_blocking_step * jcp.ic_block);</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">     3487313 :         rp.icb = p.reduce_dim;</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :     };</span>
+<span id="L188"><span class="lineNum">     188</span>              : </span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">    81163900 :     auto ker_1x1 = [&amp;](int ocb, int ocb_start, int icb, int n, int g, int od,</span></span>
+<span id="L190"><span class="lineNum">     190</span>              :                            int oh, int ow, int id, int ih, int iw) {</span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">     3520197 :         const int oc_off_idx = is_dst_layout_nxc</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       55072 :                 ? g * jcp.oc + ocb * jcp.oc_block</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">     3465125 :                 : g * nb_oc + ocb;</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">     3520197 :         const size_t dst_off = data_blk_off(dst_d, n, oc_off_idx, od, oh, ow);</span></span>
+<span id="L195"><span class="lineNum">     195</span>              : </span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">     3520197 :         p.output_data = jcp.with_dw_conv</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">      602292 :                 ? pbuf + (oh % pd()-&gt;dw_conv_pd_-&gt;jcp_.kh) * row_offset</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">     2917905 :                 : &amp;dst[dst_off];</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">     3520197 :         p.bias_data = bias</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">     3520197 :                 ? &amp;bias[oc_off_idx * (is_dst_layout_nxc ? 1 : jcp.oc_block)]</span></span>
+<span id="L201"><span class="lineNum">     201</span>              :                 : nullptr;</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">     3520197 :         p.load_data</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">     3520197 :                 = &amp;weights[pd()-&gt;with_groups() ? weights_d.blk_off(g, ocb, icb)</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">     2572948 :                                                : weights_d.blk_off(ocb, icb)];</span></span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">     3520197 :         const int ic_off_idx = is_src_layout_nxc</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       55072 :                 ? g * jcp.ic + icb * jcp.ic_block</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">     3465125 :                 : g * nb_ic + icb;</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">     3520197 :         if (pd()-&gt;rtus_.reduce_src_) {</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      776544 :             rp.ws = rtus_space + ithr * pd()-&gt;rtus_.space_per_thread_</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      258848 :                     + (is_src_layout_nxc ? ic_off_idx</span></span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      257656 :                                          : jcp.is * ic_off_idx * jcp.ic_block);</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      258848 :             if (ocb == ocb_start) {</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">      258848 :                 rp.src = src + data_blk_off(src_d, n, ic_off_idx, id, ih, iw);</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      258848 :                 (*rtus_driver_)(&amp;rp);</span></span>
+<span id="L216"><span class="lineNum">     216</span>              :             }</span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      258848 :             p.bcast_data = rp.ws;</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :         } else</span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">     3261349 :             p.bcast_data = src + data_blk_off(src_d, n, ic_off_idx, id, ih, iw);</span></span>
+<span id="L220"><span class="lineNum">     220</span>              : </span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">     3520197 :         p.post_ops_binary_rhs_arg_vec = post_ops_binary_rhs_arg_vec;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">     3520197 :         p.dst_orig = static_cast&lt;const float *&gt;(p.output_data) - dst_off;</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : </span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">     3520197 :         (*kernel_)(&amp;p);</span></span>
+<span id="L225"><span class="lineNum">     225</span>              :     };</span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">     2622573 :     auto conv_1x1</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">    30469779 :             = [&amp;](int bcast_start, int bcast_end, int ocb_start, int ocb_end) {</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">     3022909 :         if (bcast_start &gt;= bcast_end || ocb_start &gt;= ocb_end) return;</span></span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">     2116567 :         if (jcp.loop_order == loop_rlb) {</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">     1280618 :             for (int icb = 0; icb &lt; nb_ic; icb += nb_ic_blocking) {</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">     1078932 :                 init_reduce(icb);</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">     1078932 :                 int ocb = ocb_start;</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">     2157864 :                 while (ocb &lt; ocb_end) {</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :                     int load_step;</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">     1078932 :                     init_load(ocb, ocb_end, load_step);</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">     1078932 :                     int iwork = bcast_start;</span></span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">     2185840 :                     while (iwork &lt; bcast_end) {</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">     1106908 :                         int n {0}, g {0}, bcast_step {0}, od {0}, oh {0},</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">     1106908 :                                 ow {0}, id {0}, ih {0}, iw {0};</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">     1106908 :                         init_bcast(iwork, bcast_end, n, g, bcast_step, od, oh,</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :                                 ow, id, ih, iw);</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">     1106908 :                         ker_1x1(ocb, ocb_start, icb, n, g, od, oh, ow, id, ih,</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :                                 iw);</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">     1106908 :                         iwork += bcast_step;</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :                     }</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">     1078932 :                     ocb += load_step;</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :                 }</span>
+<span id="L250"><span class="lineNum">     250</span>              :             }</span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">     1914881 :         } else if (jcp.loop_order == loop_lbr) {</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">     1773116 :             int ocb = ocb_start;</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">     3598724 :             while (ocb &lt; ocb_end) {</span></span>
+<span id="L254"><span class="lineNum">     254</span>              :                 int load_step;</span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">     1825608 :                 init_load(ocb, ocb_end, load_step);</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">     1825608 :                 int iwork = bcast_start;</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">     3980049 :                 while (iwork &lt; bcast_end) {</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">     2154441 :                     int n {0}, g {0}, bcast_step {0}, od {0}, oh {0}, ow {0},</span></span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">     2154441 :                             id {0}, ih {0}, iw {0};</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">     2154441 :                     init_bcast(iwork, bcast_end, n, g, bcast_step, od, oh, ow,</span></span>
+<span id="L261"><span class="lineNum">     261</span>              :                             id, ih, iw);</span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">     4308882 :                     for (int icb = 0; icb &lt; nb_ic; icb += nb_ic_blocking) {</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">     2154441 :                         init_reduce(icb);</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">     2154441 :                         ker_1x1(ocb, ocb_start, icb, n, g, od, oh, ow, id, ih,</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :                                 iw);</span>
+<span id="L266"><span class="lineNum">     266</span>              :                     }</span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">     2154441 :                     iwork += bcast_step;</span></span>
+<span id="L268"><span class="lineNum">     268</span>              :                 }</span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">     1825608 :                 ocb += load_step;</span></span>
+<span id="L270"><span class="lineNum">     270</span>              :             }</span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">      141765 :         } else if (jcp.loop_order == loop_rbl) {</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">      178416 :             for (int icb = 0; icb &lt; nb_ic; icb += nb_ic_blocking) {</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">      143904 :                 init_reduce(icb);</span></span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">      143904 :                 int iwork = bcast_start;</span></span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      292716 :                 while (iwork &lt; bcast_end) {</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">      148812 :                     int n {0}, g {0}, bcast_step {0}, od {0}, oh {0}, ow {0},</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">      148812 :                             id {0}, ih {0}, iw {0};</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">      148812 :                     init_bcast(iwork, bcast_end, n, g, bcast_step, od, oh, ow,</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :                             id, ih, iw);</span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">      148812 :                     int ocb = ocb_start;</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">      297624 :                     while (ocb &lt; ocb_end) {</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :                         int load_step;</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">      148812 :                         init_load(ocb, ocb_end, load_step);</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">      148812 :                         ker_1x1(ocb, ocb_start, icb, n, g, od, oh, ow, id, ih,</span></span>
+<span id="L285"><span class="lineNum">     285</span>              :                                 iw);</span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">      148812 :                         ocb += load_step;</span></span>
+<span id="L287"><span class="lineNum">     287</span>              :                     }</span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">      148812 :                     iwork += bcast_step;</span></span>
+<span id="L289"><span class="lineNum">     289</span>              :                 }</span>
+<span id="L290"><span class="lineNum">     290</span>              :             }</span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">      107253 :         } else if (jcp.loop_order == loop_blr) {</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      107253 :             int iwork = bcast_start;</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">      217289 :             while (iwork &lt; bcast_end) {</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">      110036 :                 int n {0}, g {0}, bcast_step {0}, od {0}, oh {0}, ow {0},</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">      110036 :                         id {0}, ih {0}, iw {0};</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">      110036 :                 init_bcast(iwork, bcast_end, n, g, bcast_step, od, oh, ow, id,</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :                         ih, iw);</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      110036 :                 int ocb = ocb_start;</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">      220072 :                 while (ocb &lt; ocb_end) {</span></span>
+<span id="L300"><span class="lineNum">     300</span>              :                     int load_step;</span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">      110036 :                     init_load(ocb, ocb_end, load_step);</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">      220072 :                     for (int icb = 0; icb &lt; nb_ic; icb += nb_ic_blocking) {</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">      110036 :                         init_reduce(icb);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">      110036 :                         ker_1x1(ocb, ocb_start, icb, n, g, od, oh, ow, id, ih,</span></span>
+<span id="L305"><span class="lineNum">     305</span>              :                                 iw);</span>
+<span id="L306"><span class="lineNum">     306</span>              :                     }</span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      110036 :                     ocb += load_step;</span></span>
+<span id="L308"><span class="lineNum">     308</span>              :                 }</span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">      110036 :                 iwork += bcast_step;</span></span>
+<span id="L310"><span class="lineNum">     310</span>              :             }</span>
+<span id="L311"><span class="lineNum">     311</span>              :         } else {</span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaUNC">           0 :             assert(!&quot;unsupported loop order&quot;);</span></span>
+<span id="L313"><span class="lineNum">     313</span>              :         }</span>
+<span id="L314"><span class="lineNum">     314</span>              :     };</span>
+<span id="L315"><span class="lineNum">     315</span>              : </span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">      409968 :     auto ker_dw = [&amp;](int n, int ocb_start, int load_step, int &amp;dw_oh) {</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">      409968 :         auto &amp;jcp_dw = pd()-&gt;dw_conv_pd_-&gt;jcp_;</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">      409968 :         int oh_1x1 = nstl::max(dw_oh * jcp_dw.stride_h - jcp_dw.t_pad, 0);</span></span>
+<span id="L319"><span class="lineNum">     319</span>              : </span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">     1678272 :         for (int i = 0; i &lt; jcp_dw.kh; ++i)</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">     1268304 :             addrs[i] = pbuf + ((oh_1x1++) % jcp_dw.kh) * row_offset;</span></span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">      409968 :         const auto ocb_end = ocb_start + load_step;</span></span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">      409968 :         const auto wch_stride = (is_src_layout_nxc ? 1 : jcp_dw.iw)</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">      409968 :                 * jcp_dw.nb_ch_blocking * jcp_dw.ch_block;</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">      409968 :         const int dil_h = jcp_dw.dilate_h + 1;</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">      409968 :         const int str_h = jcp_dw.stride_h;</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">      409968 :         const int ch_num = jcp_dw.nb_ch_blocking;</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">      409968 :         const int ow = 0;</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">      409968 :         const int kw = 0;</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : </span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">     1449952 :         for (int ch = ocb_start; ch &lt; ocb_end; ch += jcp_dw.nb_ch_blocking) {</span></span>
+<span id="L333"><span class="lineNum">     333</span>              : </span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">     1039984 :             const int i_t_overflow</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">     1039984 :                     = nstl::max(0, (int)(jcp_dw.t_pad - dw_oh * str_h));</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">     1039984 :             const int i_b_overflow</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">     1039984 :                     = nstl::max(jcp_dw.ih,</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">     1039984 :                               (int)(dw_oh * str_h + (jcp_dw.kh - 1) * dil_h</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">     1039984 :                                       - jcp_dw.t_pad + 1))</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">     1039984 :                     - jcp_dw.ih;</span></span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">     1039984 :             const int kh = div_up(i_t_overflow, dil_h);</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">     1039984 :             const int kh_padding = jcp_dw.kh - div_up(i_t_overflow, dil_h)</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">     1039984 :                     - div_up(i_b_overflow, dil_h);</span></span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">     1039984 :             jit_conv_args_t par_conv_dw;</span></span>
+<span id="L347"><span class="lineNum">     347</span>              : </span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaGNC">     1039984 :             par_conv_dw.src = addrs.data();</span></span>
+<span id="L349"><span class="lineNum">     349</span>              : </span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaGNC">     1039984 :             const size_t ch_step = is_dst_layout_nxc</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">     1039984 :                     ? jcp_dw.ch_block</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">     1039984 :                     : dw_dst_d.blk_off(0, 1, 0, 0);</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaGNC">     1039984 :             par_conv_dw.dst</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaGNC">     1039984 :                     = &amp;dst[dw_dst_d.blk_off(n, 0, dw_oh, ow) + ch * ch_step];</span></span>
+<span id="L355"><span class="lineNum">     355</span>              : </span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">     1039984 :             par_conv_dw.filt</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaGNC">     1039984 :                     = &amp;weights_dw[dw_weights_d.blk_off(ch, 0, 0, kh, kw)];</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">     1039984 :             if (bias)</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">      927088 :                 par_conv_dw.bias</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">      927088 :                         = &amp;bias_dw[dw_bias_d.blk_off(ch * jcp_dw.ch_block)];</span></span>
+<span id="L361"><span class="lineNum">     361</span>              : </span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaGNC">     1039984 :             par_conv_dw.kh_padding = (size_t)nstl::max(0, kh_padding);</span></span>
+<span id="L363"><span class="lineNum">     363</span>              : </span>
+<span id="L364"><span class="lineNum">     364</span> <span class="tlaGNC">     1039984 :             par_conv_dw.load_work = (nstl::min(ch + ch_num, jcp_dw.nb_ch) - ch)</span></span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaGNC">     1039984 :                     * jcp_dw.ch_block;</span></span>
+<span id="L366"><span class="lineNum">     366</span>              : </span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">     1039984 :             par_conv_dw.post_ops_binary_rhs_arg_vec</span></span>
+<span id="L368"><span class="lineNum">     368</span>              :                     = post_ops_binary_rhs_arg_vec_dw;</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">     1039984 :             par_conv_dw.dst_orig = dst;</span></span>
+<span id="L370"><span class="lineNum">     370</span>              : </span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">     1039984 :             (*kernel_dw_)(&amp;par_conv_dw);</span></span>
+<span id="L372"><span class="lineNum">     372</span>              : </span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">     4361164 :             for (int i = 0; i &lt; jcp_dw.kh; ++i)</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">     3321168 :                 addrs[i] += wch_stride;</span></span>
+<span id="L375"><span class="lineNum">     375</span>              :         }</span>
+<span id="L376"><span class="lineNum">     376</span>              :     };</span>
+<span id="L377"><span class="lineNum">     377</span>              : </span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">        9632 :     auto conv_dw = [&amp;]() {</span></span>
+<span id="L379"><span class="lineNum">     379</span>              :         // Set variables</span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaGNC">       19264 :         auto dw_conv_buffer</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">        9632 :                 = dw_scratchpad.get&lt;dst_data_t&gt;(key_fusion_inout_buffer);</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaGNC">        9632 :         auto &amp;jcp_dw = pd()-&gt;dw_conv_pd_-&gt;jcp_;</span></span>
+<span id="L383"><span class="lineNum">     383</span>              : </span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">        9632 :         const auto dw_conv_buffer_size_</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">        9632 :                 = (size_t)jcp_dw.kh * jcp.ow * nb_buffer * jcp.oc_block;</span></span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">        9632 :         pbuf = dw_conv_buffer + ithr * dw_conv_buffer_size_;</span></span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">        9632 :         row_offset = dw_conv_buffer_size_ / jcp_dw.kh;</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">        9632 :         addrs.resize(jcp_dw.kh);</span></span>
+<span id="L389"><span class="lineNum">     389</span>              : </span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">        9632 :         int bcast_start {0}, bcast_end {0}, ocb_start {0}, ocb_end {0};</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">        9632 :         balance2D(nthr, ithr, jcp.mb * jcp.ngroups * jcp_dw.oh, bcast_start,</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">        9632 :                 bcast_end, nb_oc, ocb_start, ocb_end, jcp.load_grp_count);</span></span>
+<span id="L393"><span class="lineNum">     393</span>              : </span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">       19264 :         while (ocb_start &lt; ocb_end) {</span></span>
+<span id="L395"><span class="lineNum">     395</span>              :             int load_step;</span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">        9632 :             init_load(ocb_start, ocb_end, load_step);</span></span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">        9632 :             int oh_1x1 = 0;</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">        9632 :             auto bcast_iter = bcast_start;</span></span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">      419600 :             while (bcast_iter &lt; bcast_end) {</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">      409968 :                 int n {0}, g {0}, oh_dw {0};</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">      409968 :                 nd_iterator_init(bcast_iter, n, jcp.mb, g, jcp.ngroups, oh_dw,</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">      409968 :                         jcp_dw.oh);</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">      409968 :                 if (oh_dw == 0) oh_1x1 = 0; // Reset over mb boundary</span></span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">      409968 :                 const int oh_1x1_range = oh_dw * jcp_dw.stride_h - jcp_dw.t_pad;</span></span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">      409968 :                 const int oh_1x1_begin = nstl::max(oh_1x1_range, 0);</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">      409968 :                 const int oh_1x1_end</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">      409968 :                         = nstl::min(oh_1x1_range + jcp_dw.kh, jcp.oh);</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">      409968 :                 oh_1x1 = nstl::max(</span></span>
+<span id="L410"><span class="lineNum">     410</span> <span class="tlaGNC">      409968 :                         oh_1x1_begin, oh_1x1); // Skip rows computed previously</span></span>
+<span id="L411"><span class="lineNum">     411</span>              : </span>
+<span id="L412"><span class="lineNum">     412</span>              :                 // dw_spatial to 1x1 spatial conversion. if jcp.oh != jcp_dw.oh</span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">      409968 :                 const int bcast_start_1x1</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">      409968 :                         = n * jcp.ngroups * jcp.oh + g * jcp.oh + oh_1x1;</span></span>
+<span id="L415"><span class="lineNum">     415</span> <span class="tlaGNC">      409968 :                 const int bcast_end_1x1 = bcast_start_1x1 - oh_1x1 + oh_1x1_end;</span></span>
+<span id="L416"><span class="lineNum">     416</span>              : </span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">      409968 :                 conv_1x1(bcast_start_1x1, bcast_end_1x1, ocb_start,</span></span>
+<span id="L418"><span class="lineNum">     418</span>              :                         ocb_start + load_step);</span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">      409968 :                 oh_1x1 = oh_1x1_end;</span></span>
+<span id="L420"><span class="lineNum">     420</span> <span class="tlaGNC">      409968 :                 ker_dw(n, g * nb_oc + ocb_start, load_step, oh_dw);</span></span>
+<span id="L421"><span class="lineNum">     421</span>              : </span>
+<span id="L422"><span class="lineNum">     422</span> <span class="tlaGNC">      409968 :                 bcast_iter += nb_bcast_blocking;</span></span>
+<span id="L423"><span class="lineNum">     423</span>              :             }</span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">        9632 :             ocb_start += load_step;</span></span>
+<span id="L425"><span class="lineNum">     425</span>              :         }</span>
+<span id="L426"><span class="lineNum">     426</span>              :     };</span>
+<span id="L427"><span class="lineNum">     427</span>              : </span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">     2622573 :     if (jcp.with_dw_conv) {</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">        9632 :         conv_dw();</span></span>
+<span id="L430"><span class="lineNum">     430</span>              :     } else {</span>
+<span id="L431"><span class="lineNum">     431</span>              : </span>
+<span id="L432"><span class="lineNum">     432</span> <span class="tlaGNC">     2612941 :         const int work_amount = jcp.mb * jcp.ngroups * jcp.nb_bcast;</span></span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">     2612941 :         int bcast_start {0}, bcast_end {0}, ocb_start {0}, ocb_end {0};</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">     2612941 :         balance2D(nthr, ithr, work_amount, bcast_start, bcast_end, jcp.nb_load,</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">     2612941 :                 ocb_start, ocb_end, jcp.load_grp_count);</span></span>
+<span id="L436"><span class="lineNum">     436</span>              : </span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">     2612941 :         conv_1x1(bcast_start, bcast_end, ocb_start, ocb_end);</span></span>
+<span id="L438"><span class="lineNum">     438</span>              :     }</span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">     2622573 : }</span></span>
+<span id="L440"><span class="lineNum">     440</span>              : </span>
+<span id="L441"><span class="lineNum">     441</span>              : REG_AVX512_ISA(template struct jit_avx512_common_1x1_convolution_fwd_t&lt;</span>
+<span id="L442"><span class="lineNum">     442</span>              :         data_type::f32&gt;);</span>
+<span id="L443"><span class="lineNum">     443</span>              : /* convolution backward wtr data */</span>
+<span id="L444"><span class="lineNum">     444</span>              : </span>
+<span id="L445"><span class="lineNum">     445</span>              : template &lt;data_type_t diff_dst_type, data_type_t wei_type,</span>
+<span id="L446"><span class="lineNum">     446</span>              :         data_type_t diff_src_type&gt;</span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">       14312 : void jit_avx512_common_1x1_convolution_bwd_data_t&lt;diff_dst_type, wei_type,</span></span>
+<span id="L448"><span class="lineNum">     448</span>              :         diff_src_type&gt;::execute_backward_data(const exec_ctx_t &amp;ctx) const {</span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">       14312 :     auto diff_dst = CTX_IN_MEM(const diff_dst_data_t *, DNNL_ARG_DIFF_DST);</span></span>
+<span id="L450"><span class="lineNum">     450</span> <span class="tlaGNC">       14312 :     auto weights = CTX_IN_MEM(const wei_data_t *, DNNL_ARG_WEIGHTS);</span></span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">       14312 :     auto diff_src = CTX_OUT_MEM(diff_src_data_t *, DNNL_ARG_DIFF_SRC);</span></span>
+<span id="L452"><span class="lineNum">     452</span>              : </span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">       14312 :     const memory_desc_wrapper diff_dst_d(pd()-&gt;diff_dst_md());</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">       14312 :     const memory_desc_wrapper weights_d(pd()-&gt;weights_md(0));</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaGNC">       14312 :     const memory_desc_wrapper diff_src_d(pd()-&gt;diff_src_md());</span></span>
+<span id="L456"><span class="lineNum">     456</span>              : </span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">       14312 :     const auto &amp;jcp = kernel_-&gt;jcp;</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">       14312 :     auto rtus_space = pd()-&gt;rtus_.reduce_src_</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">       14419 :             ? ctx.get_scratchpad_grantor().template get&lt;diff_src_data_t&gt;(</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">         107 :                       key_conv_rtus_space)</span></span>
+<span id="L461"><span class="lineNum">     461</span>              :             : nullptr;</span>
+<span id="L462"><span class="lineNum">     462</span>              : </span>
+<span id="L463"><span class="lineNum">     463</span> <span class="tlaGNC">       14312 :     const int ndims = diff_src_d.ndims();</span></span>
+<span id="L464"><span class="lineNum">     464</span>              : </span>
+<span id="L465"><span class="lineNum">     465</span> <span class="tlaGNC">       14312 :     assert(jcp.stride_w == 1 &amp;&amp; jcp.stride_h == 1 &amp;&amp; jcp.stride_d == 1);</span></span>
+<span id="L466"><span class="lineNum">     466</span>              : </span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">       14312 :     const int stride_d = (ndims == 5) ? pd()-&gt;desc()-&gt;strides[0] : 1;</span></span>
+<span id="L468"><span class="lineNum">     468</span> <span class="tlaGNC">       14312 :     const int stride_h = (ndims == 3) ? 1 : pd()-&gt;desc()-&gt;strides[ndims - 4];</span></span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">       14312 :     const int stride_w = pd()-&gt;desc()-&gt;strides[ndims - 3];</span></span>
+<span id="L470"><span class="lineNum">     470</span>              : </span>
+<span id="L471"><span class="lineNum">     471</span> <span class="tlaGNC">       14312 :     const int nb_ic = jcp.nb_load;</span></span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">       14312 :     const int nb_oc = jcp.nb_reduce;</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       14312 :     const int os_block = jcp.bcast_block;</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">       14312 :     const int nb_oc_blocking = jcp.nb_reduce_blocking;</span></span>
+<span id="L475"><span class="lineNum">     475</span>              : </span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">       14312 :     const int work_amount = jcp.mb * jcp.ngroups * jcp.nb_bcast;</span></span>
+<span id="L477"><span class="lineNum">     477</span>              : </span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">     3685528 :     auto step = [](int default_step, int remaining, int tail_step) {</span></span>
+<span id="L479"><span class="lineNum">     479</span> <span class="tlaGNC">     3685528 :         assert(default_step &lt;= tail_step);</span></span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">     3685528 :         return remaining &lt; tail_step ? remaining : default_step;</span></span>
+<span id="L481"><span class="lineNum">     481</span>              :     };</span>
+<span id="L482"><span class="lineNum">     482</span>              : </span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">     1727858 :     parallel(jcp.nthr, [= COMPAT_THIS_CAPTURE](const int ithr, const int nthr) {</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">     1713546 :         auto p = jit_1x1_conv_args_t();</span></span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaGNC">     1713546 :         auto rp = rtus_driver_t&lt;avx512_core&gt;::call_params_t();</span></span>
+<span id="L486"><span class="lineNum">     486</span>              : </span>
+<span id="L487"><span class="lineNum">     487</span> <span class="tlaGNC">     1713546 :         int bcast_start {0}, bcast_end {0}, icb_start {0}, icb_end {0};</span></span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">     1713546 :         balance2D(nthr, ithr, work_amount, bcast_start, bcast_end, jcp.nb_load,</span></span>
+<span id="L489"><span class="lineNum">     489</span> <span class="tlaGNC">     1713546 :                 icb_start, icb_end, jcp.load_grp_count);</span></span>
+<span id="L490"><span class="lineNum">     490</span>              : </span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">     1713546 :         bool reduce_outer</span></span>
+<span id="L492"><span class="lineNum">     492</span> <span class="tlaGNC">     1713546 :                 = (jcp.loop_order == loop_rbl || jcp.loop_order == loop_rlb);</span></span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">     1713546 :         int nboc_outer = reduce_outer ? nb_oc : 1;</span></span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">     1713546 :         int ocb_outer_step = reduce_outer ? nb_oc_blocking : 1;</span></span>
+<span id="L495"><span class="lineNum">     495</span>              : </span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">     1713546 :         int nboc_inner = reduce_outer ? 1 : nb_oc;</span></span>
+<span id="L497"><span class="lineNum">     497</span> <span class="tlaGNC">     1713546 :         int ocb_inner_step = reduce_outer ? 1 : nb_oc_blocking;</span></span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">     1713546 :         const int max_ic = nstl::min(icb_end * jcp.ic_block, jcp.ic);</span></span>
+<span id="L499"><span class="lineNum">     499</span>              : </span>
+<span id="L500"><span class="lineNum">     500</span> <span class="tlaGNC">     3666708 :         for (int ocb_outer = 0; ocb_outer &lt; nboc_outer;</span></span>
+<span id="L501"><span class="lineNum">     501</span>              :                 ocb_outer += ocb_outer_step) {</span>
+<span id="L502"><span class="lineNum">     502</span> <span class="tlaGNC">     1953162 :             size_t cur_ocb_outer</span></span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaGNC">     1953162 :                     = nstl::min(ocb_outer + ocb_outer_step, nboc_outer)</span></span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaGNC">     1953162 :                     - ocb_outer;</span></span>
+<span id="L505"><span class="lineNum">     505</span>              : </span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaGNC">     1953162 :             int load_step = 0;</span></span>
+<span id="L507"><span class="lineNum">     507</span> <span class="tlaGNC">     3789050 :             for (int icb = icb_start; icb &lt; icb_end; icb += load_step) {</span></span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaGNC">     1835888 :                 load_step = step(jcp.nb_load_blocking, jcp.nb_load - icb,</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaGNC">     1835888 :                         jcp.nb_load_blocking_max);</span></span>
+<span id="L510"><span class="lineNum">     510</span>              : </span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaGNC">     3671776 :                 p.load_dim = this_block_size(</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaGNC">     1835888 :                         icb * jcp.ic_block, max_ic, load_step * jcp.ic_block);</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaGNC">     1835888 :                 rp.icb = p.load_dim;</span></span>
+<span id="L514"><span class="lineNum">     514</span>              : </span>
+<span id="L515"><span class="lineNum">     515</span>              :                 int bcast_step;</span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaGNC">     3685528 :                 for (int iwork = bcast_start; iwork &lt; bcast_end;</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaGNC">     1849640 :                         iwork += bcast_step) {</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaGNC">     1849640 :                     int n {0}, g {0}, osb {0};</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaGNC">     1849640 :                     nd_iterator_init(iwork, n, jcp.mb, g, jcp.ngroups, osb,</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaGNC">     1849640 :                             jcp.nb_bcast);</span></span>
+<span id="L521"><span class="lineNum">     521</span>              : </span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaGNC">     3699280 :                     bcast_step = step(jcp.nb_bcast_blocking, jcp.nb_bcast - osb,</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaGNC">     1849640 :                             jcp.nb_bcast_blocking_max);</span></span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaGNC">     1849640 :                     bcast_step = nstl::min(bcast_step, bcast_end - iwork);</span></span>
+<span id="L525"><span class="lineNum">     525</span>              : </span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaGNC">     1849640 :                     const int os = osb * os_block;</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaGNC">     3699280 :                     p.bcast_dim = this_block_size(</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaGNC">     1849640 :                             os, jcp.os, bcast_step * os_block);</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaGNC">     1849640 :                     rp.os = p.bcast_dim;</span></span>
+<span id="L530"><span class="lineNum">     530</span>              : </span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaGNC">     1849640 :                     const int od = os / (jcp.oh * jcp.ow);</span></span>
+<span id="L532"><span class="lineNum">     532</span> <span class="tlaGNC">     1849640 :                     const int os_2d = os % (jcp.oh * jcp.ow);</span></span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaGNC">     1849640 :                     const int oh = os_2d / jcp.ow;</span></span>
+<span id="L534"><span class="lineNum">     534</span> <span class="tlaGNC">     1849640 :                     const int ow = os_2d % jcp.ow;</span></span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaGNC">     1849640 :                     const int id = od * stride_d;</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaGNC">     1849640 :                     const int ih = oh * stride_h;</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaGNC">     1849640 :                     const int iw = ow * stride_w;</span></span>
+<span id="L538"><span class="lineNum">     538</span> <span class="tlaGNC">     1849640 :                     rp.iw_start = iw;</span></span>
+<span id="L539"><span class="lineNum">     539</span>              :                     const bool is_dsrc_layout_nxc</span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">     1849640 :                             = utils::one_of(jcp.src_tag, format_tag::nwc,</span></span>
+<span id="L541"><span class="lineNum">     541</span>              :                                     format_tag::nhwc, format_tag::ndhwc);</span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">     1849640 :                     const int ic_off_idx = is_dsrc_layout_nxc</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">         510 :                             ? g * jcp.ic + icb * jcp.ic_block</span></span>
+<span id="L544"><span class="lineNum">     544</span> <span class="tlaGNC">     1849130 :                             : g * nb_ic + icb;</span></span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">     1849640 :                     rp.src = diff_src</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">     1849640 :                             + data_blk_off(</span></span>
+<span id="L547"><span class="lineNum">     547</span>              :                                     diff_src_d, n, ic_off_idx, id, ih, iw);</span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">     1849640 :                     if (pd()-&gt;rtus_.reduce_src_) {</span></span>
+<span id="L549"><span class="lineNum">     549</span> <span class="tlaGNC">         202 :                         rp.ws = rtus_space</span></span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">         202 :                                 + ithr * pd()-&gt;rtus_.space_per_thread_;</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">         202 :                         p.output_data = rp.ws;</span></span>
+<span id="L552"><span class="lineNum">     552</span>              :                     } else</span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">     1849438 :                         p.output_data = rp.src;</span></span>
+<span id="L554"><span class="lineNum">     554</span>              : </span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">     3699280 :                     for (int ocb_inner = 0; ocb_inner &lt; nboc_inner;</span></span>
+<span id="L556"><span class="lineNum">     556</span>              :                             ocb_inner += ocb_inner_step) {</span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">     1849640 :                         int cur_ocb_inner</span></span>
+<span id="L558"><span class="lineNum">     558</span> <span class="tlaGNC">     3699280 :                                 = nstl::min(ocb_inner + ocb_inner_step,</span></span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">     1849640 :                                           nboc_inner)</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">     1849640 :                                 - ocb_inner;</span></span>
+<span id="L561"><span class="lineNum">     561</span>              : </span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">     1849640 :                         int ocb = reduce_outer ? ocb_outer : ocb_inner;</span></span>
+<span id="L563"><span class="lineNum">     563</span> <span class="tlaGNC">     1849640 :                         int nb_oc_blocking_step</span></span>
+<span id="L564"><span class="lineNum">     564</span>              :                                 = reduce_outer ? cur_ocb_outer : cur_ocb_inner;</span>
+<span id="L565"><span class="lineNum">     565</span>              :                         const bool is_ddst_layout_nxc</span>
+<span id="L566"><span class="lineNum">     566</span> <span class="tlaGNC">     1849640 :                                 = utils::one_of(jcp.dst_tag, format_tag::nwc,</span></span>
+<span id="L567"><span class="lineNum">     567</span>              :                                         format_tag::nhwc, format_tag::ndhwc);</span>
+<span id="L568"><span class="lineNum">     568</span> <span class="tlaGNC">     1849640 :                         const int oc_off_idx = is_ddst_layout_nxc</span></span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">         510 :                                 ? g * jcp.oc + ocb * jcp.oc_block</span></span>
+<span id="L570"><span class="lineNum">     570</span> <span class="tlaGNC">     1849130 :                                 : g * nb_oc + ocb;</span></span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">     1849640 :                         size_t diff_dst_off = data_blk_off(</span></span>
+<span id="L572"><span class="lineNum">     572</span>              :                                 diff_dst_d, n, oc_off_idx, od, oh, ow);</span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">     1849640 :                         p.bcast_data = &amp;diff_dst[diff_dst_off];</span></span>
+<span id="L574"><span class="lineNum">     574</span>              : </span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">     1849640 :                         p.load_data = &amp;weights[pd()-&gt;with_groups()</span></span>
+<span id="L576"><span class="lineNum">     576</span> <span class="tlaGNC">     1849640 :                                         ? weights_d.blk_off(g, ocb, icb)</span></span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">     1571224 :                                         : weights_d.blk_off(ocb, icb)];</span></span>
+<span id="L578"><span class="lineNum">     578</span>              : </span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">     1849640 :                         p.first_last_flag = ocb == 0 ? FLAG_REDUCE_FIRST : 0;</span></span>
+<span id="L580"><span class="lineNum">     580</span>              : </span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaGNC">     3699280 :                         p.reduce_dim = this_block_size(ocb * jcp.oc_block,</span></span>
+<span id="L582"><span class="lineNum">     582</span> <span class="tlaGNC">     1849640 :                                 jcp.oc, nb_oc_blocking_step * jcp.oc_block);</span></span>
+<span id="L583"><span class="lineNum">     583</span>              : </span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaGNC">     1849640 :                         (*kernel_)(&amp;p);</span></span>
+<span id="L585"><span class="lineNum">     585</span>              :                     }</span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaGNC">     1849640 :                     if (pd()-&gt;rtus_.reduce_src_) (*rtus_driver_)(&amp;rp);</span></span>
+<span id="L587"><span class="lineNum">     587</span>              :                 }</span>
+<span id="L588"><span class="lineNum">     588</span>              :             }</span>
+<span id="L589"><span class="lineNum">     589</span>              :         }</span>
+<span id="L590"><span class="lineNum">     590</span>              :     });</span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaGNC">       14312 : }</span></span>
+<span id="L592"><span class="lineNum">     592</span>              : </span>
+<span id="L593"><span class="lineNum">     593</span>              : REG_AVX512_ISA(template struct jit_avx512_common_1x1_convolution_bwd_data_t&lt;</span>
+<span id="L594"><span class="lineNum">     594</span>              :         data_type::f32&gt;);</span>
+<span id="L595"><span class="lineNum">     595</span>              : </span>
+<span id="L596"><span class="lineNum">     596</span>              : /* convolution backward wtr weights */</span>
+<span id="L597"><span class="lineNum">     597</span>              : </span>
+<span id="L598"><span class="lineNum">     598</span>              : #define wht_blk_off(d, g, ...) \</span>
+<span id="L599"><span class="lineNum">     599</span>              :     (pd()-&gt;with_groups() ? (d).blk_off((g), __VA_ARGS__) \</span>
+<span id="L600"><span class="lineNum">     600</span>              :                          : (d).blk_off(__VA_ARGS__))</span>
+<span id="L601"><span class="lineNum">     601</span>              : </span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaGNC">       11870 : status_t jit_avx512_common_1x1_convolution_bwd_weights_t ::init(</span></span>
+<span id="L603"><span class="lineNum">     603</span>              :         engine_t *engine) {</span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaGNC">       11870 :     CHECK(safe_ptr_assign(kernel_,</span></span>
+<span id="L605"><span class="lineNum">     605</span>              :             new jit_avx512_common_1x1_conv_kernel_t(</span>
+<span id="L606"><span class="lineNum">     606</span>              :                     pd()-&gt;jcp_, *pd()-&gt;attr(), *pd()-&gt;dst_md(0))));</span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaGNC">       11870 :     CHECK(safe_ptr_assign(</span></span>
+<span id="L608"><span class="lineNum">     608</span>              :             acc_ker_, new cpu_accumulator_1d_t&lt;data_type::f32&gt;()));</span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaGNC">       11870 :     CHECK(safe_ptr_assign(reducer_bias_,</span></span>
+<span id="L610"><span class="lineNum">     610</span>              :             new cpu_reducer_t&lt;data_type::f32&gt;(pd()-&gt;reducer_bia_conf_)));</span>
+<span id="L611"><span class="lineNum">     611</span> <span class="tlaGNC">       11870 :     CHECK(kernel_-&gt;create_kernel());</span></span>
+<span id="L612"><span class="lineNum">     612</span> <span class="tlaGNC">       11870 :     CHECK(acc_ker_-&gt;create_kernel());</span></span>
+<span id="L613"><span class="lineNum">     613</span> <span class="tlaGNC">       11870 :     CHECK(reducer_bias_-&gt;create_kernel());</span></span>
+<span id="L614"><span class="lineNum">     614</span>              : </span>
+<span id="L615"><span class="lineNum">     615</span> <span class="tlaGNC">       11870 :     CHECK(init_rtus_driver&lt;avx512_core&gt;(this));</span></span>
+<span id="L616"><span class="lineNum">     616</span> <span class="tlaGNC">       11870 :     return status::success;</span></span>
+<span id="L617"><span class="lineNum">     617</span>              : }</span>
+<span id="L618"><span class="lineNum">     618</span>              : </span>
+<span id="L619"><span class="lineNum">     619</span> <span class="tlaGNC">       20354 : void jit_avx512_common_1x1_convolution_bwd_weights_t::execute_backward_weights(</span></span>
+<span id="L620"><span class="lineNum">     620</span>              :         const exec_ctx_t &amp;ctx) const {</span>
+<span id="L621"><span class="lineNum">     621</span> <span class="tlaGNC">       20354 :     auto diff_dst = CTX_IN_MEM(const data_t *, DNNL_ARG_DIFF_DST);</span></span>
+<span id="L622"><span class="lineNum">     622</span> <span class="tlaGNC">       20354 :     auto src = CTX_IN_MEM(const data_t *, DNNL_ARG_SRC);</span></span>
+<span id="L623"><span class="lineNum">     623</span> <span class="tlaGNC">       20354 :     auto diff_weights = CTX_OUT_MEM(data_t *, DNNL_ARG_DIFF_WEIGHTS);</span></span>
+<span id="L624"><span class="lineNum">     624</span> <span class="tlaGNC">       20354 :     auto diff_bias_in = CTX_OUT_MEM(data_t *, DNNL_ARG_DIFF_BIAS);</span></span>
+<span id="L625"><span class="lineNum">     625</span>              : </span>
+<span id="L626"><span class="lineNum">     626</span> <span class="tlaGNC">       20354 :     const memory_desc_wrapper diff_dst_d(pd()-&gt;diff_dst_md());</span></span>
+<span id="L627"><span class="lineNum">     627</span> <span class="tlaGNC">       20354 :     const memory_desc_wrapper src_d(pd()-&gt;src_md());</span></span>
+<span id="L628"><span class="lineNum">     628</span> <span class="tlaGNC">       20354 :     const memory_desc_wrapper diff_weights_d(pd()-&gt;diff_weights_md(0));</span></span>
+<span id="L629"><span class="lineNum">     629</span>              : </span>
+<span id="L630"><span class="lineNum">     630</span> <span class="tlaGNC">       20354 :     const auto &amp;jcp = kernel_-&gt;jcp;</span></span>
+<span id="L631"><span class="lineNum">     631</span>              : </span>
+<span id="L632"><span class="lineNum">     632</span> <span class="tlaGNC">       20354 :     const auto &amp;scratchpad = ctx.get_scratchpad_grantor();</span></span>
+<span id="L633"><span class="lineNum">     633</span>              : </span>
+<span id="L634"><span class="lineNum">     634</span> <span class="tlaGNC">       20354 :     auto rtus_space = pd()-&gt;rtus_.reduce_src_</span></span>
+<span id="L635"><span class="lineNum">     635</span> <span class="tlaGNC">       20354 :             ? scratchpad.get&lt;data_t&gt;(key_conv_rtus_space)</span></span>
+<span id="L636"><span class="lineNum">     636</span> <span class="tlaGNC">       20354 :             : nullptr;</span></span>
+<span id="L637"><span class="lineNum">     637</span>              :     const bool is_bias_padded</span>
+<span id="L638"><span class="lineNum">     638</span> <span class="tlaGNC">       20354 :             = pd()-&gt;with_bias() &amp;&amp; jcp.oc_without_padding % jcp.oc_block != 0;</span></span>
+<span id="L639"><span class="lineNum">     639</span>              : </span>
+<span id="L640"><span class="lineNum">     640</span>              :     data_t *diff_bias = is_bias_padded</span>
+<span id="L641"><span class="lineNum">     641</span> <span class="tlaGNC">       20354 :             ? scratchpad.get&lt;data_t&gt;(key_conv_padded_bias)</span></span>
+<span id="L642"><span class="lineNum">     642</span> <span class="tlaGNC">       20354 :             : diff_bias_in;</span></span>
+<span id="L643"><span class="lineNum">     643</span> <span class="tlaGNC">       20354 :     auto wei_reduction = scratchpad.get&lt;data_t&gt;(key_conv_wei_reduction);</span></span>
+<span id="L644"><span class="lineNum">     644</span>              : </span>
+<span id="L645"><span class="lineNum">     645</span> <span class="tlaGNC">       20354 :     const int ndims = src_d.ndims();</span></span>
+<span id="L646"><span class="lineNum">     646</span> <span class="tlaGNC">       20354 :     const int wei_size = jcp.ngroups * rnd_up(jcp.oc, jcp.oc_block)</span></span>
+<span id="L647"><span class="lineNum">     647</span> <span class="tlaGNC">       20354 :             * rnd_up(jcp.ic, jcp.ic_block);</span></span>
+<span id="L648"><span class="lineNum">     648</span>              : </span>
+<span id="L649"><span class="lineNum">     649</span>              :     simple_barrier::ctx_t *reduction_barrier</span>
+<span id="L650"><span class="lineNum">     650</span> <span class="tlaGNC">       40708 :             = scratchpad.template get&lt;simple_barrier::ctx_t&gt;(</span></span>
+<span id="L651"><span class="lineNum">     651</span> <span class="tlaGNC">       20354 :                     key_conv_wei_reduction_bctx);</span></span>
+<span id="L652"><span class="lineNum">     652</span> <span class="tlaGNC">       20354 :     if (dnnl_thr_syncable() &amp;&amp; jcp.nthr_mb &gt; 1)</span></span>
+<span id="L653"><span class="lineNum">     653</span> <span class="tlaGNC">        5138 :         simple_barrier::ctx_init(reduction_barrier);</span></span>
+<span id="L654"><span class="lineNum">     654</span>              : </span>
+<span id="L655"><span class="lineNum">     655</span>              :     memory_tracking::grantor_t reducer_bia_scratchpad(</span>
+<span id="L656"><span class="lineNum">     656</span> <span class="tlaGNC">       40708 :             scratchpad, prefix_reducer_bia);</span></span>
+<span id="L657"><span class="lineNum">     657</span> <span class="tlaGNC">       20354 :     auto rb = this-&gt;reducer_bias_.get();</span></span>
+<span id="L658"><span class="lineNum">     658</span> <span class="tlaGNC">       20354 :     rb-&gt;init(reducer_bia_scratchpad);</span></span>
+<span id="L659"><span class="lineNum">     659</span>              : </span>
+<span id="L660"><span class="lineNum">     660</span>              :     // TODO (Roma): remove this restriction</span>
+<span id="L661"><span class="lineNum">     661</span> <span class="tlaGNC">       20354 :     assert(jcp.stride_w == 1 &amp;&amp; jcp.stride_h == 1);</span></span>
+<span id="L662"><span class="lineNum">     662</span>              : </span>
+<span id="L663"><span class="lineNum">     663</span> <span class="tlaGNC">       20354 :     const int nb_ic = jcp.nb_bcast;</span></span>
+<span id="L664"><span class="lineNum">     664</span> <span class="tlaGNC">       20354 :     const int nb_ic_blocking = jcp.nb_bcast_blocking;</span></span>
+<span id="L665"><span class="lineNum">     665</span>              : </span>
+<span id="L666"><span class="lineNum">     666</span> <span class="tlaGNC">       20354 :     const int nb_oc = jcp.nb_load;</span></span>
+<span id="L667"><span class="lineNum">     667</span> <span class="tlaGNC">       20354 :     const int nb_oc_blocking = jcp.nb_load_blocking;</span></span>
+<span id="L668"><span class="lineNum">     668</span>              : </span>
+<span id="L669"><span class="lineNum">     669</span> <span class="tlaGNC">       20354 :     const int sp_nb = jcp.nb_reduce;</span></span>
+<span id="L670"><span class="lineNum">     670</span> <span class="tlaGNC">       20354 :     const int mb_sp_work = jcp.mb * sp_nb;</span></span>
+<span id="L671"><span class="lineNum">     671</span>              : </span>
+<span id="L672"><span class="lineNum">     672</span> <span class="tlaGNC">       20354 :     const int stride_h = (ndims == 3) ? 1 : pd()-&gt;desc()-&gt;strides[0];</span></span>
+<span id="L673"><span class="lineNum">     673</span> <span class="tlaGNC">       20354 :     const int stride_w = pd()-&gt;desc()-&gt;strides[ndims - 3];</span></span>
+<span id="L674"><span class="lineNum">     674</span>              : </span>
+<span id="L675"><span class="lineNum">     675</span> <span class="tlaGNC">     9523165 :     auto step = [](int default_step, int remaining, int tail_step) {</span></span>
+<span id="L676"><span class="lineNum">     676</span> <span class="tlaGNC">     9523165 :         assert(default_step &lt;= tail_step);</span></span>
+<span id="L677"><span class="lineNum">     677</span> <span class="tlaGNC">     9523165 :         return remaining &lt; tail_step ? remaining : default_step;</span></span>
+<span id="L678"><span class="lineNum">     678</span>              :     };</span>
+<span id="L679"><span class="lineNum">     679</span>              : </span>
+<span id="L680"><span class="lineNum">     680</span> <span class="tlaGNC">       40708 :     const bool is_src_layout_nxc = utils::one_of(</span></span>
+<span id="L681"><span class="lineNum">     681</span> <span class="tlaGNC">       20354 :             jcp.src_tag, format_tag::nwc, format_tag::nhwc, format_tag::ndhwc);</span></span>
+<span id="L682"><span class="lineNum">     682</span> <span class="tlaGNC">       40708 :     const bool is_ddst_layout_nxc = utils::one_of(</span></span>
+<span id="L683"><span class="lineNum">     683</span> <span class="tlaGNC">       20354 :             jcp.dst_tag, format_tag::nwc, format_tag::nhwc, format_tag::ndhwc);</span></span>
+<span id="L684"><span class="lineNum">     684</span>              : </span>
+<span id="L685"><span class="lineNum">     685</span>              :     auto maybe_zero_icpad</span>
+<span id="L686"><span class="lineNum">     686</span> <span class="tlaGNC">       63860 :             = [= COMPAT_THIS_CAPTURE](const int g_start, const int g_end,</span></span>
+<span id="L687"><span class="lineNum">     687</span>              :                       const int ocb_start, const int ocb_end) {</span>
+<span id="L688"><span class="lineNum">     688</span>              :         // write zeros to IC padded region.</span>
+<span id="L689"><span class="lineNum">     689</span> <span class="tlaGNC">       63860 :         const int ic_tail = jcp.ic_without_padding % jcp.ic_block;</span></span>
+<span id="L690"><span class="lineNum">     690</span> <span class="tlaGNC">       63860 :         if (is_ddst_layout_nxc &amp;&amp; ic_tail != 0) {</span></span>
+<span id="L691"><span class="lineNum">     691</span> <span class="tlaGNC">        3218 :             for_(int g = g_start; g &lt; g_end; ++g)</span></span>
+<span id="L692"><span class="lineNum">     692</span> <span class="tlaGNC">        3641 :             for (int z_ocb = ocb_start; z_ocb &lt; ocb_end; ++z_ocb) {</span></span>
+<span id="L693"><span class="lineNum">     693</span> <span class="tlaGNC">        4064 :                 const int z_icb = nb_ic - 1;</span></span>
+<span id="L694"><span class="lineNum">     694</span> <span class="tlaGNC">        2032 :                 const size_t off = wht_blk_off(diff_weights_d, g, z_ocb, z_icb)</span></span>
+<span id="L695"><span class="lineNum">     695</span> <span class="tlaGNC">        2032 :                         + ic_tail * jcp.oc_block;</span></span>
+<span id="L696"><span class="lineNum">     696</span> <span class="tlaGNC">        2032 :                 data_t *z_wei = diff_weights + off;</span></span>
+<span id="L697"><span class="lineNum">     697</span> <span class="tlaGNC">        2032 :                 const int zero_work</span></span>
+<span id="L698"><span class="lineNum">     698</span> <span class="tlaGNC">        2032 :                         = (nb_ic * jcp.ic_block - jcp.ic_without_padding)</span></span>
+<span id="L699"><span class="lineNum">     699</span> <span class="tlaGNC">        2032 :                         * jcp.oc_block;</span></span>
+<span id="L700"><span class="lineNum">     700</span> <span class="tlaGNC">        2032 :                 PRAGMA_OMP_SIMD()</span></span>
+<span id="L701"><span class="lineNum">     701</span>              :                 for (int o = 0; o &lt; zero_work; ++o) {</span>
+<span id="L702"><span class="lineNum">     702</span> <span class="tlaGNC">      265568 :                     z_wei[o] = 0;</span></span>
+<span id="L703"><span class="lineNum">     703</span>              :                 }</span>
+<span id="L704"><span class="lineNum">     704</span>              :             }</span>
+<span id="L705"><span class="lineNum">     705</span>              :         }</span>
+<span id="L706"><span class="lineNum">     706</span> <span class="tlaGNC">       40708 :     };</span></span>
+<span id="L707"><span class="lineNum">     707</span>              : </span>
+<span id="L708"><span class="lineNum">     708</span> <span class="tlaGNC">     1245500 :     auto ker = [= COMPAT_THIS_CAPTURE](const int ithr, const int nthr) {</span></span>
+<span id="L709"><span class="lineNum">     709</span> <span class="tlaGNC">     1225146 :         assert(nthr == jcp.nthr);</span></span>
+<span id="L710"><span class="lineNum">     710</span>              : </span>
+<span id="L711"><span class="lineNum">     711</span> <span class="tlaGNC">     1225146 :         const int ithr_ic_b = ithr % jcp.nthr_ic_b;</span></span>
+<span id="L712"><span class="lineNum">     712</span> <span class="tlaGNC">     1225146 :         const int ithr_oc_b = ithr / jcp.nthr_ic_b % jcp.nthr_oc_b;</span></span>
+<span id="L713"><span class="lineNum">     713</span> <span class="tlaGNC">     1225146 :         const int ithr_g = ithr / jcp.nthr_ic_b / jcp.nthr_oc_b % jcp.nthr_g;</span></span>
+<span id="L714"><span class="lineNum">     714</span> <span class="tlaGNC">     1225146 :         const int ithr_mb = ithr / jcp.nthr_ic_b / jcp.nthr_oc_b / jcp.nthr_g;</span></span>
+<span id="L715"><span class="lineNum">     715</span>              : </span>
+<span id="L716"><span class="lineNum">     716</span>              :         /* reduction dimension */</span>
+<span id="L717"><span class="lineNum">     717</span> <span class="tlaGNC">     1225146 :         int mb_sp_b_start {0}, mb_sp_b_end {0};</span></span>
+<span id="L718"><span class="lineNum">     718</span> <span class="tlaGNC">     1225146 :         balance211(</span></span>
+<span id="L719"><span class="lineNum">     719</span> <span class="tlaGNC">     1225146 :                 mb_sp_work, jcp.nthr_mb, ithr_mb, mb_sp_b_start, mb_sp_b_end);</span></span>
+<span id="L720"><span class="lineNum">     720</span>              : </span>
+<span id="L721"><span class="lineNum">     721</span>              :         /* independent dimensions */</span>
+<span id="L722"><span class="lineNum">     722</span> <span class="tlaGNC">     1225146 :         int g_start {0}, oc_b_start {0}, ic_b_start {0};</span></span>
+<span id="L723"><span class="lineNum">     723</span> <span class="tlaGNC">     1225146 :         int g_end {0}, oc_b_end {0}, ic_b_end {0};</span></span>
+<span id="L724"><span class="lineNum">     724</span>              : </span>
+<span id="L725"><span class="lineNum">     725</span> <span class="tlaGNC">     1225146 :         balance211(jcp.ngroups, jcp.nthr_g, ithr_g, g_start, g_end);</span></span>
+<span id="L726"><span class="lineNum">     726</span> <span class="tlaGNC">     1225146 :         balance211(jcp.nb_load, jcp.nthr_oc_b, ithr_oc_b, oc_b_start, oc_b_end);</span></span>
+<span id="L727"><span class="lineNum">     727</span> <span class="tlaGNC">     1225146 :         balance211(</span></span>
+<span id="L728"><span class="lineNum">     728</span> <span class="tlaGNC">     1225146 :                 jcp.nb_bcast, jcp.nthr_ic_b, ithr_ic_b, ic_b_start, ic_b_end);</span></span>
+<span id="L729"><span class="lineNum">     729</span>              : </span>
+<span id="L730"><span class="lineNum">     730</span> <span class="tlaGNC">     1225146 :         const int g_work = g_end - g_start;</span></span>
+<span id="L731"><span class="lineNum">     731</span> <span class="tlaGNC">     1225146 :         const int oc_b_work = oc_b_end - oc_b_start;</span></span>
+<span id="L732"><span class="lineNum">     732</span> <span class="tlaGNC">     1225146 :         const int ic_b_work = ic_b_end - ic_b_start;</span></span>
+<span id="L733"><span class="lineNum">     733</span> <span class="tlaGNC">     1225146 :         const bool cache_aliasing</span></span>
+<span id="L734"><span class="lineNum">     734</span> <span class="tlaGNC">     1225146 :                 = (jcp.ic * jcp.ngroups * sizeof(float)) % 1024 == 0;</span></span>
+<span id="L735"><span class="lineNum">     735</span> <span class="tlaGNC">     1225146 :         int reduce_step = jcp.nb_reduce_blocking;</span></span>
+<span id="L736"><span class="lineNum">     736</span> <span class="tlaGNC">     1225146 :         int reduce_step_max = jcp.nb_reduce_blocking_max;</span></span>
+<span id="L737"><span class="lineNum">     737</span> <span class="tlaGNC">     1225146 :         if (is_src_layout_nxc &amp;&amp; cache_aliasing) {</span></span>
+<span id="L738"><span class="lineNum">     738</span>              :             // Experiments show 4 is a magic number with the tested shapes.</span>
+<span id="L739"><span class="lineNum">     739</span>              :             // TODO: maybe tune for shapes with sp_dim%4 != 0</span>
+<span id="L740"><span class="lineNum">     740</span> <span class="tlaGNC">      128310 :             reduce_step = nstl::min(4, reduce_step);</span></span>
+<span id="L741"><span class="lineNum">     741</span> <span class="tlaGNC">      128310 :             reduce_step_max = reduce_step;</span></span>
+<span id="L742"><span class="lineNum">     742</span>              :         }</span>
+<span id="L743"><span class="lineNum">     743</span>              : </span>
+<span id="L744"><span class="lineNum">     744</span> <span class="tlaGNC">     1225146 :         data_t *diff_wei = ithr_mb == 0</span></span>
+<span id="L745"><span class="lineNum">     745</span> <span class="tlaGNC">     1225146 :                 ? diff_weights</span></span>
+<span id="L746"><span class="lineNum">     746</span> <span class="tlaGNC">      646584 :                 : wei_reduction + (ithr_mb - 1) * wei_size;</span></span>
+<span id="L747"><span class="lineNum">     747</span>              : </span>
+<span id="L748"><span class="lineNum">     748</span> <span class="tlaGNC">     1225146 :         int sp_b_step = 0;</span></span>
+<span id="L749"><span class="lineNum">     749</span> <span class="tlaGNC">     4797367 :         for (int mb_sp_b = mb_sp_b_start; mb_sp_b &lt; mb_sp_b_end;</span></span>
+<span id="L750"><span class="lineNum">     750</span> <span class="tlaGNC">     3572221 :                 mb_sp_b += sp_b_step) {</span></span>
+<span id="L751"><span class="lineNum">     751</span> <span class="tlaGNC">     3572221 :             int img {0}, sp_b {0};</span></span>
+<span id="L752"><span class="lineNum">     752</span> <span class="tlaGNC">     3572221 :             nd_iterator_init(mb_sp_b, img, jcp.mb, sp_b, sp_nb);</span></span>
+<span id="L753"><span class="lineNum">     753</span> <span class="tlaGNC">     3572221 :             sp_b_step = step(reduce_step,</span></span>
+<span id="L754"><span class="lineNum">     754</span> <span class="tlaGNC">     3572221 :                     nstl::min(sp_nb - sp_b, mb_sp_b_end - mb_sp_b),</span></span>
+<span id="L755"><span class="lineNum">     755</span>              :                     reduce_step_max);</span>
+<span id="L756"><span class="lineNum">     756</span>              : </span>
+<span id="L757"><span class="lineNum">     757</span> <span class="tlaGNC">     7144450 :             for (int g = g_start; g &lt; g_end; ++g) {</span></span>
+<span id="L758"><span class="lineNum">     758</span> <span class="tlaGNC">     3572221 :                 int load_step = 0;</span></span>
+<span id="L759"><span class="lineNum">     759</span> <span class="tlaGNC">     3572221 :                 int bcast_step = 0;</span></span>
+<span id="L760"><span class="lineNum">     760</span> <span class="tlaGNC">     7284277 :                 for (int ic_b = ic_b_start; ic_b &lt; ic_b_end;</span></span>
+<span id="L761"><span class="lineNum">     761</span> <span class="tlaGNC">     3712048 :                         ic_b += bcast_step) {</span></span>
+<span id="L762"><span class="lineNum">     762</span> <span class="tlaGNC">     3712048 :                     if (is_src_layout_nxc &amp;&amp; cache_aliasing) {</span></span>
+<span id="L763"><span class="lineNum">     763</span> <span class="tlaGNC">     1475740 :                         bcast_step = ic_b_work;</span></span>
+<span id="L764"><span class="lineNum">     764</span>              :                     } else {</span>
+<span id="L765"><span class="lineNum">     765</span> <span class="tlaGNC">     2236308 :                         bcast_step = step(nb_ic_blocking, ic_b_end - ic_b,</span></span>
+<span id="L766"><span class="lineNum">     766</span> <span class="tlaGNC">     2236308 :                                 jcp.nb_bcast_blocking_max);</span></span>
+<span id="L767"><span class="lineNum">     767</span>              :                     }</span>
+<span id="L768"><span class="lineNum">     768</span>              : </span>
+<span id="L769"><span class="lineNum">     769</span> <span class="tlaGNC">     7426692 :                     for (int oc_b = oc_b_start; oc_b &lt; oc_b_end;</span></span>
+<span id="L770"><span class="lineNum">     770</span> <span class="tlaGNC">     3714640 :                             oc_b += load_step) {</span></span>
+<span id="L771"><span class="lineNum">     771</span> <span class="tlaGNC">     3714640 :                         load_step = step(nb_oc_blocking, oc_b_end - oc_b,</span></span>
+<span id="L772"><span class="lineNum">     772</span> <span class="tlaGNC">     3714640 :                                 jcp.nb_load_blocking_max);</span></span>
+<span id="L773"><span class="lineNum">     773</span> <span class="tlaGNC">     3714640 :                         const int _ic_b = g * nb_ic + ic_b;</span></span>
+<span id="L774"><span class="lineNum">     774</span> <span class="tlaGNC">    11143920 :                         const int oc_off_idx = is_ddst_layout_nxc</span></span>
+<span id="L775"><span class="lineNum">     775</span> <span class="tlaGNC">     3714640 :                                 ? g * jcp.oc + oc_b * jcp.oc_block</span></span>
+<span id="L776"><span class="lineNum">     776</span> <span class="tlaGNC">     1667868 :                                 : g * nb_oc + oc_b;</span></span>
+<span id="L777"><span class="lineNum">     777</span>              : </span>
+<span id="L778"><span class="lineNum">     778</span>              :                         data_t *store_to;</span>
+<span id="L779"><span class="lineNum">     779</span>              : </span>
+<span id="L780"><span class="lineNum">     780</span>              :                         const size_t off</span>
+<span id="L781"><span class="lineNum">     781</span> <span class="tlaGNC">     3714640 :                                 = wht_blk_off(diff_weights_d, g, oc_b, ic_b);</span></span>
+<span id="L782"><span class="lineNum">     782</span> <span class="tlaGNC">     3714640 :                         store_to = diff_wei + off;</span></span>
+<span id="L783"><span class="lineNum">     783</span>              : </span>
+<span id="L784"><span class="lineNum">     784</span> <span class="tlaGNC">     3714640 :                         const int ic_off_idx</span></span>
+<span id="L785"><span class="lineNum">     785</span> <span class="tlaGNC">     3714640 :                                 = (is_src_layout_nxc ? jcp.ic_block : 1)</span></span>
+<span id="L786"><span class="lineNum">     786</span>              :                                 * _ic_b;</span>
+<span id="L787"><span class="lineNum">     787</span>              :                         const data_t *diff_src</span>
+<span id="L788"><span class="lineNum">     788</span> <span class="tlaGNC">     3714640 :                                 = &amp;src[src_d.blk_off(img, ic_off_idx)];</span></span>
+<span id="L789"><span class="lineNum">     789</span>              : </span>
+<span id="L790"><span class="lineNum">     790</span> <span class="tlaGNC">     3714640 :                         int sp_b_end = sp_b + sp_b_step;</span></span>
+<span id="L791"><span class="lineNum">     791</span> <span class="tlaGNC">     3714640 :                         const data_t *pdiff_dst = &amp;diff_dst[diff_dst_d.blk_off(</span></span>
+<span id="L792"><span class="lineNum">     792</span> <span class="tlaGNC">     3714640 :                                 img, oc_off_idx)];</span></span>
+<span id="L793"><span class="lineNum">     793</span> <span class="tlaGNC">     3714640 :                         const data_t *local_src = diff_src;</span></span>
+<span id="L794"><span class="lineNum">     794</span>              : </span>
+<span id="L795"><span class="lineNum">     795</span> <span class="tlaGNC">     3714640 :                         auto p = jit_1x1_conv_args_t();</span></span>
+<span id="L796"><span class="lineNum">     796</span> <span class="tlaGNC">     3714640 :                         auto rp = rtus_driver_t&lt;avx512_core&gt;::call_params_t();</span></span>
+<span id="L797"><span class="lineNum">     797</span>              : </span>
+<span id="L798"><span class="lineNum">     798</span> <span class="tlaGNC">     3714640 :                         p.output_stride = utils::rnd_up(jcp.ic, jcp.ic_block)</span></span>
+<span id="L799"><span class="lineNum">     799</span> <span class="tlaGNC">     3714640 :                                 * jcp.oc_block * jcp.typesize_out;</span></span>
+<span id="L800"><span class="lineNum">     800</span>              : </span>
+<span id="L801"><span class="lineNum">     801</span> <span class="tlaGNC">     7429280 :                         p.load_dim = this_block_size(oc_b * jcp.oc_block,</span></span>
+<span id="L802"><span class="lineNum">     802</span> <span class="tlaGNC">     3714640 :                                 jcp.oc, load_step * jcp.oc_block);</span></span>
+<span id="L803"><span class="lineNum">     803</span>              : </span>
+<span id="L804"><span class="lineNum">     804</span> <span class="tlaGNC">     7429280 :                         p.bcast_dim = this_block_size(ic_b * jcp.ic_block,</span></span>
+<span id="L805"><span class="lineNum">     805</span> <span class="tlaGNC">     3714640 :                                 jcp.ic, bcast_step * jcp.ic_block);</span></span>
+<span id="L806"><span class="lineNum">     806</span> <span class="tlaGNC">     3714640 :                         rp.icb = p.bcast_dim;</span></span>
+<span id="L807"><span class="lineNum">     807</span> <span class="tlaGNC">     3714640 :                         p.output_data = store_to;</span></span>
+<span id="L808"><span class="lineNum">     808</span>              : </span>
+<span id="L809"><span class="lineNum">     809</span> <span class="tlaGNC">     3714640 :                         p.reduce_dim = sp_b_step * jcp.reduce_block;</span></span>
+<span id="L810"><span class="lineNum">     810</span> <span class="tlaGNC">     3714640 :                         rp.os = p.reduce_dim;</span></span>
+<span id="L811"><span class="lineNum">     811</span>              : </span>
+<span id="L812"><span class="lineNum">     812</span> <span class="tlaGNC">     3714640 :                         p.first_last_flag = 0</span></span>
+<span id="L813"><span class="lineNum">     813</span> <span class="tlaGNC">     3714640 :                                 | (mb_sp_b == mb_sp_b_start ? FLAG_REDUCE_FIRST</span></span>
+<span id="L814"><span class="lineNum">     814</span>              :                                                             : 0)</span>
+<span id="L815"><span class="lineNum">     815</span> <span class="tlaGNC">     3714640 :                                 | (sp_b_end == sp_nb ? FLAG_SP_LAST : 0);</span></span>
+<span id="L816"><span class="lineNum">     816</span>              : </span>
+<span id="L817"><span class="lineNum">     817</span> <span class="tlaGNC">     3714640 :                         int sp = sp_b * jcp.reduce_block;</span></span>
+<span id="L818"><span class="lineNum">     818</span> <span class="tlaGNC">     3714640 :                         int oc_mult</span></span>
+<span id="L819"><span class="lineNum">     819</span> <span class="tlaGNC">     3714640 :                                 = is_ddst_layout_nxc ? jcp.oc : jcp.oc_block;</span></span>
+<span id="L820"><span class="lineNum">     820</span> <span class="tlaGNC">     3714640 :                         p.load_data = pdiff_dst + sp * oc_mult;</span></span>
+<span id="L821"><span class="lineNum">     821</span>              : </span>
+<span id="L822"><span class="lineNum">     822</span> <span class="tlaGNC">     3714640 :                         if (pd()-&gt;rtus_.reduce_src_) {</span></span>
+<span id="L823"><span class="lineNum">     823</span> <span class="tlaGNC">      570797 :                             const int oh = sp / jcp.ow;</span></span>
+<span id="L824"><span class="lineNum">     824</span> <span class="tlaGNC">      570797 :                             const int ow = sp % jcp.ow;</span></span>
+<span id="L825"><span class="lineNum">     825</span>              : </span>
+<span id="L826"><span class="lineNum">     826</span> <span class="tlaGNC">      570797 :                             const int ih = oh * stride_h;</span></span>
+<span id="L827"><span class="lineNum">     827</span> <span class="tlaGNC">      570797 :                             const int iw = ow * stride_w;</span></span>
+<span id="L828"><span class="lineNum">     828</span> <span class="tlaGNC">      570797 :                             rp.iw_start = iw;</span></span>
+<span id="L829"><span class="lineNum">     829</span>              : </span>
+<span id="L830"><span class="lineNum">     830</span> <span class="tlaGNC">     1141594 :                             rp.ws = rtus_space</span></span>
+<span id="L831"><span class="lineNum">     831</span> <span class="tlaGNC">      570797 :                                     + ithr * pd()-&gt;rtus_.space_per_thread_</span></span>
+<span id="L832"><span class="lineNum">     832</span> <span class="tlaGNC">      570797 :                                     + sp * jcp.ic_block;</span></span>
+<span id="L833"><span class="lineNum">     833</span>              : </span>
+<span id="L834"><span class="lineNum">     834</span> <span class="tlaGNC">      570797 :                             if (ndims == 3)</span></span>
+<span id="L835"><span class="lineNum">     835</span> <span class="tlaGNC">       58014 :                                 rp.src = local_src</span></span>
+<span id="L836"><span class="lineNum">     836</span> <span class="tlaGNC">       58014 :                                         + iw * src_d.blocking_desc().strides[2];</span></span>
+<span id="L837"><span class="lineNum">     837</span>              :                             else</span>
+<span id="L838"><span class="lineNum">     838</span> <span class="tlaGNC">      512783 :                                 rp.src = local_src</span></span>
+<span id="L839"><span class="lineNum">     839</span> <span class="tlaGNC">      512783 :                                         + ih * src_d.blocking_desc().strides[2]</span></span>
+<span id="L840"><span class="lineNum">     840</span> <span class="tlaGNC">      512783 :                                         + iw * src_d.blocking_desc().strides[3];</span></span>
+<span id="L841"><span class="lineNum">     841</span> <span class="tlaGNC">      570797 :                             (*rtus_driver_)(&amp;rp);</span></span>
+<span id="L842"><span class="lineNum">     842</span>              : </span>
+<span id="L843"><span class="lineNum">     843</span> <span class="tlaGNC">      570797 :                             p.bcast_data = rp.ws;</span></span>
+<span id="L844"><span class="lineNum">     844</span>              :                         } else {</span>
+<span id="L845"><span class="lineNum">     845</span> <span class="tlaGNC">     3143843 :                             int ic_mult</span></span>
+<span id="L846"><span class="lineNum">     846</span> <span class="tlaGNC">     3143843 :                                     = is_src_layout_nxc ? jcp.ic : jcp.ic_block;</span></span>
+<span id="L847"><span class="lineNum">     847</span> <span class="tlaGNC">     3143843 :                             p.bcast_data = local_src + sp * ic_mult;</span></span>
+<span id="L848"><span class="lineNum">     848</span>              :                         }</span>
+<span id="L849"><span class="lineNum">     849</span>              : </span>
+<span id="L850"><span class="lineNum">     850</span> <span class="tlaGNC">     3714640 :                         (*kernel_)(&amp;p);</span></span>
+<span id="L851"><span class="lineNum">     851</span>              :                     }</span>
+<span id="L852"><span class="lineNum">     852</span>              :                 }</span>
+<span id="L853"><span class="lineNum">     853</span>              :             }</span>
+<span id="L854"><span class="lineNum">     854</span>              :         }</span>
+<span id="L855"><span class="lineNum">     855</span>              : </span>
+<span id="L856"><span class="lineNum">     856</span> <span class="tlaGNC">     1225146 :         if (ithr_mb == 0 &amp;&amp; ic_b_end &gt;= jcp.nb_bcast) {</span></span>
+<span id="L857"><span class="lineNum">     857</span> <span class="tlaGNC">       63860 :             maybe_zero_icpad(g_start, g_end, oc_b_start, oc_b_end);</span></span>
+<span id="L858"><span class="lineNum">     858</span>              :         }</span>
+<span id="L859"><span class="lineNum">     859</span>              : </span>
+<span id="L860"><span class="lineNum">     860</span>              :         /* diff_weights[:] += sum(wei_reduction[thr_mb][:]) */</span>
+<span id="L861"><span class="lineNum">     861</span> <span class="tlaGNC">     1225146 :         if (dnnl_thr_syncable() &amp;&amp; jcp.nthr_mb &gt; 1) {</span></span>
+<span id="L862"><span class="lineNum">     862</span> <span class="tlaGNC">      251761 :             simple_barrier::barrier(reduction_barrier, jcp.nthr);</span></span>
+<span id="L863"><span class="lineNum">     863</span> <span class="tlaGNC">      251761 :             const int work = g_work * oc_b_work * ic_b_work;</span></span>
+<span id="L864"><span class="lineNum">     864</span> <span class="tlaGNC">      251761 :             int start {0}, end {0};</span></span>
+<span id="L865"><span class="lineNum">     865</span> <span class="tlaGNC">      251761 :             balance211(work, jcp.nthr_mb, ithr_mb, start, end);</span></span>
+<span id="L866"><span class="lineNum">     866</span> <span class="tlaGNC">      251761 :             if (start == end) return;</span></span>
+<span id="L867"><span class="lineNum">     867</span>              : </span>
+<span id="L868"><span class="lineNum">     868</span> <span class="tlaGNC">      678287 :             for (int thr_mb = 1; thr_mb &lt; jcp.nthr_mb; ++thr_mb) {</span></span>
+<span id="L869"><span class="lineNum">     869</span> <span class="tlaGNC">      546794 :                 int w = start;</span></span>
+<span id="L870"><span class="lineNum">     870</span> <span class="tlaGNC">      546794 :                 int sub_g_start {0}, sub_oc_b_start {0}, sub_ic_b_start {0};</span></span>
+<span id="L871"><span class="lineNum">     871</span> <span class="tlaGNC">      546794 :                 nd_iterator_init(w, sub_g_start, g_work, sub_oc_b_start,</span></span>
+<span id="L872"><span class="lineNum">     872</span>              :                         oc_b_work, sub_ic_b_start, ic_b_work);</span>
+<span id="L873"><span class="lineNum">     873</span> <span class="tlaGNC">     1131532 :                 while (w &lt; end) {</span></span>
+<span id="L874"><span class="lineNum">     874</span> <span class="tlaGNC">      584738 :                     const int g = g_start + sub_g_start;</span></span>
+<span id="L875"><span class="lineNum">     875</span> <span class="tlaGNC">      584738 :                     const int oc_b = oc_b_start + sub_oc_b_start;</span></span>
+<span id="L876"><span class="lineNum">     876</span> <span class="tlaGNC">      584738 :                     const int ic_b = ic_b_start + sub_ic_b_start;</span></span>
+<span id="L877"><span class="lineNum">     877</span>              :                     const int ic_to_accumulate</span>
+<span id="L878"><span class="lineNum">     878</span> <span class="tlaGNC">      584738 :                             = nstl::min(end - w, ic_b_work - sub_ic_b_start)</span></span>
+<span id="L879"><span class="lineNum">     879</span> <span class="tlaGNC">      584738 :                             * jcp.ic_block;</span></span>
+<span id="L880"><span class="lineNum">     880</span>              :                     const int acc_size</span>
+<span id="L881"><span class="lineNum">     881</span> <span class="tlaGNC">      584738 :                             = this_block_size(ic_b * jcp.ic_block,</span></span>
+<span id="L882"><span class="lineNum">     882</span> <span class="tlaGNC">      584738 :                                       jcp.ic_without_padding, ic_to_accumulate)</span></span>
+<span id="L883"><span class="lineNum">     883</span> <span class="tlaGNC">      584738 :                             * jcp.oc_block;</span></span>
+<span id="L884"><span class="lineNum">     884</span>              : </span>
+<span id="L885"><span class="lineNum">     885</span>              :                     const size_t off</span>
+<span id="L886"><span class="lineNum">     886</span> <span class="tlaGNC">      584738 :                             = wht_blk_off(diff_weights_d, g, oc_b, ic_b);</span></span>
+<span id="L887"><span class="lineNum">     887</span> <span class="tlaGNC">      584738 :                     data_t *d = diff_weights + off;</span></span>
+<span id="L888"><span class="lineNum">     888</span> <span class="tlaGNC">      584738 :                     data_t *s = wei_reduction + (thr_mb - 1) * wei_size + off;</span></span>
+<span id="L889"><span class="lineNum">     889</span>              : </span>
+<span id="L890"><span class="lineNum">     890</span> <span class="tlaGNC">      584738 :                     acc_ker_-&gt;accumulate(d, s, acc_size);</span></span>
+<span id="L891"><span class="lineNum">     891</span>              : </span>
+<span id="L892"><span class="lineNum">     892</span> <span class="tlaGNC">      584738 :                     nd_iterator_jump(w, end, sub_g_start, g_work,</span></span>
+<span id="L893"><span class="lineNum">     893</span>              :                             sub_oc_b_start, oc_b_work, sub_ic_b_start,</span>
+<span id="L894"><span class="lineNum">     894</span>              :                             ic_b_work);</span>
+<span id="L895"><span class="lineNum">     895</span>              :                 }</span>
+<span id="L896"><span class="lineNum">     896</span>              :             }</span>
+<span id="L897"><span class="lineNum">     897</span>              :         }</span>
+<span id="L898"><span class="lineNum">     898</span> <span class="tlaGNC">       40708 :     };</span></span>
+<span id="L899"><span class="lineNum">     899</span>              : </span>
+<span id="L900"><span class="lineNum">     900</span> <span class="tlaGNC">      875254 :     auto ker_bias = [=](int ithr, int nthr) {</span></span>
+<span id="L901"><span class="lineNum">     901</span> <span class="tlaGNC">      875254 :         assert(nthr == rb-&gt;balancer().nthr_);</span></span>
+<span id="L902"><span class="lineNum">     902</span>              : </span>
+<span id="L903"><span class="lineNum">     903</span> <span class="tlaGNC">      875254 :         const int b_job_start = rb-&gt;balancer().ithr_job_off(ithr);</span></span>
+<span id="L904"><span class="lineNum">     904</span> <span class="tlaGNC">      875254 :         const int b_njobs = rb-&gt;balancer().ithr_njobs(ithr);</span></span>
+<span id="L905"><span class="lineNum">     905</span>              : </span>
+<span id="L906"><span class="lineNum">     906</span> <span class="tlaGNC">      875254 :         if (b_njobs == 0) return;</span></span>
+<span id="L907"><span class="lineNum">     907</span>              : </span>
+<span id="L908"><span class="lineNum">     908</span>              :         /* reduction dimension */</span>
+<span id="L909"><span class="lineNum">     909</span> <span class="tlaGNC">      204468 :         int img_start {0}, img_end {0};</span></span>
+<span id="L910"><span class="lineNum">     910</span>              : </span>
+<span id="L911"><span class="lineNum">     911</span> <span class="tlaGNC">      204468 :         balance211(jcp.mb, rb-&gt;balancer().nthr_per_group_,</span></span>
+<span id="L912"><span class="lineNum">     912</span> <span class="tlaGNC">      204468 :                 rb-&gt;balancer().id_in_group(ithr), img_start, img_end);</span></span>
+<span id="L913"><span class="lineNum">     913</span>              : </span>
+<span id="L914"><span class="lineNum">     914</span>              :         /* jobs */</span>
+<span id="L915"><span class="lineNum">     915</span> <span class="tlaGNC">      204468 :         int g_start {0}, ocb_start {0};</span></span>
+<span id="L916"><span class="lineNum">     916</span> <span class="tlaGNC">      204468 :         nd_iterator_init(</span></span>
+<span id="L917"><span class="lineNum">     917</span> <span class="tlaGNC">      204468 :                 b_job_start, g_start, jcp.ngroups, ocb_start, jcp.nb_load);</span></span>
+<span id="L918"><span class="lineNum">     918</span>              : </span>
+<span id="L919"><span class="lineNum">     919</span> <span class="tlaGNC">      601014 :         for (int img = img_start; img &lt; img_end; ++img) {</span></span>
+<span id="L920"><span class="lineNum">     920</span> <span class="tlaGNC">      396546 :             int g = g_start, ocb = ocb_start;</span></span>
+<span id="L921"><span class="lineNum">     921</span> <span class="tlaGNC">      883908 :             for (int b_job_loc = 0; b_job_loc &lt; b_njobs; ++b_job_loc) {</span></span>
+<span id="L922"><span class="lineNum">     922</span> <span class="tlaGNC">     1462086 :                 const int oc_off_idx = is_ddst_layout_nxc</span></span>
+<span id="L923"><span class="lineNum">     923</span> <span class="tlaGNC">      487362 :                         ? g * jcp.oc + ocb * jcp.oc_block</span></span>
+<span id="L924"><span class="lineNum">     924</span> <span class="tlaGNC">      301820 :                         : g * jcp.nb_load + ocb;</span></span>
+<span id="L925"><span class="lineNum">     925</span>              :                 const data_t *d_dst</span>
+<span id="L926"><span class="lineNum">     926</span> <span class="tlaGNC">      487362 :                         = &amp;diff_dst[diff_dst_d.blk_off(img, oc_off_idx)];</span></span>
+<span id="L927"><span class="lineNum">     927</span>              : </span>
+<span id="L928"><span class="lineNum">     928</span> <span class="tlaGNC">     1013220 :                 data_t *d_bias = rb-&gt;get_local_ptr(ithr, diff_bias,</span></span>
+<span id="L929"><span class="lineNum">     929</span> <span class="tlaGNC">      487362 :                                          reducer_bia_scratchpad)</span></span>
+<span id="L930"><span class="lineNum">     930</span> <span class="tlaGNC">      487362 :                         + b_job_loc * rb-&gt;balancer().job_size_;</span></span>
+<span id="L931"><span class="lineNum">     931</span> <span class="tlaGNC">      487362 :                 const int sp_shift = is_ddst_layout_nxc ? jcp.ngroups * jcp.oc</span></span>
+<span id="L932"><span class="lineNum">     932</span>              :                                                         : jcp.oc_block;</span>
+<span id="L933"><span class="lineNum">     933</span> <span class="tlaGNC">      487362 :                 const auto max_oc = this_block_size(</span></span>
+<span id="L934"><span class="lineNum">     934</span> <span class="tlaGNC">      487362 :                         ocb * jcp.oc_block, jcp.oc, jcp.oc_block);</span></span>
+<span id="L935"><span class="lineNum">     935</span> <span class="tlaGNC">      487362 :                 if (img == img_start)</span></span>
+<span id="L936"><span class="lineNum">     936</span> <span class="tlaGNC">     3625556 :                     for (int o = 0; o &lt; 16; ++o)</span></span>
+<span id="L937"><span class="lineNum">     937</span> <span class="tlaGNC">     3412288 :                         d_bias[o] = 0.;</span></span>
+<span id="L938"><span class="lineNum">     938</span>              : </span>
+<span id="L939"><span class="lineNum">     939</span> <span class="tlaGNC">   328505484 :                 for (int os = 0; os &lt; jcp.os; ++os) {</span></span>
+<span id="L940"><span class="lineNum">     940</span> <span class="tlaGNC">   328018032 :                     PRAGMA_OMP_SIMD()</span></span>
+<span id="L941"><span class="lineNum">     941</span>              :                     for (int o = 0; o &lt; max_oc; ++o)</span>
+<span id="L942"><span class="lineNum">     942</span> <span class="tlaGNC">  4908903412 :                         d_bias[o] += d_dst[o];</span></span>
+<span id="L943"><span class="lineNum">     943</span> <span class="tlaGNC">   328018032 :                     d_dst += sp_shift;</span></span>
+<span id="L944"><span class="lineNum">     944</span>              :                 }</span>
+<span id="L945"><span class="lineNum">     945</span>              : </span>
+<span id="L946"><span class="lineNum">     946</span> <span class="tlaGNC">      487362 :                 nd_iterator_step(g, jcp.ngroups, ocb, jcp.nb_load);</span></span>
+<span id="L947"><span class="lineNum">     947</span>              :             }</span>
+<span id="L948"><span class="lineNum">     948</span>              :         }</span>
+<span id="L949"><span class="lineNum">     949</span>              : </span>
+<span id="L950"><span class="lineNum">     950</span> <span class="tlaGNC">      204468 :         if (dnnl_thr_syncable())</span></span>
+<span id="L951"><span class="lineNum">     951</span> <span class="tlaGNC">       38496 :             rb-&gt;reduce(ithr, diff_bias, reducer_bia_scratchpad);</span></span>
+<span id="L952"><span class="lineNum">     952</span> <span class="tlaGNC">       20354 :     };</span></span>
+<span id="L953"><span class="lineNum">     953</span>              : </span>
+<span id="L954"><span class="lineNum">     954</span> <span class="tlaGNC">       20354 :     if (dnnl_thr_syncable()) {</span></span>
+<span id="L955"><span class="lineNum">     955</span> <span class="tlaGNC">        5886 :         parallel(jcp.nthr,</span></span>
+<span id="L956"><span class="lineNum">     956</span> <span class="tlaGNC">      346135 :                 [= COMPAT_THIS_CAPTURE](const int ithr, const int nthr) {</span></span>
+<span id="L957"><span class="lineNum">     957</span> <span class="tlaGNC">      346135 :             ker(ithr, jcp.nthr);</span></span>
+<span id="L958"><span class="lineNum">     958</span> <span class="tlaGNC">      346135 :             if (pd()-&gt;with_bias()) ker_bias(ithr, jcp.nthr);</span></span>
+<span id="L959"><span class="lineNum">     959</span> <span class="tlaGNC">      346135 :         });</span></span>
+<span id="L960"><span class="lineNum">     960</span>              :     } else {</span>
+<span id="L961"><span class="lineNum">     961</span> <span class="tlaGNC">      893479 :         parallel(jcp.nthr, [=](int ithr, int nthr) { ker(ithr, nthr); });</span></span>
+<span id="L962"><span class="lineNum">     962</span> <span class="tlaGNC">       14468 :         if (jcp.nthr_mb &gt; 1)</span></span>
+<span id="L963"><span class="lineNum">     963</span> <span class="tlaGNC">       12274 :             parallel(jcp.nthr, [= COMPAT_THIS_CAPTURE](int ithr, int nthr) {</span></span>
+<span id="L964"><span class="lineNum">     964</span> <span class="tlaGNC">      590231 :                 assert(nthr == jcp.nthr);</span></span>
+<span id="L965"><span class="lineNum">     965</span>              : </span>
+<span id="L966"><span class="lineNum">     966</span> <span class="tlaGNC">      590231 :                 const int ithr_ic_b = ithr % jcp.nthr_ic_b;</span></span>
+<span id="L967"><span class="lineNum">     967</span> <span class="tlaGNC">      590231 :                 const int ithr_oc_b = ithr / jcp.nthr_ic_b % jcp.nthr_oc_b;</span></span>
+<span id="L968"><span class="lineNum">     968</span> <span class="tlaGNC">      590231 :                 const int ithr_g</span></span>
+<span id="L969"><span class="lineNum">     969</span> <span class="tlaGNC">      590231 :                         = ithr / jcp.nthr_ic_b / jcp.nthr_oc_b % jcp.nthr_g;</span></span>
+<span id="L970"><span class="lineNum">     970</span> <span class="tlaGNC">      590231 :                 const int ithr_mb</span></span>
+<span id="L971"><span class="lineNum">     971</span> <span class="tlaGNC">      590231 :                         = ithr / jcp.nthr_ic_b / jcp.nthr_oc_b / jcp.nthr_g;</span></span>
+<span id="L972"><span class="lineNum">     972</span>              : </span>
+<span id="L973"><span class="lineNum">     973</span>              :                 /* independent dimensions */</span>
+<span id="L974"><span class="lineNum">     974</span> <span class="tlaGNC">      590231 :                 int g_start {0}, oc_b_start {0}, ic_b_start {0};</span></span>
+<span id="L975"><span class="lineNum">     975</span> <span class="tlaGNC">      590231 :                 int g_end {0}, oc_b_end {0}, ic_b_end {0};</span></span>
+<span id="L976"><span class="lineNum">     976</span>              : </span>
+<span id="L977"><span class="lineNum">     977</span> <span class="tlaGNC">      590231 :                 balance211(jcp.ngroups, jcp.nthr_g, ithr_g, g_start, g_end);</span></span>
+<span id="L978"><span class="lineNum">     978</span> <span class="tlaGNC">      590231 :                 balance211(jcp.nb_load, jcp.nthr_oc_b, ithr_oc_b, oc_b_start,</span></span>
+<span id="L979"><span class="lineNum">     979</span>              :                         oc_b_end);</span>
+<span id="L980"><span class="lineNum">     980</span> <span class="tlaGNC">      590231 :                 balance211(jcp.nb_bcast, jcp.nthr_ic_b, ithr_ic_b, ic_b_start,</span></span>
+<span id="L981"><span class="lineNum">     981</span>              :                         ic_b_end);</span>
+<span id="L982"><span class="lineNum">     982</span>              : </span>
+<span id="L983"><span class="lineNum">     983</span> <span class="tlaGNC">      590231 :                 const int g_work = g_end - g_start;</span></span>
+<span id="L984"><span class="lineNum">     984</span> <span class="tlaGNC">      590231 :                 const int oc_b_work = oc_b_end - oc_b_start;</span></span>
+<span id="L985"><span class="lineNum">     985</span> <span class="tlaGNC">      590231 :                 const int ic_b_work = ic_b_end - ic_b_start;</span></span>
+<span id="L986"><span class="lineNum">     986</span>              : </span>
+<span id="L987"><span class="lineNum">     987</span> <span class="tlaGNC">      590231 :                 const int work = g_work * oc_b_work * ic_b_work;</span></span>
+<span id="L988"><span class="lineNum">     988</span> <span class="tlaGNC">      590231 :                 int start {0}, end {0};</span></span>
+<span id="L989"><span class="lineNum">     989</span> <span class="tlaGNC">      590231 :                 balance211(work, jcp.nthr_mb, ithr_mb, start, end);</span></span>
+<span id="L990"><span class="lineNum">     990</span> <span class="tlaGNC">      590231 :                 if (start == end) return;</span></span>
+<span id="L991"><span class="lineNum">     991</span>              : </span>
+<span id="L992"><span class="lineNum">     992</span> <span class="tlaGNC">     2209383 :                 for (int thr_mb = 1; thr_mb &lt; jcp.nthr_mb; ++thr_mb) {</span></span>
+<span id="L993"><span class="lineNum">     993</span> <span class="tlaGNC">     1884745 :                     int w = start;</span></span>
+<span id="L994"><span class="lineNum">     994</span> <span class="tlaGNC">     1884745 :                     int sub_g_start {0}, sub_oc_b_start {0}, sub_ic_b_start {0};</span></span>
+<span id="L995"><span class="lineNum">     995</span> <span class="tlaGNC">     1884745 :                     nd_iterator_init(w, sub_g_start, g_work, sub_oc_b_start,</span></span>
+<span id="L996"><span class="lineNum">     996</span>              :                             oc_b_work, sub_ic_b_start, ic_b_work);</span>
+<span id="L997"><span class="lineNum">     997</span> <span class="tlaGNC">     3899172 :                     while (w &lt; end) {</span></span>
+<span id="L998"><span class="lineNum">     998</span> <span class="tlaGNC">     2014427 :                         const int g = g_start + sub_g_start;</span></span>
+<span id="L999"><span class="lineNum">     999</span> <span class="tlaGNC">     2014427 :                         const int oc_b = oc_b_start + sub_oc_b_start;</span></span>
+<span id="L1000"><span class="lineNum">    1000</span> <span class="tlaGNC">     2014427 :                         const int ic_b = ic_b_start + sub_ic_b_start;</span></span>
+<span id="L1001"><span class="lineNum">    1001</span>              :                         const int ic_to_accumulate</span>
+<span id="L1002"><span class="lineNum">    1002</span> <span class="tlaGNC">     2014427 :                                 = nstl::min(end - w, ic_b_work - sub_ic_b_start)</span></span>
+<span id="L1003"><span class="lineNum">    1003</span> <span class="tlaGNC">     2014427 :                                 * jcp.ic_block;</span></span>
+<span id="L1004"><span class="lineNum">    1004</span>              :                         const int acc_size</span>
+<span id="L1005"><span class="lineNum">    1005</span> <span class="tlaGNC">     2014427 :                                 = this_block_size(ic_b * jcp.ic_block,</span></span>
+<span id="L1006"><span class="lineNum">    1006</span> <span class="tlaGNC">     2014427 :                                           jcp.ic_without_padding,</span></span>
+<span id="L1007"><span class="lineNum">    1007</span>              :                                           ic_to_accumulate)</span>
+<span id="L1008"><span class="lineNum">    1008</span> <span class="tlaGNC">     2014427 :                                 * jcp.oc_block;</span></span>
+<span id="L1009"><span class="lineNum">    1009</span>              : </span>
+<span id="L1010"><span class="lineNum">    1010</span>              :                         const size_t off</span>
+<span id="L1011"><span class="lineNum">    1011</span> <span class="tlaGNC">     2014427 :                                 = wht_blk_off(diff_weights_d, g, oc_b, ic_b);</span></span>
+<span id="L1012"><span class="lineNum">    1012</span> <span class="tlaGNC">     2014427 :                         data_t *d = diff_weights + off;</span></span>
+<span id="L1013"><span class="lineNum">    1013</span> <span class="tlaGNC">     2014427 :                         data_t *s</span></span>
+<span id="L1014"><span class="lineNum">    1014</span> <span class="tlaGNC">     2014427 :                                 = wei_reduction + (thr_mb - 1) * wei_size + off;</span></span>
+<span id="L1015"><span class="lineNum">    1015</span>              : </span>
+<span id="L1016"><span class="lineNum">    1016</span> <span class="tlaGNC">     2014427 :                         acc_ker_-&gt;accumulate(d, s, acc_size);</span></span>
+<span id="L1017"><span class="lineNum">    1017</span>              : </span>
+<span id="L1018"><span class="lineNum">    1018</span> <span class="tlaGNC">     2014427 :                         nd_iterator_jump(w, end, sub_g_start, g_work,</span></span>
+<span id="L1019"><span class="lineNum">    1019</span>              :                                 sub_oc_b_start, oc_b_work, sub_ic_b_start,</span>
+<span id="L1020"><span class="lineNum">    1020</span>              :                                 ic_b_work);</span>
+<span id="L1021"><span class="lineNum">    1021</span>              :                     }</span>
+<span id="L1022"><span class="lineNum">    1022</span>              :                 }</span>
+<span id="L1023"><span class="lineNum">    1023</span>              :             });</span>
+<span id="L1024"><span class="lineNum">    1024</span> <span class="tlaGNC">       14468 :         if (pd()-&gt;with_bias()) {</span></span>
+<span id="L1025"><span class="lineNum">    1025</span> <span class="tlaGNC">       13144 :             parallel(jcp.nthr,</span></span>
+<span id="L1026"><span class="lineNum">    1026</span> <span class="tlaGNC">      718967 :                     [=](int ithr, int nthr) { ker_bias(ithr, nthr); });</span></span>
+<span id="L1027"><span class="lineNum">    1027</span> <span class="tlaGNC">       13144 :             parallel(jcp.nthr, [=](int ithr, int nthr) {</span></span>
+<span id="L1028"><span class="lineNum">    1028</span> <span class="tlaGNC">      718967 :                 assert(nthr == rb-&gt;balancer().nthr_);</span></span>
+<span id="L1029"><span class="lineNum">    1029</span>              :                 MAYBE_UNUSED(nthr);</span>
+<span id="L1030"><span class="lineNum">    1030</span> <span class="tlaGNC">      718967 :                 if (rb-&gt;balancer().ithr_njobs(ithr) == 0) return;</span></span>
+<span id="L1031"><span class="lineNum">    1031</span> <span class="tlaGNC">      165972 :                 rb-&gt;reduce_nolock(ithr, diff_bias, reducer_bia_scratchpad);</span></span>
+<span id="L1032"><span class="lineNum">    1032</span>              :             });</span>
+<span id="L1033"><span class="lineNum">    1033</span>              :         }</span>
+<span id="L1034"><span class="lineNum">    1034</span>              :     }</span>
+<span id="L1035"><span class="lineNum">    1035</span>              : </span>
+<span id="L1036"><span class="lineNum">    1036</span> <span class="tlaGNC">       20354 :     parallel(1, [=](int ithr, int nthr) {</span></span>
+<span id="L1037"><span class="lineNum">    1037</span>              :         /* TODO: put this in ker_bias */</span>
+<span id="L1038"><span class="lineNum">    1038</span> <span class="tlaGNC">       20354 :         if (is_bias_padded) {</span></span>
+<span id="L1039"><span class="lineNum">    1039</span> <span class="tlaGNC">        1456 :             assert(IMPLICATION(!is_ddst_layout_nxc, jcp.ngroups == 1));</span></span>
+<span id="L1040"><span class="lineNum">    1040</span> <span class="tlaGNC">        1456 :             const int padded_stride = rnd_up(jcp.oc, jcp.oc_block);</span></span>
+<span id="L1041"><span class="lineNum">    1041</span> <span class="tlaGNC">        1456 :             const int stride = jcp.oc_without_padding;</span></span>
+<span id="L1042"><span class="lineNum">    1042</span> <span class="tlaGNC">        2912 :             for (int g = 0; g &lt; jcp.ngroups; ++g) {</span></span>
+<span id="L1043"><span class="lineNum">    1043</span> <span class="tlaGNC">        1456 :                 utils::array_copy(diff_bias_in + g * stride,</span></span>
+<span id="L1044"><span class="lineNum">    1044</span> <span class="tlaGNC">        1456 :                         diff_bias + g * padded_stride, stride);</span></span>
+<span id="L1045"><span class="lineNum">    1045</span>              :             }</span>
+<span id="L1046"><span class="lineNum">    1046</span>              :         }</span>
+<span id="L1047"><span class="lineNum">    1047</span> <span class="tlaGNC">       20354 :     });</span></span>
+<span id="L1048"><span class="lineNum">    1048</span> <span class="tlaGNC">       20354 : }</span></span>
+<span id="L1049"><span class="lineNum">    1049</span>              : </span>
+<span id="L1050"><span class="lineNum">    1050</span>              : } // namespace x64</span>
+<span id="L1051"><span class="lineNum">    1051</span>              : } // namespace cpu</span>
+<span id="L1052"><span class="lineNum">    1052</span>              : } // namespace impl</span>
+<span id="L1053"><span class="lineNum">    1053</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

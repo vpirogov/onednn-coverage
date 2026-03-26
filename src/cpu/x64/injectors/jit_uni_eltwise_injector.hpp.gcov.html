@@ -1,0 +1,451 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/injectors/jit_uni_eltwise_injector.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/injectors">src/cpu/x64/injectors</a> - jit_uni_eltwise_injector.hpp<span style="font-size: 80%;"> (source / <a href="jit_uni_eltwise_injector.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.2&nbsp;%</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntry">25</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">70.9&nbsp;%</td>
+            <td class="headerCovTableEntry">103</td>
+            <td class="headerCovTableEntry">73</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef CPU_X64_INJECTORS_JIT_UNI_ELTWISE_INJECTOR_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define CPU_X64_INJECTORS_JIT_UNI_ELTWISE_INJECTOR_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;assert.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;type_traits&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : </span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;common/primitive_attr.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;cpu/x64/injectors/injector_utils.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;cpu/x64/jit_generator.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace dnnl {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace impl {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace cpu {</span>
+<span id="L34"><span class="lineNum">      34</span>              : namespace x64 {</span>
+<span id="L35"><span class="lineNum">      35</span>              : </span>
+<span id="L36"><span class="lineNum">      36</span>              : namespace eltwise_injector {</span>
+<span id="L37"><span class="lineNum">      37</span>              : struct static_params_t {</span>
+<span id="L38"><span class="lineNum">      38</span>              : </span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">     1015744 :     static_params_t(bool save_state = true,</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :             Xbyak::Reg64 p_table = Xbyak::Reg64(Xbyak::Operand::RAX),</span>
+<span id="L41"><span class="lineNum">      41</span>              :             Xbyak::Opmask k_mask = Xbyak::Opmask(1), bool is_fwd = true,</span>
+<span id="L42"><span class="lineNum">      42</span>              :             bool use_dst = false, bool preserve_vmm = true,</span>
+<span id="L43"><span class="lineNum">      43</span>              :             bool preserve_p_table = true)</span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">     1015744 :         : save_state(save_state)</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :         , p_table_(p_table)</span>
+<span id="L46"><span class="lineNum">      46</span>              :         , k_mask_(k_mask)</span>
+<span id="L47"><span class="lineNum">      47</span>              :         , is_fwd(is_fwd)</span>
+<span id="L48"><span class="lineNum">      48</span>              :         , use_dst(use_dst)</span>
+<span id="L49"><span class="lineNum">      49</span>              :         , preserve_vmm(preserve_vmm)</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">     1015744 :         , preserve_p_table(preserve_p_table) {}</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              :     bool save_state;</span>
+<span id="L53"><span class="lineNum">      53</span>              :     Xbyak::Reg64 p_table_;</span>
+<span id="L54"><span class="lineNum">      54</span>              :     Xbyak::Opmask k_mask_;</span>
+<span id="L55"><span class="lineNum">      55</span>              :     bool is_fwd;</span>
+<span id="L56"><span class="lineNum">      56</span>              :     bool use_dst;</span>
+<span id="L57"><span class="lineNum">      57</span>              :     bool preserve_vmm;</span>
+<span id="L58"><span class="lineNum">      58</span>              :     bool preserve_p_table;</span>
+<span id="L59"><span class="lineNum">      59</span>              : };</span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span>              : /*</span>
+<span id="L62"><span class="lineNum">      62</span>              :  * Checks if isa is supported by eltwise injector.</span>
+<span id="L63"><span class="lineNum">      63</span>              :  */</span>
+<span id="L64"><span class="lineNum">      64</span>              : bool is_isa_supported(cpu_isa_t isa);</span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span>              : /*</span>
+<span id="L67"><span class="lineNum">      67</span>              :  * Checks if eltwise algorithm is supported by eltwise injector.</span>
+<span id="L68"><span class="lineNum">      68</span>              :  */</span>
+<span id="L69"><span class="lineNum">      69</span>              : bool is_alg_supported(alg_kind_t alg);</span>
+<span id="L70"><span class="lineNum">      70</span>              : </span>
+<span id="L71"><span class="lineNum">      71</span>              : /*</span>
+<span id="L72"><span class="lineNum">      72</span>              :  * Checks if eltwise injection for given args is supported.</span>
+<span id="L73"><span class="lineNum">      73</span>              :  */</span>
+<span id="L74"><span class="lineNum">      74</span>              : bool is_supported(cpu_isa_t isa, alg_kind_t alg, data_type_t dt);</span>
+<span id="L75"><span class="lineNum">      75</span>              : </span>
+<span id="L76"><span class="lineNum">      76</span>              : } // namespace eltwise_injector</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span>              : template &lt;cpu_isa_t isa, typename Wmm = typename cpu_isa_traits_t&lt;isa&gt;::Vmm&gt;</span>
+<span id="L79"><span class="lineNum">      79</span>              : struct jit_uni_eltwise_injector_t {</span>
+<span id="L80"><span class="lineNum">      80</span>              :     using Vmm = Wmm;</span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span>              :     // Arguments description:</span>
+<span id="L83"><span class="lineNum">      83</span>              :     // host - jit generator which is filled with instructions</span>
+<span id="L84"><span class="lineNum">      84</span>              :     // alg, alpha, beta, scale - user eltwise arguments</span>
+<span id="L85"><span class="lineNum">      85</span>              :     // save_state - when true, preserves on stack vmm_aux registers preventing</span>
+<span id="L86"><span class="lineNum">      86</span>              :     //   results spoiling. Restores them when done in injector_postamble().</span>
+<span id="L87"><span class="lineNum">      87</span>              :     // p_table - GPR where table label is stored to get access for pre-defined</span>
+<span id="L88"><span class="lineNum">      88</span>              :     //   constants used in alg codes.</span>
+<span id="L89"><span class="lineNum">      89</span>              :     // k_mask - k_register to operate with masks in alg codes.</span>
+<span id="L90"><span class="lineNum">      90</span>              :     // is_fwd - when true, computes d = alg(s), otherwise, computes ds = alg'(s)</span>
+<span id="L91"><span class="lineNum">      91</span>              :     //   - algorithm derivative.</span>
+<span id="L92"><span class="lineNum">      92</span>              :     // use_dst - defines whether source or destination point is passed to alg</span>
+<span id="L93"><span class="lineNum">      93</span>              :     //   code. Depends on algorithm. See `_use_dst_for_bwd` algs definition.</span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">     1067469 :     jit_uni_eltwise_injector_t(jit_generator_t *host, alg_kind_t alg,</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :             float alpha, float beta, float scale,</span>
+<span id="L96"><span class="lineNum">      96</span>              :             data_type_t dt = data_type::f32, bool save_state = true,</span>
+<span id="L97"><span class="lineNum">      97</span>              :             Xbyak::Reg64 p_table = Xbyak::Reg64(Xbyak::Operand::RAX),</span>
+<span id="L98"><span class="lineNum">      98</span>              :             Xbyak::Opmask k_mask = Xbyak::Opmask(1), bool is_fwd = true,</span>
+<span id="L99"><span class="lineNum">      99</span>              :             bool use_dst = false, bool preserve_vmm = true,</span>
+<span id="L100"><span class="lineNum">     100</span>              :             bool preserve_p_table = true)</span>
+<span id="L101"><span class="lineNum">     101</span>              :         : alg_(alg)</span>
+<span id="L102"><span class="lineNum">     102</span>              :         , alpha_(alpha)</span>
+<span id="L103"><span class="lineNum">     103</span>              :         , beta_(beta)</span>
+<span id="L104"><span class="lineNum">     104</span>              :         , scale_(scale)</span>
+<span id="L105"><span class="lineNum">     105</span>              :         , dt_(dt)</span>
+<span id="L106"><span class="lineNum">     106</span>              :         , h(host)</span>
+<span id="L107"><span class="lineNum">     107</span>              :         , save_state_(save_state)</span>
+<span id="L108"><span class="lineNum">     108</span>              :         , p_table_(p_table)</span>
+<span id="L109"><span class="lineNum">     109</span>              :         , k_mask_(k_mask)</span>
+<span id="L110"><span class="lineNum">     110</span>              :         , is_fwd_(is_fwd)</span>
+<span id="L111"><span class="lineNum">     111</span>              :         , use_dst_(use_dst)</span>
+<span id="L112"><span class="lineNum">     112</span>              :         , preserve_vmm_(preserve_vmm)</span>
+<span id="L113"><span class="lineNum">     113</span>              :         , preserve_p_table_(preserve_p_table)</span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">     1067469 :         , n_vregs_to_preserve_(aux_vecs_count(alg_, is_fwd_, alpha_)) {</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">     1067469 :         assert(eltwise_injector::is_supported(isa, alg_, dt_));</span></span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">     1067469 :         register_table_entries();</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">     1067469 :     }</span></span>
+<span id="L119"><span class="lineNum">     119</span>              : </span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">      663940 :     jit_uni_eltwise_injector_t(jit_generator_t *host,</span></span>
+<span id="L121"><span class="lineNum">     121</span>              :             const post_ops_t::entry_t::eltwise_t &amp;eltwise,</span>
+<span id="L122"><span class="lineNum">     122</span>              :             data_type_t dt = data_type::f32, bool save_state = true,</span>
+<span id="L123"><span class="lineNum">     123</span>              :             Xbyak::Reg64 p_table = Xbyak::Reg64(Xbyak::Operand::RAX),</span>
+<span id="L124"><span class="lineNum">     124</span>              :             Xbyak::Opmask k_mask = Xbyak::Opmask(1), bool is_fwd = true,</span>
+<span id="L125"><span class="lineNum">     125</span>              :             bool use_dst = false, bool preserve_vmm = true,</span>
+<span id="L126"><span class="lineNum">     126</span>              :             bool preserve_p_table = true)</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">      663940 :         : jit_uni_eltwise_injector_t(host, eltwise.alg, eltwise.alpha,</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      663940 :                   eltwise.beta, eltwise.scale, dt, save_state, p_table, k_mask,</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">      663940 :                   is_fwd, use_dst, preserve_vmm, preserve_p_table) {}</span></span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              :     void compute_vector_range(size_t start_compute_idx, size_t end_compute_idx,</span>
+<span id="L132"><span class="lineNum">     132</span>              :             const injector_utils::vmm_index_set_t &amp;vmm_aux_indices = {});</span>
+<span id="L133"><span class="lineNum">     133</span>              :     void compute_vector_range(</span>
+<span id="L134"><span class="lineNum">     134</span>              :             const injector_utils::vmm_index_set_t &amp;vmm_compute_idxs,</span>
+<span id="L135"><span class="lineNum">     135</span>              :             const injector_utils::vmm_index_set_t &amp;vmm_aux_indices = {});</span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">      937332 :     void compute_vector(size_t compute_idx,</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :             const injector_utils::vmm_index_set_t &amp;vmm_aux_indices = {}) {</span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">      937332 :         compute_vector_range({compute_idx}, vmm_aux_indices);</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">      937332 :     }</span></span>
+<span id="L140"><span class="lineNum">     140</span>              :     void prepare_table(bool gen_table = true);</span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">     4159453 :     void load_table_addr() { h-&gt;lea(p_table_, h-&gt;ptr[h-&gt;rip + l_table_]); }</span></span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span>              :     // This call is `static` and `public` to make a decision on the injector's</span>
+<span id="L144"><span class="lineNum">     144</span>              :     // saving state if the caller can supply the necessary number of vmms. The</span>
+<span id="L145"><span class="lineNum">     145</span>              :     // decision must be made BEFORE constructing the injector, thus, `static`.</span>
+<span id="L146"><span class="lineNum">     146</span>              :     static size_t aux_vecs_count(alg_kind_t alg, bool is_fwd, float alpha);</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span>              : private:</span>
+<span id="L149"><span class="lineNum">     149</span>              :     const alg_kind_t alg_;</span>
+<span id="L150"><span class="lineNum">     150</span>              :     const float alpha_;</span>
+<span id="L151"><span class="lineNum">     151</span>              :     const float beta_;</span>
+<span id="L152"><span class="lineNum">     152</span>              :     const float scale_;</span>
+<span id="L153"><span class="lineNum">     153</span>              :     const data_type_t dt_;</span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span>              :     jit_generator_t *const h;</span>
+<span id="L156"><span class="lineNum">     156</span>              : </span>
+<span id="L157"><span class="lineNum">     157</span>              :     const bool save_state_;</span>
+<span id="L158"><span class="lineNum">     158</span>              :     const Xbyak::Reg64 p_table_;</span>
+<span id="L159"><span class="lineNum">     159</span>              :     Xbyak::Reg64 reg_vmm_stack_ptr_;</span>
+<span id="L160"><span class="lineNum">     160</span>              :     const Xbyak::Opmask k_mask_;</span>
+<span id="L161"><span class="lineNum">     161</span>              :     const bool is_fwd_;</span>
+<span id="L162"><span class="lineNum">     162</span>              :     const bool use_dst_;</span>
+<span id="L163"><span class="lineNum">     163</span>              :     const bool preserve_vmm_;</span>
+<span id="L164"><span class="lineNum">     164</span>              :     const bool preserve_p_table_;</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span>              :     Xbyak::Label l_table_;</span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              :     // if only the injector was inherited from jit_generator_t...</span>
+<span id="L169"><span class="lineNum">     169</span>              :     enum {</span>
+<span id="L170"><span class="lineNum">     170</span>              :         _cmp_eq_oq = jit_generator_t::_cmp_eq_oq,</span>
+<span id="L171"><span class="lineNum">     171</span>              :         _cmp_neq_uq = jit_generator_t::_cmp_neq_uq,</span>
+<span id="L172"><span class="lineNum">     172</span>              :         _cmp_lt_os = jit_generator_t::_cmp_lt_os,</span>
+<span id="L173"><span class="lineNum">     173</span>              :         _cmp_le_os = jit_generator_t::_cmp_le_os,</span>
+<span id="L174"><span class="lineNum">     174</span>              :         _cmp_ge_os = jit_generator_t::_cmp_nlt_us,</span>
+<span id="L175"><span class="lineNum">     175</span>              :         _cmp_gt_os = jit_generator_t::_cmp_nle_us,</span>
+<span id="L176"><span class="lineNum">     176</span>              :         _op_floor = jit_generator_t::_op_floor,</span>
+<span id="L177"><span class="lineNum">     177</span>              :         _op_mxcsr = jit_generator_t::_op_mxcsr</span>
+<span id="L178"><span class="lineNum">     178</span>              :     };</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :     const bool is_avx512_ = is_superset(isa, avx512_core);</span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span>              :     static constexpr size_t vlen_ = vreg_traits_t&lt;Vmm&gt;::vlen;</span>
+<span id="L183"><span class="lineNum">     183</span>              :     static constexpr size_t preserved_vecs_max_ = 6;</span>
+<span id="L184"><span class="lineNum">     184</span>              :     static constexpr size_t preserved_gprs_max_ = 5;</span>
+<span id="L185"><span class="lineNum">     185</span>              :     static constexpr size_t n_vregs_ = cpu_isa_traits_t&lt;isa&gt;::n_vregs;</span>
+<span id="L186"><span class="lineNum">     186</span>              :     static constexpr int n_mantissa_bits_ = 23;</span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span>              :     const size_t n_vregs_to_preserve_;</span>
+<span id="L189"><span class="lineNum">     189</span>              :     size_t n_vregs_preserved_ = 0;</span>
+<span id="L190"><span class="lineNum">     190</span>              :     bool need_vmm_mask_register_ = false;</span>
+<span id="L191"><span class="lineNum">     191</span>              :     // Default initialization will put zeros. Putting any value to trigger a</span>
+<span id="L192"><span class="lineNum">     192</span>              :     // potential error to Xbyak is not working as Xbyak cycles vmm indices</span>
+<span id="L193"><span class="lineNum">     193</span>              :     // over 32 value.</span>
+<span id="L194"><span class="lineNum">     194</span>              :     size_t preserved_vmm_indices_[preserved_vecs_max_] = {};</span>
+<span id="L195"><span class="lineNum">     195</span>              :     size_t preserved_vmm_tail_indices_[preserved_vecs_max_] = {};</span>
+<span id="L196"><span class="lineNum">     196</span>              :     size_t preserved_gpr_indices_[preserved_gprs_max_] = {};</span>
+<span id="L197"><span class="lineNum">     197</span>              : </span>
+<span id="L198"><span class="lineNum">     198</span>              :     Vmm vmm_mask_;</span>
+<span id="L199"><span class="lineNum">     199</span>              :     Vmm vmm_tmp_;</span>
+<span id="L200"><span class="lineNum">     200</span>              :     Xbyak::Ymm ymm_tmp_;</span>
+<span id="L201"><span class="lineNum">     201</span>              :     Xbyak::Xmm xmm_tmp_;</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              :     static bool need_mask_register(alg_kind_t alg, bool is_fwd, float alpha);</span>
+<span id="L204"><span class="lineNum">     204</span>              :     static size_t aux_gprs_count(alg_kind_t alg, bool is_fwd, float alpha);</span>
+<span id="L205"><span class="lineNum">     205</span>              :     static bool need_vmm_stack_ptr(alg_kind_t alg, bool is_fwd, float alpha);</span>
+<span id="L206"><span class="lineNum">     206</span>              :     static size_t op_vecs_count(alg_kind_t alg, bool is_fwd);</span>
+<span id="L207"><span class="lineNum">     207</span>              :     size_t get_stack_vmm_space();</span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span>              :     void compute_body(</span>
+<span id="L210"><span class="lineNum">     210</span>              :             const injector_utils::vmm_index_set_iterator_t &amp;start_idx_it,</span>
+<span id="L211"><span class="lineNum">     211</span>              :             const injector_utils::vmm_index_set_iterator_t &amp;end_idx_it);</span>
+<span id="L212"><span class="lineNum">     212</span>              :     void injector_preamble(const injector_utils::vmm_index_set_t &amp;vmm_idxs,</span>
+<span id="L213"><span class="lineNum">     213</span>              :             injector_utils::vmm_index_set_iterator_t &amp;start_idx_tail_it,</span>
+<span id="L214"><span class="lineNum">     214</span>              :             const injector_utils::vmm_index_set_t &amp;vmm_aux_indices);</span>
+<span id="L215"><span class="lineNum">     215</span>              :     void injector_preamble_tail(size_t n_vregs_not_preserved);</span>
+<span id="L216"><span class="lineNum">     216</span>              :     void injector_postamble();</span>
+<span id="L217"><span class="lineNum">     217</span>              :     void assign_regs();</span>
+<span id="L218"><span class="lineNum">     218</span>              :     Wmm vmm_aux(size_t idx);</span>
+<span id="L219"><span class="lineNum">     219</span>              :     void vec_shift(const Vmm &amp;vmm_dst, const Vmm &amp;vmm_src, bool shift_left,</span>
+<span id="L220"><span class="lineNum">     220</span>              :             const int imm);</span>
+<span id="L221"><span class="lineNum">     221</span>              :     void compute_cmp_mask(const Vmm &amp;vmm_src,</span>
+<span id="L222"><span class="lineNum">     222</span>              :             const Xbyak::Operand &amp;compare_operand, int cmp_predicate);</span>
+<span id="L223"><span class="lineNum">     223</span>              :     void blend_with_mask(const Vmm &amp;vmm_dst, const Xbyak::Operand &amp;src);</span>
+<span id="L224"><span class="lineNum">     224</span>              :     void test_mask();</span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span>              :     void exp_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L227"><span class="lineNum">     227</span>              :     void relu_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L228"><span class="lineNum">     228</span>              :     void relu_zero_ns_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L229"><span class="lineNum">     229</span>              :     void elu_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L230"><span class="lineNum">     230</span>              :     void tanh_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L231"><span class="lineNum">     231</span>              :     void square_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L232"><span class="lineNum">     232</span>              :     void abs_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L233"><span class="lineNum">     233</span>              :     void sqrt_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L234"><span class="lineNum">     234</span>              :     void linear_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L235"><span class="lineNum">     235</span>              :     void soft_relu_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L236"><span class="lineNum">     236</span>              :     void mish_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L237"><span class="lineNum">     237</span>              :     void logistic_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L238"><span class="lineNum">     238</span>              :     void gelu_tanh_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L239"><span class="lineNum">     239</span>              :     void swish_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L240"><span class="lineNum">     240</span>              :     void log_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L241"><span class="lineNum">     241</span>              :     void clip_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L242"><span class="lineNum">     242</span>              :     void pow_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L243"><span class="lineNum">     243</span>              :     void gelu_erf_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L244"><span class="lineNum">     244</span>              :     void gelu_erf_minimax_approx_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L245"><span class="lineNum">     245</span>              :     void round_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L246"><span class="lineNum">     246</span>              :     void hardswish_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L247"><span class="lineNum">     247</span>              :     void hardsigmoid_compute_vector_fwd(const Vmm &amp;vmm_src);</span>
+<span id="L248"><span class="lineNum">     248</span>              : </span>
+<span id="L249"><span class="lineNum">     249</span>              :     void exp_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L250"><span class="lineNum">     250</span>              :     void relu_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L251"><span class="lineNum">     251</span>              :     void elu_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L252"><span class="lineNum">     252</span>              :     void tanh_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L253"><span class="lineNum">     253</span>              :     void square_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L254"><span class="lineNum">     254</span>              :     void abs_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L255"><span class="lineNum">     255</span>              :     void sqrt_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L256"><span class="lineNum">     256</span>              :     void linear_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L257"><span class="lineNum">     257</span>              :     void soft_relu_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L258"><span class="lineNum">     258</span>              :     void logistic_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L259"><span class="lineNum">     259</span>              :     void mish_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L260"><span class="lineNum">     260</span>              :     void gelu_tanh_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L261"><span class="lineNum">     261</span>              :     void swish_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L262"><span class="lineNum">     262</span>              :     void log_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L263"><span class="lineNum">     263</span>              :     void clip_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L264"><span class="lineNum">     264</span>              :     void pow_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L265"><span class="lineNum">     265</span>              :     void gelu_erf_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L266"><span class="lineNum">     266</span>              :     void hardswish_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L267"><span class="lineNum">     267</span>              :     void hardsigmoid_compute_vector_bwd(const Vmm &amp;vmm_src);</span>
+<span id="L268"><span class="lineNum">     268</span>              : </span>
+<span id="L269"><span class="lineNum">     269</span>              :     enum key_t {</span>
+<span id="L270"><span class="lineNum">     270</span>              :         scale = 0, // scale argument</span>
+<span id="L271"><span class="lineNum">     271</span>              :         alpha, // alpha argument</span>
+<span id="L272"><span class="lineNum">     272</span>              :         beta, // beta argument</span>
+<span id="L273"><span class="lineNum">     273</span>              :         zero, // 0.f</span>
+<span id="L274"><span class="lineNum">     274</span>              :         half, // 0.5f</span>
+<span id="L275"><span class="lineNum">     275</span>              :         one, // 1.f  or  mask for exponent bits</span>
+<span id="L276"><span class="lineNum">     276</span>              :         two, // 2.f</span>
+<span id="L277"><span class="lineNum">     277</span>              :         three, // 3.f</span>
+<span id="L278"><span class="lineNum">     278</span>              :         six, // 6.f</span>
+<span id="L279"><span class="lineNum">     279</span>              :         minus_one, // -1.f  or  changes sign to opposite</span>
+<span id="L280"><span class="lineNum">     280</span>              :         minus_two, // -2.f</span>
+<span id="L281"><span class="lineNum">     281</span>              :         minus_three, // -3.f</span>
+<span id="L282"><span class="lineNum">     282</span>              :         ln2f, // 0.69314718f</span>
+<span id="L283"><span class="lineNum">     283</span>              :         positive_mask, // changes sign to positive</span>
+<span id="L284"><span class="lineNum">     284</span>              :         sign_mask, // gets sign value</span>
+<span id="L285"><span class="lineNum">     285</span>              :         exponent_bias, // (127 = 2^7 - 1), gets exponent bits</span>
+<span id="L286"><span class="lineNum">     286</span>              :         exp_log2ef, // 1.44269502f - formula-based for approx</span>
+<span id="L287"><span class="lineNum">     287</span>              :         exp_ln_flt_max_f, // logf(FLT_MAX) - max normal value</span>
+<span id="L288"><span class="lineNum">     288</span>              :         exp_ln_flt_min_f, // logf(FLT_MIN) - min normal value</span>
+<span id="L289"><span class="lineNum">     289</span>              :         exp_pol, // see correspondent table for float values</span>
+<span id="L290"><span class="lineNum">     290</span>              :         // e^(2*x)+2*e^x+2 = FLT_MAX; x =~ 44.36141952603634</span>
+<span id="L291"><span class="lineNum">     291</span>              :         fwd_mish_max_x_for_equation_f,</span>
+<span id="L292"><span class="lineNum">     292</span>              :         // e^x(e^3x+4e^2x+e^x*(6+4*x)+4*(1+x)) = FLT_MAX; x =~ 22.18070976278534</span>
+<span id="L293"><span class="lineNum">     293</span>              :         bwd_mish_max_x_for_equation_f,</span>
+<span id="L294"><span class="lineNum">     294</span>              :         tanh_idx_bias, // bias applied during index computation</span>
+<span id="L295"><span class="lineNum">     295</span>              :         tanh_idx_mask, // mask applied to extract index</span>
+<span id="L296"><span class="lineNum">     296</span>              :         tanh_linear_ubound, // arg below which tanh(x) = x</span>
+<span id="L297"><span class="lineNum">     297</span>              :         tanh_saturation_lbound, // arg after which tanh(x) = 1.f</span>
+<span id="L298"><span class="lineNum">     298</span>              :         tanh_pol_table, // table of polynomial coefficients</span>
+<span id="L299"><span class="lineNum">     299</span>              :         soft_relu_one_twenty_six, // 126.f</span>
+<span id="L300"><span class="lineNum">     300</span>              :         soft_relu_mantissa_sign_mask, // mask for mantissa bits and sign</span>
+<span id="L301"><span class="lineNum">     301</span>              :         soft_relu_pol, // see correspondent table for float values</span>
+<span id="L302"><span class="lineNum">     302</span>              :         gelu_tanh_fitting_const, // 0.044715f</span>
+<span id="L303"><span class="lineNum">     303</span>              :         gelu_tanh_fitting_const_times_three, // 0.134145f</span>
+<span id="L304"><span class="lineNum">     304</span>              :         gelu_tanh_sqrt_two_over_pi, // sqrtf(2.f/pi) = 0.797884f</span>
+<span id="L305"><span class="lineNum">     305</span>              :         // 0.3275911f - implementation based for approx</span>
+<span id="L306"><span class="lineNum">     306</span>              :         gelu_erf_Abramowitz_Stegun_approx_const,</span>
+<span id="L307"><span class="lineNum">     307</span>              :         gelu_erf_Abramowitz_Stegun_one_over_sqrt_two, // 1.f / sqrtf(2.f)</span>
+<span id="L308"><span class="lineNum">     308</span>              :         // 1.f / sqrtf(pi) = 0.564190f</span>
+<span id="L309"><span class="lineNum">     309</span>              :         gelu_erf_Abramowitz_Stegun_one_over_sqrt_pi,</span>
+<span id="L310"><span class="lineNum">     310</span>              :         // see correspondent table for float values</span>
+<span id="L311"><span class="lineNum">     311</span>              :         gelu_erf_Abramowitz_Stegun_pol,</span>
+<span id="L312"><span class="lineNum">     312</span>              :         gelu_erf_minimax_pol, // see correspondent table for float values</span>
+<span id="L313"><span class="lineNum">     313</span>              :         gelu_erf_idx_bias, // bias applied to compute table index</span>
+<span id="L314"><span class="lineNum">     314</span>              :         gelu_erf_rbound, // upper bound at which we clamp erf at 1</span>
+<span id="L315"><span class="lineNum">     315</span>              :         gelu_erf_one, // just the integer value 1, used for index clamping</span>
+<span id="L316"><span class="lineNum">     316</span>              :         gelu_erf_twenty_three, // just the integer value 23, used for index clamping</span>
+<span id="L317"><span class="lineNum">     317</span>              :         gelu_erf_twenty_four, // just the integer value 24, used for index clamping</span>
+<span id="L318"><span class="lineNum">     318</span>              :         log_inf, // inf</span>
+<span id="L319"><span class="lineNum">     319</span>              :         log_minus_inf, // -inf</span>
+<span id="L320"><span class="lineNum">     320</span>              :         log_qnan, // qnan</span>
+<span id="L321"><span class="lineNum">     321</span>              :         log_mantissa_mask, // gets mantissa bits</span>
+<span id="L322"><span class="lineNum">     322</span>              :         log_full_k_reg_mask, // sets k_register with all bits of 1</span>
+<span id="L323"><span class="lineNum">     323</span>              :         log_full_vector_reg_mask, // sets vector register will all bits of 1</span>
+<span id="L324"><span class="lineNum">     324</span>              :         log_five_bit_offset, // 5 bits off (31 = 2^5 - 1)</span>
+<span id="L325"><span class="lineNum">     325</span>              :         log_pol, // see correspondent table for float values</span>
+<span id="L326"><span class="lineNum">     326</span>              :         log_predefined_vals, // see correspondent table for float values</span>
+<span id="L327"><span class="lineNum">     327</span>              :         undef_key,</span>
+<span id="L328"><span class="lineNum">     328</span>              :     };</span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">    85967225 :     size_t table_off(key_t key, size_t key_off_val_shift = 0) {</span></span>
+<span id="L331"><span class="lineNum">     331</span>              :         // assumption: all table entries sharing the same key also</span>
+<span id="L332"><span class="lineNum">     332</span>              :         // share their broadcast property</span>
+<span id="L333"><span class="lineNum">     333</span>              :         // TODO: enforce through data structure</span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">    85967225 :         const auto it = entry_map_.find(key); // search an entry for a key</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">    85967225 :         if (it == entry_map_.end()) {</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaUNC">           0 :             assert(!&quot;Non-existent key&quot;);</span></span>
+<span id="L337"><span class="lineNum">     337</span>              :             return 0;</span>
+<span id="L338"><span class="lineNum">     338</span>              :         }</span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaGNC">    85967225 :         const auto &amp;te = (*it).second;</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">    85967225 :         const auto scale = te.bcast ? vlen_ : sizeof(table_entry_val_t);</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">    85967225 :         return te.off + key_off_val_shift * scale;</span></span>
+<span id="L342"><span class="lineNum">     342</span>              :     }</span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaGNC">    47011149 :     Xbyak::Address table_val(key_t key, size_t key_off_val_shift = 0) {</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">    47011149 :         auto off = table_off(key, key_off_val_shift);</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">    47011149 :         return h-&gt;ptr[p_table_ + off];</span></span>
+<span id="L346"><span class="lineNum">     346</span>              :     }</span>
+<span id="L347"><span class="lineNum">     347</span>              : </span>
+<span id="L348"><span class="lineNum">     348</span>              :     // we accept only 32bit hexadecimal table values to avoid any rounding</span>
+<span id="L349"><span class="lineNum">     349</span>              :     using table_entry_val_t = uint32_t;</span>
+<span id="L350"><span class="lineNum">     350</span>              :     using table_entry_offset_t = size_t; // offsets are in bytes wrt p_table_</span>
+<span id="L351"><span class="lineNum">     351</span>              :     using table_entry_bcast_t = bool; // true =&gt; bcast value</span>
+<span id="L352"><span class="lineNum">     352</span>              : </span>
+<span id="L353"><span class="lineNum">     353</span>              :     struct table_entry_t {</span>
+<span id="L354"><span class="lineNum">     354</span>              :         table_entry_val_t val;</span>
+<span id="L355"><span class="lineNum">     355</span>              :         table_entry_bcast_t bcast;</span>
+<span id="L356"><span class="lineNum">     356</span>              :     };</span>
+<span id="L357"><span class="lineNum">     357</span>              :     struct mapped_table_entry_t {</span>
+<span id="L358"><span class="lineNum">     358</span>              :         table_entry_offset_t off;</span>
+<span id="L359"><span class="lineNum">     359</span>              :         table_entry_val_t val;</span>
+<span id="L360"><span class="lineNum">     360</span>              :         table_entry_bcast_t bcast;</span>
+<span id="L361"><span class="lineNum">     361</span>              :     };</span>
+<span id="L362"><span class="lineNum">     362</span>              : </span>
+<span id="L363"><span class="lineNum">     363</span>              :     using table_t = std::multimap&lt;key_t, table_entry_t&gt;;</span>
+<span id="L364"><span class="lineNum">     364</span>              :     using mapped_table_t = std::multimap&lt;key_t, mapped_table_entry_t&gt;;</span>
+<span id="L365"><span class="lineNum">     365</span>              : </span>
+<span id="L366"><span class="lineNum">     366</span>              :     void register_table_entries();</span>
+<span id="L367"><span class="lineNum">     367</span>              :     mapped_table_t entry_map_;</span>
+<span id="L368"><span class="lineNum">     368</span>              : };</span>
+<span id="L369"><span class="lineNum">     369</span>              : </span>
+<span id="L370"><span class="lineNum">     370</span>              : } // namespace x64</span>
+<span id="L371"><span class="lineNum">     371</span>              : } // namespace cpu</span>
+<span id="L372"><span class="lineNum">     372</span>              : } // namespace impl</span>
+<span id="L373"><span class="lineNum">     373</span>              : } // namespace dnnl</span>
+<span id="L374"><span class="lineNum">     374</span>              : </span>
+<span id="L375"><span class="lineNum">     375</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,1236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/rnn/jit_uni_rnn_common_postgemm.hpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64/rnn">src/cpu/x64/rnn</a> - jit_uni_rnn_common_postgemm.hpp<span style="font-size: 80%;"> (<a href="jit_uni_rnn_common_postgemm.hpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">96.2&nbsp;%</td>
+            <td class="headerCovTableEntry">504</td>
+            <td class="headerCovTableEntry">485</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">77.8&nbsp;%</td>
+            <td class="headerCovTableEntry">117</td>
+            <td class="headerCovTableEntry">91</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><img src="../../../../glass.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><a href="jit_uni_rnn_common_postgemm.hpp.func-c.html"><img src="../../../../updown.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></a></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L925">bool dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::can_do_zmm_masked_tail_processing&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, int)</a></td>
+              
+              <td class="coverFnHi">954338</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L925">bool dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::can_do_zmm_masked_tail_processing&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, int)</a></td>
+              
+              <td class="coverFnAliasHi">287257</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L925">bool dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::can_do_zmm_masked_tail_processing&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, int)</a></td>
+              
+              <td class="coverFnAliasHi">66018</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L925">bool dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::can_do_zmm_masked_tail_processing&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, int)</a></td>
+              
+              <td class="coverFnAliasHi">601063</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnHi">3771259</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">1252728</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">364032</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">2154499</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;signed char, signed char, signed char, int, signed char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, signed char*, int*, signed char*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L277">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;unsigned char, unsigned char, unsigned char, int, unsigned char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnHi">5502863</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">1249416</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">676332</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">3370715</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;signed char, signed char, signed char, int, signed char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, signed char*, int*, signed char*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L121">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;unsigned char, unsigned char, unsigned char, int, unsigned char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const::{lambda(long)#1}::operator()(long) const</a></td>
+              
+              <td class="coverFnAliasHi">206400</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L480">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::inc_regs(int, unsigned long)</a></td>
+              
+              <td class="coverFnHi">107206</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L485">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::inc_regs(unsigned long)</a></td>
+              
+              <td class="coverFnHi">46000</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L74">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::init(dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">71251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L378">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::init_regs(float*, unsigned long, unsigned long)</a></td>
+              
+              <td class="coverFnHi">71251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L429">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::init_regs(unsigned long, unsigned long)</a></td>
+              
+              <td class="coverFnHi">28032</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L434">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::init_table(unsigned long)</a></td>
+              
+              <td class="coverFnHi">71251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L72">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::is_projection() const</a></td>
+              
+              <td class="coverFnHi">10782070</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L37">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::jit_uni_rnn_postgemm_t(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::rnn_pd_t const*, char const*)</a></td>
+              
+              <td class="coverFnHi">71251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L70">dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::~jit_uni_rnn_postgemm_t()</a></td>
+              
+              <td class="coverFnHi">71251</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L656">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_dc&lt;Xbyak::Xmm&gt;(Xbyak::Address, Xbyak::Xmm, int, bool)</a></td>
+              
+              <td class="coverFnHi">85282</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L656">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_dc&lt;Xbyak::Xmm&gt;(Xbyak::Address, Xbyak::Xmm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">15180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L656">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_dc&lt;Xbyak::Ymm&gt;(Xbyak::Address, Xbyak::Ymm, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L656">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_dc&lt;Xbyak::Zmm&gt;(Xbyak::Address, Xbyak::Zmm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">70102</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L639">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_uc&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnHi">53426</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L639">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_uc&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">15648</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L639">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_uc&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L639">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::bf16_uc&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">37778</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L764">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vaddps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">187043</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L764">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vaddps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">30472</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L764">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vaddps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">11315</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L764">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vaddps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">145256</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L859">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd213ps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">1045</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L859">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd213ps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L859">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd213ps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L859">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd213ps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">761</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L830">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, int, Xbyak::Xmm const&amp;)</a></td>
+              
+              <td class="coverFnHi">44178</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L830">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, int, Xbyak::Xmm const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">6174</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L830">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Address const&amp;, int, Xbyak::Ymm const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">2712</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L830">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Address const&amp;, int, Xbyak::Zmm const&amp;)</a></td>
+              
+              <td class="coverFnAliasHi">35292</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L819">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">59114</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L819">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">14774</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L819">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">3177</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L819">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vfmadd231ps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">41163</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L808">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">1045</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L808">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L808">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L808">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">761</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L797">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">88473</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L797">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">15592</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L797">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">5530</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L797">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vmulps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">67351</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L786">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">1045</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L786">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">180</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L786">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L786">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">761</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L775">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">17746</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L775">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, Xbyak::Xmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">3992</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L775">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, Xbyak::Ymm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">1121</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L775">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::compute_vsubps&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, Xbyak::Zmm const&amp;, int)</a></td>
+              
+              <td class="coverFnAliasHi">12633</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L616">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_h&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnHi">3942</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L616">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_h&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">2136</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L616">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_h&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">258</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L616">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_h&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">1548</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L581">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_w&lt;Xbyak::Xmm&gt;(dnnl_data_type_t, Xbyak::Xmm, Xbyak::Xmm, Xbyak::Xmm, long, int, int, Xbyak::Reg64*)</a></td>
+              
+              <td class="coverFnHi">186663</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L581">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_w&lt;Xbyak::Xmm&gt;(dnnl_data_type_t, Xbyak::Xmm, Xbyak::Xmm, Xbyak::Xmm, long, int, int, Xbyak::Reg64*)</a></td>
+              
+              <td class="coverFnAliasHi">30048</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L581">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_w&lt;Xbyak::Ymm&gt;(dnnl_data_type_t, Xbyak::Ymm, Xbyak::Ymm, Xbyak::Ymm, long, int, int, Xbyak::Reg64*)</a></td>
+              
+              <td class="coverFnAliasHi">11379</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L581">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::deq_w&lt;Xbyak::Zmm&gt;(dnnl_data_type_t, Xbyak::Zmm, Xbyak::Zmm, Xbyak::Zmm, long, int, int, Xbyak::Reg64*)</a></td>
+              
+              <td class="coverFnAliasHi">145236</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">959514</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">94740</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">165720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">28416</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">135726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">496178</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;signed char, signed char, signed char, int, signed char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, signed char*, int*, signed char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L88">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute&lt;unsigned char, unsigned char, unsigned char, int, unsigned char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">38734</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">292349</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">94740</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">28416</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">169193</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;signed char, signed char, signed char, int, signed char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, signed char*, int*, signed char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L232">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_bwd&lt;unsigned char, unsigned char, unsigned char, int, unsigned char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">667165</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float, dnnl::impl::bfloat16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">165720</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, dnnl::impl::float16_t&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float, dnnl::impl::float16_t, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">135726</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;float, float, float, float, float, float&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float*, float*, float*, float*, float*, float*, float*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">326985</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;signed char, signed char, signed char, int, signed char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, signed char*, int*, signed char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L109">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::execute_fwd&lt;unsigned char, unsigned char, unsigned char, int, unsigned char, int&gt;(dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, int*, int*, int*, int*, int*, int*, int*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">38734</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L694">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_dc&lt;Xbyak::Xmm&gt;(Xbyak::Address, Xbyak::Xmm, int, bool)</a></td>
+              
+              <td class="coverFnHi">71214</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L694">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_dc&lt;Xbyak::Xmm&gt;(Xbyak::Address, Xbyak::Xmm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">4032</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L694">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_dc&lt;Xbyak::Ymm&gt;(Xbyak::Address, Xbyak::Ymm, int, bool)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L694">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_dc&lt;Xbyak::Zmm&gt;(Xbyak::Address, Xbyak::Zmm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">67182</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L679">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_uc&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnHi">36936</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L679">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_uc&lt;Xbyak::Xmm&gt;(Xbyak::Xmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">4794</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L679">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_uc&lt;Xbyak::Ymm&gt;(Xbyak::Ymm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L679">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::f16_uc&lt;Xbyak::Zmm&gt;(Xbyak::Zmm, Xbyak::Address, int)</a></td>
+              
+              <td class="coverFnAliasHi">32142</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L747">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnHi">564243</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L747">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">166069</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L747">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">35768</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L747">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">362406</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L932">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load_zmm_masked&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">61150</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L932">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load_zmm_masked&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L932">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load_zmm_masked&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L932">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::load_zmm_masked&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">61150</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;float, float, float, float, float&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnHi">8957079</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float const*, void const*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, dnnl::impl::bfloat16_t, float&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t const*, dnnl::impl::bfloat16_t*, void*, dnnl::impl::bfloat16_t const*, void const*, float const*, void const*, dnnl::impl::bfloat16_t*, float*, dnnl::impl::bfloat16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">2233104</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float const*, void const*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, dnnl::impl::float16_t, float&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t const*, dnnl::impl::float16_t*, void*, dnnl::impl::float16_t const*, void const*, float const*, void const*, dnnl::impl::float16_t*, float*, dnnl::impl::float16_t*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">1833492</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;float, float, float, float, float&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, float*, float*, float const*, float*, void*, float const*, void const*, float const*, void const*, float*, float*, float*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">4201523</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;signed char, signed char, signed char, signed char, int&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, signed char*, int*, signed char const*, signed char*, void*, signed char const*, void const*, float const*, void const*, signed char*, int*, signed char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L133">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::postgemm_fwd_call&lt;unsigned char, unsigned char, unsigned char, unsigned char, int&gt;(int, dnnl::impl::cpu::rnn_utils::rnn_conf_t const&amp;, dnnl::impl::cpu::rnn_utils::cell_position_t, unsigned char*, int*, unsigned char const*, unsigned char*, void*, unsigned char const*, void const*, float const*, void const*, unsigned char*, int*, unsigned char*, float*, int) const</a></td>
+              
+              <td class="coverFnAliasHi">688960</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L519">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::q_d&lt;Xbyak::Xmm&gt;(dnnl_data_type_t, Xbyak::Address, Xbyak::Xmm, int, bool)</a></td>
+              
+              <td class="coverFnHi">8508</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L519">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::q_d&lt;Xbyak::Xmm&gt;(dnnl_data_type_t, Xbyak::Address, Xbyak::Xmm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">4320</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L519">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::q_d&lt;Xbyak::Ymm&gt;(dnnl_data_type_t, Xbyak::Address, Xbyak::Ymm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">564</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L519">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::q_d&lt;Xbyak::Zmm&gt;(dnnl_data_type_t, Xbyak::Address, Xbyak::Zmm, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">3624</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L870">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store&lt;Xbyak::Xmm&gt;(Xbyak::Address const&amp;, Xbyak::Xmm const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnHi">332896</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L870">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store&lt;Xbyak::Xmm&gt;(Xbyak::Address const&amp;, Xbyak::Xmm const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">111464</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L870">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store&lt;Xbyak::Ymm&gt;(Xbyak::Address const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">26265</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L870">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store&lt;Xbyak::Zmm&gt;(Xbyak::Address const&amp;, Xbyak::Zmm const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">195167</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L946">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store_zmm_masked&lt;Xbyak::Xmm&gt;(Xbyak::Address const&amp;, Xbyak::Xmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnHi">28062</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L946">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store_zmm_masked&lt;Xbyak::Xmm&gt;(Xbyak::Address const&amp;, Xbyak::Xmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L946">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store_zmm_masked&lt;Xbyak::Ymm&gt;(Xbyak::Address const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasLo">0</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L946">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::store_zmm_masked&lt;Xbyak::Zmm&gt;(Xbyak::Address const&amp;, Xbyak::Zmm const&amp;, dnnl_data_type_t)</a></td>
+              
+              <td class="coverFnAliasHi">28062</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L734">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_float&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnHi">432577</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L734">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_float&lt;Xbyak::Xmm&gt;(Xbyak::Xmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">143025</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L734">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_float&lt;Xbyak::Ymm&gt;(Xbyak::Ymm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">22557</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L734">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_float&lt;Xbyak::Zmm&gt;(Xbyak::Zmm const&amp;, Xbyak::Address const&amp;, dnnl_data_type_t, int)</a></td>
+              
+              <td class="coverFnAliasHi">266995</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L719">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_src&lt;Xbyak::Xmm&gt;(Xbyak::Address const&amp;, Xbyak::Xmm const&amp;, dnnl_data_type_t, int, bool)</a></td>
+              
+              <td class="coverFnHi">486653</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L719">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_src&lt;Xbyak::Xmm&gt;(Xbyak::Address const&amp;, Xbyak::Xmm const&amp;, dnnl_data_type_t, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">131660</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L719">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_src&lt;Xbyak::Ymm&gt;(Xbyak::Address const&amp;, Xbyak::Ymm const&amp;, dnnl_data_type_t, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">26052</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFnAlias"><a href="jit_uni_rnn_common_postgemm.hpp.gcov.html#L719">void dnnl::impl::cpu::x64::jit_uni_rnn_postgemm_t::to_src&lt;Xbyak::Zmm&gt;(Xbyak::Address const&amp;, Xbyak::Zmm const&amp;, dnnl_data_type_t, int, bool)</a></td>
+              
+              <td class="coverFnAliasHi">328941</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

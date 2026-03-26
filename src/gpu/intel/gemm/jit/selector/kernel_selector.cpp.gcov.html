@@ -1,0 +1,538 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/selector/kernel_selector.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/selector">src/gpu/intel/gemm/jit/selector</a> - kernel_selector.cpp<span style="font-size: 80%;"> (source / <a href="kernel_selector.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">89.3&nbsp;%</td>
+            <td class="headerCovTableEntry">271</td>
+            <td class="headerCovTableEntry">242</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntry">24</td>
+          </tr>
+                  <tr><td><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;gemmstone/kernel_selector.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;gemmstone/kernel_evaluator.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;cassert&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;cctype&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;cstring&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;vector&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">    19527919 : inline bool layoutMatch(const char *lref, const char *lpattern)</span></span>
+<span id="L28"><span class="lineNum">      28</span>              : {</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">    19527919 :     return (lref[0] == lpattern[0]);        // This is a sufficient check for now.</span></span>
+<span id="L30"><span class="lineNum">      30</span>              : }</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">    16752107 : inline bool precisionMatch(const char *pref, const char *ppattern, bool ignoreCase)</span></span>
+<span id="L33"><span class="lineNum">      33</span>              : {</span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">    16752107 :     char mask = ignoreCase ? ~0x20 : ~0;</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">    16752627 :     auto match = [mask](char c1, char c2) { return (c1 &amp; mask) == (c2 &amp; mask); };</span></span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">    16752107 :     bool ok = false;</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">    16752107 :     ok = ok || (ppattern[0] == '?');</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">    16752107 :     ok = ok || match(pref[0], ppattern[0]);</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">    16752107 :     ok = ok || (ppattern[0] == '[' &amp;&amp; match(pref[0], ppattern[1]));</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">    16752107 :     if (ok &amp;&amp; pref[0] == '[') {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         260 :         ok = ok &amp;&amp; match(pref[1], ppattern[1]) &amp;&amp; match(pref[2], ppattern[2]);</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         520 :         for (int i = 3; pref[i] != '\0'; i++) {</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">         260 :             if (pref[i] != ppattern[i]) { ok = false; break; }</span></span>
+<span id="L45"><span class="lineNum">      45</span>              :         }</span>
+<span id="L46"><span class="lineNum">      46</span>              :     }</span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">    16752107 :     return ok;</span></span>
+<span id="L48"><span class="lineNum">      48</span>              : }</span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         248 : inline bool precisionMinimumMatch(const char *pref, char pmin)</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : {</span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">         248 :     uint8_t sizeTable[0x20] = {</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : //         A  B  C  D  E  F  G  H  I  J  K  L  M  N  O</span>
+<span id="L54"><span class="lineNum">      54</span>              :         0, 0, 2, 8, 8, 0, 0, 0, 2, 4, 4, 4, 0, 0, 0, 1,</span>
+<span id="L55"><span class="lineNum">      55</span>              : //      P  Q  R  S  T  U  V  W  X  Y  Z</span>
+<span id="L56"><span class="lineNum">      56</span>              :         0, 1, 0, 4, 4, 8, 0, 2, 0, 0, 16, 0, 0, 0, 0, 0</span>
+<span id="L57"><span class="lineNum">      57</span>              :     };</span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">         248 :     return (sizeTable[pref[0] &amp; 0x1F] &gt;= sizeTable[pmin &amp; 0x1F]);</span></span>
+<span id="L60"><span class="lineNum">      60</span>              : }</span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">    17201456 : inline bool alignmentMatch(int aref, int apattern)</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : {</span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">    17201456 :     if (aref == 0) aref = 1;</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">    17201456 :     return (apattern % aref == 0);</span></span>
+<span id="L66"><span class="lineNum">      66</span>              : }</span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">    10708685 : inline bool tagMatch(const char *tref, const char *tpattern)</span></span>
+<span id="L69"><span class="lineNum">      69</span>              : {</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">    40115441 :     for (auto c = tref; *c; c++) {</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :         // Lowercase tags -&gt; must not match pattern</span>
+<span id="L72"><span class="lineNum">      72</span>              :         // Uppercase tags -&gt; must match pattern</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">    29648131 :         int cu = *c &amp; ~0x20;     // toupper(c)</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">    29648131 :         bool match = (std::strchr(tpattern, cu) != nullptr);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">    29648131 :         bool wantMatch = (*c &amp; 0x20) == 0;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">    29648131 :         if (match != wantMatch)</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">      241379 :             return false;</span></span>
+<span id="L78"><span class="lineNum">      78</span>              :     }</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">    10467310 :     return true;</span></span>
+<span id="L80"><span class="lineNum">      80</span>              : }</span>
+<span id="L81"><span class="lineNum">      81</span>              : </span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       54667 : inline bool strategyMatch(const CommonDriverInfo &amp;info, const StrategyRequirement &amp;req)</span></span>
+<span id="L83"><span class="lineNum">      83</span>              : {</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">       54667 :     int actual = 0;</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">       54667 :     switch (req.param) {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       27229 :         case StrategyRequirement::UnrollM:  actual = info.unroll[LoopM]; break;</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">       27282 :         case StrategyRequirement::UnrollN:  actual = info.unroll[LoopN]; break;</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaUNC">           0 :         case StrategyRequirement::WGTileM:  actual = info.wgTile(LoopM); break;</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaUNC">           0 :         case StrategyRequirement::WGTileN:  actual = info.wgTile(LoopN); break;</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaUNC">           0 :         case StrategyRequirement::WGTileMN: actual = info.wgTile(LoopM) * info.wgTile(LoopN); break;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">          84 :         case StrategyRequirement::WGM:      actual = info.wg[LoopM]; break;</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">          72 :         case StrategyRequirement::WGN:      actual = info.wg[LoopN]; break;</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 :         case StrategyRequirement::WGK:      actual = info.wg[LoopK]; break;</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaUNC">           0 :         case StrategyRequirement::WG:       actual = info.wg[LoopM] * info.wg[LoopN] * info.wg[LoopK]; break;</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :         default: return false;</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :     }</span>
+<span id="L97"><span class="lineNum">      97</span>              : </span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaGNC">       54667 :     switch (req.relation) {</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       54667 :         case StrategyRequirement::Equals:  return (actual == req.value);</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :         case StrategyRequirement::AtLeast: return (actual &gt;= req.value);</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :         case StrategyRequirement::AtMost:  return (actual &lt;= req.value);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :         default: return false;</span></span>
+<span id="L103"><span class="lineNum">     103</span>              :     }</span>
+<span id="L104"><span class="lineNum">     104</span>              : }</span>
+<span id="L105"><span class="lineNum">     105</span>              : </span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">     6510327 : bool matches(const kcatalog::Entry &amp;e, const MatchParams &amp;p)</span></span>
+<span id="L107"><span class="lineNum">     107</span>              : {</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">     6510327 :     bool ok = true;</span></span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">     6510327 :     if (e.restrictions.steppingMin &gt;= 0)</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">        2096 :         ok = ok &amp;&amp; (p.stepping &gt;= e.restrictions.steppingMin);</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">     6510327 :     if (e.restrictions.steppingMax &gt;= 0)</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaUNC">           0 :         ok = ok &amp;&amp; (p.stepping &lt; e.restrictions.steppingMax);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; layoutMatch(e.selector.layouts[0], p.selector.layouts[0]);</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; layoutMatch(e.selector.layouts[1], p.selector.layouts[1]);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; layoutMatch(e.selector.layouts[2], p.selector.layouts[2]);</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; precisionMatch(e.selector.precisions[2], p.selector.precisions[2], p.ignoreCase);</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">     6510327 :     if (p.precisionCExt)</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         248 :         ok = ok &amp;&amp; precisionMinimumMatch(e.selector.precisions[2], p.precisionCExt);</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">    26041338 :     for (int i = 0; i &lt; 3; i++)</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">    19531001 :         ok = ok &amp;&amp; alignmentMatch(e.restrictions.alignment[i], p.alignment[i]);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; tagMatch(e.restrictions.tags, p.tags);</span></span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">     6510327 :     if (!p.ignoreSizes) {</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     6510327 :         int64_t mnk[3] = {p.sizes.m, p.sizes.n, p.sizes.k};</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">    26041338 :         for (int i = 0; i &lt; 3; i++) {</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">    19531001 :             if (e.restrictions.allowedSizesMin[i] &gt;= 0)</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">      142501 :                 ok = ok &amp;&amp; (mnk[i] &gt;= e.restrictions.allowedSizesMin[i]);</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">    19531001 :             if (e.restrictions.allowedSizesMax[i] &gt;= 0)</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">      619060 :                 ok = ok &amp;&amp; (mnk[i] &lt;= e.restrictions.allowedSizesMax[i]);</span></span>
+<span id="L131"><span class="lineNum">     131</span>              :         }</span>
+<span id="L132"><span class="lineNum">     132</span>              :     }</span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; (e.driverInfo.unroll[LoopM] % p.unrollReq[LoopM] == 0);</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; (e.driverInfo.unroll[LoopN] % p.unrollReq[LoopN] == 0);</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; (e.driverInfo.unroll[LoopK] % p.unrollReq[LoopK] == 0);</span></span>
+<span id="L137"><span class="lineNum">     137</span>              : </span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">     6614867 :     for (int i = 0; i &lt; p.nExtraReqs; i++)</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">      104536 :         ok = ok &amp;&amp; strategyMatch(e.driverInfo, p.extraReqs[i]);</span></span>
+<span id="L140"><span class="lineNum">     140</span>              : </span>
+<span id="L141"><span class="lineNum">     141</span>              :     // Should already be matched.</span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; (e.selector.hw == p.selector.hw);</span></span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; precisionMatch(e.selector.precisions[0], p.selector.precisions[0], p.ignoreCase);</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">     6510327 :     ok = ok &amp;&amp; precisionMatch(e.selector.precisions[1], p.selector.precisions[1], p.ignoreCase);</span></span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">     6510327 :     return ok;</span></span>
+<span id="L147"><span class="lineNum">     147</span>              : }</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span>              : // Check whether one set of A/B alignments (alignA1, alignB1) is strictly less aligned than</span>
+<span id="L150"><span class="lineNum">     150</span>              : //  another (alignA2, alignB2).</span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">    20132051 : bool lessAligned(int alignA1, int alignB1, int alignA2, int alignB2)</span></span>
+<span id="L152"><span class="lineNum">     152</span>              : {</span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">    20132051 :     alignA1 = std::max(alignA1, 4);</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">    20132051 :     alignA2 = std::max(alignA2, 4);</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">    20132051 :     alignB1 = std::max(alignB1, 4);</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">    20132051 :     alignB2 = std::max(alignB2, 4);</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">    20132051 :     return (alignA1 &lt;= alignA2) &amp;&amp; (alignB1 &lt;= alignB2) &amp;&amp; (alignA1 + alignB1 &lt; alignB1 + alignB2);</span></span>
+<span id="L158"><span class="lineNum">     158</span>              : }</span>
+<span id="L159"><span class="lineNum">     159</span>              : </span>
+<span id="L160"><span class="lineNum">     160</span>              : struct EntryData {</span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">     5112442 :     EntryData(const kcatalog::Entry *entry_, double score_) : entry(entry_), score(score_) {}</span></span>
+<span id="L162"><span class="lineNum">     162</span>              :     const kcatalog::Entry *entry;</span>
+<span id="L163"><span class="lineNum">     163</span>              :     double score;</span>
+<span id="L164"><span class="lineNum">     164</span>              : };</span>
+<span id="L165"><span class="lineNum">     165</span>              : </span>
+<span id="L166"><span class="lineNum">     166</span>              : // Inner kernel selection logic.</span>
+<span id="L167"><span class="lineNum">     167</span>              : // Choose the best entry, if any, matching one of the given patterns.</span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">      167946 : const std::vector&lt;const kcatalog::Entry *&gt; getEntries(const kcatalog::Catalog &amp;catalog, int npatterns, const MatchParams *patterns, const EvaluateParams &amp;eparams, EvaluateAuxOutput &amp;aux,  SelectionObserver * observer)</span></span>
+<span id="L169"><span class="lineNum">     169</span>              : {</span>
+<span id="L170"><span class="lineNum">     170</span>              :     // TODO: omit evaluation if only one match, if aux output not needed.</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">      335892 :     std::vector&lt;EntryData&gt; keys;</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">      496043 :     for (int ipattern = 0; ipattern &lt; npatterns; ipattern++) {</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">     5445763 :         for (auto it = match(catalog, patterns[ipattern]); it; it++) {</span></span>
+<span id="L174"><span class="lineNum">     174</span>              :             // Late tag checking. If late tags do not match, we skip entry.</span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">     5117659 :             if (tagMatch(it-&gt;restrictions.tags, patterns[ipattern].lateTags)) {</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">     5112442 :                 auto score = evaluate(*it, eparams, aux);</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">     5112442 :                 keys.emplace_back(&amp;*it, score);</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">     5112442 :                 if (observer) {</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">     5112420 :                     (*observer)(&amp;*it, score, aux);</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :                 }</span>
+<span id="L181"><span class="lineNum">     181</span>              :             }</span>
+<span id="L182"><span class="lineNum">     182</span>              :         }</span>
+<span id="L183"><span class="lineNum">     183</span>              :     }</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">    33243488 :     auto less = [&amp;](const EntryData &amp;lhs, const EntryData &amp;rhs){</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">    33243488 :                       bool lhsFallback = (lhs.entry-&gt;restrictions.tags[0] == kcatalog::ReqAlignFallback);</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">    33243488 :                       int  lhsAlignA = std::max(lhs.entry-&gt;restrictions.alignment[0], 4);</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">    33243488 :                       int  lhsAlignB = std::max(lhs.entry-&gt;restrictions.alignment[1], 4);</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">    33243488 :                       bool rhsFallback = (rhs.entry-&gt;restrictions.tags[0] == kcatalog::ReqAlignFallback);</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">    33243488 :                       int  rhsAlignA = std::max(rhs.entry-&gt;restrictions.alignment[0], 4);</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">    33243488 :                       int  rhsAlignB = std::max(rhs.entry-&gt;restrictions.alignment[1], 4);</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">    33243488 :                       if (rhsFallback &amp;&amp; lessAligned(rhsAlignA, rhsAlignB, lhsAlignA, lhsAlignB)) return true;</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">    31903261 :                       if (lhsFallback &amp;&amp; lessAligned(lhsAlignA, lhsAlignB, rhsAlignA, rhsAlignB)) return false;</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">    31028573 :                       if (lhs.score &lt; rhs.score) return true;</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">    12023357 :                       if (lhs.score &gt; rhs.score) return false;</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">     2856737 :                       return (lhs.entry &lt; rhs.entry);</span></span>
+<span id="L197"><span class="lineNum">     197</span>              :     };</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">      167946 :     std::sort(keys.begin(), keys.end(), less);</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span>              :     // Unpack into vector of entries (dropping score)</span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">      167946 :     std::vector&lt;const kcatalog::Entry *&gt; entries;</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      167946 :     entries.reserve(keys.size());</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">     5280395 :     for (auto &amp;key : keys)</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">     5112442 :         entries.push_back(key.entry);</span></span>
+<span id="L205"><span class="lineNum">     205</span>              : </span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      335892 :     return entries;</span></span>
+<span id="L207"><span class="lineNum">     207</span>              : }</span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span>              : // User-facing kernel selection logic.</span>
+<span id="L210"><span class="lineNum">     210</span>              : // Includes architecture and data type fallbacks.</span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">        9248 : const std::vector&lt;const kcatalog::Entry *&gt; select(const kcatalog::Catalog &amp;catalog, const MatchParams &amp;pattern, const EvaluateParams &amp;eparams, EvaluateAuxOutput &amp;aux, SelectionObserver *observer)</span></span>
+<span id="L212"><span class="lineNum">     212</span>              : {</span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">        9248 :     return select(catalog, 1, &amp;pattern, eparams, aux, observer);</span></span>
+<span id="L214"><span class="lineNum">     214</span>              : }</span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">      127980 : const std::vector&lt;const kcatalog::Entry *&gt; select(const kcatalog::Catalog &amp;catalog, int npatterns, const MatchParams *patterns, const EvaluateParams &amp;eparams, EvaluateAuxOutput &amp;aux, SelectionObserver *observer)</span></span>
+<span id="L217"><span class="lineNum">     217</span>              : {</span>
+<span id="L218"><span class="lineNum">     218</span>              :     using namespace kcatalog;</span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">      255960 :     std::vector&lt;const kcatalog::Entry *&gt; entries;</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">      127980 :     if (npatterns == 0 || !patterns)</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaUNC">           0 :         return entries;</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : </span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">      255960 :     auto result = getEntries(catalog, npatterns, patterns, eparams, aux, observer);</span></span>
+<span id="L225"><span class="lineNum">     225</span>              : </span>
+<span id="L226"><span class="lineNum">     226</span>              :     // Architecture fallback loop.</span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">      127980 :     bool first = true;</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">      127980 :     auto hw = patterns[0].selector.hw;</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">       25357 :     do {</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">      306674 :         std::vector&lt;MatchParams&gt; modPatterns;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">      153337 :         modPatterns.reserve(npatterns);</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">      436585 :         for (int i = 0; i &lt; npatterns; i++) {</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">      283248 :             modPatterns.emplace_back(patterns[i]);</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">      283248 :             modPatterns.back().selector.hw = hw;</span></span>
+<span id="L235"><span class="lineNum">     235</span>              :         }</span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span>              :         // Type fallback loop.</span>
+<span id="L238"><span class="lineNum">     238</span>              :         while (true) {</span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">      167946 :             if (!first) {</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">       39966 :                 auto entries =  getEntries(catalog, npatterns, modPatterns.data(), eparams, aux, observer);</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">       39966 :                 result.insert(result.end(), entries.begin(), entries.end());</span></span>
+<span id="L242"><span class="lineNum">     242</span>              :             }</span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">      167946 :             first = false;</span></span>
+<span id="L244"><span class="lineNum">     244</span>              : </span>
+<span id="L245"><span class="lineNum">     245</span>              :             /* Try capital types */</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">       30207 :             auto hasLowercase = [](kcatalog::string &amp;str) {</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaGNC">       30207 :                 bool lc = false;</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       60414 :                 for (auto c = str; *c; c++)</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">       30207 :                     lc |= (*c &gt;= 'a' &amp;&amp; *c &lt;= 'z');</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       30207 :                 return lc;</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :             };</span>
+<span id="L252"><span class="lineNum">     252</span>              : </span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">      167946 :             bool changed = false;</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">      496043 :             for (auto &amp;p: modPatterns) {</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">      328097 :                 if (p.ignoreCase) continue;</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       10069 :                 p.ignoreCase = true;</span></span>
+<span id="L257"><span class="lineNum">     257</span> <span class="tlaGNC">       40276 :                 for (int d = 0; d &lt; 3; d++)</span></span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">       30207 :                     changed |= hasLowercase(p.selector.precisions[d]);</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :             }</span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">      167946 :             if (changed) continue;</span></span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              :             /* Specific pattern modifications */</span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">      679786 :             auto iequal = [](kcatalog::string &amp;str, char c) {</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">      679786 :                 return str[0] &amp;&amp; ((str[0] &amp; ~0x20) == (c &amp; ~0x20)) &amp;&amp; (str[1] == '\0');</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :             };</span>
+<span id="L266"><span class="lineNum">     266</span>              : </span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">      488553 :             for (auto &amp;p: modPatterns) {</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">      648704 :                 auto match = [&amp;](const char *precisions) {</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">      701514 :                     for (int i = 0; i &lt; 3; i++)</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">      690650 :                         if (precisions[i] &amp;&amp; !iequal(p.selector.precisions[i], precisions[i]))</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">      637840 :                             return false;</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">       10864 :                     return true;</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">      324352 :                 };</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      324352 :                 if (match(&quot;FO&quot;))</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaUNC">           0 :                     p.selector.precisions[0] = &quot;[FO]&quot;;</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">      324352 :                 else if (match(&quot;BB&quot;))</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       10864 :                     p.selector.precisions[0] = p.selector.precisions[1] = &quot;H&quot;;</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">      313488 :                 else continue;</span></span>
+<span id="L280"><span class="lineNum">     280</span>              : </span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       10864 :                 changed = true;</span></span>
+<span id="L282"><span class="lineNum">     282</span>              :             }</span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">      164201 :             if (changed) continue;</span></span>
+<span id="L284"><span class="lineNum">     284</span>              : </span>
+<span id="L285"><span class="lineNum">     285</span> <span class="tlaGNC">      153337 :             break;</span></span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">       14609 :         }</span></span>
+<span id="L287"><span class="lineNum">     287</span>              : </span>
+<span id="L288"><span class="lineNum">     288</span>              :         // Architecture fallbacks, e.g. Xe2 inherits XeHPC strategies.</span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">      153337 :         switch (hw) {</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">       25357 :             case HWTagXe2:  hw = HWTagXeHPC; break;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaUNC">           0 :             case HWTagXe3:  hw = HWTagXe2; break;</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaUNC">           0 :                 case HWTagXe3p: hw = HWTagXe3; break;</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">      127980 :             default:        hw = 0; break;</span></span>
+<span id="L294"><span class="lineNum">     294</span>              :         }</span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">      153337 :     } while (hw);</span></span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">      127980 :     if (entries.size() &gt; 0)</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaUNC">           0 :             evaluate(*entries[0], eparams, aux);</span></span>
+<span id="L299"><span class="lineNum">     299</span>              : </span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">      127980 :     return result;</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : }</span>
+<span id="L302"><span class="lineNum">     302</span>              : </span>
+<span id="L303"><span class="lineNum">     303</span>              : template &lt;bool upper&gt;</span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">      656194 : const kcatalog::Entry *upper_lower_bound(const kcatalog::Catalog &amp;catalog, const kcatalog::Selector &amp;selector)</span></span>
+<span id="L305"><span class="lineNum">     305</span>              : {</span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">      656194 :     int n = catalog.entryCount;</span></span>
+<span id="L307"><span class="lineNum">     307</span> <span class="tlaGNC">      656194 :     const kcatalog::Entry *cur = catalog.entries;</span></span>
+<span id="L308"><span class="lineNum">     308</span>              : </span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">     7479495 :     while (n &gt; 0) {</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">     6823293 :         auto half = n &gt;&gt; 1;</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">     6823293 :         auto mid = cur + half;</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">     6823293 :         if (upper ? (*mid &lt;= selector) : (*mid &lt; selector)) {</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">     3074983 :             cur = mid + 1;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">     3074983 :             n = n - half - 1;</span></span>
+<span id="L315"><span class="lineNum">     315</span>              :         } else</span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">     3748317 :             n = half;</span></span>
+<span id="L317"><span class="lineNum">     317</span>              :     }</span>
+<span id="L318"><span class="lineNum">     318</span>              : </span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">      656194 :     return cur;</span></span>
+<span id="L320"><span class="lineNum">     320</span>              : }</span>
+<span id="L321"><span class="lineNum">     321</span>              : </span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">      328097 : const kcatalog::Entry *lower_bound(const kcatalog::Catalog &amp;catalog, const kcatalog::Selector &amp;selector) {</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">      328097 :     return upper_lower_bound&lt;false&gt;(catalog, selector);</span></span>
+<span id="L324"><span class="lineNum">     324</span>              : }</span>
+<span id="L325"><span class="lineNum">     325</span>              : </span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">      328097 : const kcatalog::Entry *upper_bound(const kcatalog::Catalog &amp;catalog, const kcatalog::Selector &amp;selector) {</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">      328097 :     return upper_lower_bound&lt;true&gt;(catalog, selector);</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : }</span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span>              : </span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">      127980 : MatchParamsBase::MatchParamsBase(ngen::HW hw, bool systolicAvailable, bool isIntegrated, const GEMMProblem &amp;problem_)</span></span>
+<span id="L332"><span class="lineNum">     332</span>              : {</span>
+<span id="L333"><span class="lineNum">     333</span>              :     using namespace kcatalog;</span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">      127980 :     auto problem = problem_;</span></span>
+<span id="L336"><span class="lineNum">     336</span>              : </span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">      127980 :     if(problem.Tao.is4() || problem.Ta_scale.is4()){</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">           8 :         unrollReq[LoopM] = 2;</span></span>
+<span id="L339"><span class="lineNum">     339</span>              :     }</span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">      127980 :     if(problem.Tbo.is4() || problem.Tb_scale.is4()){</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaUNC">           0 :         unrollReq[LoopN] = 2;</span></span>
+<span id="L342"><span class="lineNum">     342</span>              :     }</span>
+<span id="L343"><span class="lineNum">     343</span>              : </span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaGNC">      127980 :     ReqBDPASDims = problem.preferBDPAS(hw);</span></span>
+<span id="L345"><span class="lineNum">     345</span>              : </span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">      127980 :     if (ReqBDPASDims) {</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaUNC">           0 :         unrollReq[LoopM] = 8;</span></span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaUNC">           0 :         unrollReq[LoopN] = 8;</span></span>
+<span id="L349"><span class="lineNum">     349</span>              :     }</span>
+<span id="L350"><span class="lineNum">     350</span>              :  </span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">      127980 :     if(problem.hasCMXScale()){</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaGNC">           2 :         unrollReq[LoopM] = 32;</span></span>
+<span id="L353"><span class="lineNum">     353</span>              :     }</span>
+<span id="L354"><span class="lineNum">     354</span>              : </span>
+<span id="L355"><span class="lineNum">     355</span>              : </span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaGNC">      127980 :     switch (hw) {</span></span>
+<span id="L357"><span class="lineNum">     357</span> <span class="tlaUNC">           0 :         default: assert(!&quot;Unknown architecture&quot;);</span></span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaGNC">       10742 :         case ngen::HW::Gen12LP: selector.hw = kcatalog::HWTagGen12LP; break;</span></span>
+<span id="L359"><span class="lineNum">     359</span> <span class="tlaGNC">       59638 :         case ngen::HW::XeHPG:   selector.hw = kcatalog::HWTagXeHPG;   break;</span></span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaGNC">       32243 :         case ngen::HW::XeHPC:   selector.hw = kcatalog::HWTagXeHPC;   break;</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaGNC">       25357 :         case ngen::HW::Xe2:     selector.hw = kcatalog::HWTagXe2;     break;</span></span>
+<span id="L362"><span class="lineNum">     362</span> <span class="tlaUNC">           0 :         case ngen::HW::Xe3:     selector.hw = kcatalog::HWTagXe3;   break;</span></span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaUNC">           0 :         case ngen::HW::XE3P_35_10:</span></span>
+<span id="L364"><span class="lineNum">     364</span>              :         case ngen::HW::XE3P_35_11:</span>
+<span id="L365"><span class="lineNum">     365</span> <span class="tlaUNC">           0 :         case ngen::HW::XE3P_UNKNOWN:     selector.hw = kcatalog::HWTagXe3p;   break;</span></span>
+<span id="L366"><span class="lineNum">     366</span>              :     }</span>
+<span id="L367"><span class="lineNum">     367</span>              : </span>
+<span id="L368"><span class="lineNum">     368</span> <span class="tlaGNC">      127980 :     auto &amp;C = problem.C;</span></span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">      127980 :     auto equivCLayout = C.layout;</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">      127980 :     if (isPacked(equivCLayout)) {</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">          24 :         bool colMajor = (C.layout == MatrixLayout::Pc) ^ (C.crosspack * problem.Tc &gt; 4);</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">          24 :         equivCLayout = (colMajor ? MatrixLayout::N : MatrixLayout::T);</span></span>
+<span id="L373"><span class="lineNum">     373</span>              :     }</span>
+<span id="L374"><span class="lineNum">     374</span>              : </span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">      255960 :     auto makeABConvert = [](Type T, Type T_ext, bool mixed_fp, char *out) {</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">      255960 :         if ((mixed_fp &amp;&amp; T_ext.isSubsetOf(T)) || (T == T_ext))</span></span>
+<span id="L377"><span class="lineNum">     377</span> <span class="tlaGNC">      255960 :             out[0] = precisionChar(T_ext);</span></span>
+<span id="L378"><span class="lineNum">     378</span>              :         else {</span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaUNC">           0 :             out[0] = '[';</span></span>
+<span id="L380"><span class="lineNum">     380</span> <span class="tlaUNC">           0 :             out[1] = precisionChar(T_ext);</span></span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaUNC">           0 :             out[2] = precisionChar(T);</span></span>
+<span id="L382"><span class="lineNum">     382</span> <span class="tlaUNC">           0 :             out[3] = ']';</span></span>
+<span id="L383"><span class="lineNum">     383</span>              :         }</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">      255960 :     };</span></span>
+<span id="L385"><span class="lineNum">     385</span>              : </span>
+<span id="L386"><span class="lineNum">     386</span> <span class="tlaGNC">      127980 :     selector.kernelType = &quot;gemm&quot;;</span></span>
+<span id="L387"><span class="lineNum">     387</span>              : </span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">      127980 :     std::fill(temp.begin(), temp.end(), '\0');</span></span>
+<span id="L389"><span class="lineNum">     389</span>              : </span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">      127980 :     const bool mixed_fp = problem.Ta_ext.isFP() != problem.Tb_ext.isFP();</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">      127980 :     makeABConvert(problem.Ta, problem.Ta_ext, mixed_fp, &amp;temp[0]);</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">      127980 :     makeABConvert(problem.Tb, problem.Tb_ext, mixed_fp, &amp;temp[5]);</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">      127980 :     temp[10] = precisionChar(problem.Tc);</span></span>
+<span id="L394"><span class="lineNum">     394</span> <span class="tlaGNC">      127980 :     temp[12] = layoutChar(problem.A.layout);</span></span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">      127980 :     temp[14] = layoutChar(problem.B.layout);</span></span>
+<span id="L396"><span class="lineNum">     396</span> <span class="tlaGNC">      127980 :     temp[16] = layoutChar(equivCLayout);</span></span>
+<span id="L397"><span class="lineNum">     397</span>              : </span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">      127980 :     selector.precisions[0] = &amp;temp[0];</span></span>
+<span id="L399"><span class="lineNum">     399</span> <span class="tlaGNC">      127980 :     selector.precisions[1] = &amp;temp[5];</span></span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">      127980 :     selector.precisions[2] = &amp;temp[10];</span></span>
+<span id="L401"><span class="lineNum">     401</span> <span class="tlaGNC">      127980 :     selector.layouts[0] = &amp;temp[12];</span></span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">      127980 :     selector.layouts[1] = &amp;temp[14];</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">      127980 :     selector.layouts[2] = &amp;temp[16];</span></span>
+<span id="L404"><span class="lineNum">     404</span>              : </span>
+<span id="L405"><span class="lineNum">     405</span> <span class="tlaGNC">      127980 :     precisionCExt = precisionChar(problem.Tc_ext);</span></span>
+<span id="L406"><span class="lineNum">     406</span>              : </span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">      127980 :     alignment[0] = problem.A.alignment;</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">      127980 :     alignment[1] = problem.B.alignment;</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">      127980 :     alignment[2] = problem.C.alignment;</span></span>
+<span id="L410"><span class="lineNum">     410</span>              : </span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">      127980 :     char *tagPtr = &amp;temp[18];</span></span>
+<span id="L412"><span class="lineNum">     412</span> <span class="tlaGNC">      127980 :     lateTags = tagPtr;</span></span>
+<span id="L413"><span class="lineNum">     413</span>              : </span>
+<span id="L414"><span class="lineNum">     414</span>              :     // Late-only tags. Don't choose lower-performing kernels</span>
+<span id="L415"><span class="lineNum">     415</span>              :     //  just to fuse reductions. Instead do reductions in a separate kernel.</span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">      127980 :     if (problem.sumA)</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">         201 :         *tagPtr++ = ReqSumA;</span></span>
+<span id="L418"><span class="lineNum">     418</span> <span class="tlaGNC">      127980 :     if (problem.sumB)</span></span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">        2020 :         *tagPtr++ = ReqSumB;</span></span>
+<span id="L420"><span class="lineNum">     420</span>              : </span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">      127980 :     tags = tagPtr;</span></span>
+<span id="L422"><span class="lineNum">     422</span>              : </span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">      127980 :     if (systolicAvailable)</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">      117226 :         *tagPtr++ = ReqSystolic;</span></span>
+<span id="L425"><span class="lineNum">     425</span>              : </span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">      127980 :     if (isIntegrated) *tagPtr++ = ReqIntegrated;</span></span>
+<span id="L427"><span class="lineNum">     427</span>              : </span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">      127980 :     if (problem.batch != BatchMode::None) {</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">        3050 :         *tagPtr++ = ReqBatch;</span></span>
+<span id="L430"><span class="lineNum">     430</span> <span class="tlaGNC">        3050 :         if (problem.batchDims &gt; 1)</span></span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">         720 :             *tagPtr++ = ReqBatchMultiDim;</span></span>
+<span id="L432"><span class="lineNum">     432</span>              :     }</span>
+<span id="L433"><span class="lineNum">     433</span>              : </span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">      127980 :     if (problem.aOffset != ABOffset::None || problem.bOffset != ABOffset::None)</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">         741 :         *tagPtr++ = ReqABOffset;</span></span>
+<span id="L436"><span class="lineNum">     436</span> <span class="tlaGNC">      127980 :     if (problem.aoPtrDims &gt; 0 || problem.boPtrDims &gt; 0)</span></span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">         246 :         *tagPtr++ = ReqOffsetMultiDim;</span></span>
+<span id="L438"><span class="lineNum">     438</span>              : </span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">      127980 :     problem.autoTypeConversions(hw, systolicAvailable);</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">      127980 :     if (problem.needsASums() &amp;&amp; !problem.sumA) *tagPtr++ = ReqSumA;</span></span>
+<span id="L441"><span class="lineNum">     441</span> <span class="tlaGNC">      127980 :     if (problem.needsBSums() &amp;&amp; !problem.sumB) *tagPtr++ = ReqSumB;</span></span>
+<span id="L442"><span class="lineNum">     442</span>              : </span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">      127980 :     if (one_of(hw, {ngen::HW::Xe2, ngen::HW::Xe3, ngen::HW::XE3P_35_10, ngen::HW::XE3P_35_11, ngen::HW::XE3P_UNKNOWN})) *tagPtr++ = ReqXe2Block2D;</span></span>
+<span id="L444"><span class="lineNum">     444</span>              : </span>
+<span id="L445"><span class="lineNum">     445</span>              : </span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">      127980 :     sizes.batch = sizes.m = sizes.n = sizes.k = 0;</span></span>
+<span id="L447"><span class="lineNum">     447</span> <span class="tlaGNC">      127980 : }</span></span>
+<span id="L448"><span class="lineNum">     448</span>              : </span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">        1272 : void StrategyRequirement::transpose()</span></span>
+<span id="L450"><span class="lineNum">     450</span>              : {</span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">        1272 :     switch (param) {</span></span>
+<span id="L452"><span class="lineNum">     452</span> <span class="tlaGNC">         318 :         case UnrollM: param = UnrollN; break;</span></span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">         318 :         case UnrollN: param = UnrollM; break;</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaUNC">           0 :         case WGTileM: param = WGTileN; break;</span></span>
+<span id="L455"><span class="lineNum">     455</span> <span class="tlaUNC">           0 :         case WGTileN: param = WGTileM; break;</span></span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">         318 :         case WGM:     param = WGN;     break;</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">         318 :         case WGN:     param = WGM;     break;</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaUNC">           0 :         default:                       break;</span></span>
+<span id="L459"><span class="lineNum">     459</span>              :     }</span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">        1272 : }</span></span>
+<span id="L461"><span class="lineNum">     461</span>              : </span>
+<span id="L462"><span class="lineNum">     462</span>              : GEMMSTONE_NAMESPACE_END</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

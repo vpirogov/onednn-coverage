@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/gemm/jit/generator/pieces/gemm_microkernel.cxx</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/gemm/jit/generator/pieces">src/gpu/intel/gemm/jit/generator/pieces</a> - gemm_microkernel.cxx<span style="font-size: 80%;"> (source / <a href="gemm_microkernel.cxx.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryMed">80.6&nbsp;%</td>
+            <td class="headerCovTableEntry">216</td>
+            <td class="headerCovTableEntry">174</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryLo">35.7&nbsp;%</td>
+            <td class="headerCovTableEntry">28</td>
+            <td class="headerCovTableEntry">10</td>
+          </tr>
+                  <tr><td><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : </span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;gemmstone/generator.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : GEMMSTONE_NAMESPACE_START</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : using namespace ngen;</span>
+<span id="L23"><span class="lineNum">      23</span>              : using namespace ngen::utils;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : </span>
+<span id="L26"><span class="lineNum">      26</span>              : template &lt;HW hw&gt;</span>
+<span id="L27"><span class="lineNum">      27</span> <span class="tlaGNC">         638 : void Generator&lt;hw&gt;::gemmMicrokernel(GEMMProblem problem, GEMMStrategy strategy, const ngen::InterfaceHandler &amp;interface_)</span></span>
+<span id="L28"><span class="lineNum">      28</span>              : {</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">        1276 :     GEMMState state(hw, strategy);</span></span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">         638 :     interface = interface_;</span></span>
+<span id="L32"><span class="lineNum">      32</span>              : </span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">         638 :     problem.autoTypeConversions(hw, strategy.systolic);</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">         638 :     gemmInitState(problem, strategy, state);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        1914 :     for (int q = 0; q &lt; 2; q++)</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">        1276 :         state.ra.safeRelease(state.emulate.temp[q]);</span></span>
+<span id="L37"><span class="lineNum">      37</span>              : </span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">         638 :     outputCRange = GRFMultirange();</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">         638 :     outputCLayout.clear();</span></span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">         638 :     strategy.forceWGUpdate = WGFixed;</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">         638 :     strategy.forceFixedWGK = true;</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         638 :     strategy.activeThreads = strategy.wg[LoopM] * strategy.wg[LoopN] * strategy.wg[LoopK];</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         638 :     strategy.AO.base = A64;</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">         638 :     strategy.BO.base = A64;</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">         638 :     strategy.A_scale.base = A64;</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         638 :     strategy.B_scale.base = A64;</span></span>
+<span id="L49"><span class="lineNum">      49</span>              : </span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         638 :     state.isNested = true;</span></span>
+<span id="L51"><span class="lineNum">      51</span>              : </span>
+<span id="L52"><span class="lineNum">      52</span>              :     /* Leave some space for host kernel arguments */</span>
+<span id="L53"><span class="lineNum">      53</span>              :     // The host side arguments with 32 byte size registers (DG2)</span>
+<span id="L54"><span class="lineNum">      54</span>              :     // use 16 registers include padding bytes (aligned with 128 bytes)</span>
+<span id="L55"><span class="lineNum">      55</span>              :     // r0, r4 are reserved for system threads</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">         638 :     state.ra.claim((GRF::bytes(hw) &gt;= 64) ? r0-r9 : r0-r15);</span></span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         638 :     state.fullK = state.inputs.k;</span></span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">         638 :     bool registerC = strategy.registerOutput();</span></span>
+<span id="L61"><span class="lineNum">      61</span>              : </span>
+<span id="L62"><span class="lineNum">      62</span>              :     // Locate and claim additional inputs.</span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">        7018 :     auto getAndClaim = [&amp;](const char *name) {</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">        3190 :         auto sub = interface.getArgument(name);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">        3190 :         state.ra.claim(sub);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">        3190 :         return sub;</span></span>
+<span id="L67"><span class="lineNum">      67</span>              :     };</span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">         638 :     state.i0 = getAndClaim(&quot;i0&quot;);</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">         638 :     state.j0 = getAndClaim(&quot;j0&quot;);</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">         638 :     state.h0 = getAndClaim(&quot;h0&quot;);</span></span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">         638 :     state.lidM = getAndClaim(&quot;local_id_m&quot;).uw();</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">         638 :     state.lidN = getAndClaim(&quot;local_id_n&quot;).uw();</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">         638 :     if (strategy.kParallelLocal)</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaUNC">           0 :         state.lidK = getAndClaim(&quot;local_id_k&quot;).uw();</span></span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">         638 :     state.allocEmulate64Temp(strategy.emulate);</span></span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">         638 :     setDefaultNoMask();</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">         638 :     setDefaultAutoSWSB();</span></span>
+<span id="L82"><span class="lineNum">      82</span>              : </span>
+<span id="L83"><span class="lineNum">      83</span>              :     // Save and modify dispatch mask as needed.</span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">         638 :     Subregister dmaskSave;</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">         638 :     int minSIMD = GRF::bytes(hw) &gt;&gt; 2;</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">         638 :     if (minSIMD &lt; state.internalSIMD()) {</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">         308 :         dmaskSave = state.ra.alloc_sub&lt;uint32_t&gt;();</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">         308 :         mov(1, dmaskSave, sr0[2]);</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">         308 :         mov(1 | SWSB&lt;AllPipes&gt;(1), sr0[2], uint32_t(uint64_t(1) &lt;&lt; state.internalSIMD()) - 1);</span></span>
+<span id="L90"><span class="lineNum">      90</span>              :     }</span>
+<span id="L91"><span class="lineNum">      91</span>              : </span>
+<span id="L92"><span class="lineNum">      92</span>              :     // Synchronize and save flag registers from host kernel.</span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">         638 :     syncall();</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">        2552 :     Subregister flagSave[4];</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">        2574 :     for (int i = 0; i &lt; FlagRegister::count(hw); i++) {</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">        1936 :         flagSave[i] = state.ra.alloc_sub&lt;uint32_t&gt;();</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">        1936 :         mov(1, flagSave[i], FlagRegister(i));</span></span>
+<span id="L98"><span class="lineNum">      98</span>              :     }</span>
+<span id="L99"><span class="lineNum">      99</span>              : </span>
+<span id="L100"><span class="lineNum">     100</span>              :     // Beginning of microkernel:</span>
+<span id="L101"><span class="lineNum">     101</span>              :     //   - check32</span>
+<span id="L102"><span class="lineNum">     102</span>              :     //   - fused ID calculation</span>
+<span id="L103"><span class="lineNum">     103</span>              :     //   - ld scaling</span>
+<span id="L104"><span class="lineNum">     104</span>              :     //   - i0/j0/h0 calculations (inside WG)</span>
+<span id="L105"><span class="lineNum">     105</span>              :     //   - A/B/C offsets</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">         638 :     bool wgCheck = wgRemCheck(problem, strategy);</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">         638 :     bool gemmtBarriers = problem.gemmt() &amp;&amp; strategy.needsBarrier();</span></span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC">         638 :     auto &amp;k = state.inputs.k;</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">         638 :     auto &amp;k0 = state.inputs.k0;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">         638 :     state.lid0 = (strategy.fusedLoop == LoopN) ? state.lidN : state.lidM;</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">         638 :     getFusedID(strategy.unroll[strategy.fusedLoop], problem, strategy, state);</span></span>
+<span id="L114"><span class="lineNum">     114</span>              : </span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">         638 :     gemmScaleInputs(problem, strategy, state);</span></span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">         638 :     if (wgCheck || gemmtBarriers) {</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">         472 :         state.wgI0 = copySubregister(state.i0, state);</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">         472 :         state.wgJ0 = copySubregister(state.j0, state);</span></span>
+<span id="L120"><span class="lineNum">     120</span>              :     }</span>
+<span id="L121"><span class="lineNum">     121</span>              : </span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">         638 :     if (strategy.kParallelLocal) {</span></span>
+<span id="L123"><span class="lineNum">     123</span>              :         /* Select k0 automatically */</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaUNC">           0 :         int wgK = strategy.wg[LoopK];</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaUNC">           0 :         if (!is_zero_or_pow2(wgK)) stub();</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaUNC">           0 :         k0 = state.ra.alloc_sub&lt;uint32_t&gt;();</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaUNC">           0 :         add(1, k0, k, wgK - 1);</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaUNC">           0 :         shr(1, k0, k0, ilog2(wgK));</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaUNC">           0 :         alignUp(k0, k0, strategy.kAlign(problem), strategy, state);</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :     }</span>
+<span id="L131"><span class="lineNum">     131</span>              : </span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">         638 :     emad(1, state.i0, state.i0, state.lidM, strategy.unroll[LoopM], strategy, state);</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">         638 :     emad(1, state.j0, state.j0, state.lidN, strategy.unroll[LoopN], strategy, state);</span></span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC">         638 :     if (strategy.kParallelLocal) {</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaUNC">           0 :         bool anyAB2D = strategy.A.address2D || strategy.B.address2D</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaUNC">           0 :                 || (strategy.prefetchA &amp;&amp; strategy.A_prefetch.address2D)</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaUNC">           0 :                 || (strategy.prefetchB &amp;&amp; strategy.B_prefetch.address2D);</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaUNC">           0 :         if (anyAB2D) {</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :             state.fullK = state.ra.alloc_sub&lt;uint32_t&gt;(getHint(HintType::LongTerm, strategy));</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :             mov(1, state.fullK, state.inputs.k);</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :         }</span>
+<span id="L142"><span class="lineNum">     142</span>              :         </span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaUNC">           0 :         if (strategy.kInterleave) {</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaUNC">           0 :             emad(1, state.h0, state.h0, state.lidK, strategy.kInterleaveChunk, strategy, state);</span></span>
+<span id="L145"><span class="lineNum">     145</span>              :         } else {</span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaUNC">           0 :             emad(1, state.h0, state.h0, k0, state.lidK, strategy, state);</span></span>
+<span id="L147"><span class="lineNum">     147</span>              :         }</span>
+<span id="L148"><span class="lineNum">     148</span>              : </span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaUNC">           0 :         add(1 | sat, k.ud(), k, -state.h0);</span></span>
+<span id="L150"><span class="lineNum">     150</span>              : </span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaUNC">           0 :         if (strategy.kInterleave) {</span></span>
+<span id="L152"><span class="lineNum">     152</span>              :             // k &lt;- floor(k / (chunk * k local size)) * chunk + min(k % (chunk * k local size), chunk)</span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0 :             auto chunk = strategy.kInterleaveChunk;</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaUNC">           0 :             auto wgChunk = chunk * strategy.wg[LoopK];</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaUNC">           0 :             auto temp1 = state.ra.alloc_sub&lt;uint32_t&gt;();</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaUNC">           0 :             auto temp2 = state.ra.alloc_sub&lt;uint32_t&gt;();</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaUNC">           0 :             divDown(temp1, k.ud(), wgChunk, strategy, state);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaUNC">           0 :             emad(1, temp2, k.ud(), -temp1, wgChunk, strategy, state);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaUNC">           0 :             emul(1, temp1, temp1, chunk, strategy, state);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaUNC">           0 :             min_(1, temp2, temp2, chunk);</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaUNC">           0 :             add(1, state.inputs.k.ud(), temp1, temp2);</span></span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaUNC">           0 :             state.ra.safeRelease(temp1);</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaUNC">           0 :             state.ra.safeRelease(temp2);</span></span>
+<span id="L165"><span class="lineNum">     165</span>              :         }</span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaUNC">           0 :         min_(1, k, k, k0);</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :         state.threadK0 = k0;</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :     }</span>
+<span id="L170"><span class="lineNum">     170</span>              : </span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">         638 :     gemmCalcWGRemainders(problem, strategy, state);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">         638 :     gemmCheck32(problem, strategy, state);</span></span>
+<span id="L173"><span class="lineNum">     173</span>              : </span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">         638 :     auto &amp;i0p = (strategy.coopA == CoopSplit::FullK) ? state.wgI0 : state.i0;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">         638 :     auto &amp;j0p = (strategy.coopB == CoopSplit::FullK) ? state.wgJ0 : state.j0;</span></span>
+<span id="L176"><span class="lineNum">     176</span>              : </span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">         638 :     gemmOffsetABC(false, state.i0, state.j0, state.h0, i0p, j0p, problem, strategy, state, true, true, !registerC);</span></span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">         638 :     if (!(strategy.prefetchA &amp;&amp; strategy.A_prefetch.address2D)) state.ra.safeRelease(state.wgI0);</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">         638 :     if (!(strategy.prefetchB &amp;&amp; strategy.B_prefetch.address2D)) state.ra.safeRelease(state.wgJ0);</span></span>
+<span id="L181"><span class="lineNum">     181</span>              : </span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">         638 :     if (strategy.prefetchA &amp;&amp; state.effAp.isInvalid()) state.effAp = state.effA;</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">         638 :     if (strategy.prefetchB &amp;&amp; state.effBp.isInvalid()) state.effBp = state.effB;</span></span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">         638 :     gemmSubkernel(problem, strategy, state);</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span>              :     // Restore flag registers and dispatch mask and return to host kernel.</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">        2574 :     for (int i = 0; i &lt; FlagRegister::count(hw); i++)</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">        1936 :         mov(1, FlagRegister(i), flagSave[i]);</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">         638 :     if (dmaskSave.isValid())</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">         308 :         mov(1, sr0[2], dmaskSave);</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">         638 :     syncall();</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">         638 : }</span></span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span>              : static inline microkernel::StructuredType::Type microType(Type T);</span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              : template &lt;HW hw&gt;</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">         638 : microkernel::Package Generator&lt;hw&gt;::gemmMicrokernelPackage(const GEMMProblem &amp;problem_, const GEMMStrategy &amp;strategy, const ngen::InterfaceHandler &amp;interface_,</span></span>
+<span id="L199"><span class="lineNum">     199</span>              :                                                      const microkernel::Protocol &amp;protocol, uint32_t gmdid, bool transposeC)</span>
+<span id="L200"><span class="lineNum">     200</span>              : {</span>
+<span id="L201"><span class="lineNum">     201</span>              :     using namespace microkernel;</span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">         638 :     Package package;</span></span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">        1276 :     auto problem = problem_;</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">         638 :     problem.autoTypeConversions(hw, strategy.systolic);</span></span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">         638 :     gemmMicrokernel(problem, strategy, interface_);</span></span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">         638 :     package.protocol = protocol;</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">         638 :     package.gmdidCompat = gmdid;</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">         638 :     package.binary = this-&gt;getCode();</span></span>
+<span id="L212"><span class="lineNum">     212</span>              : </span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       10144 :     for (auto parg: package.protocol.arguments()) {</span></span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">       19012 :         Argument arg;</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">        9506 :         arg.name = parg.name;</span></span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span>              :         /* Map microkernel argument name to gemmstone internal name (iname) */</span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">       19012 :         auto iname = arg.name;</span></span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">        9506 :         if (transposeC) {</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">        4748 :             if (iname == &quot;a&quot;)               iname = &quot;b&quot;;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">        4430 :             else if (iname == &quot;b&quot;)          iname = &quot;a&quot;;</span></span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">        4112 :             else if (iname == &quot;lda&quot;)        iname = &quot;ldb&quot;;</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">        3794 :             else if (iname == &quot;ldb&quot;)        iname = &quot;lda&quot;;</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">        3476 :             else if (iname == &quot;m&quot;)          iname = &quot;n&quot;;</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">        3158 :             else if (iname == &quot;n&quot;)          iname = &quot;m&quot;;</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">        2840 :             else if (iname == &quot;i0&quot;)         iname = &quot;j0&quot;;</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">        2522 :             else if (iname == &quot;j0&quot;)         iname = &quot;i0&quot;;</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">        2204 :             else if (iname == &quot;local_id_m&quot;) iname = &quot;local_id_n&quot;;</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">        1886 :             else if (iname == &quot;local_id_n&quot;) iname = &quot;local_id_m&quot;;</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">        1568 :             else if (iname == &quot;a_scale&quot;)    iname = &quot;b_scale&quot;;</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">        1472 :             else if (iname == &quot;b_scale&quot;)    iname = &quot;a_scale&quot;;</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaGNC">        1472 :             else if (iname == &quot;a_offset&quot;)   iname = &quot;b_offset&quot;;</span></span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">        1372 :             else if (iname == &quot;b_offset&quot;)   iname = &quot;a_offset&quot;;</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">        1372 :             else if (iname == &quot;ldaq&quot;)       iname = &quot;ldbq&quot;;</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">        1272 :             else if (iname == &quot;ldbq&quot;)       iname = &quot;ldaq&quot;;</span></span>
+<span id="L237"><span class="lineNum">     237</span>              :         }</span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaGNC">        9506 :         if (iname == &quot;a&quot;)             iname = &quot;A&quot;;</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">        8868 :         else if (iname == &quot;b&quot;)        iname = &quot;B&quot;;</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">        8230 :         else if (iname == &quot;slm&quot;)      iname = &quot;slm_base&quot;;</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">        7592 :         else if (iname == &quot;a_offset&quot;) iname = &quot;ao_ptr&quot;;</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaGNC">        7500 :         else if (iname == &quot;b_offset&quot;) iname = &quot;bo_ptr&quot;;</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">        7400 :         else if (iname == &quot;a_scale&quot;)  iname = &quot;a_scale_ptr&quot;;</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">        7308 :         else if (iname == &quot;b_scale&quot;)  iname = &quot;b_scale_ptr&quot;;</span></span>
+<span id="L246"><span class="lineNum">     246</span>              : </span>
+<span id="L247"><span class="lineNum">     247</span>              :         /* Locate argument registers */</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">        9506 :         if (iname == &quot;c&quot;) {</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">         638 :             int tileM = strategy.unroll[LoopM];</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">         638 :             int tileN = strategy.unroll[LoopN];</span></span>
+<span id="L251"><span class="lineNum">     251</span> <span class="tlaGNC">         638 :             int blockM = outputCLayout[0].nr;</span></span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">         638 :             int blockN = outputCLayout[0].nc;</span></span>
+<span id="L253"><span class="lineNum">     253</span>              : </span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">        2080 :             for (auto &amp;block: outputCLayout) {</span></span>
+<span id="L255"><span class="lineNum">     255</span> <span class="tlaGNC">        1442 :                 if (blockM != block.nr) stub();</span></span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">        1442 :                 if (blockN != block.nc) stub();</span></span>
+<span id="L257"><span class="lineNum">     257</span>              :             }</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">         638 :             if (!outputCLayout.colMajor()) stub(); /* Swap dims and block ordering */</span></span>
+<span id="L259"><span class="lineNum">     259</span>              : </span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">         638 :             int blockGRF = 8;</span></span>
+<span id="L261"><span class="lineNum">     261</span> <span class="tlaGNC">        2043 :             for (auto &amp;r: outputCRange.ranges)</span></span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">        1405 :                 blockGRF = gcd(blockGRF, r.getLen());</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">         638 :             int maxBlock = blockGRF * elementsPerGRF(hw, problem.Tc);</span></span>
+<span id="L264"><span class="lineNum">     264</span>              : </span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">         638 :             if (blockM &gt; maxBlock) {</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaUNC">           0 :                 if (blockM % maxBlock) stub();</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaUNC">           0 :                 blockM = maxBlock;</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaUNC">           0 :                 blockN = 1;</span></span>
+<span id="L269"><span class="lineNum">     269</span> <span class="tlaGNC">         638 :             } else if (blockM * blockN &gt; maxBlock) {</span></span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">         572 :                 int split = (blockM * blockN / maxBlock);</span></span>
+<span id="L271"><span class="lineNum">     271</span> <span class="tlaGNC">         572 :                 if (blockM * blockN % maxBlock || blockN % split) stub();</span></span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">         572 :                 blockN /= split;</span></span>
+<span id="L273"><span class="lineNum">     273</span>              :             }</span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">         638 :             arg.location.resize((tileM * tileN) / (blockM * blockN));</span></span>
+<span id="L276"><span class="lineNum">     276</span> <span class="tlaGNC">         638 :             int idx = 0;</span></span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">        2078 :             for (int bj = 0; bj &lt; tileN; bj += blockN) {</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">        4512 :                 for (int bi = 0; bi &lt; tileM; bi += blockM) {</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">        3072 :                     auto topLeft = outputCLayout.find(bi, bj, outputCRange);</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">        3072 :                     arg.location[idx].boffset = topLeft.getBase() * GRF::bytes(hw) + topLeft.getByteOffset();</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">        3072 :                     arg.location[idx].blen    = blockM * blockN * problem.Tc;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">        3072 :                     idx++;</span></span>
+<span id="L283"><span class="lineNum">     283</span>              :                 }</span>
+<span id="L284"><span class="lineNum">     284</span>              :             }</span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">         638 :             arg.sizes.dims[0] = tileM;</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">         638 :             arg.sizes.dims[1] = tileN;</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">         638 :             arg.sizes.block[0] = blockM;</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">         638 :             arg.sizes.block[1] = blockN;</span></span>
+<span id="L290"><span class="lineNum">     290</span>              :         } else {</span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">        8868 :             auto reg = interface.getArgument(iname);</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">        8868 :             arg.location.resize(1);</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">        8868 :             arg.location[0].boffset = reg.getBase() * GRF::bytes(hw) + reg.getByteOffset();</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">        8868 :             arg.location[0].blen = reg.getBytes();</span></span>
+<span id="L295"><span class="lineNum">     295</span>              :         }</span>
+<span id="L296"><span class="lineNum">     296</span>              : </span>
+<span id="L297"><span class="lineNum">     297</span>              :         /* Provide actual argument types */</span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">        9506 :         if (iname == &quot;A&quot;)           arg.actualType = microType(problem.Ta_ext);</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">        9506 :         if (iname == &quot;B&quot;)           arg.actualType = microType(problem.Tb_ext);</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        9506 :         if (iname == &quot;c&quot;)           arg.actualType = microType(problem.Tc);</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">        9506 :         if (iname == &quot;ao_ptr&quot;)      arg.actualType = microType(problem.Tao);</span></span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        9506 :         if (iname == &quot;bo_ptr&quot;)      arg.actualType = microType(problem.Tbo);</span></span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">        9506 :         if (iname == &quot;a_scale_ptr&quot;) arg.actualType = microType(problem.Ta_scale);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">        9506 :         if (iname == &quot;b_scale_ptr&quot;) arg.actualType = microType(problem.Tb_scale);</span></span>
+<span id="L305"><span class="lineNum">     305</span>              : </span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">        9506 :         package.arguments.push_back(std::move(arg));</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :     }</span>
+<span id="L308"><span class="lineNum">     308</span>              : </span>
+<span id="L309"><span class="lineNum">     309</span> <span class="tlaGNC">        1914 :     auto slmSize = std::max(gemmSLMSize(hw, problem, strategy, true),</span></span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">         638 :                             gemmPerKSLMSize(hw, problem, strategy) * strategy.wg[LoopK]);</span></span>
+<span id="L311"><span class="lineNum">     311</span>              : </span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">         638 :     auto effLoopM = !transposeC ? LoopM : LoopN;</span></span>
+<span id="L313"><span class="lineNum">     313</span> <span class="tlaGNC">         638 :     auto effLoopN = !transposeC ? LoopN : LoopM;</span></span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;sg_tile_m&quot;, strategy.unroll[effLoopM]});</span></span>
+<span id="L315"><span class="lineNum">     315</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;sg_tile_n&quot;, strategy.unroll[effLoopN]});</span></span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;wg_tile_m&quot;, strategy.wgTile(effLoopM)});</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;wg_tile_n&quot;, strategy.wgTile(effLoopN)});</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;sg_per_wg_m&quot;, strategy.wg[effLoopM]});</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;sg_per_wg_n&quot;, strategy.wg[effLoopN]});</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;sg_per_wg_k&quot;, strategy.wg[LoopK]});</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">         638 :     package.settings.push_back({&quot;slm_size&quot;, int(slmSize)});</span></span>
+<span id="L322"><span class="lineNum">     322</span>              : </span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">         638 :     package.barrierCount = interface.getBarrierCount();</span></span>
+<span id="L324"><span class="lineNum">     324</span>              : </span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">         638 :     package.finalize();</span></span>
+<span id="L326"><span class="lineNum">     326</span>              : </span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        1276 :     return package;</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : }</span>
+<span id="L329"><span class="lineNum">     329</span>              : </span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">        2294 : static inline microkernel::StructuredType::Type microType(Type T)</span></span>
+<span id="L331"><span class="lineNum">     331</span>              : {</span>
+<span id="L332"><span class="lineNum">     332</span>              :     using ST = microkernel::StructuredType::Type;</span>
+<span id="L333"><span class="lineNum">     333</span>              : #define CASE(x) case Type::x: return ST::x;</span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaGNC">        2294 :     switch (T) {</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaUNC">           0 :         CASE(f64)</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">         666 :         CASE(f32)</span></span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaGNC">         924 :         CASE(f16)</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">         320 :         CASE(bf16)</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaUNC">           0 :         CASE(s32)</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaUNC">           0 :         CASE(s16)</span></span>
+<span id="L341"><span class="lineNum">     341</span> <span class="tlaGNC">         376 :         CASE(s8)</span></span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaUNC">           0 :         CASE(s4)</span></span>
+<span id="L343"><span class="lineNum">     343</span> <span class="tlaUNC">           0 :         CASE(u32)</span></span>
+<span id="L344"><span class="lineNum">     344</span> <span class="tlaUNC">           0 :         CASE(u16)</span></span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">           8 :         CASE(u8)</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaUNC">           0 :         CASE(u4)</span></span>
+<span id="L347"><span class="lineNum">     347</span> <span class="tlaUNC">           0 :         default: stub(&quot;Unsupported type&quot;);</span></span>
+<span id="L348"><span class="lineNum">     348</span>              :     }</span>
+<span id="L349"><span class="lineNum">     349</span>              : #undef CASE</span>
+<span id="L350"><span class="lineNum">     350</span>              : }</span>
+<span id="L351"><span class="lineNum">     351</span>              : </span>
+<span id="L352"><span class="lineNum">     352</span>              : GEMMSTONE_NAMESPACE_END</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/reorder_pd.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - reorder_pd.hpp<span style="font-size: 80%;"> (source / <a href="reorder_pd.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">92.0&nbsp;%</td>
+            <td class="headerCovTableEntry">75</td>
+            <td class="headerCovTableEntry">69</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">94.4&nbsp;%</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">17</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2016 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef COMMON_REORDER_PD_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define COMMON_REORDER_PD_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;assert.h&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;c_types_map.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;cache_hit_types.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;engine.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;primitive.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;primitive_attr.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;primitive_desc_iface.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : #include &quot;primitive_iface.hpp&quot;</span>
+<span id="L29"><span class="lineNum">      29</span>              : #include &quot;type_helpers.hpp&quot;</span>
+<span id="L30"><span class="lineNum">      30</span>              : #include &quot;utils.hpp&quot;</span>
+<span id="L31"><span class="lineNum">      31</span>              : </span>
+<span id="L32"><span class="lineNum">      32</span>              : #define VDISPATCH_REORDER(cond, msg, ...) \</span>
+<span id="L33"><span class="lineNum">      33</span>              :     VCONDCHECK(primitive, create, dispatch, reorder, (cond), \</span>
+<span id="L34"><span class="lineNum">      34</span>              :             status::unimplemented, &quot;%s,&quot; msg, this-&gt;info(engine), \</span>
+<span id="L35"><span class="lineNum">      35</span>              :             ##__VA_ARGS__)</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span>              : #define VDISPATCH_REORDER_IC(cond, msg, ...) \</span>
+<span id="L38"><span class="lineNum">      38</span>              :     VCONDCHECK(primitive, create, dispatch, reorder, (cond), \</span>
+<span id="L39"><span class="lineNum">      39</span>              :             status::unimplemented, msg, ##__VA_ARGS__)</span>
+<span id="L40"><span class="lineNum">      40</span>              : </span>
+<span id="L41"><span class="lineNum">      41</span>              : #define VDISPATCH_REORDER_SC(f, msg, ...) \</span>
+<span id="L42"><span class="lineNum">      42</span>              :     VCHECK(primitive, create, dispatch, reorder, (f), &quot;%s,&quot; msg, \</span>
+<span id="L43"><span class="lineNum">      43</span>              :             this-&gt;info(engine), ##__VA_ARGS__)</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span>              : namespace dnnl {</span>
+<span id="L46"><span class="lineNum">      46</span>              : namespace impl {</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : struct reorder_primitive_desc_iface_t : public dnnl_primitive_desc {</span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">    51631965 :     reorder_primitive_desc_iface_t(const std::shared_ptr&lt;primitive_desc_t&gt; &amp;pd,</span></span>
+<span id="L50"><span class="lineNum">      50</span>              :             engine_t *engine, engine_t *src_engine, engine_t *dst_engine)</span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">    51631965 :         : dnnl_primitive_desc(pd, engine)</span></span>
+<span id="L52"><span class="lineNum">      52</span>              :         , src_engine_(src_engine)</span>
+<span id="L53"><span class="lineNum">      53</span>              :         , dst_engine_(dst_engine)</span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">    51631965 :         , scratchpad_engine_(nullptr) {}</span></span>
+<span id="L55"><span class="lineNum">      55</span>              : </span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">      227461 :     dnnl::impl::engine_t *src_engine() const override { return src_engine_; }</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      227461 :     dnnl::impl::engine_t *dst_engine() const override { return dst_engine_; }</span></span>
+<span id="L58"><span class="lineNum">      58</span>              : </span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaUNC">           0 :     dnnl::impl::engine_t *scratchpad_engine() const override {</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :         return scratchpad_engine_;</span></span>
+<span id="L61"><span class="lineNum">      61</span>              :     }</span>
+<span id="L62"><span class="lineNum">      62</span>              : </span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">    58054515 :     dnnl::impl::status_t query(</span></span>
+<span id="L64"><span class="lineNum">      64</span>              :             dnnl::impl::query_t what, int idx, void *result) const override {</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">    58054515 :         auto status = dnnl::impl::status::success;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">    58054515 :         switch (what) {</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">      227461 :             case dnnl::impl::query::reorder_src_engine:</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">      227461 :                 *(dnnl::impl::engine_t **)result = src_engine();</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">      227461 :                 break;</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      227461 :             case dnnl::impl::query::reorder_dst_engine:</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">      227461 :                 *(dnnl::impl::engine_t **)result = dst_engine();</span></span>
+<span id="L72"><span class="lineNum">      72</span> <span class="tlaGNC">      227461 :                 break;</span></span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">    57599593 :             default: status = dnnl_primitive_desc::query(what, idx, result);</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :         }</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">    58054515 :         return status;</span></span>
+<span id="L76"><span class="lineNum">      76</span>              :     }</span>
+<span id="L77"><span class="lineNum">      77</span>              : </span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">    25849823 :     status_t create_primitive_iface(</span></span>
+<span id="L79"><span class="lineNum">      79</span>              :             std::pair&lt;primitive_iface_t *, cache_state_t&gt; &amp;primitive_iface,</span>
+<span id="L80"><span class="lineNum">      80</span>              :             const cache_blob_t &amp;cache_blob) const override {</span>
+<span id="L81"><span class="lineNum">      81</span>              :         // Step 1: create impl::primitive_t or get it from primitive cache</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">    25849823 :         std::pair&lt;std::shared_ptr&lt;primitive_t&gt;, cache_state_t&gt; p;</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :         // Top level primitive can be fetched from the primitive cache since</span>
+<span id="L84"><span class="lineNum">      84</span>              :         // it's fetching it faster.</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">    25849823 :         constexpr bool force_create_from_blob = false;</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">    51699646 :         auto status = pd_-&gt;create_primitive(</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">    25849823 :                 p, engine(), cache_blob, force_create_from_blob);</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">    25849823 :         if (status != status::success) return status;</span></span>
+<span id="L89"><span class="lineNum">      89</span>              :         // Step 2: create primitive_iface_t, init and return it to user</span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">    25849823 :         primitive_iface_t *p_iface = nullptr;</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">    25849823 :         CHECK(safe_ptr_assign(p_iface,</span></span>
+<span id="L92"><span class="lineNum">      92</span>              :                 new primitive_iface_t(</span>
+<span id="L93"><span class="lineNum">      93</span>              :                         p.first, engine(), src_engine_, dst_engine_)));</span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">    25849823 :         status = p_iface-&gt;init();</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">    25849823 :         if (status != status::success) {</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaUNC">           0 :             p_iface-&gt;release();</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaUNC">           0 :             return status;</span></span>
+<span id="L98"><span class="lineNum">      98</span>              :         }</span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">    25849823 :         primitive_iface = std::make_pair(p_iface, p.second);</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">    25849823 :         return status::success;</span></span>
+<span id="L101"><span class="lineNum">     101</span>              :     }</span>
+<span id="L102"><span class="lineNum">     102</span>              : </span>
+<span id="L103"><span class="lineNum">     103</span>              : private:</span>
+<span id="L104"><span class="lineNum">     104</span>              :     dnnl::impl::engine_t *src_engine_;</span>
+<span id="L105"><span class="lineNum">     105</span>              :     dnnl::impl::engine_t *dst_engine_;</span>
+<span id="L106"><span class="lineNum">     106</span>              :     dnnl::impl::engine_t *scratchpad_engine_;</span>
+<span id="L107"><span class="lineNum">     107</span>              : };</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span>              : // NOLINTBEGIN(google-default-arguments)</span>
+<span id="L110"><span class="lineNum">     110</span>              : struct reorder_pd_t : public primitive_desc_t {</span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">    35601575 :     const reorder_desc_t *desc() const { return &amp;desc_; }</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">    28733145 :     const op_desc_t *op_desc() const override {</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">    28733145 :         return reinterpret_cast&lt;const op_desc_t *&gt;(this-&gt;desc());</span></span>
+<span id="L114"><span class="lineNum">     114</span>              :     }</span>
+<span id="L115"><span class="lineNum">     115</span>              : </span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">    58836511 :     arg_usage_t arg_usage(int arg) const override {</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">    58836511 :         if (arg == DNNL_ARG_FROM) return arg_usage_t::input;</span></span>
+<span id="L118"><span class="lineNum">     118</span>              : </span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">    31102758 :         if (arg == DNNL_ARG_TO) return arg_usage_t::output;</span></span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">     3369015 :         return primitive_desc_t::arg_usage(arg);</span></span>
+<span id="L122"><span class="lineNum">     122</span>              :     }</span>
+<span id="L123"><span class="lineNum">     123</span>              : </span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">    27929901 :     const memory_desc_t *arg_md(</span></span>
+<span id="L125"><span class="lineNum">     125</span>              :             int arg, bool user_input = false) const override {</span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">    27929901 :         switch (arg) {</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">      598179 :             case DNNL_ARG_FROM: return src_md(0);</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">     2037485 :             case DNNL_ARG_TO: return dst_md(0, user_input);</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">    25294237 :             default: return primitive_desc_t::arg_md(arg);</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :         }</span>
+<span id="L131"><span class="lineNum">     131</span>              :     }</span>
+<span id="L132"><span class="lineNum">     132</span>              : </span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">    26757278 :     const memory_desc_t *src_md(</span></span>
+<span id="L134"><span class="lineNum">     134</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">    26757278 :         if (index == 0) return user_input ? desc()-&gt;src_md : &amp;src_md_;</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaUNC">           0 :         return &amp;glob_zero_md;</span></span>
+<span id="L137"><span class="lineNum">     137</span>              :     }</span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">    41895283 :     const memory_desc_t *dst_md(</span></span>
+<span id="L139"><span class="lineNum">     139</span>              :             int index = 0, bool user_input = false) const override {</span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">    41895283 :         if (index == 0) return user_input ? desc()-&gt;dst_md : &amp;dst_md_;</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaUNC">           0 :         return &amp;glob_zero_md;</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">    28275502 :     int n_inputs() const override { return 1; }</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">    28275502 :     int n_outputs() const override { return 1; }</span></span>
+<span id="L146"><span class="lineNum">     146</span>              : </span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      825133 :     float beta() const {</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      825133 :         const int sum_idx = attr()-&gt;post_ops_.find(primitive_kind::sum);</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      825133 :         return sum_idx == -1 ? 0 : attr()-&gt;post_ops_.entry_[sum_idx].sum.scale;</span></span>
+<span id="L150"><span class="lineNum">     150</span>              :     }</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              : protected:</span>
+<span id="L153"><span class="lineNum">     153</span>              :     reorder_desc_t desc_;</span>
+<span id="L154"><span class="lineNum">     154</span>              :     memory_desc_t src_md_;</span>
+<span id="L155"><span class="lineNum">     155</span>              :     memory_desc_t dst_md_;</span>
+<span id="L156"><span class="lineNum">     156</span>              : </span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">     4940644 :     reorder_pd_t(const primitive_attr_t *attr, engine_kind_t src_engine_kind,</span></span>
+<span id="L158"><span class="lineNum">     158</span>              :             const memory_desc_t *src_md, engine_kind_t dst_engine_kind,</span>
+<span id="L159"><span class="lineNum">     159</span>              :             const memory_desc_t *dst_md)</span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">     4940644 :         : primitive_desc_t(attr, primitive_kind::reorder)</span></span>
+<span id="L161"><span class="lineNum">     161</span>              :         , src_md_(*src_md)</span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">     4940644 :         , dst_md_(*dst_md) {</span></span>
+<span id="L163"><span class="lineNum">     163</span>              : </span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">     4940644 :         init_desc(src_engine_kind, dst_engine_kind, false);</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">     4940644 :     }</span></span>
+<span id="L166"><span class="lineNum">     166</span>              : </span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">     1921106 :     reorder_pd_t(const reorder_pd_t &amp;other)</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">     1921106 :         : primitive_desc_t(other)</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :         , src_md_(other.src_md_)</span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     1921106 :         , dst_md_(other.dst_md_) {</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">     1921106 :         init_desc(other.desc_.src_engine_kind, other.desc_.dst_engine_kind,</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     1921106 :                 other.desc_.is_cross_engine);</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">     1921106 :     }</span></span>
+<span id="L174"><span class="lineNum">     174</span>              : </span>
+<span id="L175"><span class="lineNum">     175</span>              :     reorder_pd_t &amp;operator=(const reorder_pd_t &amp;other) {</span>
+<span id="L176"><span class="lineNum">     176</span>              :         DNNL_SHORT_CIRCUIT_SELF_ASSIGN(other);</span>
+<span id="L177"><span class="lineNum">     177</span>              :         src_md_ = other.src_md_;</span>
+<span id="L178"><span class="lineNum">     178</span>              :         dst_md_ = other.dst_md_;</span>
+<span id="L179"><span class="lineNum">     179</span>              : </span>
+<span id="L180"><span class="lineNum">     180</span>              :         init_desc(other.desc_.src_engine_kind, other.desc_.dst_engine_kind,</span>
+<span id="L181"><span class="lineNum">     181</span>              :                 other.desc_.is_cross_engine);</span>
+<span id="L182"><span class="lineNum">     182</span>              :         return *this;</span>
+<span id="L183"><span class="lineNum">     183</span>              :     }</span>
+<span id="L184"><span class="lineNum">     184</span>              : </span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">     6902856 :     void init_desc(engine_kind_t src_engine_kind, engine_kind_t dst_engine_kind,</span></span>
+<span id="L186"><span class="lineNum">     186</span>              :             bool is_cross_engine) {</span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">     6902856 :         desc_ = reorder_desc_t();</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">     6902856 :         desc_.primitive_kind = primitive_kind::reorder;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">     6902856 :         desc_.src_md = &amp;src_md_;</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">     6902856 :         desc_.dst_md = &amp;dst_md_;</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">     6902856 :         desc_.src_engine_kind = src_engine_kind;</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">     6902856 :         desc_.dst_engine_kind = dst_engine_kind;</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">     6902856 :         desc_.is_cross_engine = is_cross_engine;</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">     6902856 :     }</span></span>
+<span id="L195"><span class="lineNum">     195</span>              : };</span>
+<span id="L196"><span class="lineNum">     196</span>              : // NOLINTEND(google-default-arguments)</span>
+<span id="L197"><span class="lineNum">     197</span>              : </span>
+<span id="L198"><span class="lineNum">     198</span>              : } // namespace impl</span>
+<span id="L199"><span class="lineNum">     199</span>              : } // namespace dnnl</span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              : #endif</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              : // vim: et ts=4 sw=4 cindent cino+=l0,\:4,N-s</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

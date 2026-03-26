@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/cpu/x64/jit_brgemm_conv_bwd_w.cpp - functions</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/cpu/x64">src/cpu/x64</a> - jit_brgemm_conv_bwd_w.cpp<span style="font-size: 80%;"> (<a href="jit_brgemm_conv_bwd_w.cpp.gcov.html" title="Click to go to source detail">source</a> / functions)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">91.2&nbsp;%</td>
+            <td class="headerCovTableEntry">1031</td>
+            <td class="headerCovTableEntry">940</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">38</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <center>
+          <table cellpadding=1 cellspacing=1 border=0>
+            <tr><td><br></td></tr>
+            <tr>
+              <td class="tableHead">Function Name <span  title="Click to sort table by function name" class="tableHeadSort"><a href="jit_brgemm_conv_bwd_w.cpp.func.html"><img src="../../../updown.png" width=10 height=14 alt="Sort by function name" title="Click to sort table by function name" border=0></a></span></td>
+              
+              <td class="tableHead">Hit count <span  title="Click to sort table by function hit count" class="tableHeadSort"><img src="../../../glass.png" width=10 height=14 alt="Sort by function hit count" title="Click to sort table by function hit count" border=0></span></td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L253">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::init(dnnl_engine*)</a></td>
+              
+              <td class="coverFnHi">93751</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L172">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::pd_t::copy2jit_jcp()</a></td>
+              
+              <td class="coverFnHi">93751</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1531">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::execute_backward_weights(dnnl::impl::exec_ctx_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">107779</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1577">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::execute_backward_weights(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(int, int)#4}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">107779</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1468">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::prepare_scratchpad_data(dnnl::impl::exec_ctx_t const&amp;) const</a></td>
+              
+              <td class="coverFnHi">107779</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1501">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::prepare_scratchpad_data(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(int, int)#3}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">107779</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L233">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::add_brg_kernel(int, int, int, int, int)</a></td>
+              
+              <td class="coverFnHi">190384</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1570">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::execute_backward_weights(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(int, int)#3}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">195388</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1244">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::store_in_vnni_format(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t*) const</a></td>
+              
+              <td class="coverFnHi">395896</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L855">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::compute_diff_weights_2d(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t*) const</a></td>
+              
+              <td class="coverFnHi">751657</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1495">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::prepare_scratchpad_data(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(unsigned long)#2}::operator()(unsigned long) const</a></td>
+              
+              <td class="coverFnHi">1013973</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L40">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::pd_t::init(dnnl_engine*)</a></td>
+              
+              <td class="coverFnHi">1186830</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1029">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::compute_diff_weights_3d(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t*) const</a></td>
+              
+              <td class="coverFnHi">1325758</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1561">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::execute_backward_weights(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(int, int)#2}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">1372074</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L449">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::pd() const</a></td>
+              
+              <td class="coverFnHi">1609076</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1537">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::execute_backward_weights(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(int, int)#1}::operator()(int, int) const</a></td>
+              
+              <td class="coverFnHi">2077415</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1282">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::reduce_and_convert_diff_weights_and_bias(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t*) const</a></td>
+              
+              <td class="coverFnHi">2077415</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L775">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::just_init_output(int, int, float*, float*)</a></td>
+              
+              <td class="coverFnHi">2077415</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L351">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::thread_info_t(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t const*, dnnl::impl::exec_ctx_t const&amp;, int)</a></td>
+              
+              <td class="coverFnHi">3644877</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L578">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::maybe_global_transpose(int, int, int, int, int, int, int, int, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">4183717</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L700">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::maybe_local_traspose(char*&amp;, char*&amp;, int, int, int, int, int, int, int, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">7465965</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L503">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::tr_ic_block_src_off(int, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">7516073</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L545">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::trans_dst_nxc(char*, char const*, int, long, int, long, int) const</a></td>
+              
+              <td class="coverFnHi">8441917</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L466">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::get_id_end(int) const</a></td>
+              
+              <td class="coverFnHi">9043283</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L469">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::get_ih_end(int) const</a></td>
+              
+              <td class="coverFnHi">9043283</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L479">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::tr_diff_dst_buf_number(int, int) const</a></td>
+              
+              <td class="coverFnHi">15907894</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L510">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::tr_diff_dst_off(int, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">15907894</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L455">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::get_inp_end(int, int, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">18086556</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1068">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::compute_diff_weights_3d(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t*) const::{lambda(int, int, int, int, int, int, int, int, int, char const*, char const*, int, int, int, bool)#1}::operator()(int, int, int, int, int, int, int, int, int, char const*, char const*, int, int, int, bool) const</a></td>
+              
+              <td class="coverFnHi">22383648</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L518">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::trans_src_nxc(char*, char const*, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">23467381</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L894">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::compute_diff_weights_2d(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t*) const::{lambda(int, int, int, int, int, int, char const*, char const*, int, int, bool)#1}::operator()(int, int, int, int, int, int, char const*, char const*, int, int, bool) const</a></td>
+              
+              <td class="coverFnHi">29535468</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L473">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::tr_src_buf_number(int, int) const</a></td>
+              
+              <td class="coverFnHi">30933346</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L494">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::tr_src_off(int, int, int, int) const</a></td>
+              
+              <td class="coverFnHi">30933346</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L459">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::get_id_start(int) const</a></td>
+              
+              <td class="coverFnHi">40470202</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L843">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::call_brgemm_kernel(dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t&amp;, int, int, void*) const</a></td>
+              
+              <td class="coverFnHi">51919122</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L462">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::get_ih_start(int) const</a></td>
+              
+              <td class="coverFnHi">70005682</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L451">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::thread_info_t::get_inp_start(int, int, int) const</a></td>
+              
+              <td class="coverFnHi">110475846</td>
+              
+              
+              
+            </tr>
+            <tr>
+              <td class="coverFn"><a href="jit_brgemm_conv_bwd_w.cpp.gcov.html#L1481">dnnl::impl::cpu::x64::brgemm_convolution_bwd_weights_t::prepare_scratchpad_data(dnnl::impl::exec_ctx_t const&amp;) const::{lambda(unsigned long, unsigned long)#1}::operator()(unsigned long, unsigned long) const</a></td>
+              
+              <td class="coverFnHi">448740986</td>
+              
+              
+              
+            </tr>
+          </table>
+          <br>
+          </center>
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

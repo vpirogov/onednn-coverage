@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/reorder/jit.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/reorder">src/gpu/intel/reorder</a> - jit.cpp<span style="font-size: 80%;"> (source / <a href="jit.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">97.0&nbsp;%</td>
+            <td class="headerCovTableEntry">132</td>
+            <td class="headerCovTableEntry">128</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;gpu/intel/reorder/jit.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &lt;utility&gt;</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;common/c_types_map.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;gpu/intel/jit/ir/kernel_info.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &quot;gpu/intel/jit/ir/post_ops.hpp&quot;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &quot;gpu/intel/jit/ir/tensor_config.hpp&quot;</span>
+<span id="L26"><span class="lineNum">      26</span>              : #include &quot;gpu/intel/reorder/jit/config.hpp&quot;</span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;gpu/intel/reorder/jit/kernel.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace dnnl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace impl {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace gpu {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace intel {</span>
+<span id="L33"><span class="lineNum">      33</span>              : namespace reorder {</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span>              : using namespace jit;</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">      176019 : status_t gen_t::pd_t::init(impl::engine_t *engine, impl::engine_t *src_engine,</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :         impl::engine_t *dst_engine) {</span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">      176019 :     const auto src_dt = src_md()-&gt;data_type;</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      176019 :     const auto dst_dt = dst_md()-&gt;data_type;</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">      176019 :     auto *intel_engine = utils::downcast&lt;intel::engine_t *&gt;(engine);</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">      176019 :     auto *device_info = intel_engine-&gt;device_info();</span></span>
+<span id="L43"><span class="lineNum">      43</span>              :     using namespace data_type;</span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">      127363 :     auto post_ops_ok = [&amp;]() {</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">      127363 :         const auto &amp;po = attr()-&gt;post_ops_;</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">      127363 :         memory_desc_t dst_md_type(*dst_md());</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">      174720 :         for (int i = 0; i &lt; po.len(); i++)</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">       47357 :             if (po.entry_[i].is_binary()) {</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">       10781 :                 dst_md_type.data_type = po.entry_[i].binary.src1_desc.data_type;</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">       10781 :                 if (!dnnl_memory_desc_equal(</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       10781 :                             &amp;dst_md_type, &amp;po.entry_[i].binary.src1_desc))</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaUNC">           0 :                     return false;</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">       10781 :                 if (po.entry_[i].is_binary_with_ternary_op()) return false;</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :             }</span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">      127363 :         return true;</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      176019 :     };</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">      127363 :     auto scales_ok = [&amp;]() {</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :         const bool src_scale_ok</span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">      127363 :                 = attr()-&gt;scales_.has_default_values(DNNL_ARG_SRC)</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">      127363 :                 || attr()-&gt;scales_.get_mask(DNNL_ARG_SRC) == 0;</span></span>
+<span id="L62"><span class="lineNum">      62</span>              :         const bool dst_scale_ok</span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">      127363 :                 = attr()-&gt;scales_.has_default_values(DNNL_ARG_DST)</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">      127363 :                 || attr()-&gt;scales_.get_mask(DNNL_ARG_DST) == 0;</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">      127363 :         return src_scale_ok &amp;&amp; dst_scale_ok;</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">      176019 :     };</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">      176019 :     VDISPATCH_REORDER(</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :             src_engine == dst_engine &amp;&amp; src_engine-&gt;kind() == engine_kind::gpu,</span>
+<span id="L69"><span class="lineNum">      69</span>              :             VERBOSE_BAD_ENGINE_KIND);</span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">      134881 :     VDISPATCH_REORDER(utils::one_of(src_dt, f32, f16, bf16, f8_e5m2, f8_e4m3,</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :                               f4_e3m0, f4_e2m1, s32, s8, u8, s4, u4, f64),</span>
+<span id="L72"><span class="lineNum">      72</span>              :             VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">      134881 :     VDISPATCH_REORDER(utils::one_of(dst_dt, f32, f16, bf16, f8_e5m2, f8_e4m3,</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :                               f4_e3m0, f4_e2m1, s32, s8, u8, s4, u4, f64),</span>
+<span id="L75"><span class="lineNum">      75</span>              :             VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">      134881 :     VDISPATCH_REORDER(IMPLICATION(src_dt == f64 || dst_dt == f64,</span></span>
+<span id="L77"><span class="lineNum">      77</span>              :                               device_info-&gt;has_native(f64)),</span>
+<span id="L78"><span class="lineNum">      78</span>              :             VERBOSE_UNSUPPORTED_DT_CFG);</span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span>              :     using sm = dnnl_primitive_attr::skip_mask_t;</span>
+<span id="L81"><span class="lineNum">      81</span>              :     auto skip_mask</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">      134717 :             = sm::post_ops | sm::zero_points | sm::scales | sm::rounding_mode;</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">      134717 :     VDISPATCH_REORDER(</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :             attr()-&gt;has_default_values(skip_mask), VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">      127387 :     VDISPATCH_REORDER(extra_ok(true), VERBOSE_UNSUPPORTED_MD_FLAG, &quot;extra_ok&quot;);</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">      127363 :     VDISPATCH_REORDER(post_ops_ok(), VERBOSE_UNSUPPORTED_POSTOP);</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">      127363 :     VDISPATCH_REORDER(scales_ok(), VERBOSE_UNSUPPORTED_SCALES_CFG);</span></span>
+<span id="L88"><span class="lineNum">      88</span>              : </span>
+<span id="L89"><span class="lineNum">      89</span>              :     // Create `zp_cfg` object after all relevant zp checks passing to avoid</span>
+<span id="L90"><span class="lineNum">      90</span>              :     // potential issues with the generator for unsupported features.</span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC">       98402 :     zero_points_config_t zp_cfg(this);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       98402 :     auto zps_ok = [&amp;]() {</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">        1259 :         return (!zp_cfg.do_src_compensation || zp_cfg.is_common_src_zero_point)</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">      100827 :                 &amp;&amp; (!zp_cfg.do_dst_compensation</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC">       99568 :                         || zp_cfg.is_common_dst_zero_point);</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaGNC">       98402 :     };</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       98402 :     VDISPATCH_REORDER(zps_ok(), VERBOSE_UNSUPPORTED_ZP_CFG);</span></span>
+<span id="L98"><span class="lineNum">      98</span>              : </span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">       98402 :     memory_desc_wrapper src_mdw {src_md()};</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaGNC">       98402 :     memory_desc_wrapper dst_mdw {dst_md()};</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       98402 :     VDISPATCH_REORDER(!src_mdw.has_runtime_dims_or_strides(),</span></span>
+<span id="L102"><span class="lineNum">     102</span>              :             VERBOSE_RUNTIMEDIM_UNSUPPORTED);</span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">       93374 :     VDISPATCH_REORDER(src_mdw.ndims() == dst_mdw.ndims(),</span></span>
+<span id="L104"><span class="lineNum">     104</span>              :             VERBOSE_INCONSISTENT_MDS, &quot;src&quot;, &quot;dst&quot;);</span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">       93374 :     int ndims = src_mdw.ndims();</span></span>
+<span id="L106"><span class="lineNum">     106</span>              : </span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaGNC">      186748 :     layout_t src_layout = make_layout(*src_md());</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">      186748 :     layout_t dst_layout = make_layout(*dst_md());</span></span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       93374 :     VDISPATCH_REORDER(!(src_layout.elems() == 0 || dst_layout.elems() == 0),</span></span>
+<span id="L111"><span class="lineNum">     111</span>              :             VERBOSE_EMPTY_TENSOR, &quot;src_layout || dst_layout&quot;);</span>
+<span id="L112"><span class="lineNum">     112</span>              : </span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">      183920 :     std::vector&lt;dim_t&gt; dims(ndims);</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">      472226 :     for (int i = 0; i &lt; ndims; ++i)</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">      380266 :         dims[i] = std::max(src_layout.elems(i), dst_layout.elems(i));</span></span>
+<span id="L116"><span class="lineNum">     116</span>              : </span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">      183788 :     auto check_layout = [&amp;](const layout_t &amp;l) {</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">     1026132 :         for (auto &amp;b : l.blocks()) {</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">      842588 :             if (l.is_outermost(b)) {</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">      759816 :                 dim_t inner = l.elems(b.idx) / b.size;</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">      759816 :                 if (dims[b.idx] % inner) return false;</span></span>
+<span id="L122"><span class="lineNum">     122</span>              :             }</span>
+<span id="L123"><span class="lineNum">     123</span>              :         }</span>
+<span id="L124"><span class="lineNum">     124</span> <span class="tlaGNC">      183544 :         return true;</span></span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">       91960 :     };</span></span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       91960 :     VDISPATCH_REORDER(</span></span>
+<span id="L128"><span class="lineNum">     128</span>              :             check_layout(src_layout), VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;src&quot;);</span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       91828 :     VDISPATCH_REORDER(</span></span>
+<span id="L130"><span class="lineNum">     130</span>              :             check_layout(dst_layout), VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;dst&quot;);</span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       91716 :     VDISPATCH_REORDER(intel_engine-&gt;mayiuse_ngen_kernels(),</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :             VERBOSE_UNSUPPORTED_DEVICE_FEATURE, &quot;ngen_kernels&quot;);</span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span>              :     auto *gpu_attr</span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       91716 :             = utils::downcast&lt;gpu_primitive_attr_t *&gt;(attr()-&gt;gpu_attr_.get());</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       91716 :     dsl::hw_t hw(make_ir_hw(engine));</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">      183432 :     dsl::kernel::options_t options(hw);</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaGNC">       91716 :     options.set_regs(prefer_large_grf(hw, gpu_attr) ? 256 : 128);</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC">       91716 :     options.set_simd(16);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       91716 :     cfg = std::make_shared&lt;config_t&gt;(options, src_layout, dst_layout);</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">       91716 :     cfg-&gt;set_zp_cfg(zp_cfg);</span></span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">      183420 :     auto byte_aligned = [&amp;](const layout_t &amp;layout) {</span></span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC">      366840 :         auto dims = cfg-&gt;tiles().front().values();</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      183420 :         dim_t contiguous_inner_elems = 1;</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">      183420 :         dim_t innermost_elems = 1;</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      183420 :         const auto packing = layout.type().packing();</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      183420 :         if (packing == 1) return true;</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">        4874 :         for (auto &amp;b : layout.blocks()) {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">        4850 :             if (b.size == 1) continue;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">        4850 :             if ((dim_t)b.stride != contiguous_inner_elems) break;</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">        4850 :             if (innermost_elems == 1) innermost_elems = b.size;</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">        4850 :             if (b.size &gt; dims[b.idx]) {</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">        2301 :                 if (b.size % dims[b.idx] == 0)</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">        2301 :                     contiguous_inner_elems *= dims[b.idx];</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">        2301 :                 break;</span></span>
+<span id="L157"><span class="lineNum">     157</span>              :             }</span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">        2549 :             contiguous_inner_elems *= b.size;</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">        2549 :             dims[b.idx] /= b.size;</span></span>
+<span id="L160"><span class="lineNum">     160</span>              :         }</span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">        2325 :         return innermost_elems % packing == 0</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">        2325 :                 || contiguous_inner_elems % (4 * packing) == 0;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       91716 :     };</span></span>
+<span id="L164"><span class="lineNum">     164</span>              : </span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       91716 :     VDISPATCH_REORDER(byte_aligned(cfg-&gt;src_layout().user()),</span></span>
+<span id="L166"><span class="lineNum">     166</span>              :             VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;src&quot;);</span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       91704 :     VDISPATCH_REORDER(byte_aligned(cfg-&gt;dst_layout().user()),</span></span>
+<span id="L168"><span class="lineNum">     168</span>              :             VERBOSE_UNSUPPORTED_TENSOR_LAYOUT, &quot;dst&quot;);</span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       91704 :     VDISPATCH_REORDER_SC(</span></span>
+<span id="L170"><span class="lineNum">     170</span>              :             init_kernel_info(), &quot;kernel initialization unsuccessful&quot;);</span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       91704 :     VDISPATCH_REORDER_SC(maybe_create_zp_precompute_conv_pd(dst_engine),</span></span>
+<span id="L172"><span class="lineNum">     172</span>              :             &quot;failed to create nested zp precompute convolution&quot;);</span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       91704 :     return status::success;</span></span>
+<span id="L174"><span class="lineNum">     174</span>              : }</span>
+<span id="L175"><span class="lineNum">     175</span>              : </span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       91704 : status_t gen_t::pd_t::init_kernel_info() {</span></span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">      183408 :     tensor_config_t tensor_cfg;</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">      183408 :     tensor_cfg.add_tensor(&quot;src&quot;, DNNL_ARG_SRC, true, false,</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">      183408 :             cfg-&gt;src_layout().user(), cfg-&gt;src_layout().user());</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">      183408 :     tensor_cfg.add_tensor(&quot;dst&quot;, DNNL_ARG_DST, true, true,</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">      183408 :             cfg-&gt;dst_layout().user(), cfg-&gt;dst_layout().user());</span></span>
+<span id="L182"><span class="lineNum">     182</span>              : </span>
+<span id="L183"><span class="lineNum">     183</span>              :     // TODO: set input/output channels here to enable per-channel ZPs/scales</span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       91704 :     init_extra_tensors(cfg-&gt;zp_cfg(), *attr(), nullptr, *dst_md(), /*ic=*/1,</span></span>
+<span id="L185"><span class="lineNum">     185</span>              :             /*oc=*/1, tensor_cfg);</span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC">       91704 :     kernel_info = std::make_shared&lt;kernel_info_t&gt;();</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">       91704 :     auto nd_range = cfg-&gt;nd_range();</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       91704 :     auto global_range = nd_range.global_range();</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">       91704 :     constexpr int max = std::numeric_limits&lt;int&gt;::max();</span></span>
+<span id="L191"><span class="lineNum">     191</span>              :     // This case *probably* overflowed in int32 precision.</span>
+<span id="L192"><span class="lineNum">     192</span>              :     // Skip until we have a proper fix.</span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">       91704 :     if (global_range[0] &gt; max || global_range[1] &gt; max || global_range[2] &gt; max)</span></span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaUNC">           0 :         return status::unimplemented;</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       91704 :     kernel_info-&gt;set_nd_range(nd_range);</span></span>
+<span id="L196"><span class="lineNum">     196</span>              : </span>
+<span id="L197"><span class="lineNum">     197</span>              :     // Initialize kernel arguments.</span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">      295719 :     for (auto &amp;t : tensor_cfg.tensors()) {</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">      204015 :         gpu_assert(!t.needs_reorder);</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">      204015 :         gpu_assert(!t.needs_zero_out);</span></span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">      204015 :         if (t.arg_key == DNNL_ARG_UNDEF) {</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :             gpu_error_not_expected();</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :             continue;</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :         }</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">      408030 :         kernel_info-&gt;register_user_arg(make_buffer(t.name), t.arg_key,</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      204015 :                 /*is_input=*/t.is_input &amp;&amp; !t.is_output);</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :     }</span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">       91704 :     return status::success;</span></span>
+<span id="L210"><span class="lineNum">     210</span>              : }</span>
+<span id="L211"><span class="lineNum">     211</span>              : </span>
+<span id="L212"><span class="lineNum">     212</span> <span class="tlaGNC">      146498 : status_t gen_t::init(impl::engine_t *engine) {</span></span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">      146498 :     CHECK(pd()-&gt;maybe_create_zp_precompute_conv(</span></span>
+<span id="L214"><span class="lineNum">     214</span>              :             zp_precomp_conv_, engine, this));</span>
+<span id="L215"><span class="lineNum">     215</span>              : </span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">      146498 :     auto &amp;cfg = *pd()-&gt;cfg;</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">      146498 :     auto &amp;info = *pd()-&gt;kernel_info;</span></span>
+<span id="L218"><span class="lineNum">     218</span>              : </span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">      146498 :     kernel_ = make_kernel&lt;kernel_t&gt;(</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">      146498 :             this, engine, cfg, &quot;gen_reorder&quot;, info, pd());</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">      146498 :     if (!kernel_) return status::runtime_error;</span></span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">      146498 :     return status::success;</span></span>
+<span id="L223"><span class="lineNum">     223</span>              : }</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">      238584 : status_t gen_t::execute(const exec_ctx_t &amp;ctx) const {</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">      238584 :     auto &amp;info = *pd()-&gt;kernel_info;</span></span>
+<span id="L227"><span class="lineNum">     227</span>              : </span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">      477168 :     std::vector&lt;memory_storage_wrapper_t&gt; storage_list;</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">      238584 :     info.init_memory_storage_list(storage_list, ctx, this);</span></span>
+<span id="L230"><span class="lineNum">     230</span>              : </span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaGNC">      477168 :     compute::kernel_arg_list_t arg_list;</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaGNC">      238584 :     info.set_args(arg_list, storage_list);</span></span>
+<span id="L233"><span class="lineNum">     233</span>              : </span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">      238584 :     CHECK(parallel_for(ctx, info.nd_range(), kernel_, arg_list));</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">      238584 :     CHECK(pd()-&gt;maybe_exec_zp_precompute_conv(ctx, zp_precomp_conv_));</span></span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">      238584 :     return status::success;</span></span>
+<span id="L237"><span class="lineNum">     237</span>              : }</span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span>              : } // namespace reorder</span>
+<span id="L240"><span class="lineNum">     240</span>              : } // namespace intel</span>
+<span id="L241"><span class="lineNum">     241</span>              : } // namespace gpu</span>
+<span id="L242"><span class="lineNum">     242</span>              : } // namespace impl</span>
+<span id="L243"><span class="lineNum">     243</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

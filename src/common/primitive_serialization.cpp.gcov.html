@@ -1,0 +1,690 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/primitive_serialization.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - primitive_serialization.cpp<span style="font-size: 80%;"> (source / <a href="primitive_serialization.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">63.9&nbsp;%</td>
+            <td class="headerCovTableEntry">429</td>
+            <td class="headerCovTableEntry">274</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">80.8&nbsp;%</td>
+            <td class="headerCovTableEntry">26</td>
+            <td class="headerCovTableEntry">21</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2021 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;common/primitive_serialization.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : #include &quot;common/type_helpers.hpp&quot;</span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : </span>
+<span id="L21"><span class="lineNum">      21</span>              : namespace dnnl {</span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace impl {</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span> <span class="tlaGNC">      945188 : status_t serialize_desc(</span></span>
+<span id="L25"><span class="lineNum">      25</span>              :         serialization_stream_t &amp;sstream, const op_desc_t *op_desc) {</span>
+<span id="L26"><span class="lineNum">      26</span>              : #define CASE(pkind) \</span>
+<span id="L27"><span class="lineNum">      27</span>              :     case primitive_kind::pkind: \</span>
+<span id="L28"><span class="lineNum">      28</span>              :         serialize(sstream, *(const pkind##_desc_t *)op_desc); \</span>
+<span id="L29"><span class="lineNum">      29</span>              :         break;</span>
+<span id="L30"><span class="lineNum">      30</span>              : </span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">      945188 :     switch ((int)op_desc-&gt;primitive_kind) {</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">       26719 :         CASE(batch_normalization)</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">      100308 :         CASE(binary)</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">       28256 :         CASE(concat)</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">        1645 :         CASE(convolution)</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">      161528 :         CASE(deconvolution)</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       89957 :         CASE(eltwise)</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaUNC">           0 :         CASE(gemm)</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaUNC">           0 :         CASE(group_normalization)</span></span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">      163116 :         CASE(inner_product)</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">       17954 :         CASE(layer_normalization)</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">        3110 :         CASE(lrn)</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         583 :         CASE(matmul)</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">       63195 :         CASE(pooling)</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">       44176 :         CASE(prelu)</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">       94688 :         CASE(reduction)</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">       69593 :         CASE(reorder)</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">       49504 :         CASE(resampling)</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :         CASE(rnn)</span></span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaUNC">           0 :         CASE(sdpa)</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">         940 :         CASE(shuffle)</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">       26444 :         CASE(softmax)</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">        3472 :         CASE(sum)</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaUNC">           0 :         default: return status::invalid_arguments;</span></span>
+<span id="L55"><span class="lineNum">      55</span>              :     }</span>
+<span id="L56"><span class="lineNum">      56</span>              : #undef CASE</span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">      945188 :     return status::success;</span></span>
+<span id="L58"><span class="lineNum">      58</span>              : }</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">     5272496 : void serialize(serialization_stream_t &amp;sstream, const memory_desc_t &amp;md) {</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">     5272496 :     sstream.append(md.ndims);</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">     5272496 :     sstream.append_array(md.ndims, md.dims);</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">     5272496 :     sstream.append(md.data_type);</span></span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">     5272496 :     sstream.append_array(md.ndims, md.padded_dims);</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">     5272496 :     sstream.append_array(md.ndims, md.padded_offsets);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">     5272496 :     sstream.append(md.offset0);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">     5272496 :     sstream.append(md.format_kind);</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :     // format desc</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">     5272496 :     switch ((int)md.format_kind) {</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">     3982473 :         case format_kind::sparse:</span></span>
+<span id="L71"><span class="lineNum">      71</span>              :         case format_kind::undef:</span>
+<span id="L72"><span class="lineNum">      72</span>              :         case format_kind::any:</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">     3982473 :         case format_kind::host_scalar: break; // no additional data to serialize</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">     1290023 :         case format_kind::blocked:</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">     1290023 :             sstream.append_array(md.ndims, md.format_desc.blocking.strides);</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">     1290023 :             sstream.append(md.format_desc.blocking.inner_nblks);</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">     1290023 :             sstream.append_array(md.format_desc.blocking.inner_nblks,</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">     1290023 :                     md.format_desc.blocking.inner_blks);</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">     1290023 :             sstream.append_array(md.format_desc.blocking.inner_nblks,</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     1290023 :                     md.format_desc.blocking.inner_idxs);</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">     1290023 :             break;</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaUNC">           0 :         case format_kind::wino:</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.wino_format);</span></span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.r);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.alpha);</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.ic);</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.oc);</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.ic_block);</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.oc_block);</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.ic2_block);</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.oc2_block);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.adj_scale);</span></span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.wino_desc.size);</span></span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaUNC">           0 :         case format_kind::cublaslt_blocked:</span></span>
+<span id="L96"><span class="lineNum">      96</span> <span class="tlaUNC">           0 :             sstream.append(</span></span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaUNC">           0 :                     md.format_desc.cublaslt_blocked_desc.cublaslt_format);</span></span>
+<span id="L98"><span class="lineNum">      98</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.cublaslt_blocked_desc.size);</span></span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :         case format_kind::rnn_packed:</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.rnn_packed_desc.format);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.rnn_packed_desc.n_parts);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.rnn_packed_desc.n);</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.rnn_packed_desc.ldb);</span></span>
+<span id="L105"><span class="lineNum">     105</span>              :             {</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaUNC">           0 :                 int n_parts = md.format_desc.rnn_packed_desc.n_parts;</span></span>
+<span id="L107"><span class="lineNum">     107</span> <span class="tlaUNC">           0 :                 sstream.append_array(</span></span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaUNC">           0 :                         n_parts, md.format_desc.rnn_packed_desc.parts);</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaUNC">           0 :                 sstream.append_array(</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaUNC">           0 :                         n_parts, md.format_desc.rnn_packed_desc.part_pack_size);</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaUNC">           0 :                 sstream.append_array(</span></span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaUNC">           0 :                         n_parts, md.format_desc.rnn_packed_desc.pack_part);</span></span>
+<span id="L113"><span class="lineNum">     113</span>              :             }</span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.rnn_packed_desc.offset_compensation);</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaUNC">           0 :             sstream.append(md.format_desc.rnn_packed_desc.size);</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaUNC">           0 :             break;</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaUNC">           0 :         default: assert(!&quot;unknown format_kind&quot;);</span></span>
+<span id="L118"><span class="lineNum">     118</span>              :     }</span>
+<span id="L119"><span class="lineNum">     119</span>              : </span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">     5272496 :     if (md.extra.flags != dnnl_memory_extra_flag_none) {</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaUNC">           0 :         sstream.append(md.extra.flags);</span></span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaUNC">           0 :         if (md.extra.flags</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaUNC">           0 :                 &amp; (dnnl_memory_extra_flag_compensation_conv_s8s8</span></span>
+<span id="L124"><span class="lineNum">     124</span>              :                         | dnnl_memory_extra_flag_rnn_u8s8_compensation)) {</span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaUNC">           0 :             sstream.append(md.extra.compensation_mask);</span></span>
+<span id="L126"><span class="lineNum">     126</span>              :         }</span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaUNC">           0 :         if (md.extra.flags &amp; dnnl_memory_extra_flag_scale_adjust) {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaUNC">           0 :             sstream.append(md.extra.scale_adjust);</span></span>
+<span id="L129"><span class="lineNum">     129</span>              :         }</span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaUNC">           0 :         if (md.extra.flags</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaUNC">           0 :                 &amp; dnnl_memory_extra_flag_compensation_conv_asymmetric_src) {</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaUNC">           0 :             sstream.append(md.extra.asymm_compensation_mask);</span></span>
+<span id="L133"><span class="lineNum">     133</span>              :         }</span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaUNC">           0 :         if (md.extra.flags</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaUNC">           0 :                 &amp; dnnl_memory_extra_flag_compensation_gpu_conv_asymmetric_src) {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaUNC">           0 :             sstream.append_array(3, md.extra.idhw);</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaUNC">           0 :             sstream.append_array(3, md.extra.odhw);</span></span>
+<span id="L138"><span class="lineNum">     138</span> <span class="tlaUNC">           0 :             sstream.append_array(3, md.extra.pdhw);</span></span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :             sstream.append_array(3, md.extra.ddhw);</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :             sstream.append(md.extra.dst_size);</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :         }</span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span> <span class="tlaGNC">     5272496 : }</span></span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      945188 : void serialize(serialization_stream_t &amp;sstream, const post_ops_t &amp;post_ops) {</span></span>
+<span id="L146"><span class="lineNum">     146</span>              :     // post_ops: entry[:]</span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">     1625022 :     for (int i = 0; i &lt; post_ops.len(); i++) {</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      679834 :         const auto &amp;entry = post_ops.entry_[i];</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      679834 :         switch (entry.kind) {</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">      189062 :             case primitive_kind::eltwise:</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">      189062 :                 sstream.append(entry.eltwise.alg);</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC">      189062 :                 sstream.append(entry.eltwise.scale);</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaGNC">      189062 :                 sstream.append(entry.eltwise.alpha);</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">      189062 :                 sstream.append(entry.eltwise.beta);</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC">      189062 :                 break;</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">      186938 :             case primitive_kind::sum:</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">      186938 :                 sstream.append(entry.sum.scale);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">      186938 :                 sstream.append(entry.sum.zero_point);</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">      186938 :                 sstream.append(entry.sum.dt);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">      186938 :                 break;</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaUNC">           0 :             case primitive_kind::convolution:</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaUNC">           0 :                 sstream.append(entry.depthwise_conv.kernel);</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaUNC">           0 :                 sstream.append(entry.depthwise_conv.stride);</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaUNC">           0 :                 sstream.append(entry.depthwise_conv.padding);</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaUNC">           0 :                 sstream.append(entry.depthwise_conv.wei_dt);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaUNC">           0 :                 sstream.append(entry.depthwise_conv.bias_dt);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaUNC">           0 :                 sstream.append(entry.depthwise_conv.dst_dt);</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :                 break;</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">      283032 :             case primitive_kind::binary:</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">      283032 :                 sstream.append(entry.binary.alg);</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">      283032 :                 serialize(sstream, entry.binary.user_src1_desc);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">      283032 :                 break;</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       20802 :             case primitive_kind::prelu: sstream.append(entry.prelu.mask); break;</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaUNC">           0 :             default: assert(!&quot;unknown post_op&quot;);</span></span>
+<span id="L175"><span class="lineNum">     175</span>              :         }</span>
+<span id="L176"><span class="lineNum">     176</span>              :     }</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC">      945188 : }</span></span>
+<span id="L178"><span class="lineNum">     178</span>              : </span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">      945188 : void serialize(serialization_stream_t &amp;sstream, const primitive_attr_t &amp;attr) {</span></span>
+<span id="L180"><span class="lineNum">     180</span>              :     // scratchpad_mode</span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">      945188 :     sstream.append(attr.scratchpad_mode_);</span></span>
+<span id="L182"><span class="lineNum">     182</span>              :     // fpmath_mode</span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">      945188 :     sstream.append(attr.fpmath_.mode_);</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">      945188 :     sstream.append(attr.fpmath_.apply_to_int_);</span></span>
+<span id="L185"><span class="lineNum">     185</span>              :     // deterministic</span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">      945188 :     sstream.append(attr.deterministic_);</span></span>
+<span id="L187"><span class="lineNum">     187</span>              :     // acc_mode</span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">      945188 :     sstream.append(attr.acc_mode_);</span></span>
+<span id="L189"><span class="lineNum">     189</span>              : </span>
+<span id="L190"><span class="lineNum">     190</span>              :     // scales</span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">      945188 :     if (!attr.scales_.has_default_values()) {</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">      234034 :         sstream.append('s');</span></span>
+<span id="L193"><span class="lineNum">     193</span> <span class="tlaGNC">      234034 :         attr.scales_.serialize(sstream);</span></span>
+<span id="L194"><span class="lineNum">     194</span>              :     }</span>
+<span id="L195"><span class="lineNum">     195</span>              :     // zero_points</span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">      945188 :     if (!attr.zero_points_.has_default_values()) {</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       26611 :         sstream.append('z');</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       26611 :         attr.zero_points_.serialize(sstream);</span></span>
+<span id="L199"><span class="lineNum">     199</span>              :     }</span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">      945188 :     if (!attr.precomputed_reductions_.has_default_values()) {</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0 :         sstream.append('p');</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :         attr.precomputed_reductions_.serialize(sstream);</span></span>
+<span id="L204"><span class="lineNum">     204</span>              :     }</span>
+<span id="L205"><span class="lineNum">     205</span>              : </span>
+<span id="L206"><span class="lineNum">     206</span>              :     // Rounding modes</span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">      945188 :     if (!attr.rounding_mode_.has_default_values()) sstream.append('r');</span></span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">      945196 :     for (const auto &amp;e : attr.rounding_mode_.rounding_modes_map_) {</span></span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">           8 :         if (!attr.rounding_mode_.has_default_values(e.first)) {</span></span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">           8 :             sstream.append(e.first);</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">           8 :             sstream.append(e.second);</span></span>
+<span id="L212"><span class="lineNum">     212</span>              :         }</span>
+<span id="L213"><span class="lineNum">     213</span>              :     }</span>
+<span id="L214"><span class="lineNum">     214</span>              : </span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">      945188 :     if (!attr.dropout_.has_default_values()) {</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">         416 :         sstream.append('d');</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">         416 :         attr.dropout_.serialize(sstream);</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :     }</span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">      945188 :     serialize(sstream, attr.post_ops_);</span></span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span>              :     // rnn_data_qparams: scale, shift</span>
+<span id="L223"><span class="lineNum">     223</span> <span class="tlaGNC">      945188 :     sstream.append(attr.rnn_data_qparams_.scale_);</span></span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">      945188 :     sstream.append(attr.rnn_data_qparams_.shift_);</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">      945188 :     if (!attr.rnn_weights_qparams_.has_default_values()) {</span></span>
+<span id="L226"><span class="lineNum">     226</span>              :         // rnn_weights_qparams: mask</span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0 :         sstream.append(attr.rnn_weights_qparams_.mask_);</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :         // rnn_weights_qparams: count</span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaUNC">           0 :         sstream.append(attr.rnn_weights_qparams_.count_);</span></span>
+<span id="L230"><span class="lineNum">     230</span>              :         // rnn_weights_qparams: scales[:]</span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaUNC">           0 :         sstream.append_array(attr.rnn_weights_qparams_.count_,</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaUNC">           0 :                 attr.rnn_weights_qparams_.scales_);</span></span>
+<span id="L233"><span class="lineNum">     233</span>              :     }</span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaGNC">      945188 :     if (attr.gpu_attr_) {</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaUNC">           0 :         attr.gpu_attr_-&gt;serialize(sstream);</span></span>
+<span id="L236"><span class="lineNum">     236</span>              :     } else {</span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">      945188 :         int zero = 0;</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">      945188 :         sstream.append(zero);</span></span>
+<span id="L239"><span class="lineNum">     239</span>              :     }</span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">      945188 : }</span></span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">       28256 : void serialize(serialization_stream_t &amp;sstream, const concat_desc_t &amp;desc) {</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :     // Kinds</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaGNC">       28256 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L245"><span class="lineNum">     245</span>              :     // Memory descriptors</span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">       28256 :     serialize(sstream, *desc.dst_md);</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :     // N</span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaGNC">       28256 :     sstream.append(desc.n);</span></span>
+<span id="L249"><span class="lineNum">     249</span>              :     // Concat dimension</span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaGNC">       28256 :     sstream.append(desc.concat_dimension);</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :     // Array of mds</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">      108103 :     for (int i = 0; i &lt; desc.n; i++)</span></span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaGNC">       79847 :         serialize(sstream, *desc.src_mds[i]);</span></span>
+<span id="L254"><span class="lineNum">     254</span> <span class="tlaGNC">       28256 : }</span></span>
+<span id="L255"><span class="lineNum">     255</span>              : </span>
+<span id="L256"><span class="lineNum">     256</span> <span class="tlaGNC">       26719 : void serialize(serialization_stream_t &amp;sstream,</span></span>
+<span id="L257"><span class="lineNum">     257</span>              :         const batch_normalization_desc_t &amp;desc) {</span>
+<span id="L258"><span class="lineNum">     258</span>              :     // Kinds</span>
+<span id="L259"><span class="lineNum">     259</span> <span class="tlaGNC">       26719 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L260"><span class="lineNum">     260</span> <span class="tlaGNC">       26719 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L261"><span class="lineNum">     261</span>              :     // Memory descriptors</span>
+<span id="L262"><span class="lineNum">     262</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L263"><span class="lineNum">     263</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L265"><span class="lineNum">     265</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.scaleshift_desc);</span></span>
+<span id="L267"><span class="lineNum">     267</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.diff_scaleshift_desc);</span></span>
+<span id="L268"><span class="lineNum">     268</span> <span class="tlaGNC">       26719 :     serialize(sstream, desc.stat_desc);</span></span>
+<span id="L269"><span class="lineNum">     269</span>              :     // Epsilon</span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">       26719 :     sstream.append(desc.batch_norm_epsilon);</span></span>
+<span id="L271"><span class="lineNum">     271</span>              :     // Flags</span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">       26719 :     sstream.append(desc.flags);</span></span>
+<span id="L273"><span class="lineNum">     273</span> <span class="tlaGNC">       26719 : }</span></span>
+<span id="L274"><span class="lineNum">     274</span>              : </span>
+<span id="L275"><span class="lineNum">     275</span> <span class="tlaGNC">      100308 : void serialize(serialization_stream_t &amp;sstream, const binary_desc_t &amp;desc) {</span></span>
+<span id="L276"><span class="lineNum">     276</span>              :     // Kinds</span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">      100308 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">      100308 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L279"><span class="lineNum">     279</span>              :     // Memory descriptors</span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">      100308 :     serialize(sstream, desc.src_desc[0]);</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">      100308 :     serialize(sstream, desc.src_desc[1]);</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">      100308 :     serialize(sstream, desc.src_desc[2]);</span></span>
+<span id="L283"><span class="lineNum">     283</span> <span class="tlaGNC">      100308 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L284"><span class="lineNum">     284</span> <span class="tlaGNC">      100308 : }</span></span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span>              : // (De-)Convolution</span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">      163173 : void serialize(</span></span>
+<span id="L288"><span class="lineNum">     288</span>              :         serialization_stream_t &amp;sstream, const convolution_desc_t &amp;desc) {</span>
+<span id="L289"><span class="lineNum">     289</span>              :     // Kinds</span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">      163173 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">      163173 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">      163173 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L293"><span class="lineNum">     293</span>              :     // Memory descriptors</span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L295"><span class="lineNum">     295</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.weights_desc);</span></span>
+<span id="L297"><span class="lineNum">     297</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.diff_weights_desc);</span></span>
+<span id="L298"><span class="lineNum">     298</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.bias_desc);</span></span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.diff_bias_desc);</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L301"><span class="lineNum">     301</span> <span class="tlaGNC">      163173 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L302"><span class="lineNum">     302</span>              :     // Strides, dilates, padding</span>
+<span id="L303"><span class="lineNum">     303</span> <span class="tlaGNC">      163173 :     sstream.append_array(DNNL_MAX_NDIMS, desc.strides);</span></span>
+<span id="L304"><span class="lineNum">     304</span> <span class="tlaGNC">      163173 :     sstream.append_array(DNNL_MAX_NDIMS, desc.dilates);</span></span>
+<span id="L305"><span class="lineNum">     305</span> <span class="tlaGNC">      163173 :     sstream.append_array(DNNL_MAX_NDIMS, desc.padding[0]);</span></span>
+<span id="L306"><span class="lineNum">     306</span> <span class="tlaGNC">      163173 :     sstream.append_array(DNNL_MAX_NDIMS, desc.padding[1]);</span></span>
+<span id="L307"><span class="lineNum">     307</span>              :     // Accumulator type</span>
+<span id="L308"><span class="lineNum">     308</span> <span class="tlaGNC">      163173 :     sstream.append(desc.accum_data_type);</span></span>
+<span id="L309"><span class="lineNum">     309</span>              :     // Internal member</span>
+<span id="L310"><span class="lineNum">     310</span> <span class="tlaGNC">      163173 :     sstream.append(desc.use_inversion);</span></span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">      163173 : }</span></span>
+<span id="L312"><span class="lineNum">     312</span>              : </span>
+<span id="L313"><span class="lineNum">     313</span>              : // Eltwise</span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       89957 : void serialize(serialization_stream_t &amp;sstream, const eltwise_desc_t &amp;desc) {</span></span>
+<span id="L315"><span class="lineNum">     315</span>              :     // Kinds</span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">       89957 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">       89957 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">       89957 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L319"><span class="lineNum">     319</span>              :     // Memory descriptors</span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">       89957 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">       89957 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">       89957 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L323"><span class="lineNum">     323</span> <span class="tlaGNC">       89957 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L324"><span class="lineNum">     324</span>              :     // Alpha, beta</span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">       89957 :     sstream.append(desc.alpha);</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">       89957 :     sstream.append(desc.beta);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">       89957 : }</span></span>
+<span id="L328"><span class="lineNum">     328</span>              : </span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaUNC">           0 : void serialize(serialization_stream_t &amp;sstream, const gemm_desc_t &amp;desc) {</span></span>
+<span id="L330"><span class="lineNum">     330</span>              :     // Kind</span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaUNC">           0 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.a_desc);</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.b_desc);</span></span>
+<span id="L334"><span class="lineNum">     334</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.c_desc);</span></span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.bias_desc);</span></span>
+<span id="L336"><span class="lineNum">     336</span>              :     // Accumulator type</span>
+<span id="L337"><span class="lineNum">     337</span> <span class="tlaUNC">           0 :     sstream.append(desc.acc_type);</span></span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaUNC">           0 :     sstream.append(desc.sum_ab);</span></span>
+<span id="L339"><span class="lineNum">     339</span> <span class="tlaUNC">           0 :     sstream.append(desc.sum_ab_type);</span></span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaUNC">           0 : void serialize(serialization_stream_t &amp;sstream,</span></span>
+<span id="L343"><span class="lineNum">     343</span>              :         const group_normalization_desc_t &amp;desc) {</span>
+<span id="L344"><span class="lineNum">     344</span>              :     // Kinds</span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaUNC">           0 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaUNC">           0 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L347"><span class="lineNum">     347</span>              :     // Memory descriptors</span>
+<span id="L348"><span class="lineNum">     348</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L349"><span class="lineNum">     349</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L350"><span class="lineNum">     350</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L352"><span class="lineNum">     352</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.scaleshift_desc);</span></span>
+<span id="L353"><span class="lineNum">     353</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_scaleshift_desc);</span></span>
+<span id="L354"><span class="lineNum">     354</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.stat_desc);</span></span>
+<span id="L355"><span class="lineNum">     355</span>              :     // Groups</span>
+<span id="L356"><span class="lineNum">     356</span> <span class="tlaUNC">           0 :     sstream.append(desc.groups);</span></span>
+<span id="L357"><span class="lineNum">     357</span>              :     // Epsilon</span>
+<span id="L358"><span class="lineNum">     358</span> <span class="tlaUNC">           0 :     sstream.append(desc.group_norm_epsilon);</span></span>
+<span id="L359"><span class="lineNum">     359</span>              :     // Flags</span>
+<span id="L360"><span class="lineNum">     360</span> <span class="tlaUNC">           0 :     sstream.append(desc.flags);</span></span>
+<span id="L361"><span class="lineNum">     361</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L362"><span class="lineNum">     362</span>              : </span>
+<span id="L363"><span class="lineNum">     363</span> <span class="tlaGNC">      163116 : void serialize(</span></span>
+<span id="L364"><span class="lineNum">     364</span>              :         serialization_stream_t &amp;sstream, const inner_product_desc_t &amp;desc) {</span>
+<span id="L365"><span class="lineNum">     365</span>              :     // Kinds</span>
+<span id="L366"><span class="lineNum">     366</span> <span class="tlaGNC">      163116 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L367"><span class="lineNum">     367</span> <span class="tlaGNC">      163116 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L368"><span class="lineNum">     368</span>              :     // Memory descriptors</span>
+<span id="L369"><span class="lineNum">     369</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L370"><span class="lineNum">     370</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L371"><span class="lineNum">     371</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.weights_desc);</span></span>
+<span id="L372"><span class="lineNum">     372</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.diff_weights_desc);</span></span>
+<span id="L373"><span class="lineNum">     373</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.bias_desc);</span></span>
+<span id="L374"><span class="lineNum">     374</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.diff_bias_desc);</span></span>
+<span id="L375"><span class="lineNum">     375</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L376"><span class="lineNum">     376</span> <span class="tlaGNC">      163116 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L377"><span class="lineNum">     377</span>              :     // Accumulator type</span>
+<span id="L378"><span class="lineNum">     378</span> <span class="tlaGNC">      163116 :     sstream.append(desc.accum_data_type);</span></span>
+<span id="L379"><span class="lineNum">     379</span> <span class="tlaGNC">      163116 : }</span></span>
+<span id="L380"><span class="lineNum">     380</span>              : </span>
+<span id="L381"><span class="lineNum">     381</span> <span class="tlaGNC">       17954 : void serialize(serialization_stream_t &amp;sstream,</span></span>
+<span id="L382"><span class="lineNum">     382</span>              :         const layer_normalization_desc_t &amp;desc) {</span>
+<span id="L383"><span class="lineNum">     383</span>              :     // Kinds</span>
+<span id="L384"><span class="lineNum">     384</span> <span class="tlaGNC">       17954 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L385"><span class="lineNum">     385</span> <span class="tlaGNC">       17954 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L386"><span class="lineNum">     386</span>              :     // Memory descriptors</span>
+<span id="L387"><span class="lineNum">     387</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L388"><span class="lineNum">     388</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L389"><span class="lineNum">     389</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.data_scaleshift_desc);</span></span>
+<span id="L390"><span class="lineNum">     390</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.diff_data_scaleshift_desc);</span></span>
+<span id="L391"><span class="lineNum">     391</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L392"><span class="lineNum">     392</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L393"><span class="lineNum">     393</span> <span class="tlaGNC">       17954 :     serialize(sstream, desc.stat_desc);</span></span>
+<span id="L394"><span class="lineNum">     394</span>              :     // Epsilon</span>
+<span id="L395"><span class="lineNum">     395</span> <span class="tlaGNC">       17954 :     sstream.append(desc.layer_norm_epsilon);</span></span>
+<span id="L396"><span class="lineNum">     396</span>              :     // Flags</span>
+<span id="L397"><span class="lineNum">     397</span> <span class="tlaGNC">       17954 :     sstream.append(desc.flags);</span></span>
+<span id="L398"><span class="lineNum">     398</span> <span class="tlaGNC">       17954 : }</span></span>
+<span id="L399"><span class="lineNum">     399</span>              : </span>
+<span id="L400"><span class="lineNum">     400</span> <span class="tlaGNC">        3110 : void serialize(serialization_stream_t &amp;sstream, const lrn_desc_t &amp;desc) {</span></span>
+<span id="L401"><span class="lineNum">     401</span>              :     // Kinds</span>
+<span id="L402"><span class="lineNum">     402</span> <span class="tlaGNC">        3110 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L403"><span class="lineNum">     403</span> <span class="tlaGNC">        3110 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L404"><span class="lineNum">     404</span> <span class="tlaGNC">        3110 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L405"><span class="lineNum">     405</span>              :     // Memory descriptors</span>
+<span id="L406"><span class="lineNum">     406</span> <span class="tlaGNC">        3110 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L407"><span class="lineNum">     407</span> <span class="tlaGNC">        3110 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L408"><span class="lineNum">     408</span> <span class="tlaGNC">        3110 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L409"><span class="lineNum">     409</span> <span class="tlaGNC">        3110 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L410"><span class="lineNum">     410</span>              :     // Local size</span>
+<span id="L411"><span class="lineNum">     411</span> <span class="tlaGNC">        3110 :     sstream.append(desc.local_size);</span></span>
+<span id="L412"><span class="lineNum">     412</span>              :     // Alpha, beta</span>
+<span id="L413"><span class="lineNum">     413</span> <span class="tlaGNC">        3110 :     sstream.append(desc.lrn_alpha);</span></span>
+<span id="L414"><span class="lineNum">     414</span> <span class="tlaGNC">        3110 :     sstream.append(desc.lrn_beta);</span></span>
+<span id="L415"><span class="lineNum">     415</span>              :     // k</span>
+<span id="L416"><span class="lineNum">     416</span> <span class="tlaGNC">        3110 :     sstream.append(desc.lrn_k);</span></span>
+<span id="L417"><span class="lineNum">     417</span> <span class="tlaGNC">        3110 : }</span></span>
+<span id="L418"><span class="lineNum">     418</span>              : </span>
+<span id="L419"><span class="lineNum">     419</span> <span class="tlaGNC">         583 : void serialize(serialization_stream_t &amp;sstream, const matmul_desc_t &amp;desc) {</span></span>
+<span id="L420"><span class="lineNum">     420</span>              :     // Kinds</span>
+<span id="L421"><span class="lineNum">     421</span> <span class="tlaGNC">         583 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L422"><span class="lineNum">     422</span>              :     // Memory descriptors</span>
+<span id="L423"><span class="lineNum">     423</span> <span class="tlaGNC">         583 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L424"><span class="lineNum">     424</span> <span class="tlaGNC">         583 :     serialize(sstream, desc.weights_desc);</span></span>
+<span id="L425"><span class="lineNum">     425</span> <span class="tlaGNC">         583 :     serialize(sstream, desc.bias_desc);</span></span>
+<span id="L426"><span class="lineNum">     426</span> <span class="tlaGNC">         583 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L427"><span class="lineNum">     427</span>              :     // Accumulator type</span>
+<span id="L428"><span class="lineNum">     428</span> <span class="tlaGNC">         583 :     sstream.append(desc.accum_data_type);</span></span>
+<span id="L429"><span class="lineNum">     429</span> <span class="tlaGNC">         583 : }</span></span>
+<span id="L430"><span class="lineNum">     430</span>              : </span>
+<span id="L431"><span class="lineNum">     431</span> <span class="tlaGNC">       63195 : void serialize(serialization_stream_t &amp;sstream, const pooling_desc_t &amp;desc) {</span></span>
+<span id="L432"><span class="lineNum">     432</span>              :     // Kinds</span>
+<span id="L433"><span class="lineNum">     433</span> <span class="tlaGNC">       63195 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L434"><span class="lineNum">     434</span> <span class="tlaGNC">       63195 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L435"><span class="lineNum">     435</span> <span class="tlaGNC">       63195 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L436"><span class="lineNum">     436</span>              :     // Memory descriptors</span>
+<span id="L437"><span class="lineNum">     437</span> <span class="tlaGNC">       63195 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L438"><span class="lineNum">     438</span> <span class="tlaGNC">       63195 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L439"><span class="lineNum">     439</span> <span class="tlaGNC">       63195 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L440"><span class="lineNum">     440</span> <span class="tlaGNC">       63195 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L441"><span class="lineNum">     441</span>              :     // Strides, dilates, padding</span>
+<span id="L442"><span class="lineNum">     442</span> <span class="tlaGNC">       63195 :     sstream.append_array(DNNL_MAX_NDIMS, desc.strides);</span></span>
+<span id="L443"><span class="lineNum">     443</span> <span class="tlaGNC">       63195 :     sstream.append_array(DNNL_MAX_NDIMS, desc.kernel);</span></span>
+<span id="L444"><span class="lineNum">     444</span> <span class="tlaGNC">       63195 :     sstream.append_array(DNNL_MAX_NDIMS, desc.padding[0]);</span></span>
+<span id="L445"><span class="lineNum">     445</span> <span class="tlaGNC">       63195 :     sstream.append_array(DNNL_MAX_NDIMS, desc.padding[1]);</span></span>
+<span id="L446"><span class="lineNum">     446</span> <span class="tlaGNC">       63195 :     sstream.append_array(DNNL_MAX_NDIMS, desc.dilation);</span></span>
+<span id="L447"><span class="lineNum">     447</span>              :     // Accumulator type</span>
+<span id="L448"><span class="lineNum">     448</span> <span class="tlaGNC">       63195 :     sstream.append(desc.accum_data_type);</span></span>
+<span id="L449"><span class="lineNum">     449</span> <span class="tlaGNC">       63195 : }</span></span>
+<span id="L450"><span class="lineNum">     450</span>              : </span>
+<span id="L451"><span class="lineNum">     451</span> <span class="tlaGNC">       44176 : void serialize(serialization_stream_t &amp;sstream, const prelu_desc_t &amp;desc) {</span></span>
+<span id="L452"><span class="lineNum">     452</span>              :     // Kinds</span>
+<span id="L453"><span class="lineNum">     453</span> <span class="tlaGNC">       44176 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L454"><span class="lineNum">     454</span> <span class="tlaGNC">       44176 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L455"><span class="lineNum">     455</span>              :     // Memory descriptors</span>
+<span id="L456"><span class="lineNum">     456</span> <span class="tlaGNC">       44176 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L457"><span class="lineNum">     457</span> <span class="tlaGNC">       44176 :     serialize(sstream, desc.weights_desc);</span></span>
+<span id="L458"><span class="lineNum">     458</span> <span class="tlaGNC">       44176 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L459"><span class="lineNum">     459</span> <span class="tlaGNC">       44176 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L460"><span class="lineNum">     460</span> <span class="tlaGNC">       44176 :     serialize(sstream, desc.diff_weights_desc);</span></span>
+<span id="L461"><span class="lineNum">     461</span> <span class="tlaGNC">       44176 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L462"><span class="lineNum">     462</span> <span class="tlaGNC">       44176 : }</span></span>
+<span id="L463"><span class="lineNum">     463</span>              : </span>
+<span id="L464"><span class="lineNum">     464</span> <span class="tlaGNC">       94688 : void serialize(serialization_stream_t &amp;sstream, const reduction_desc_t &amp;desc) {</span></span>
+<span id="L465"><span class="lineNum">     465</span>              :     // Kinds</span>
+<span id="L466"><span class="lineNum">     466</span> <span class="tlaGNC">       94688 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L467"><span class="lineNum">     467</span> <span class="tlaGNC">       94688 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L468"><span class="lineNum">     468</span>              :     // Memory descriptors</span>
+<span id="L469"><span class="lineNum">     469</span> <span class="tlaGNC">       94688 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L470"><span class="lineNum">     470</span> <span class="tlaGNC">       94688 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L471"><span class="lineNum">     471</span>              :     // P, eps</span>
+<span id="L472"><span class="lineNum">     472</span> <span class="tlaGNC">       94688 :     sstream.append(desc.p);</span></span>
+<span id="L473"><span class="lineNum">     473</span> <span class="tlaGNC">       94688 :     sstream.append(desc.eps);</span></span>
+<span id="L474"><span class="lineNum">     474</span> <span class="tlaGNC">       94688 : }</span></span>
+<span id="L475"><span class="lineNum">     475</span>              : </span>
+<span id="L476"><span class="lineNum">     476</span> <span class="tlaGNC">       69593 : void serialize(serialization_stream_t &amp;sstream, const reorder_desc_t &amp;desc) {</span></span>
+<span id="L477"><span class="lineNum">     477</span>              :     // Kinds</span>
+<span id="L478"><span class="lineNum">     478</span> <span class="tlaGNC">       69593 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L479"><span class="lineNum">     479</span>              :     // Memory descriptors</span>
+<span id="L480"><span class="lineNum">     480</span> <span class="tlaGNC">       69593 :     serialize(sstream, *desc.src_md);</span></span>
+<span id="L481"><span class="lineNum">     481</span> <span class="tlaGNC">       69593 :     serialize(sstream, *desc.dst_md);</span></span>
+<span id="L482"><span class="lineNum">     482</span>              :     // Kinds of source and destination engines</span>
+<span id="L483"><span class="lineNum">     483</span> <span class="tlaGNC">       69593 :     sstream.append(desc.src_engine_kind);</span></span>
+<span id="L484"><span class="lineNum">     484</span> <span class="tlaGNC">       69593 :     sstream.append(desc.dst_engine_kind);</span></span>
+<span id="L485"><span class="lineNum">     485</span> <span class="tlaGNC">       69593 :     sstream.append(desc.is_cross_engine);</span></span>
+<span id="L486"><span class="lineNum">     486</span> <span class="tlaGNC">       69593 : }</span></span>
+<span id="L487"><span class="lineNum">     487</span>              : </span>
+<span id="L488"><span class="lineNum">     488</span> <span class="tlaGNC">       49504 : void serialize(serialization_stream_t &amp;sstream, const resampling_desc_t &amp;desc) {</span></span>
+<span id="L489"><span class="lineNum">     489</span>              :     // Kinds</span>
+<span id="L490"><span class="lineNum">     490</span> <span class="tlaGNC">       49504 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L491"><span class="lineNum">     491</span> <span class="tlaGNC">       49504 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L492"><span class="lineNum">     492</span>              :     // Memory descriptors</span>
+<span id="L493"><span class="lineNum">     493</span> <span class="tlaGNC">       49504 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L494"><span class="lineNum">     494</span> <span class="tlaGNC">       49504 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L495"><span class="lineNum">     495</span> <span class="tlaGNC">       49504 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L496"><span class="lineNum">     496</span> <span class="tlaGNC">       49504 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L497"><span class="lineNum">     497</span>              :     // Factors</span>
+<span id="L498"><span class="lineNum">     498</span> <span class="tlaGNC">       49504 :     sstream.append_array(DNNL_MAX_NDIMS, desc.factors);</span></span>
+<span id="L499"><span class="lineNum">     499</span> <span class="tlaGNC">       49504 : }</span></span>
+<span id="L500"><span class="lineNum">     500</span>              : </span>
+<span id="L501"><span class="lineNum">     501</span> <span class="tlaUNC">           0 : void serialize(serialization_stream_t &amp;sstream, const rnn_desc_t &amp;desc) {</span></span>
+<span id="L502"><span class="lineNum">     502</span>              :     // Kinds</span>
+<span id="L503"><span class="lineNum">     503</span> <span class="tlaUNC">           0 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L504"><span class="lineNum">     504</span> <span class="tlaUNC">           0 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L505"><span class="lineNum">     505</span> <span class="tlaUNC">           0 :     sstream.append(desc.cell_kind);</span></span>
+<span id="L506"><span class="lineNum">     506</span> <span class="tlaUNC">           0 :     sstream.append(desc.direction);</span></span>
+<span id="L507"><span class="lineNum">     507</span>              :     // Memory descriptors</span>
+<span id="L508"><span class="lineNum">     508</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.src_layer_desc);</span></span>
+<span id="L509"><span class="lineNum">     509</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.src_iter_desc);</span></span>
+<span id="L510"><span class="lineNum">     510</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.src_iter_c_desc);</span></span>
+<span id="L511"><span class="lineNum">     511</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.weights_layer_desc);</span></span>
+<span id="L512"><span class="lineNum">     512</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.weights_iter_desc);</span></span>
+<span id="L513"><span class="lineNum">     513</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.bias_desc);</span></span>
+<span id="L514"><span class="lineNum">     514</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.dst_layer_desc);</span></span>
+<span id="L515"><span class="lineNum">     515</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.dst_iter_desc);</span></span>
+<span id="L516"><span class="lineNum">     516</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.dst_iter_c_desc);</span></span>
+<span id="L517"><span class="lineNum">     517</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.weights_peephole_desc);</span></span>
+<span id="L518"><span class="lineNum">     518</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.weights_projection_desc);</span></span>
+<span id="L519"><span class="lineNum">     519</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_src_layer_desc);</span></span>
+<span id="L520"><span class="lineNum">     520</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_src_iter_desc);</span></span>
+<span id="L521"><span class="lineNum">     521</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_src_iter_c_desc);</span></span>
+<span id="L522"><span class="lineNum">     522</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_weights_layer_desc);</span></span>
+<span id="L523"><span class="lineNum">     523</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_weights_iter_desc);</span></span>
+<span id="L524"><span class="lineNum">     524</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_bias_desc);</span></span>
+<span id="L525"><span class="lineNum">     525</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_dst_layer_desc);</span></span>
+<span id="L526"><span class="lineNum">     526</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_dst_iter_desc);</span></span>
+<span id="L527"><span class="lineNum">     527</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_dst_iter_c_desc);</span></span>
+<span id="L528"><span class="lineNum">     528</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_weights_peephole_desc);</span></span>
+<span id="L529"><span class="lineNum">     529</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.diff_weights_projection_desc);</span></span>
+<span id="L530"><span class="lineNum">     530</span>              :     // Flags</span>
+<span id="L531"><span class="lineNum">     531</span> <span class="tlaUNC">           0 :     sstream.append(desc.flags);</span></span>
+<span id="L532"><span class="lineNum">     532</span>              :     // Activation kind</span>
+<span id="L533"><span class="lineNum">     533</span> <span class="tlaUNC">           0 :     sstream.append(desc.activation_kind);</span></span>
+<span id="L534"><span class="lineNum">     534</span>              :     // Alpha, beta</span>
+<span id="L535"><span class="lineNum">     535</span> <span class="tlaUNC">           0 :     sstream.append(desc.alpha);</span></span>
+<span id="L536"><span class="lineNum">     536</span> <span class="tlaUNC">           0 :     sstream.append(desc.beta);</span></span>
+<span id="L537"><span class="lineNum">     537</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L538"><span class="lineNum">     538</span>              : </span>
+<span id="L539"><span class="lineNum">     539</span>              : // Shuffle</span>
+<span id="L540"><span class="lineNum">     540</span> <span class="tlaGNC">         940 : void serialize(serialization_stream_t &amp;sstream, const shuffle_desc_t &amp;desc) {</span></span>
+<span id="L541"><span class="lineNum">     541</span>              :     // Kinds</span>
+<span id="L542"><span class="lineNum">     542</span> <span class="tlaGNC">         940 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L543"><span class="lineNum">     543</span> <span class="tlaGNC">         940 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L544"><span class="lineNum">     544</span>              :     // Memory descriptors</span>
+<span id="L545"><span class="lineNum">     545</span> <span class="tlaGNC">         940 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L546"><span class="lineNum">     546</span> <span class="tlaGNC">         940 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L547"><span class="lineNum">     547</span>              :     // Axis</span>
+<span id="L548"><span class="lineNum">     548</span> <span class="tlaGNC">         940 :     sstream.append(desc.axis);</span></span>
+<span id="L549"><span class="lineNum">     549</span>              :     // Groupe size</span>
+<span id="L550"><span class="lineNum">     550</span> <span class="tlaGNC">         940 :     sstream.append(desc.group_size);</span></span>
+<span id="L551"><span class="lineNum">     551</span> <span class="tlaGNC">         940 : }</span></span>
+<span id="L552"><span class="lineNum">     552</span>              : </span>
+<span id="L553"><span class="lineNum">     553</span> <span class="tlaGNC">       26444 : void serialize(serialization_stream_t &amp;sstream, const softmax_desc_t &amp;desc) {</span></span>
+<span id="L554"><span class="lineNum">     554</span>              :     // Kinds</span>
+<span id="L555"><span class="lineNum">     555</span> <span class="tlaGNC">       26444 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L556"><span class="lineNum">     556</span> <span class="tlaGNC">       26444 :     sstream.append(desc.prop_kind);</span></span>
+<span id="L557"><span class="lineNum">     557</span> <span class="tlaGNC">       26444 :     sstream.append(desc.alg_kind);</span></span>
+<span id="L558"><span class="lineNum">     558</span>              :     // Memory descriptors</span>
+<span id="L559"><span class="lineNum">     559</span> <span class="tlaGNC">       26444 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L560"><span class="lineNum">     560</span> <span class="tlaGNC">       26444 :     serialize(sstream, desc.diff_src_desc);</span></span>
+<span id="L561"><span class="lineNum">     561</span> <span class="tlaGNC">       26444 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L562"><span class="lineNum">     562</span> <span class="tlaGNC">       26444 :     serialize(sstream, desc.diff_dst_desc);</span></span>
+<span id="L563"><span class="lineNum">     563</span>              :     // Axis</span>
+<span id="L564"><span class="lineNum">     564</span> <span class="tlaGNC">       26444 :     sstream.append(desc.softmax_axis);</span></span>
+<span id="L565"><span class="lineNum">     565</span> <span class="tlaGNC">       26444 : }</span></span>
+<span id="L566"><span class="lineNum">     566</span>              : </span>
+<span id="L567"><span class="lineNum">     567</span> <span class="tlaGNC">        3472 : void serialize(serialization_stream_t &amp;sstream, const sum_desc_t &amp;desc) {</span></span>
+<span id="L568"><span class="lineNum">     568</span>              :     // Kinds</span>
+<span id="L569"><span class="lineNum">     569</span> <span class="tlaGNC">        3472 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L570"><span class="lineNum">     570</span>              :     // Memory descriptors</span>
+<span id="L571"><span class="lineNum">     571</span> <span class="tlaGNC">        3472 :     serialize(sstream, *desc.dst_md);</span></span>
+<span id="L572"><span class="lineNum">     572</span>              :     // N</span>
+<span id="L573"><span class="lineNum">     573</span> <span class="tlaGNC">        3472 :     sstream.append(desc.n);</span></span>
+<span id="L574"><span class="lineNum">     574</span>              :     // Scales</span>
+<span id="L575"><span class="lineNum">     575</span> <span class="tlaGNC">        3472 :     sstream.append_array(desc.n, desc.scales);</span></span>
+<span id="L576"><span class="lineNum">     576</span>              :     // Array of mds</span>
+<span id="L577"><span class="lineNum">     577</span> <span class="tlaGNC">       12192 :     for (int i = 0; i &lt; desc.n; i++)</span></span>
+<span id="L578"><span class="lineNum">     578</span> <span class="tlaGNC">        8720 :         serialize(sstream, *desc.src_mds[i]);</span></span>
+<span id="L579"><span class="lineNum">     579</span> <span class="tlaGNC">        3472 : }</span></span>
+<span id="L580"><span class="lineNum">     580</span>              : </span>
+<span id="L581"><span class="lineNum">     581</span> <span class="tlaUNC">           0 : void serialize(serialization_stream_t &amp;sstream, const sdpa_desc_t &amp;desc) {</span></span>
+<span id="L582"><span class="lineNum">     582</span>              :     // Kind</span>
+<span id="L583"><span class="lineNum">     583</span> <span class="tlaUNC">           0 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L584"><span class="lineNum">     584</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.q_desc);</span></span>
+<span id="L585"><span class="lineNum">     585</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.k_desc);</span></span>
+<span id="L586"><span class="lineNum">     586</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.v_desc);</span></span>
+<span id="L587"><span class="lineNum">     587</span> <span class="tlaUNC">           0 :     desc.kq_scales.serialize(sstream);</span></span>
+<span id="L588"><span class="lineNum">     588</span> <span class="tlaUNC">           0 :     desc.kq_zero_points.serialize(sstream);</span></span>
+<span id="L589"><span class="lineNum">     589</span> <span class="tlaUNC">           0 :     desc.vs_scales.serialize(sstream);</span></span>
+<span id="L590"><span class="lineNum">     590</span> <span class="tlaUNC">           0 :     desc.vs_zero_points.serialize(sstream);</span></span>
+<span id="L591"><span class="lineNum">     591</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L592"><span class="lineNum">     592</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.attn_mask_desc);</span></span>
+<span id="L593"><span class="lineNum">     593</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.scale_desc);</span></span>
+<span id="L594"><span class="lineNum">     594</span> <span class="tlaUNC">           0 :     sstream.append(desc.kq_acc_dt);</span></span>
+<span id="L595"><span class="lineNum">     595</span> <span class="tlaUNC">           0 :     sstream.append(desc.vs_acc_dt);</span></span>
+<span id="L596"><span class="lineNum">     596</span> <span class="tlaUNC">           0 :     sstream.append(desc.invert_scale);</span></span>
+<span id="L597"><span class="lineNum">     597</span> <span class="tlaUNC">           0 :     sstream.append(desc.kv_head_number);</span></span>
+<span id="L598"><span class="lineNum">     598</span> <span class="tlaUNC">           0 :     sstream.append(desc.mask_type);</span></span>
+<span id="L599"><span class="lineNum">     599</span> <span class="tlaUNC">           0 :     sstream.append(desc.softmax_alg);</span></span>
+<span id="L600"><span class="lineNum">     600</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L601"><span class="lineNum">     601</span>              : </span>
+<span id="L602"><span class="lineNum">     602</span> <span class="tlaUNC">           0 : void serialize(serialization_stream_t &amp;sstream, const gated_mlp_desc_t &amp;desc) {</span></span>
+<span id="L603"><span class="lineNum">     603</span>              :     // Kind</span>
+<span id="L604"><span class="lineNum">     604</span> <span class="tlaUNC">           0 :     sstream.append(desc.primitive_kind);</span></span>
+<span id="L605"><span class="lineNum">     605</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.src_desc);</span></span>
+<span id="L606"><span class="lineNum">     606</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.w_gate_desc);</span></span>
+<span id="L607"><span class="lineNum">     607</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.w_up_desc);</span></span>
+<span id="L608"><span class="lineNum">     608</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.w_down_desc);</span></span>
+<span id="L609"><span class="lineNum">     609</span> <span class="tlaUNC">           0 :     serialize(sstream, desc.dst_desc);</span></span>
+<span id="L610"><span class="lineNum">     610</span> <span class="tlaUNC">           0 :     sstream.append(desc.activation);</span></span>
+<span id="L611"><span class="lineNum">     611</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L612"><span class="lineNum">     612</span>              : </span>
+<span id="L613"><span class="lineNum">     613</span>              : } // namespace impl</span>
+<span id="L614"><span class="lineNum">     614</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

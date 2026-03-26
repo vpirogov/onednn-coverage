@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/jit/pass/bank_conflict.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/jit/pass">src/gpu/intel/jit/pass</a> - bank_conflict.cpp<span style="font-size: 80%;"> (source / <a href="bank_conflict.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">98.7&nbsp;%</td>
+            <td class="headerCovTableEntry">77</td>
+            <td class="headerCovTableEntry">76</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+          </tr>
+                  <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2022 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &quot;gpu/intel/jit/pass/bank_conflict.hpp&quot;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;gemmstone/../../dsl/ir/pass/trace.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;gpu/intel/jit/ir/legacy.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : </span>
+<span id="L22"><span class="lineNum">      22</span>              : namespace dnnl {</span>
+<span id="L23"><span class="lineNum">      23</span>              : namespace impl {</span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace gpu {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace intel {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace jit {</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span>              : // FIXME: Use convolution-agnostic mechanism to skip zero-points related calls.</span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">    16247487 : static bool is_zero_points_call(const stmt_t &amp;s) {</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">    19791558 :     auto is_zp_var = [&amp;](const expr_t &amp;e) {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">    19791558 :         auto &amp;base = get_base(e);</span></span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">    19791558 :         auto &amp;name = base.as&lt;var_t&gt;().name;</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">    19791558 :         return name.find(&quot;zp_&quot;) == 0;</span></span>
+<span id="L34"><span class="lineNum">      34</span>              :     };</span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">    16247487 :     if (is_func_call&lt;dpas_t&gt;(s)) {</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">     3356205 :         auto &amp;src1 = dpas_t::arg_src1(s);</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">     3356205 :         auto &amp;src2 = dpas_t::arg_src2(s);</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">     3356205 :         return is_zp_var(src1) || is_zp_var(src2);</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :     }</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">    12891292 :     if (is_func_call&lt;mad_t&gt;(s)) {</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">     6540263 :         auto &amp;src1 = mad_t::arg_src1(s);</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">     6540263 :         auto &amp;src2 = mad_t::arg_src2(s);</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">     6540263 :         return is_zp_var(src1) || is_zp_var(src2);</span></span>
+<span id="L44"><span class="lineNum">      44</span>              :     }</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">     6351031 :     return false;</span></span>
+<span id="L46"><span class="lineNum">      46</span>              : }</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              : class bank_conflict_attribute_injector_t : public ir_mutator_t {</span>
+<span id="L49"><span class="lineNum">      49</span>              : public:</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">     6186705 :     object_t _mutate(const alloc_t &amp;obj) override {</span></span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC">     6186705 :         all_buf_sizes_.emplace(obj.buf, obj.size);</span></span>
+<span id="L52"><span class="lineNum">      52</span>              : </span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaGNC">    12373400 :         auto new_obj = ir_mutator_t::_mutate(obj);</span></span>
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">     6186705 :         if (bufs_.count(obj.buf) == 0) return new_obj;</span></span>
+<span id="L55"><span class="lineNum">      55</span>              : </span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">      506445 :         init_attr();</span></span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">      506445 :         auto new_attrs = obj.attrs;</span></span>
+<span id="L59"><span class="lineNum">      59</span> <span class="tlaGNC">      506445 :         new_attrs.push_back(attr_);</span></span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">      506445 :         auto &amp;body = new_obj.as&lt;alloc_t&gt;().body;</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">      506445 :         return alloc_t::make(obj.buf, obj.size, obj.kind, new_attrs, body);</span></span>
+<span id="L62"><span class="lineNum">      62</span>              :     }</span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">    18457112 :     object_t _mutate(const func_call_t &amp;obj) override {</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">    18457112 :         if (is_frozen) return ir_mutator_t::_mutate(obj);</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">    16247487 :         if (is_zero_points_call(obj)) return ir_mutator_t::_mutate(obj);</span></span>
+<span id="L67"><span class="lineNum">      67</span>              : </span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC">    16246145 :         bool is_mad = obj.func.is&lt;mad_t&gt;();</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC">    16246145 :         bool is_dpas = obj.func.is&lt;dpas_t&gt;();</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC">    16246145 :         auto *send = obj.func.as_ptr&lt;send_t&gt;();</span></span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">    16246145 :         bool is_load = send &amp;&amp; (send-&gt;is_load() || send-&gt;is_load_2d());</span></span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">    16246145 :         if (is_mad || is_dpas) {</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC">    19790216 :             auto dst_buf = ptr_base(obj.args[0]);</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">    19790216 :             auto src0_buf = ptr_base(obj.args[1]);</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">    19790216 :             auto src1_buf = ptr_base(obj.args[2]);</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">    19790216 :             auto src2_buf = ptr_base(obj.args[3]);</span></span>
+<span id="L78"><span class="lineNum">      78</span>              : </span>
+<span id="L79"><span class="lineNum">      79</span>              :             // src0 may be null in some cases, skip it.</span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     9895126 :             if (src0_buf) bufs_.insert(std::move(src0_buf));</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC">     9895126 :             bufs_.insert(std::move(src1_buf));</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">     9895126 :             bufs_.insert(std::move(src2_buf));</span></span>
+<span id="L83"><span class="lineNum">      83</span>              : </span>
+<span id="L84"><span class="lineNum">      84</span> <span class="tlaGNC">    19790216 :             instructions_.emplace_back(obj);</span></span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC">     6351031 :         } else if (is_load) {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">     4569772 :             auto &amp;buf = send_t::arg_reg_buf(obj);</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC">     4569772 :             auto &amp;base = (is_var(buf) ? buf : buf.as&lt;ptr_t&gt;().base);</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC">     4569772 :             int off = (is_var(buf) ? 0 : to_cpp&lt;int&gt;(buf.as&lt;ptr_t&gt;().off));</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC">     4569772 :             int size = send-&gt;payload_size();</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC">     4569772 :             auto span = [](int a, int b) {</span></span>
+<span id="L91"><span class="lineNum">      91</span>              :                 // Returns minimal 2^B so that there is x such that:</span>
+<span id="L92"><span class="lineNum">      92</span>              :                 //   x * 2^B &lt;= a &lt;= b &lt; (x + 1) * 2^B</span>
+<span id="L93"><span class="lineNum">      93</span> <span class="tlaGNC">     4569772 :                 int mask = a ^ b;</span></span>
+<span id="L94"><span class="lineNum">      94</span>              :                 // Neither of the highest two bits may be set</span>
+<span id="L95"><span class="lineNum">      95</span>              :                 //  - 32nd bit set: a is negative, b is nonnegative, 2^B does</span>
+<span id="L96"><span class="lineNum">      96</span>              :                 //                  not exist for integer x</span>
+<span id="L97"><span class="lineNum">      97</span>              :                 //  - 31st bit set: requested span is 0x80000000 &lt; 0 in</span>
+<span id="L98"><span class="lineNum">      98</span>              :                 //                  integer precision</span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC">     4569772 :                 gpu_assert(!(mask &amp; 0xc0000000))</span></span>
+<span id="L100"><span class="lineNum">     100</span> <span class="tlaUNC">           0 :                         &lt;&lt; &quot;span cannot be represented in integer precision&quot;;</span></span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">     4569772 :                 return utils::rnd_up_pow2(mask + 1);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">     4569772 :             }(off, off + size - 1);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">     4569772 :             int &amp;min_block_size = all_buf_min_block_sizes[base];</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">     4569772 :             min_block_size = std::max(min_block_size, span);</span></span>
+<span id="L105"><span class="lineNum">     105</span>              :         }</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">    16246145 :         return ir_mutator_t::_mutate(obj);</span></span>
+<span id="L107"><span class="lineNum">     107</span>              :     }</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span>              : private:</span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">      506445 :     void init_attr() {</span></span>
+<span id="L111"><span class="lineNum">     111</span> <span class="tlaGNC">      506445 :         if (attr_) return;</span></span>
+<span id="L112"><span class="lineNum">     112</span>              : </span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">      168815 :         is_frozen = true;</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">      337630 :         std::vector&lt;expr_t&gt; buf_vec;</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">      337630 :         std::vector&lt;int&gt; buf_sizes;</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">      168815 :         std::vector&lt;int&gt; buf_min_block_sizes;</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">      675260 :         for (auto &amp;buf : bufs_) {</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">      506445 :             buf_vec.push_back(buf);</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">      506445 :             buf_sizes.push_back(all_buf_sizes_.at(buf));</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">      506445 :             auto it = all_buf_min_block_sizes.find(buf);</span></span>
+<span id="L121"><span class="lineNum">     121</span>              :             int min_block_size</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC">      506445 :                     = (it == all_buf_min_block_sizes.end() ? 0 : it-&gt;second);</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">      506445 :             buf_min_block_sizes.push_back(min_block_size);</span></span>
+<span id="L124"><span class="lineNum">     124</span>              :         }</span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">      168815 :         attr_ = bank_conflict_attr_t::make(</span></span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">      168815 :                 buf_vec, buf_sizes, buf_min_block_sizes, instructions_);</span></span>
+<span id="L127"><span class="lineNum">     127</span>              :     }</span>
+<span id="L128"><span class="lineNum">     128</span>              : </span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">    39580522 :     static expr_t ptr_base(const expr_t &amp;e) {</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">    39580522 :         if (e.is&lt;var_t&gt;()) return e;</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">    39580522 :         auto *ptr = e.as_ptr&lt;ptr_t&gt;();</span></span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC">    39580522 :         if (ptr) return e.as&lt;ptr_t&gt;().base;</span></span>
+<span id="L133"><span class="lineNum">     133</span> <span class="tlaGNC">      131852 :         return expr_t();</span></span>
+<span id="L134"><span class="lineNum">     134</span>              :     }</span>
+<span id="L135"><span class="lineNum">     135</span>              : </span>
+<span id="L136"><span class="lineNum">     136</span>              :     object_map_t&lt;expr_t, int&gt; all_buf_sizes_;</span>
+<span id="L137"><span class="lineNum">     137</span>              :     object_map_t&lt;expr_t, int&gt; all_buf_min_block_sizes;</span>
+<span id="L138"><span class="lineNum">     138</span>              :     object_eq_set_t&lt;expr_t&gt; bufs_;</span>
+<span id="L139"><span class="lineNum">     139</span>              :     std::vector&lt;stmt_t&gt; instructions_;</span>
+<span id="L140"><span class="lineNum">     140</span>              :     bool is_frozen = false;</span>
+<span id="L141"><span class="lineNum">     141</span>              : </span>
+<span id="L142"><span class="lineNum">     142</span>              :     alloc_attr_t attr_;</span>
+<span id="L143"><span class="lineNum">     143</span>              : };</span>
+<span id="L144"><span class="lineNum">     144</span>              : </span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC">      168815 : stmt_t inject_bank_conflict_attribute(const stmt_t &amp;s, ir_context_t &amp;ir_ctx) {</span></span>
+<span id="L146"><span class="lineNum">     146</span> <span class="tlaGNC">      168815 :     ir::trace_start();</span></span>
+<span id="L147"><span class="lineNum">     147</span> <span class="tlaGNC">      337630 :     auto ret = bank_conflict_attribute_injector_t().mutate(s);</span></span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC">      168815 :     ir::trace_pass(&quot;inject_bank_conflict_attribute&quot;, ret, ir_ctx);</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC">      337630 :     return ret;</span></span>
+<span id="L150"><span class="lineNum">     150</span>              : }</span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span>              : } // namespace jit</span>
+<span id="L153"><span class="lineNum">     153</span>              : } // namespace intel</span>
+<span id="L154"><span class="lineNum">     154</span>              : } // namespace gpu</span>
+<span id="L155"><span class="lineNum">     155</span>              : } // namespace impl</span>
+<span id="L156"><span class="lineNum">     156</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

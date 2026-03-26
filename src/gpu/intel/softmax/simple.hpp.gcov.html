@@ -1,0 +1,437 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/softmax/simple.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel/softmax">src/gpu/intel/softmax</a> - simple.hpp<span style="font-size: 80%;"> (source / <a href="simple.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">98.8&nbsp;%</td>
+            <td class="headerCovTableEntry">173</td>
+            <td class="headerCovTableEntry">171</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryHi">100.0&nbsp;%</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">16</td>
+          </tr>
+                  <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2019 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GPU_INTEL_SOFTMAX_SIMPLE_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GPU_INTEL_SOFTMAX_SIMPLE_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;gpu/intel/primitive.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;gpu/intel/primitive_conf.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;gpu/intel/softmax/config.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : </span>
+<span id="L24"><span class="lineNum">      24</span>              : namespace dnnl {</span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace impl {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace gpu {</span>
+<span id="L27"><span class="lineNum">      27</span>              : namespace intel {</span>
+<span id="L28"><span class="lineNum">      28</span>              : namespace softmax {</span>
+<span id="L29"><span class="lineNum">      29</span>              : </span>
+<span id="L30"><span class="lineNum">      30</span>              : struct simple_fwd_t : public primitive_t {</span>
+<span id="L31"><span class="lineNum">      31</span>              :     using primitive_t::primitive_t;</span>
+<span id="L32"><span class="lineNum">      32</span>              :     struct pd_t : public fwd_pd_t {</span>
+<span id="L33"><span class="lineNum">      33</span>              :         using fwd_pd_t::fwd_pd_t;</span>
+<span id="L34"><span class="lineNum">      34</span>              : </span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">      216587 :         DECLARE_COMMON_PD_T(&quot;ocl:simple:any&quot;, simple_fwd_t);</span></span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">       24162 :         bool post_ops_ok() const {</span></span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">       48324 :             return attr()-&gt;post_ops_.has_default_values(</span></span>
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">       48324 :                     {primitive_kind::eltwise, primitive_kind::binary});</span></span>
+<span id="L40"><span class="lineNum">      40</span>              :         }</span>
+<span id="L41"><span class="lineNum">      41</span>              : </span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">       24162 :         status_t dropout_ok() const {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">       24162 :             if (attr_.dropout_.has_default_values()) return status::success;</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : </span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">         256 :             assert(memory_desc_wrapper(dst_md(0)).format_kind()</span></span>
+<span id="L46"><span class="lineNum">      46</span>              :                     == format_kind::blocked);</span>
+<span id="L47"><span class="lineNum">      47</span>              : </span>
+<span id="L48"><span class="lineNum">      48</span>              :             using namespace format_tag;</span>
+<span id="L49"><span class="lineNum">      49</span>              :             // See `ref_dropout(...)` comment which explains the requirement.</span>
+<span id="L50"><span class="lineNum">      50</span> <span class="tlaGNC">         256 :             VDISPATCH_SOFTMAX_IC(memory_desc_matches_one_of_tag(</span></span>
+<span id="L51"><span class="lineNum">      51</span>              :                                          *dst_md(0), ncdhw, nchw, ncw, nc)</span>
+<span id="L52"><span class="lineNum">      52</span>              :                             &amp;&amp; IMPLICATION(attr_.dropout_.has_output_mask(),</span>
+<span id="L53"><span class="lineNum">      53</span>              :                                     memory_desc_wrapper(dst_md(0)).similar_to(</span>
+<span id="L54"><span class="lineNum">      54</span>              :                                             attr_.dropout_.dropout_desc_, true,</span>
+<span id="L55"><span class="lineNum">      55</span>              :                                             false)),</span>
+<span id="L56"><span class="lineNum">      56</span>              :                     VERBOSE_UNSUPPORTED_DROPOUT);</span>
+<span id="L57"><span class="lineNum">      57</span>              : </span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaGNC">         256 :             return status::success;</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :         }</span>
+<span id="L60"><span class="lineNum">      60</span>              : </span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">       25450 :         status_t init(impl::engine_t *engine) {</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">       25450 :             auto *intel_engine = utils::downcast&lt;intel::engine_t *&gt;(engine);</span></span>
+<span id="L63"><span class="lineNum">      63</span>              : </span>
+<span id="L64"><span class="lineNum">      64</span> <span class="tlaGNC">       25450 :             const memory_desc_wrapper src_d(src_md());</span></span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">       25450 :             const memory_desc_wrapper dst_d(dst_md());</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">       25450 :             const auto src_dt = src_d.data_type();</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">       25450 :             const auto dst_dt = dst_d.data_type();</span></span>
+<span id="L68"><span class="lineNum">      68</span>              : </span>
+<span id="L69"><span class="lineNum">      69</span>              :             using namespace data_type;</span>
+<span id="L70"><span class="lineNum">      70</span>              :             using skip_mask_t = primitive_attr_t::skip_mask_t;</span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">       25450 :             const int num_blocks = 2;</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :             auto is_not_double_blk</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">       25450 :                     = src_md()-&gt;format_desc.blocking.inner_nblks != num_blocks;</span></span>
+<span id="L74"><span class="lineNum">      74</span>              : </span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">       25450 :             VDISPATCH_SOFTMAX(is_fwd(), VERBOSE_BAD_PROPKIND);</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">       25450 :             VDISPATCH_SOFTMAX(</span></span>
+<span id="L77"><span class="lineNum">      77</span>              :                     utils::one_of(src_dt, f64, f32, f16, bf16, u8, s8),</span>
+<span id="L78"><span class="lineNum">      78</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">       25450 :             VDISPATCH_SOFTMAX(utils::one_of(dst_dt, f32, f16, f64, bf16,</span></span>
+<span id="L80"><span class="lineNum">      80</span>              :                                       f8_e5m2, f8_e4m3, u8, s8),</span>
+<span id="L81"><span class="lineNum">      81</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">       25450 :             VDISPATCH_SOFTMAX(IMPLICATION(utils::one_of(f16, src_dt, dst_dt),</span></span>
+<span id="L83"><span class="lineNum">      83</span>              :                                       intel_engine-&gt;mayiuse(</span>
+<span id="L84"><span class="lineNum">      84</span>              :                                               compute::device_ext_t::khr_fp16)),</span>
+<span id="L85"><span class="lineNum">      85</span>              :                     VERBOSE_UNSUPPORTED_DT_CFG);</span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC">       25450 :             VDISPATCH_SOFTMAX(IMPLICATION(utils::one_of(data_type::f64,</span></span>
+<span id="L87"><span class="lineNum">      87</span>              :                                                   dst_md()-&gt;data_type,</span>
+<span id="L88"><span class="lineNum">      88</span>              :                                                   src_md()-&gt;data_type),</span>
+<span id="L89"><span class="lineNum">      89</span>              :                                       intel_engine-&gt;mayiuse(</span>
+<span id="L90"><span class="lineNum">      90</span>              :                                               compute::device_ext_t::khr_fp64)),</span>
+<span id="L91"><span class="lineNum">      91</span>              :                     VERBOSE_UNSUPPORTED_DT_CFG);</span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX(intel_engine-&gt;mayiuse_sub_group(subgroup_size),</span></span>
+<span id="L93"><span class="lineNum">      93</span>              :                     VERBOSE_UNSUPPORTED_DEVICE_FEATURE, &quot;subgroup_size&quot;);</span>
+<span id="L94"><span class="lineNum">      94</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX(memory_desc_ndims_ok(src_md(), dst_md()),</span></span>
+<span id="L95"><span class="lineNum">      95</span>              :                     VERBOSE_INCONSISTENT_NDIMS_WITH_VALS, &quot;src&quot;, &quot;dst&quot;,</span>
+<span id="L96"><span class="lineNum">      96</span>              :                     src_md()-&gt;ndims, dst_md()-&gt;ndims);</span>
+<span id="L97"><span class="lineNum">      97</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX(</span></span>
+<span id="L98"><span class="lineNum">      98</span>              :                     attr()-&gt;has_default_values(skip_mask_t::scales</span>
+<span id="L99"><span class="lineNum">      99</span>              :                             | skip_mask_t::post_ops | skip_mask_t::dropout),</span>
+<span id="L100"><span class="lineNum">     100</span>              :                     VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX(is_not_double_blk, VERBOSE_UNSUPPORTED_TAG);</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX(attr_scales_ok(), VERBOSE_UNSUPPORTED_SCALES_CFG);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX(post_ops_ok(), VERBOSE_UNSUPPORTED_POSTOP);</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX_SC(</span></span>
+<span id="L105"><span class="lineNum">     105</span>              :                     set_default_formats(), VERBOSE_UNSUPPORTED_TAG);</span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">       24162 :             VDISPATCH_SOFTMAX_SC(attr_.set_default_formats(dst_md(0)),</span></span>
+<span id="L107"><span class="lineNum">     107</span>              :                     VERBOSE_UNSUPPORTED_POSTOP);</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC">       24162 :             CHECK(dropout_ok());</span></span>
+<span id="L109"><span class="lineNum">     109</span>              : </span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC">       24162 :             dim_t nelems = axis_size(true);</span></span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span> <span class="tlaGNC">       24162 :             if (nelems &lt; subgroup_size) {</span></span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC">        9676 :                 group_size = subgroup_size = 1;</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC">       14486 :             } else if (nelems &lt;= 100) {</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC">       10713 :                 group_size = subgroup_size * 1;</span></span>
+<span id="L116"><span class="lineNum">     116</span> <span class="tlaGNC">        3773 :             } else if (nelems &lt;= 1000) {</span></span>
+<span id="L117"><span class="lineNum">     117</span> <span class="tlaGNC">        2679 :                 group_size = subgroup_size * 2;</span></span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">        1094 :             } else if (nelems &lt;= 2000) {</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">        1080 :                 group_size = subgroup_size * 4;</span></span>
+<span id="L120"><span class="lineNum">     120</span> <span class="tlaGNC">          14 :             } else if (nelems &lt;= 5000) {</span></span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaUNC">           0 :                 group_size = subgroup_size * 8;</span></span>
+<span id="L122"><span class="lineNum">     122</span>              :             } else {</span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC">          14 :                 group_size = subgroup_size * 16;</span></span>
+<span id="L124"><span class="lineNum">     124</span>              :             }</span>
+<span id="L125"><span class="lineNum">     125</span>              : </span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC">      107864 :             for (int i = 0, j = 0; i &lt; src_md()-&gt;ndims; ++i) {</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC">       83702 :                 if (i != desc()-&gt;softmax_axis) {</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC">       59540 :                     auto dim = src_md()-&gt;padded_dims[i];</span></span>
+<span id="L129"><span class="lineNum">     129</span> <span class="tlaGNC">       59540 :                     gws[j % 3] *= dim;</span></span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC">       59540 :                     if (j &lt; 3) block[j % 3] = dim;</span></span>
+<span id="L131"><span class="lineNum">     131</span> <span class="tlaGNC">       59540 :                     j++;</span></span>
+<span id="L132"><span class="lineNum">     132</span>              :                 }</span>
+<span id="L133"><span class="lineNum">     133</span>              :             }</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">       24162 :             if (group_size != 1) {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">       14486 :                 lws[0] = group_size;</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">       14486 :                 gws[0] *= group_size;</span></span>
+<span id="L138"><span class="lineNum">     138</span>              :             }</span>
+<span id="L139"><span class="lineNum">     139</span>              : </span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">       24162 :             return status::success;</span></span>
+<span id="L141"><span class="lineNum">     141</span>              :         }</span>
+<span id="L142"><span class="lineNum">     142</span>              : </span>
+<span id="L143"><span class="lineNum">     143</span>              :         compute::range_t gws = compute::range_t::one();</span>
+<span id="L144"><span class="lineNum">     144</span>              :         compute::range_t lws = compute::range_t::one();</span>
+<span id="L145"><span class="lineNum">     145</span>              :         compute::range_t block = compute::range_t::one();</span>
+<span id="L146"><span class="lineNum">     146</span>              :         size_t group_size = 0;</span>
+<span id="L147"><span class="lineNum">     147</span>              :         int subgroup_size = 16;</span>
+<span id="L148"><span class="lineNum">     148</span>              :     };</span>
+<span id="L149"><span class="lineNum">     149</span>              : </span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">       44433 :     status_t init(impl::engine_t *engine) override {</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC">       44433 :         if (pd()-&gt;has_zero_dim_memory()) return status::success;</span></span>
+<span id="L152"><span class="lineNum">     152</span>              : </span>
+<span id="L153"><span class="lineNum">     153</span>              :         using namespace dnnl::impl::format_tag;</span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaGNC">       88766 :         compute::kernel_ctx_t kernel_ctx;</span></span>
+<span id="L155"><span class="lineNum">     155</span>              : </span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC">       44383 :         const auto *desc = pd()-&gt;desc();</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;SOFTMAX_AXIS_IDX&quot;, desc-&gt;softmax_axis);</span></span>
+<span id="L158"><span class="lineNum">     158</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;SOFTMAX_AXIS&quot;, pd()-&gt;axis_size(true));</span></span>
+<span id="L159"><span class="lineNum">     159</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;GROUP_SIZE&quot;, pd()-&gt;group_size);</span></span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;SUB_GROUP_SIZE&quot;, pd()-&gt;subgroup_size);</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;IS_FWD&quot;, 1);</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">       44383 :                 &quot;WITH_DROPOUT&quot;, !pd()-&gt;attr()-&gt;dropout_.has_default_values());</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC">       44383 :                 &quot;USE_HOST_SCALARS&quot;, pd()-&gt;attr()-&gt;dropout_.use_host_scalars_);</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;USE_OFFSET&quot;, pd()-&gt;attr()-&gt;dropout_.use_offset_);</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaGNC">       44383 :                 &quot;HAS_OUTPUT_MASK&quot;, pd()-&gt;attr()-&gt;dropout_.has_output_mask());</span></span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC">       44383 :         kernel_ctx.add_option(&quot;-cl-std=CL2.0&quot;);</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;SOFTMAX_INF_AS_ZERO&quot;,</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">       44383 :                 pd()-&gt;alg_kind() == alg_kind::softmax_accurate_inf_as_zero);</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;LOGSOFTMAX&quot;, pd()-&gt;is_logsoftmax());</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;WITH_SRC_SCALES&quot;,</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">       44383 :                 !pd()-&gt;attr()-&gt;scales_.has_default_values(DNNL_ARG_SRC));</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;WITH_DST_SCALES&quot;,</span></span>
+<span id="L176"><span class="lineNum">     176</span> <span class="tlaGNC">       44383 :                 !pd()-&gt;attr()-&gt;scales_.has_default_values(DNNL_ARG_DST));</span></span>
+<span id="L177"><span class="lineNum">     177</span>              : </span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC">       44383 :         const memory_desc_wrapper dst_mdw(pd()-&gt;dst_md());</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaGNC">       44383 :         const memory_desc_wrapper src_mdw(pd()-&gt;src_md());</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">       44383 :         const auto dst_md_info = memory_desc_info_t::create(dst_mdw);</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">       44383 :         const auto src_md_info = memory_desc_info_t::create(src_mdw);</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaGNC">       44383 :         def_memory_desc_info(kernel_ctx, dst_md_info, &quot;DST&quot;);</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC">       44383 :         def_memory_desc_info(kernel_ctx, src_md_info, &quot;SRC&quot;);</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC">       44383 :         kernel_ctx.set_data_type(dst_mdw.data_type());</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC">       44383 :         kernel_ctx.require_stateless_addressing(pd()-&gt;has_large_buffers());</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaGNC">       44383 :         set_offsets(kernel_ctx, pd()-&gt;dst_md(), &quot;DATA&quot;);</span></span>
+<span id="L187"><span class="lineNum">     187</span>              : </span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC">       44383 :         const int ndims = pd()-&gt;dst_md()-&gt;ndims;</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaGNC">       44383 :         const dim_t OC = pd()-&gt;dst_md()-&gt;dims[1];</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaGNC">       44383 :         dim_t spatial_dims_size = 1;</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">      104840 :         for (int i = 2; i &lt; ndims; i++) {</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaGNC">       60457 :             spatial_dims_size *= pd()-&gt;dst_md()-&gt;dims[i];</span></span>
+<span id="L193"><span class="lineNum">     193</span>              :         }</span>
+<span id="L194"><span class="lineNum">     194</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;OC&quot;, OC);</span></span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;SPATIAL_DIMS_SIZE&quot;, spatial_dims_size);</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;NDIMS&quot;, ndims);</span></span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;SPATIAL_DIM_0&quot;, pd()-&gt;dst_md()-&gt;dims[2]);</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">       44383 :         if (ndims &gt; 3) {</span></span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaGNC">       29948 :             kernel_ctx.define_int(&quot;SPATIAL_DIM_1&quot;, pd()-&gt;dst_md()-&gt;dims[3]);</span></span>
+<span id="L200"><span class="lineNum">     200</span>              :         }</span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">       44383 :         if (ndims &gt; 4) {</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">         336 :             kernel_ctx.define_int(&quot;SPATIAL_DIM_2&quot;, pd()-&gt;dst_md()-&gt;dims[4]);</span></span>
+<span id="L203"><span class="lineNum">     203</span>              :         }</span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">       44383 :         kernel_ctx.define_int(&quot;IS_CHANNEL_LAST&quot;,</span></span>
+<span id="L205"><span class="lineNum">     205</span> <span class="tlaGNC">       44383 :                 dst_mdw.matches_one_of_tag(nwc, nhwc, ndhwc));</span></span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">       44383 :         CHECK(def_attr_info(kernel_ctx, attr_info_t::create(pd()-&gt;attr()),</span></span>
+<span id="L208"><span class="lineNum">     208</span>              :                 pd()-&gt;attr()-&gt;post_ops_, *pd()-&gt;invariant_dst_md()));</span>
+<span id="L209"><span class="lineNum">     209</span>              : </span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">      177532 :         for (int i = 0; i &lt; 3; i++)</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">      133149 :             kernel_ctx.define_int(utils::format(&quot;BLOCK_%d&quot;, i), pd()-&gt;block[i]);</span></span>
+<span id="L212"><span class="lineNum">     212</span>              : </span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">       44383 :         CHECK(create_kernel(</span></span>
+<span id="L214"><span class="lineNum">     214</span>              :                 engine, &amp;kernel_, &quot;simple_softmax_fwd_generic&quot;, kernel_ctx));</span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">       44383 :         if (!kernel_) return status::runtime_error;</span></span>
+<span id="L216"><span class="lineNum">     216</span>              : </span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">       44383 :         return status::success;</span></span>
+<span id="L218"><span class="lineNum">     218</span>              :     }</span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">       26673 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L221"><span class="lineNum">     221</span> <span class="tlaGNC">       26673 :         return execute_generic(ctx);</span></span>
+<span id="L222"><span class="lineNum">     222</span>              :     }</span>
+<span id="L223"><span class="lineNum">     223</span>              : </span>
+<span id="L224"><span class="lineNum">     224</span>              : protected:</span>
+<span id="L225"><span class="lineNum">     225</span>              :     status_t execute_generic(const exec_ctx_t &amp;ctx) const;</span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">     1421245 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L227"><span class="lineNum">     227</span>              :     compute::kernel_t kernel_;</span>
+<span id="L228"><span class="lineNum">     228</span>              : };</span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span>              : struct simple_bwd_t : public primitive_t {</span>
+<span id="L231"><span class="lineNum">     231</span>              :     using primitive_t::primitive_t;</span>
+<span id="L232"><span class="lineNum">     232</span>              :     struct pd_t : public bwd_pd_t {</span>
+<span id="L233"><span class="lineNum">     233</span>              :         using bwd_pd_t::bwd_pd_t;</span>
+<span id="L234"><span class="lineNum">     234</span>              : </span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaGNC">       49993 :         DECLARE_COMMON_PD_T(&quot;ocl:simple:any&quot;, simple_bwd_t);</span></span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaGNC">        7195 :         status_t init(impl::engine_t *engine) {</span></span>
+<span id="L238"><span class="lineNum">     238</span> <span class="tlaGNC">        7195 :             auto *intel_engine = utils::downcast&lt;intel::engine_t *&gt;(engine);</span></span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaGNC">        7195 :             const memory_desc_wrapper diff_dst_d(diff_dst_md());</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaGNC">        7195 :             const memory_desc_wrapper diff_src_d(diff_src_md());</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaGNC">        7195 :             const memory_desc_wrapper dst_d(dst_md());</span></span>
+<span id="L243"><span class="lineNum">     243</span>              : </span>
+<span id="L244"><span class="lineNum">     244</span>              :             using namespace data_type;</span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaGNC">        7195 :             VDISPATCH_SOFTMAX(!is_fwd(), VERBOSE_BAD_PROPKIND);</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaGNC">        7195 :             VDISPATCH_SOFTMAX(</span></span>
+<span id="L247"><span class="lineNum">     247</span>              :                     utils::one_of(diff_src_d.data_type(), f64, f32, bf16, f16),</span>
+<span id="L248"><span class="lineNum">     248</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaGNC">        7195 :             VDISPATCH_SOFTMAX(</span></span>
+<span id="L250"><span class="lineNum">     250</span>              :                     utils::one_of(diff_dst_d.data_type(), f64, f32, bf16, f16),</span>
+<span id="L251"><span class="lineNum">     251</span>              :                     VERBOSE_UNSUPPORTED_DT);</span>
+<span id="L252"><span class="lineNum">     252</span> <span class="tlaGNC">        7195 :             VDISPATCH_SOFTMAX(IMPLICATION(utils::one_of(data_type::f64,</span></span>
+<span id="L253"><span class="lineNum">     253</span>              :                                                   diff_dst_md()-&gt;data_type,</span>
+<span id="L254"><span class="lineNum">     254</span>              :                                                   diff_src_md()-&gt;data_type),</span>
+<span id="L255"><span class="lineNum">     255</span>              :                                       intel_engine-&gt;mayiuse(</span>
+<span id="L256"><span class="lineNum">     256</span>              :                                               compute::device_ext_t::khr_fp64)),</span>
+<span id="L257"><span class="lineNum">     257</span>              :                     VERBOSE_UNSUPPORTED_DT_CFG);</span>
+<span id="L258"><span class="lineNum">     258</span> <span class="tlaGNC">        5915 :             VDISPATCH_SOFTMAX(IMPLICATION(utils::one_of(data_type::f16,</span></span>
+<span id="L259"><span class="lineNum">     259</span>              :                                                   diff_dst_md()-&gt;data_type,</span>
+<span id="L260"><span class="lineNum">     260</span>              :                                                   diff_src_md()-&gt;data_type),</span>
+<span id="L261"><span class="lineNum">     261</span>              :                                       intel_engine-&gt;mayiuse(</span>
+<span id="L262"><span class="lineNum">     262</span>              :                                               compute::device_ext_t::khr_fp16)),</span>
+<span id="L263"><span class="lineNum">     263</span>              :                     VERBOSE_UNSUPPORTED_DT_CFG);</span>
+<span id="L264"><span class="lineNum">     264</span> <span class="tlaGNC">        5915 :             VDISPATCH_SOFTMAX(intel_engine-&gt;mayiuse_sub_group(16),</span></span>
+<span id="L265"><span class="lineNum">     265</span>              :                     VERBOSE_UNSUPPORTED_DEVICE_FEATURE, &quot;subgroup_size&quot;);</span>
+<span id="L266"><span class="lineNum">     266</span> <span class="tlaGNC">        5915 :             VDISPATCH_SOFTMAX(memory_desc_ndims_ok(</span></span>
+<span id="L267"><span class="lineNum">     267</span>              :                                       dst_md(), diff_src_md(), diff_dst_md()),</span>
+<span id="L268"><span class="lineNum">     268</span>              :                     VERBOSE_INCONSISTENT_NDIMS_WITH_VALS, &quot;dst, diff_src&quot;,</span>
+<span id="L269"><span class="lineNum">     269</span>              :                     &quot;diff_dst&quot;, dst_md()-&gt;ndims, diff_dst_md()-&gt;ndims);</span>
+<span id="L270"><span class="lineNum">     270</span> <span class="tlaGNC">        5915 :             VDISPATCH_SOFTMAX(</span></span>
+<span id="L271"><span class="lineNum">     271</span>              :                     attr()-&gt;has_default_values(), VERBOSE_UNSUPPORTED_ATTR);</span>
+<span id="L272"><span class="lineNum">     272</span> <span class="tlaGNC">        5915 :             VDISPATCH_SOFTMAX_SC(</span></span>
+<span id="L273"><span class="lineNum">     273</span>              :                     set_default_formats(), VERBOSE_UNSUPPORTED_TAG);</span>
+<span id="L274"><span class="lineNum">     274</span> <span class="tlaGNC">        5915 :             VDISPATCH_SOFTMAX(diff_dst_d.data_type() == dst_d.data_type(),</span></span>
+<span id="L275"><span class="lineNum">     275</span>              :                     VERBOSE_INCONSISTENT_DT, &quot;diff_dst_d&quot;, &quot;dst_d&quot;);</span>
+<span id="L276"><span class="lineNum">     276</span>              : </span>
+<span id="L277"><span class="lineNum">     277</span> <span class="tlaGNC">       25762 :             for (int i = 0, j = 0; i &lt; dst_d.ndims(); ++i) {</span></span>
+<span id="L278"><span class="lineNum">     278</span> <span class="tlaGNC">       19847 :                 if (i != axis()) {</span></span>
+<span id="L279"><span class="lineNum">     279</span> <span class="tlaGNC">       13932 :                     auto dim = dst_d.padded_dims()[i];</span></span>
+<span id="L280"><span class="lineNum">     280</span> <span class="tlaGNC">       13932 :                     gws[j % 3] *= dim;</span></span>
+<span id="L281"><span class="lineNum">     281</span> <span class="tlaGNC">       13932 :                     if (j &lt; 3) block[j % 3] = dim;</span></span>
+<span id="L282"><span class="lineNum">     282</span> <span class="tlaGNC">       13932 :                     j++;</span></span>
+<span id="L283"><span class="lineNum">     283</span>              :                 }</span>
+<span id="L284"><span class="lineNum">     284</span>              :             }</span>
+<span id="L285"><span class="lineNum">     285</span>              : </span>
+<span id="L286"><span class="lineNum">     286</span> <span class="tlaGNC">        5915 :             dim_t nelems = axis_size(true);</span></span>
+<span id="L287"><span class="lineNum">     287</span> <span class="tlaGNC">        5915 :             if (nelems &lt;= 100) {</span></span>
+<span id="L288"><span class="lineNum">     288</span> <span class="tlaGNC">        4755 :                 group_size = 16;</span></span>
+<span id="L289"><span class="lineNum">     289</span> <span class="tlaGNC">        1160 :             } else if (nelems &lt;= 1000) {</span></span>
+<span id="L290"><span class="lineNum">     290</span> <span class="tlaGNC">         951 :                 group_size = 32;</span></span>
+<span id="L291"><span class="lineNum">     291</span> <span class="tlaGNC">         209 :             } else if (nelems &lt;= 2000) {</span></span>
+<span id="L292"><span class="lineNum">     292</span> <span class="tlaGNC">         185 :                 group_size = 64;</span></span>
+<span id="L293"><span class="lineNum">     293</span> <span class="tlaGNC">          24 :             } else if (nelems &lt;= 5000) {</span></span>
+<span id="L294"><span class="lineNum">     294</span> <span class="tlaUNC">           0 :                 group_size = 128;</span></span>
+<span id="L295"><span class="lineNum">     295</span>              :             } else {</span>
+<span id="L296"><span class="lineNum">     296</span> <span class="tlaGNC">          24 :                 group_size = 256;</span></span>
+<span id="L297"><span class="lineNum">     297</span>              :             }</span>
+<span id="L298"><span class="lineNum">     298</span>              : </span>
+<span id="L299"><span class="lineNum">     299</span> <span class="tlaGNC">        5915 :             lws[0] = group_size;</span></span>
+<span id="L300"><span class="lineNum">     300</span> <span class="tlaGNC">        5915 :             gws[0] *= group_size;</span></span>
+<span id="L301"><span class="lineNum">     301</span>              : </span>
+<span id="L302"><span class="lineNum">     302</span> <span class="tlaGNC">        5915 :             return status::success;</span></span>
+<span id="L303"><span class="lineNum">     303</span>              :         }</span>
+<span id="L304"><span class="lineNum">     304</span>              : </span>
+<span id="L305"><span class="lineNum">     305</span>              :         compute::range_t gws = compute::range_t::one();</span>
+<span id="L306"><span class="lineNum">     306</span>              :         compute::range_t lws = compute::range_t::one();</span>
+<span id="L307"><span class="lineNum">     307</span>              :         compute::range_t block = compute::range_t::one();</span>
+<span id="L308"><span class="lineNum">     308</span>              :         size_t group_size = 0;</span>
+<span id="L309"><span class="lineNum">     309</span>              :     };</span>
+<span id="L310"><span class="lineNum">     310</span>              : </span>
+<span id="L311"><span class="lineNum">     311</span> <span class="tlaGNC">        9959 :     status_t init(impl::engine_t *engine) override {</span></span>
+<span id="L312"><span class="lineNum">     312</span> <span class="tlaGNC">        9959 :         if (pd()-&gt;has_zero_dim_memory()) return status::success;</span></span>
+<span id="L313"><span class="lineNum">     313</span>              : </span>
+<span id="L314"><span class="lineNum">     314</span> <span class="tlaGNC">       19878 :         compute::kernel_ctx_t kernel_ctx;</span></span>
+<span id="L315"><span class="lineNum">     315</span>              : </span>
+<span id="L316"><span class="lineNum">     316</span> <span class="tlaGNC">        9939 :         kernel_ctx.define_int(&quot;SOFTMAX_AXIS_IDX&quot;, pd()-&gt;axis());</span></span>
+<span id="L317"><span class="lineNum">     317</span> <span class="tlaGNC">        9939 :         kernel_ctx.define_int(&quot;SOFTMAX_AXIS&quot;, pd()-&gt;axis_size(true));</span></span>
+<span id="L318"><span class="lineNum">     318</span> <span class="tlaGNC">        9939 :         kernel_ctx.define_int(&quot;GROUP_SIZE&quot;, pd()-&gt;group_size);</span></span>
+<span id="L319"><span class="lineNum">     319</span> <span class="tlaGNC">        9939 :         kernel_ctx.define_int(&quot;SUB_GROUP_SIZE&quot;, 16);</span></span>
+<span id="L320"><span class="lineNum">     320</span> <span class="tlaGNC">        9939 :         kernel_ctx.define_int(&quot;IS_BWD&quot;, 1);</span></span>
+<span id="L321"><span class="lineNum">     321</span> <span class="tlaGNC">        9939 :         kernel_ctx.add_option(&quot;-cl-std=CL2.0&quot;);</span></span>
+<span id="L322"><span class="lineNum">     322</span> <span class="tlaGNC">        9939 :         kernel_ctx.define_int(&quot;LOGSOFTMAX&quot;, pd()-&gt;is_logsoftmax());</span></span>
+<span id="L323"><span class="lineNum">     323</span>              : </span>
+<span id="L324"><span class="lineNum">     324</span> <span class="tlaGNC">        9939 :         const memory_desc_wrapper diff_src_mdw(pd()-&gt;diff_src_md());</span></span>
+<span id="L325"><span class="lineNum">     325</span> <span class="tlaGNC">        9939 :         const memory_desc_wrapper diff_dst_mdw(pd()-&gt;diff_dst_md());</span></span>
+<span id="L326"><span class="lineNum">     326</span> <span class="tlaGNC">        9939 :         const auto diff_src_md_info = memory_desc_info_t::create(diff_src_mdw);</span></span>
+<span id="L327"><span class="lineNum">     327</span> <span class="tlaGNC">        9939 :         const auto diff_dst_md_info = memory_desc_info_t::create(diff_dst_mdw);</span></span>
+<span id="L328"><span class="lineNum">     328</span> <span class="tlaGNC">        9939 :         def_memory_desc_info(kernel_ctx, diff_src_md_info, &quot;SRC&quot;);</span></span>
+<span id="L329"><span class="lineNum">     329</span> <span class="tlaGNC">        9939 :         def_memory_desc_info(kernel_ctx, diff_dst_md_info, &quot;DST&quot;);</span></span>
+<span id="L330"><span class="lineNum">     330</span> <span class="tlaGNC">        9939 :         kernel_ctx.set_data_type(diff_src_mdw.data_type());</span></span>
+<span id="L331"><span class="lineNum">     331</span> <span class="tlaGNC">        9939 :         kernel_ctx.register_buffer_size(*pd()-&gt;dst_md());</span></span>
+<span id="L332"><span class="lineNum">     332</span> <span class="tlaGNC">        9939 :         kernel_ctx.require_stateless_addressing(pd()-&gt;has_large_buffers());</span></span>
+<span id="L333"><span class="lineNum">     333</span> <span class="tlaGNC">        9939 :         set_offsets(kernel_ctx, *pd()-&gt;diff_src_md(), &quot;DATA&quot;);</span></span>
+<span id="L334"><span class="lineNum">     334</span>              : </span>
+<span id="L335"><span class="lineNum">     335</span> <span class="tlaGNC">       39756 :         for (int i = 0; i &lt; 3; i++)</span></span>
+<span id="L336"><span class="lineNum">     336</span> <span class="tlaGNC">       29817 :             kernel_ctx.define_int(utils::format(&quot;BLOCK_%d&quot;, i), pd()-&gt;block[i]);</span></span>
+<span id="L337"><span class="lineNum">     337</span>              : </span>
+<span id="L338"><span class="lineNum">     338</span> <span class="tlaGNC">        9939 :         CHECK(create_kernel(</span></span>
+<span id="L339"><span class="lineNum">     339</span>              :                 engine, &amp;kernel_, &quot;simple_softmax_bwd_generic&quot;, kernel_ctx));</span>
+<span id="L340"><span class="lineNum">     340</span> <span class="tlaGNC">        9939 :         if (!kernel_) return status::runtime_error;</span></span>
+<span id="L341"><span class="lineNum">     341</span>              : </span>
+<span id="L342"><span class="lineNum">     342</span> <span class="tlaGNC">        9939 :         return status::success;</span></span>
+<span id="L343"><span class="lineNum">     343</span>              :     }</span>
+<span id="L344"><span class="lineNum">     344</span>              : </span>
+<span id="L345"><span class="lineNum">     345</span> <span class="tlaGNC">        6700 :     status_t execute(const exec_ctx_t &amp;ctx) const override {</span></span>
+<span id="L346"><span class="lineNum">     346</span> <span class="tlaGNC">        6700 :         return execute_generic(ctx);</span></span>
+<span id="L347"><span class="lineNum">     347</span>              :     }</span>
+<span id="L348"><span class="lineNum">     348</span>              : </span>
+<span id="L349"><span class="lineNum">     349</span>              : protected:</span>
+<span id="L350"><span class="lineNum">     350</span>              :     status_t execute_generic(const exec_ctx_t &amp;ctx) const;</span>
+<span id="L351"><span class="lineNum">     351</span> <span class="tlaGNC">      149247 :     const pd_t *pd() const { return (const pd_t *)primitive_t::pd().get(); }</span></span>
+<span id="L352"><span class="lineNum">     352</span>              :     compute::kernel_t kernel_;</span>
+<span id="L353"><span class="lineNum">     353</span>              : };</span>
+<span id="L354"><span class="lineNum">     354</span>              : </span>
+<span id="L355"><span class="lineNum">     355</span>              : } // namespace softmax</span>
+<span id="L356"><span class="lineNum">     356</span>              : } // namespace intel</span>
+<span id="L357"><span class="lineNum">     357</span>              : } // namespace gpu</span>
+<span id="L358"><span class="lineNum">     358</span>              : } // namespace impl</span>
+<span id="L359"><span class="lineNum">     359</span>              : } // namespace dnnl</span>
+<span id="L360"><span class="lineNum">     360</span>              : </span>
+<span id="L361"><span class="lineNum">     361</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

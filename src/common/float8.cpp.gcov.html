@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/common/float8.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/common">src/common</a> - float8.cpp<span style="font-size: 80%;"> (source / <a href="float8.cpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryHi">93.2&nbsp;%</td>
+            <td class="headerCovTableEntry">118</td>
+            <td class="headerCovTableEntry">110</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">87.5&nbsp;%</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">14</td>
+          </tr>
+                  <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2023 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #include &lt;array&gt;</span>
+<span id="L18"><span class="lineNum">      18</span>              : </span>
+<span id="L19"><span class="lineNum">      19</span>              : #include &quot;common/bit_cast.hpp&quot;</span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &quot;common/dnnl_thread.hpp&quot;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &quot;common/float16.hpp&quot;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &quot;common/float8.hpp&quot;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &quot;common/utils.hpp&quot;</span>
+<span id="L24"><span class="lineNum">      24</span>              : </span>
+<span id="L25"><span class="lineNum">      25</span>              : namespace dnnl {</span>
+<span id="L26"><span class="lineNum">      26</span>              : namespace impl {</span>
+<span id="L27"><span class="lineNum">      27</span>              : </span>
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">     3529836 : float8_e8m0_t &amp;float8_e8m0_t::operator=(float f) {</span></span>
+<span id="L29"><span class="lineNum">      29</span>              :     // we keep exponent bits and discard sign bit.</span>
+<span id="L30"><span class="lineNum">      30</span>              :     // - support only round to zero to simplify conversion.</span>
+<span id="L31"><span class="lineNum">      31</span>              :     // - no infinities in e8m0, so those become NaN essentially</span>
+<span id="L32"><span class="lineNum">      32</span> <span class="tlaGNC">     3529836 :     uint32_t uf = utils::bit_cast&lt;uint32_t&gt;(f);</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">     3529836 :     raw_bits_ = (uf &gt;&gt; 23) &amp; 0xff;</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">     3529836 :     return *this;</span></span>
+<span id="L35"><span class="lineNum">      35</span>              : }</span>
+<span id="L36"><span class="lineNum">      36</span>              : </span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">  3963348096 : float8_e8m0_t::operator float() const {</span></span>
+<span id="L38"><span class="lineNum">      38</span>              :     // no inf, only NaN in e8m0</span>
+<span id="L39"><span class="lineNum">      39</span>              :     // we return Real Indefinite NaN</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">  3963348096 :     if (raw_bits_ == 0xff) return utils::bit_cast&lt;float&gt;(0xffc00000);</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :     // no zero, return subnormal float 2^-127</span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">  3963347766 :     if (raw_bits_ == 0x00) return utils::bit_cast&lt;float&gt;(0x00400000);</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">  3963345408 :     return utils::bit_cast&lt;float&gt;(raw_bits_ &lt;&lt; 23);</span></span>
+<span id="L44"><span class="lineNum">      44</span>              : }</span>
+<span id="L45"><span class="lineNum">      45</span>              : </span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC"> 71324030934 : float8_e5m2_t &amp;float8_e5m2_t::operator=(float16_t f) {</span></span>
+<span id="L47"><span class="lineNum">      47</span>              :     // we just need to apply rounding</span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC"> 71324030934 :     uint16_t fraw = f.raw;</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC"> 71324030934 :     uint16_t naninf_mask = 0x7c00;</span></span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaGNC"> 71324030934 :     bool is_special = (fraw &amp; naninf_mask) == naninf_mask;</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC"> 71324030934 :     bool is_nan = is_special &amp;&amp; (fraw &amp; 0x03ff); // one of the lsb is non zero</span></span>
+<span id="L53"><span class="lineNum">      53</span>              : </span>
+<span id="L54"><span class="lineNum">      54</span>              :     // we always set quiet bit for NaN</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaGNC"> 71324030934 :     if (is_nan) {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaGNC">     1993470 :         raw_bits_ = (fraw &gt;&gt; 8) | 0x02;</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaGNC">     1993470 :         return *this;</span></span>
+<span id="L58"><span class="lineNum">      58</span>              :     }</span>
+<span id="L59"><span class="lineNum">      59</span>              : </span>
+<span id="L60"><span class="lineNum">      60</span>              :     // if infinity, we just return it as is</span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC"> 71322037452 :     if (is_special) {</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaGNC">     5163702 :         raw_bits_ = fraw &gt;&gt; 8;</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">     5163702 :         return *this;</span></span>
+<span id="L64"><span class="lineNum">      64</span>              :     }</span>
+<span id="L65"><span class="lineNum">      65</span>              : </span>
+<span id="L66"><span class="lineNum">      66</span>              :     // otherwise we just round and return</span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC"> 71316873748 :     int16_t rounding_nudge = 0x007f + ((fraw &amp; 0x0100) &gt;&gt; 8);</span></span>
+<span id="L68"><span class="lineNum">      68</span> <span class="tlaGNC"> 71316873748 :     fraw = fraw + rounding_nudge;</span></span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaGNC"> 71316873748 :     raw_bits_ = fraw &gt;&gt; 8;</span></span>
+<span id="L70"><span class="lineNum">      70</span> <span class="tlaGNC"> 71316873748 :     return *this;</span></span>
+<span id="L71"><span class="lineNum">      71</span>              : }</span>
+<span id="L72"><span class="lineNum">      72</span>              : </span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC"> 71323572189 : float8_e5m2_t &amp;float8_e5m2_t::operator=(float f) {</span></span>
+<span id="L74"><span class="lineNum">      74</span> <span class="tlaGNC"> 71323572189 :     float16_t f16 = f;</span></span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC"> 71323572189 :     float8_e5m2_t f8 = f16;</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC"> 71323572189 :     raw_bits_ = f8.raw_bits_;</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC"> 71323572189 :     return *this;</span></span>
+<span id="L78"><span class="lineNum">      78</span>              : }</span>
+<span id="L79"><span class="lineNum">      79</span>              : </span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC"> 78506268092 : float8_e5m2_t::operator float() const {</span></span>
+<span id="L81"><span class="lineNum">      81</span> <span class="tlaGNC"> 78506268092 :     float16_t f16 = *this;</span></span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC"> >15701*10^7 :     return static_cast&lt;float&gt;(f16);</span></span>
+<span id="L83"><span class="lineNum">      83</span>              : }</span>
+<span id="L84"><span class="lineNum">      84</span>              : </span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaGNC"> 78506269877 : float8_e5m2_t::operator float16_t() const {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaGNC"> 78506269877 :     uint16_t snan_mask = 0x7d;</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaGNC"> 78506269877 :     uint16_t qnan_qbit = 0x02;</span></span>
+<span id="L88"><span class="lineNum">      88</span> <span class="tlaGNC"> 78506269877 :     const bool is_snan = (raw_bits_ &amp; snan_mask) == snan_mask;</span></span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaGNC"> 78506269877 :     const uint8_t raw = is_snan ? raw_bits_ | qnan_qbit : raw_bits_;</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaGNC"> 78506269877 :     std::array&lt;uint8_t, 2&gt; iraw = {{0, raw}};</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaGNC"> 78506269877 :     auto f16 = utils::bit_cast&lt;float16_t&gt;(iraw);</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaGNC"> 78506269877 :     return f16;</span></span>
+<span id="L93"><span class="lineNum">      93</span>              : }</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span> <span class="tlaGNC"> >13670*10^7 : float8_e4m3_t &amp;float8_e4m3_t::operator=(float16_t f) {</span></span>
+<span id="L96"><span class="lineNum">      96</span>              :     using namespace utils;</span>
+<span id="L97"><span class="lineNum">      97</span>              :     // Here the idea is to add a large constant to the float16_t to force the</span>
+<span id="L98"><span class="lineNum">      98</span>              :     // proper rounding to f8_e4m3 accuracy.</span>
+<span id="L99"><span class="lineNum">      99</span> <span class="tlaGNC"> >13670*10^7 :     int fraw = f.raw;</span></span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span>              :     // first we extract the sign and make the input positive</span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC"> >13670*10^7 :     unsigned int s8 = (fraw &amp; 0x8000) &gt;&gt; 8;</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC"> >13670*10^7 :     fraw = fraw &amp; 0x7fff;</span></span>
+<span id="L104"><span class="lineNum">     104</span>              : </span>
+<span id="L105"><span class="lineNum">     105</span>              :     // we filter out overflow, nan</span>
+<span id="L106"><span class="lineNum">     106</span>              :     // Note: values in [448;464] round to 448, which is representable</span>
+<span id="L107"><span class="lineNum">     107</span>              :     // So we overflow above 464</span>
+<span id="L108"><span class="lineNum">     108</span> <span class="tlaGNC"> >13670*10^7 :     if (fraw &gt; 0x5f40) {</span></span>
+<span id="L109"><span class="lineNum">     109</span> <span class="tlaGNC"> 28249148640 :         raw_bits_ = s8 | 0x7f;</span></span>
+<span id="L110"><span class="lineNum">     110</span> <span class="tlaGNC"> 28249148640 :         return *this;</span></span>
+<span id="L111"><span class="lineNum">     111</span>              :     }</span>
+<span id="L112"><span class="lineNum">     112</span>              :     // we filter out underflow when f &lt;= 2^-10</span>
+<span id="L113"><span class="lineNum">     113</span> <span class="tlaGNC"> >10845*10^7 :     if (fraw &lt;= 0x1400) {</span></span>
+<span id="L114"><span class="lineNum">     114</span> <span class="tlaGNC"> 34815612948 :         raw_bits_ = s8;</span></span>
+<span id="L115"><span class="lineNum">     115</span> <span class="tlaGNC"> 34815612948 :         return *this;</span></span>
+<span id="L116"><span class="lineNum">     116</span>              :     }</span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span>              :     // Compute the rounding shifter by taking its exponent + 7.</span>
+<span id="L119"><span class="lineNum">     119</span>              :     // Lucky us, it does not overflow as fraw &lt;= 448.</span>
+<span id="L120"><span class="lineNum">     120</span>              :     // This allows to discard 7 bits of mantissa during addition,</span>
+<span id="L121"><span class="lineNum">     121</span>              :     // leaving the remaining 3 bits perfectly rounded.</span>
+<span id="L122"><span class="lineNum">     122</span> <span class="tlaGNC"> 73638491254 :     constexpr bool is_bitcast = true;</span></span>
+<span id="L123"><span class="lineNum">     123</span> <span class="tlaGNC"> 73638491254 :     float16_t shifter((fraw &amp; 0x7c00) + 0x1c00, is_bitcast);</span></span>
+<span id="L124"><span class="lineNum">     124</span>              :     // e8 = e16 - e16_bias + e8_bias = e16 - 15 + 7</span>
+<span id="L125"><span class="lineNum">     125</span>              :     // e8 will be denorm if e8 &lt;= 0 or e16 + 7 &lt; 16</span>
+<span id="L126"><span class="lineNum">     126</span> <span class="tlaGNC"> 73638491254 :     constexpr int exp_threshold = 0x4000; // raw bits of exponent = 16</span></span>
+<span id="L127"><span class="lineNum">     127</span> <span class="tlaGNC"> 73638491254 :     int is_denorm = shifter.raw &lt; exp_threshold;</span></span>
+<span id="L128"><span class="lineNum">     128</span> <span class="tlaGNC"> 73638491254 :     if (is_denorm) shifter.raw = exp_threshold;</span></span>
+<span id="L129"><span class="lineNum">     129</span>              : </span>
+<span id="L130"><span class="lineNum">     130</span> <span class="tlaGNC"> 73638491254 :     float16_t rounded = (float16_t(fraw, is_bitcast) + shifter);</span></span>
+<span id="L131"><span class="lineNum">     131</span>              :     // separate line to force line above to round to f16</span>
+<span id="L132"><span class="lineNum">     132</span> <span class="tlaGNC"> 73638491254 :     rounded = rounded - shifter;</span></span>
+<span id="L133"><span class="lineNum">     133</span>              : </span>
+<span id="L134"><span class="lineNum">     134</span> <span class="tlaGNC"> 73638491254 :     int e8 = ((rounded.raw &amp; 0x7c00) &gt;&gt; 10) - 8;</span></span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC"> 73638491254 :     uint8_t m8 = (rounded.raw &amp; 0x03ff) &gt;&gt; 7;</span></span>
+<span id="L136"><span class="lineNum">     136</span>              : </span>
+<span id="L137"><span class="lineNum">     137</span>              :     // we need to make the implicit f32 mantissa bit explicit for</span>
+<span id="L138"><span class="lineNum">     138</span>              :     // denorm f8_e4m3</span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaGNC"> 73638491254 :     if (is_denorm) {</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaGNC">   941531582 :         m8 = (m8 | 0x00000008) &gt;&gt; (-e8 + 1);</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaGNC">   941531582 :         e8 = 0;</span></span>
+<span id="L142"><span class="lineNum">     142</span>              :     }</span>
+<span id="L143"><span class="lineNum">     143</span>              : </span>
+<span id="L144"><span class="lineNum">     144</span> <span class="tlaGNC"> 73638491254 :     raw_bits_ = s8 | (e8 &lt;&lt; 3) | m8;</span></span>
+<span id="L145"><span class="lineNum">     145</span> <span class="tlaGNC"> 73638491254 :     return *this;</span></span>
+<span id="L146"><span class="lineNum">     146</span>              : }</span>
+<span id="L147"><span class="lineNum">     147</span>              : </span>
+<span id="L148"><span class="lineNum">     148</span> <span class="tlaGNC"> >10663*10^7 : float8_e4m3_t &amp;float8_e4m3_t::operator=(float f) {</span></span>
+<span id="L149"><span class="lineNum">     149</span> <span class="tlaGNC"> >10663*10^7 :     float16_t f16 = f;</span></span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC"> >10663*10^7 :     float8_e4m3_t f8 = f16;</span></span>
+<span id="L151"><span class="lineNum">     151</span> <span class="tlaGNC"> >10663*10^7 :     raw_bits_ = f8.raw_bits_;</span></span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaGNC"> >10663*10^7 :     return *this;</span></span>
+<span id="L153"><span class="lineNum">     153</span>              : }</span>
+<span id="L154"><span class="lineNum">     154</span>              : </span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaGNC"> >21783*10^7 : float8_e4m3_t::operator float() const {</span></span>
+<span id="L156"><span class="lineNum">     156</span> <span class="tlaGNC"> >21783*10^7 :     float16_t f16 = *this;</span></span>
+<span id="L157"><span class="lineNum">     157</span> <span class="tlaGNC"> >43567*10^7 :     return static_cast&lt;float&gt;(f16);</span></span>
+<span id="L158"><span class="lineNum">     158</span>              : }</span>
+<span id="L159"><span class="lineNum">     159</span>              : </span>
+<span id="L160"><span class="lineNum">     160</span> <span class="tlaGNC"> >21783*10^7 : float8_e4m3_t::operator float16_t() const {</span></span>
+<span id="L161"><span class="lineNum">     161</span> <span class="tlaGNC"> >21783*10^7 :     const uint16_t s8 = (raw_bits_ &amp; 0x80) &gt;&gt; 7;</span></span>
+<span id="L162"><span class="lineNum">     162</span> <span class="tlaGNC"> >21783*10^7 :     const uint16_t e8 = (raw_bits_ &amp; 0x78) &gt;&gt; 3;</span></span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC"> >21783*10^7 :     const uint16_t m8 = (raw_bits_ &amp; 0x7);</span></span>
+<span id="L164"><span class="lineNum">     164</span> <span class="tlaGNC"> >21783*10^7 :     uint16_t s16 = s8;</span></span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaGNC"> >21783*10^7 :     uint16_t e16 = e8 + 8; // 8 = 15 - 7 = f16_bias - f8_e4m3_bias</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaGNC"> >21783*10^7 :     uint16_t m16 = m8;</span></span>
+<span id="L167"><span class="lineNum">     167</span>              : </span>
+<span id="L168"><span class="lineNum">     168</span>              :     // Need to convert f8_e4m3 denormal into f16 normal.</span>
+<span id="L169"><span class="lineNum">     169</span> <span class="tlaGNC"> >21783*10^7 :     if (e8 == 0 &amp;&amp; m8 != 0) {</span></span>
+<span id="L170"><span class="lineNum">     170</span> <span class="tlaGNC">     3734914 :         uint16_t count = 2;</span></span>
+<span id="L171"><span class="lineNum">     171</span> <span class="tlaGNC">     3734914 :         count = m8 &gt; 0x1 ? 1 : count;</span></span>
+<span id="L172"><span class="lineNum">     172</span> <span class="tlaGNC">     3734914 :         count = m8 &gt; 0x3 ? 0 : count;</span></span>
+<span id="L173"><span class="lineNum">     173</span> <span class="tlaGNC">     3734914 :         e16 -= count;</span></span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">     3734914 :         m16 = (m16 &lt;&lt; (count + 1)) &amp; 0x7;</span></span>
+<span id="L175"><span class="lineNum">     175</span> <span class="tlaGNC"> >21783*10^7 :     } else if (e8 == 0 &amp;&amp; m8 == 0) {</span></span>
+<span id="L176"><span class="lineNum">     176</span>              :         // set correct exponent for zero</span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaGNC"> 52991243055 :         e16 = 0;</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaGNC"> >16484*10^7 :     } else if (e8 == 0xf &amp;&amp; m8 == 0x7) {</span></span>
+<span id="L179"><span class="lineNum">     179</span>              :         // set correct exponent and mantissa for NaN input</span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaGNC">    21431621 :         e16 = 0x1f;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaGNC">    21431621 :         m16 = 0x4; // Real Indefinite (a qNaN)</span></span>
+<span id="L182"><span class="lineNum">     182</span>              :     }</span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaGNC"> >21783*10^7 :     s16 &lt;&lt;= 15;</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaGNC"> >21783*10^7 :     e16 &lt;&lt;= 10;</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaGNC"> >21783*10^7 :     m16 &lt;&lt;= 7;</span></span>
+<span id="L186"><span class="lineNum">     186</span>              : </span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaGNC"> >21783*10^7 :     const uint16_t u16 = s16 | e16 | m16;</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaGNC"> >21783*10^7 :     return utils::bit_cast&lt;float16_t&gt;(u16);</span></span>
+<span id="L189"><span class="lineNum">     189</span>              : }</span>
+<span id="L190"><span class="lineNum">     190</span>              : </span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaGNC">    79462200 : void cvt_f8_e5m2_to_float(float *out, const float8_e5m2_t *inp, size_t nelems) {</span></span>
+<span id="L192"><span class="lineNum">     192</span>              : </span>
+<span id="L193"><span class="lineNum">     193</span>              :     // TODO: implement and use jit conversion kernel for DNNL_X64</span>
+<span id="L194"><span class="lineNum">     194</span>              : </span>
+<span id="L195"><span class="lineNum">     195</span> <span class="tlaGNC">    79462200 :     PRAGMA_OMP_SIMD()</span></span>
+<span id="L196"><span class="lineNum">     196</span>              :     for (size_t i = 0; i &lt; nelems; ++i)</span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaGNC">  2367270000 :         out[i] = inp[i];</span></span>
+<span id="L198"><span class="lineNum">     198</span> <span class="tlaGNC">    79462200 : }</span></span>
+<span id="L199"><span class="lineNum">     199</span>              : </span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">    79462200 : void cvt_f8_e4m3_to_float(float *out, const float8_e4m3_t *inp, size_t nelems) {</span></span>
+<span id="L201"><span class="lineNum">     201</span>              : </span>
+<span id="L202"><span class="lineNum">     202</span>              :     // TODO: implement and use jit conversion kernel for DNNL_X64</span>
+<span id="L203"><span class="lineNum">     203</span>              : </span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">    79462200 :     PRAGMA_OMP_SIMD()</span></span>
+<span id="L205"><span class="lineNum">     205</span>              :     for (size_t i = 0; i &lt; nelems; ++i)</span>
+<span id="L206"><span class="lineNum">     206</span> <span class="tlaGNC">  2367270000 :         out[i] = inp[i];</span></span>
+<span id="L207"><span class="lineNum">     207</span> <span class="tlaGNC">    79462200 : }</span></span>
+<span id="L208"><span class="lineNum">     208</span>              : </span>
+<span id="L209"><span class="lineNum">     209</span> <span class="tlaGNC">     2528400 : void cvt_float_to_f8_e5m2(float8_e5m2_t *out, const float *inp, size_t nelems) {</span></span>
+<span id="L210"><span class="lineNum">     210</span>              : </span>
+<span id="L211"><span class="lineNum">     211</span>              :     // TODO: implement and use jit conversion kernel for DNNL_X64</span>
+<span id="L212"><span class="lineNum">     212</span>              : </span>
+<span id="L213"><span class="lineNum">     213</span> <span class="tlaGNC">     2528400 :     PRAGMA_OMP_SIMD()</span></span>
+<span id="L214"><span class="lineNum">     214</span>              :     for (size_t i = 0; i &lt; nelems; ++i)</span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">    78208200 :         out[i] = static_cast&lt;float8_e5m2_t&gt;(inp[i]);</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">     2528400 : }</span></span>
+<span id="L217"><span class="lineNum">     217</span>              : </span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">     2528400 : void cvt_float_to_f8_e4m3(float8_e4m3_t *out, const float *inp, size_t nelems) {</span></span>
+<span id="L219"><span class="lineNum">     219</span>              : </span>
+<span id="L220"><span class="lineNum">     220</span>              :     // TODO: implement and use jit conversion kernel for DNNL_X64</span>
+<span id="L221"><span class="lineNum">     221</span>              : </span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">     2528400 :     PRAGMA_OMP_SIMD()</span></span>
+<span id="L223"><span class="lineNum">     223</span>              :     for (size_t i = 0; i &lt; nelems; ++i)</span>
+<span id="L224"><span class="lineNum">     224</span> <span class="tlaGNC">    78208200 :         out[i] = static_cast&lt;float8_e4m3_t&gt;(inp[i]);</span></span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">     2528400 : }</span></span>
+<span id="L226"><span class="lineNum">     226</span>              : </span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaUNC">           0 : void add_floats_and_cvt_to_f8_e5m2(float8_e5m2_t *out, const float *inp0,</span></span>
+<span id="L228"><span class="lineNum">     228</span>              :         const float *inp1, size_t nelems) {</span>
+<span id="L229"><span class="lineNum">     229</span>              : </span>
+<span id="L230"><span class="lineNum">     230</span>              :     // TODO: implement and use jit conversion kernel for DNNL_X64</span>
+<span id="L231"><span class="lineNum">     231</span>              : </span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaUNC">           0 :     PRAGMA_OMP_SIMD()</span></span>
+<span id="L233"><span class="lineNum">     233</span>              :     for (size_t i = 0; i &lt; nelems; ++i)</span>
+<span id="L234"><span class="lineNum">     234</span> <span class="tlaUNC">           0 :         out[i] = static_cast&lt;float8_e5m2_t&gt;(inp0[i] + inp1[i]);</span></span>
+<span id="L235"><span class="lineNum">     235</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L236"><span class="lineNum">     236</span>              : </span>
+<span id="L237"><span class="lineNum">     237</span> <span class="tlaUNC">           0 : void add_floats_and_cvt_to_f8_e4m3(float8_e4m3_t *out, const float *inp0,</span></span>
+<span id="L238"><span class="lineNum">     238</span>              :         const float *inp1, size_t nelems) {</span>
+<span id="L239"><span class="lineNum">     239</span>              : </span>
+<span id="L240"><span class="lineNum">     240</span>              :     // TODO: implement and use jit conversion kernel for DNNL_X64</span>
+<span id="L241"><span class="lineNum">     241</span>              : </span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaUNC">           0 :     PRAGMA_OMP_SIMD()</span></span>
+<span id="L243"><span class="lineNum">     243</span>              :     for (size_t i = 0; i &lt; nelems; ++i)</span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaUNC">           0 :         out[i] = static_cast&lt;float8_e4m3_t&gt;(inp0[i] + inp1[i]);</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaUNC">           0 : }</span></span>
+<span id="L246"><span class="lineNum">     246</span>              : </span>
+<span id="L247"><span class="lineNum">     247</span>              : } // namespace impl</span>
+<span id="L248"><span class="lineNum">     248</span>              : } // namespace dnnl</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>

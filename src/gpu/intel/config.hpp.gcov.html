@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - total.info - src/gpu/intel/config.hpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="title">LCOV - code coverage report</td></tr>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+            <tr>
+              <td width="100%">
+                <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="10%" class="headerValue"><a href="../../../index.html" title="Click to go to top-level">top level</a> - <a href="index.html" title="Click to go to directory src/gpu/intel">src/gpu/intel</a> - config.hpp<span style="font-size: 80%;"> (source / <a href="config.hpp.func-c.html" title="Click to go to function table">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="5%"></td>
+            <td width="5%" class="headerCovTableHead">Coverage</td>
+            <td width="5%" class="headerCovTableHead" title="Covered + Uncovered code">Total</td>
+            <td width="5%" class="headerCovTableHead" title="Exercised code only">Hit</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">total.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntryLo">47.1&nbsp;%</td>
+            <td class="headerCovTableEntry">121</td>
+            <td class="headerCovTableEntry">57</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test Date:</td>
+            <td class="headerValue">2026-03-17 09:37:44</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntryMed">82.5&nbsp;%</td>
+            <td class="headerCovTableEntry">63</td>
+            <td class="headerCovTableEntry">52</td>
+          </tr>
+                  <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+          </table>
+
+          <table cellpadding=0 cellspacing=0 border=0>
+            <tr>
+              <td><br></td>
+            </tr>
+            <tr>
+              <td>
+<pre class="sourceHeading">            Line data    Source code</pre>
+<pre class="source">
+<span id="L1"><span class="lineNum">       1</span>              : /*******************************************************************************</span>
+<span id="L2"><span class="lineNum">       2</span>              : * Copyright 2023 Intel Corporation</span>
+<span id="L3"><span class="lineNum">       3</span>              : *</span>
+<span id="L4"><span class="lineNum">       4</span>              : * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span id="L5"><span class="lineNum">       5</span>              : * you may not use this file except in compliance with the License.</span>
+<span id="L6"><span class="lineNum">       6</span>              : * You may obtain a copy of the License at</span>
+<span id="L7"><span class="lineNum">       7</span>              : *</span>
+<span id="L8"><span class="lineNum">       8</span>              : *     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span id="L9"><span class="lineNum">       9</span>              : *</span>
+<span id="L10"><span class="lineNum">      10</span>              : * Unless required by applicable law or agreed to in writing, software</span>
+<span id="L11"><span class="lineNum">      11</span>              : * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span id="L12"><span class="lineNum">      12</span>              : * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span id="L13"><span class="lineNum">      13</span>              : * See the License for the specific language governing permissions and</span>
+<span id="L14"><span class="lineNum">      14</span>              : * limitations under the License.</span>
+<span id="L15"><span class="lineNum">      15</span>              : *******************************************************************************/</span>
+<span id="L16"><span class="lineNum">      16</span>              : </span>
+<span id="L17"><span class="lineNum">      17</span>              : #ifndef GPU_INTEL_CONFIG_HPP</span>
+<span id="L18"><span class="lineNum">      18</span>              : #define GPU_INTEL_CONFIG_HPP</span>
+<span id="L19"><span class="lineNum">      19</span>              : </span>
+<span id="L20"><span class="lineNum">      20</span>              : #include &lt;algorithm&gt;</span>
+<span id="L21"><span class="lineNum">      21</span>              : #include &lt;functional&gt;</span>
+<span id="L22"><span class="lineNum">      22</span>              : #include &lt;iostream&gt;</span>
+<span id="L23"><span class="lineNum">      23</span>              : #include &lt;sstream&gt;</span>
+<span id="L24"><span class="lineNum">      24</span>              : #include &lt;vector&gt;</span>
+<span id="L25"><span class="lineNum">      25</span>              : #include &lt;unordered_map&gt;</span>
+<span id="L26"><span class="lineNum">      26</span>              : </span>
+<span id="L27"><span class="lineNum">      27</span>              : #include &quot;gpu/intel/utils.hpp&quot;</span>
+<span id="L28"><span class="lineNum">      28</span>              : </span>
+<span id="L29"><span class="lineNum">      29</span>              : namespace dnnl {</span>
+<span id="L30"><span class="lineNum">      30</span>              : namespace impl {</span>
+<span id="L31"><span class="lineNum">      31</span>              : namespace gpu {</span>
+<span id="L32"><span class="lineNum">      32</span>              : namespace intel {</span>
+<span id="L33"><span class="lineNum">      33</span>              : </span>
+<span id="L34"><span class="lineNum">      34</span>              : class param_t {</span>
+<span id="L35"><span class="lineNum">      35</span>              : public:</span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">    33914993 :     virtual ~param_t() = default;</span></span>
+<span id="L37"><span class="lineNum">      37</span>              :     virtual std::string name() const = 0;</span>
+<span id="L38"><span class="lineNum">      38</span> <span class="tlaGNC">     1610246 :     virtual std::string short_name() const { return name(); }</span></span>
+<span id="L39"><span class="lineNum">      39</span>              :     virtual std::string desc() const = 0;</span>
+<span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">  1719692196 :     virtual bool is_undef() const { return false; }</span></span>
+<span id="L41"><span class="lineNum">      41</span>              :     virtual bool is_overridable() const = 0;</span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">          80 :     virtual std::vector&lt;std::string&gt; accepted_keys() const {</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">         160 :         return std::vector&lt;std::string&gt;({short_name()});</span></span>
+<span id="L44"><span class="lineNum">      44</span>              :     }</span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          80 :     bool accepts_key(const std::string &amp;key) const {</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">          80 :         auto keys = accepted_keys();</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          80 :         auto it = std::find(keys.begin(), keys.end(), key);</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">         160 :         return it != keys.end();</span></span>
+<span id="L49"><span class="lineNum">      49</span>              :     }</span>
+<span id="L50"><span class="lineNum">      50</span>              : </span>
+<span id="L51"><span class="lineNum">      51</span> <span class="tlaUNC">           0 :     virtual bool is_default() const {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaUNC">           0 :         gpu_error_not_expected() &lt;&lt; name();</span></span>
+<span id="L53"><span class="lineNum">      53</span> <span class="tlaUNC">           0 :         return false;</span></span>
+<span id="L54"><span class="lineNum">      54</span>              :     }</span>
+<span id="L55"><span class="lineNum">      55</span> <span class="tlaUNC">           0 :     virtual bool is_default(const std::string &amp;key) const {</span></span>
+<span id="L56"><span class="lineNum">      56</span> <span class="tlaUNC">           0 :         if (key == short_name()) return is_default();</span></span>
+<span id="L57"><span class="lineNum">      57</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L58"><span class="lineNum">      58</span> <span class="tlaUNC">           0 :         return false;</span></span>
+<span id="L59"><span class="lineNum">      59</span>              :     }</span>
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaUNC">           0 :     virtual void set_from_str(const std::string &amp;s) {</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L62"><span class="lineNum">      62</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L63"><span class="lineNum">      63</span> <span class="tlaGNC">          25 :     virtual void set_from_str(</span></span>
+<span id="L64"><span class="lineNum">      64</span>              :             const std::string &amp;key, const std::string &amp;value) {</span>
+<span id="L65"><span class="lineNum">      65</span> <span class="tlaGNC">          25 :         if (key == short_name()) {</span></span>
+<span id="L66"><span class="lineNum">      66</span> <span class="tlaGNC">          25 :             set_from_str(value);</span></span>
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          25 :             return;</span></span>
+<span id="L68"><span class="lineNum">      68</span>              :         }</span>
+<span id="L69"><span class="lineNum">      69</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L70"><span class="lineNum">      70</span>              :     }</span>
+<span id="L71"><span class="lineNum">      71</span> <span class="tlaGNC">          25 :     void override_set(</span></span>
+<span id="L72"><span class="lineNum">      72</span>              :             const std::string &amp;key, const std::string &amp;value, bool is_env) {</span>
+<span id="L73"><span class="lineNum">      73</span> <span class="tlaGNC">          25 :         key_states_[key] = is_env ? key_state_t::env_overridden</span></span>
+<span id="L74"><span class="lineNum">      74</span>              :                                   : key_state_t::overridden;</span>
+<span id="L75"><span class="lineNum">      75</span> <span class="tlaGNC">          25 :         set_from_str(key, value);</span></span>
+<span id="L76"><span class="lineNum">      76</span> <span class="tlaGNC">          25 :     }</span></span>
+<span id="L77"><span class="lineNum">      77</span> <span class="tlaGNC">     6502540 :     bool is_overridden() const { return is_overridden(short_name()); }</span></span>
+<span id="L78"><span class="lineNum">      78</span> <span class="tlaGNC">      734238 :     bool is_env_overridden() const { return is_env_overridden(short_name()); }</span></span>
+<span id="L79"><span class="lineNum">      79</span> <span class="tlaGNC">     7714832 :     bool is_overridden(const std::string &amp;key) const {</span></span>
+<span id="L80"><span class="lineNum">      80</span> <span class="tlaGNC">     7714832 :         return is_overridden_impl(key, /*only_env=*/false);</span></span>
+<span id="L81"><span class="lineNum">      81</span>              :     }</span>
+<span id="L82"><span class="lineNum">      82</span> <span class="tlaGNC">      734238 :     bool is_env_overridden(const std::string &amp;key) const {</span></span>
+<span id="L83"><span class="lineNum">      83</span> <span class="tlaGNC">      734238 :         return is_overridden_impl(key, /*only_env=*/true);</span></span>
+<span id="L84"><span class="lineNum">      84</span>              :     }</span>
+<span id="L85"><span class="lineNum">      85</span> <span class="tlaUNC">           0 :     virtual std::string str() const {</span></span>
+<span id="L86"><span class="lineNum">      86</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L87"><span class="lineNum">      87</span> <span class="tlaUNC">           0 :         return std::string();</span></span>
+<span id="L88"><span class="lineNum">      88</span>              :     }</span>
+<span id="L89"><span class="lineNum">      89</span> <span class="tlaUNC">           0 :     virtual std::string str(const std::string &amp;key) const {</span></span>
+<span id="L90"><span class="lineNum">      90</span> <span class="tlaUNC">           0 :         if (key == short_name()) return str();</span></span>
+<span id="L91"><span class="lineNum">      91</span> <span class="tlaUNC">           0 :         gpu_error_not_expected();</span></span>
+<span id="L92"><span class="lineNum">      92</span> <span class="tlaUNC">           0 :         return std::string();</span></span>
+<span id="L93"><span class="lineNum">      93</span>              :     }</span>
+<span id="L94"><span class="lineNum">      94</span>              : </span>
+<span id="L95"><span class="lineNum">      95</span>              : private:</span>
+<span id="L96"><span class="lineNum">      96</span>              :     enum class key_state_t {</span>
+<span id="L97"><span class="lineNum">      97</span>              :         overridden,</span>
+<span id="L98"><span class="lineNum">      98</span>              :         env_overridden,</span>
+<span id="L99"><span class="lineNum">      99</span>              :     };</span>
+<span id="L100"><span class="lineNum">     100</span>              : </span>
+<span id="L101"><span class="lineNum">     101</span> <span class="tlaGNC">     8449069 :     bool is_overridden_impl(const std::string &amp;key, bool only_env) const {</span></span>
+<span id="L102"><span class="lineNum">     102</span> <span class="tlaGNC">     8449069 :         auto it = key_states_.find(key);</span></span>
+<span id="L103"><span class="lineNum">     103</span> <span class="tlaGNC">     8449069 :         if (it == key_states_.end()) return false;</span></span>
+<span id="L104"><span class="lineNum">     104</span> <span class="tlaGNC">          55 :         if (only_env) return it-&gt;second == key_state_t::env_overridden;</span></span>
+<span id="L105"><span class="lineNum">     105</span> <span class="tlaGNC">          55 :         return utils::one_of(it-&gt;second, key_state_t::overridden,</span></span>
+<span id="L106"><span class="lineNum">     106</span> <span class="tlaGNC">          55 :                 key_state_t::env_overridden);</span></span>
+<span id="L107"><span class="lineNum">     107</span>              :     }</span>
+<span id="L108"><span class="lineNum">     108</span>              : </span>
+<span id="L109"><span class="lineNum">     109</span>              :     std::unordered_map&lt;std::string, key_state_t&gt; key_states_;</span>
+<span id="L110"><span class="lineNum">     110</span>              : };</span>
+<span id="L111"><span class="lineNum">     111</span>              : </span>
+<span id="L112"><span class="lineNum">     112</span>              : template &lt;typename T&gt;</span>
+<span id="L113"><span class="lineNum">     113</span>              : class value_param_t : public param_t {</span>
+<span id="L114"><span class="lineNum">     114</span>              : public:</span>
+<span id="L115"><span class="lineNum">     115</span>              :     using value_t = T;</span>
+<span id="L116"><span class="lineNum">     116</span>              :     using param_t::is_overridden;</span>
+<span id="L117"><span class="lineNum">     117</span>              : </span>
+<span id="L118"><span class="lineNum">     118</span> <span class="tlaGNC">     3721639 :     value_param_t() = default;</span></span>
+<span id="L119"><span class="lineNum">     119</span> <span class="tlaGNC">     2119193 :     value_param_t(const T &amp;value) : value_(value) {}</span></span>
+<span id="L120"><span class="lineNum">     120</span>              : </span>
+<span id="L121"><span class="lineNum">     121</span> <span class="tlaGNC">  1222717079 :     const T &amp;get() const { return value_; }</span></span>
+<span id="L122"><span class="lineNum">     122</span>              : </span>
+<span id="L123"><span class="lineNum">     123</span>              :     operator const T &amp;() const { return get(); }</span>
+<span id="L124"><span class="lineNum">     124</span>              : </span>
+<span id="L125"><span class="lineNum">     125</span> <span class="tlaGNC">     5542936 :     void set(const T &amp;value) { value_ = value; }</span></span>
+<span id="L126"><span class="lineNum">     126</span>              : </span>
+<span id="L127"><span class="lineNum">     127</span>              : protected:</span>
+<span id="L128"><span class="lineNum">     128</span>              :     T value_;</span>
+<span id="L129"><span class="lineNum">     129</span>              : };</span>
+<span id="L130"><span class="lineNum">     130</span>              : </span>
+<span id="L131"><span class="lineNum">     131</span>              : class bool_param_t : public value_param_t&lt;bool&gt; {</span>
+<span id="L132"><span class="lineNum">     132</span>              : public:</span>
+<span id="L133"><span class="lineNum">     133</span>              :     using value_param_t::value_param_t;</span>
+<span id="L134"><span class="lineNum">     134</span>              : </span>
+<span id="L135"><span class="lineNum">     135</span> <span class="tlaGNC">           5 :     void set_from_str(const std::string &amp;s) override {</span></span>
+<span id="L136"><span class="lineNum">     136</span> <span class="tlaGNC">           5 :         value_ = gpu_utils::to_bool(s);</span></span>
+<span id="L137"><span class="lineNum">     137</span> <span class="tlaGNC">           5 :     }</span></span>
+<span id="L138"><span class="lineNum">     138</span>              : </span>
+<span id="L139"><span class="lineNum">     139</span> <span class="tlaUNC">           0 :     std::string str() const override {</span></span>
+<span id="L140"><span class="lineNum">     140</span> <span class="tlaUNC">           0 :         ostringstream_t oss;</span></span>
+<span id="L141"><span class="lineNum">     141</span> <span class="tlaUNC">           0 :         oss &lt;&lt; short_name() &lt;&lt; &quot;=&quot; &lt;&lt; (int)value_;</span></span>
+<span id="L142"><span class="lineNum">     142</span> <span class="tlaUNC">           0 :         return oss.str();</span></span>
+<span id="L143"><span class="lineNum">     143</span>              :     }</span>
+<span id="L144"><span class="lineNum">     144</span>              : };</span>
+<span id="L145"><span class="lineNum">     145</span>              : </span>
+<span id="L146"><span class="lineNum">     146</span>              : class int_param_t : public value_param_t&lt;int&gt; {</span>
+<span id="L147"><span class="lineNum">     147</span>              : public:</span>
+<span id="L148"><span class="lineNum">     148</span>              :     using value_param_t::value_param_t;</span>
+<span id="L149"><span class="lineNum">     149</span>              : </span>
+<span id="L150"><span class="lineNum">     150</span> <span class="tlaGNC">          15 :     void set_from_str(const std::string &amp;s) override { value_ = std::stoi(s); }</span></span>
+<span id="L151"><span class="lineNum">     151</span>              : </span>
+<span id="L152"><span class="lineNum">     152</span> <span class="tlaUNC">           0 :     std::string str() const override {</span></span>
+<span id="L153"><span class="lineNum">     153</span> <span class="tlaUNC">           0 :         ostringstream_t oss;</span></span>
+<span id="L154"><span class="lineNum">     154</span> <span class="tlaUNC">           0 :         oss &lt;&lt; short_name() &lt;&lt; &quot;=&quot; &lt;&lt; value_;</span></span>
+<span id="L155"><span class="lineNum">     155</span> <span class="tlaUNC">           0 :         return oss.str();</span></span>
+<span id="L156"><span class="lineNum">     156</span>              :     }</span>
+<span id="L157"><span class="lineNum">     157</span>              : };</span>
+<span id="L158"><span class="lineNum">     158</span>              : </span>
+<span id="L159"><span class="lineNum">     159</span>              : class dim_param_t : public value_param_t&lt;dim_t&gt; {</span>
+<span id="L160"><span class="lineNum">     160</span>              : public:</span>
+<span id="L161"><span class="lineNum">     161</span>              :     using value_param_t::value_param_t;</span>
+<span id="L162"><span class="lineNum">     162</span>              : </span>
+<span id="L163"><span class="lineNum">     163</span> <span class="tlaGNC">           5 :     void set_from_str(const std::string &amp;s) override { value_ = std::stoll(s); }</span></span>
+<span id="L164"><span class="lineNum">     164</span>              : </span>
+<span id="L165"><span class="lineNum">     165</span> <span class="tlaUNC">           0 :     std::string str() const override {</span></span>
+<span id="L166"><span class="lineNum">     166</span> <span class="tlaUNC">           0 :         ostringstream_t oss;</span></span>
+<span id="L167"><span class="lineNum">     167</span> <span class="tlaUNC">           0 :         oss &lt;&lt; short_name() &lt;&lt; &quot;=&quot; &lt;&lt; value_;</span></span>
+<span id="L168"><span class="lineNum">     168</span> <span class="tlaUNC">           0 :         return oss.str();</span></span>
+<span id="L169"><span class="lineNum">     169</span>              :     }</span>
+<span id="L170"><span class="lineNum">     170</span>              : };</span>
+<span id="L171"><span class="lineNum">     171</span>              : </span>
+<span id="L172"><span class="lineNum">     172</span>              : class container_config_t {</span>
+<span id="L173"><span class="lineNum">     173</span>              : public:</span>
+<span id="L174"><span class="lineNum">     174</span> <span class="tlaGNC">     1926230 :     virtual ~container_config_t() = default;</span></span>
+<span id="L175"><span class="lineNum">     175</span>              :     virtual std::string str() const = 0;</span>
+<span id="L176"><span class="lineNum">     176</span>              : </span>
+<span id="L177"><span class="lineNum">     177</span> <span class="tlaUNC">           0 :     virtual void override_set(const std::string &amp;s, bool is_env) {</span></span>
+<span id="L178"><span class="lineNum">     178</span> <span class="tlaUNC">           0 :         auto params = get_all_params();</span></span>
+<span id="L179"><span class="lineNum">     179</span> <span class="tlaUNC">           0 :         auto parts = gpu_utils::split(s);</span></span>
+<span id="L180"><span class="lineNum">     180</span> <span class="tlaUNC">           0 :         const std::string sep = &quot;=&quot;;</span></span>
+<span id="L181"><span class="lineNum">     181</span> <span class="tlaUNC">           0 :         for (auto &amp;p : parts) {</span></span>
+<span id="L182"><span class="lineNum">     182</span> <span class="tlaUNC">           0 :             if (p.empty()) continue;</span></span>
+<span id="L183"><span class="lineNum">     183</span> <span class="tlaUNC">           0 :             auto sub_parts = gpu_utils::split(p, sep);</span></span>
+<span id="L184"><span class="lineNum">     184</span> <span class="tlaUNC">           0 :             gpu_assert(sub_parts.size() == 2);</span></span>
+<span id="L185"><span class="lineNum">     185</span> <span class="tlaUNC">           0 :             auto &amp;key = sub_parts[0];</span></span>
+<span id="L186"><span class="lineNum">     186</span> <span class="tlaUNC">           0 :             auto &amp;value = sub_parts[1];</span></span>
+<span id="L187"><span class="lineNum">     187</span> <span class="tlaUNC">           0 :             bool found = false;</span></span>
+<span id="L188"><span class="lineNum">     188</span> <span class="tlaUNC">           0 :             for (auto *p : params) {</span></span>
+<span id="L189"><span class="lineNum">     189</span> <span class="tlaUNC">           0 :                 if (p-&gt;accepts_key(key)) {</span></span>
+<span id="L190"><span class="lineNum">     190</span> <span class="tlaUNC">           0 :                     p-&gt;override_set(key, value, is_env);</span></span>
+<span id="L191"><span class="lineNum">     191</span> <span class="tlaUNC">           0 :                     found = true;</span></span>
+<span id="L192"><span class="lineNum">     192</span> <span class="tlaUNC">           0 :                     break;</span></span>
+<span id="L193"><span class="lineNum">     193</span>              :                 }</span>
+<span id="L194"><span class="lineNum">     194</span>              :             }</span>
+<span id="L195"><span class="lineNum">     195</span>              :             // TODO: Get access to ir_info() and ir_warning() to use in</span>
+<span id="L196"><span class="lineNum">     196</span>              :             // case of overriden/unknown parameters.</span>
+<span id="L197"><span class="lineNum">     197</span> <span class="tlaUNC">           0 :             gpu_assert(found) &lt;&lt; &quot;Unknown parameter&quot;;</span></span>
+<span id="L198"><span class="lineNum">     198</span>              :         }</span>
+<span id="L199"><span class="lineNum">     199</span> <span class="tlaUNC">           0 :     }</span></span>
+<span id="L200"><span class="lineNum">     200</span>              : </span>
+<span id="L201"><span class="lineNum">     201</span>              :     virtual int sort_key(const param_t *param) const = 0;</span>
+<span id="L202"><span class="lineNum">     202</span>              : </span>
+<span id="L203"><span class="lineNum">     203</span>              : protected:</span>
+<span id="L204"><span class="lineNum">     204</span>              :     std::vector&lt;std::function&lt;const param_t *(const container_config_t *)&gt;&gt;</span>
+<span id="L205"><span class="lineNum">     205</span>              :             get_params_;</span>
+<span id="L206"><span class="lineNum">     206</span>              : </span>
+<span id="L207"><span class="lineNum">     207</span>              :     struct param_init_t {};</span>
+<span id="L208"><span class="lineNum">     208</span> <span class="tlaGNC">    13474351 :     param_init_t register_param(</span></span>
+<span id="L209"><span class="lineNum">     209</span>              :             std::function&lt;const param_t *(const container_config_t *)&gt; f) {</span>
+<span id="L210"><span class="lineNum">     210</span> <span class="tlaGNC">    13474351 :         get_params_.emplace_back(std::move(f));</span></span>
+<span id="L211"><span class="lineNum">     211</span> <span class="tlaGNC">    13474351 :         return param_init_t();</span></span>
+<span id="L212"><span class="lineNum">     212</span>              :     }</span>
+<span id="L213"><span class="lineNum">     213</span>              : </span>
+<span id="L214"><span class="lineNum">     214</span> <span class="tlaGNC">           5 :     std::vector&lt;param_t *&gt; get_all_params(bool do_sort = false) {</span></span>
+<span id="L215"><span class="lineNum">     215</span> <span class="tlaGNC">           5 :         auto *this_const = const_cast&lt;const container_config_t *&gt;(this);</span></span>
+<span id="L216"><span class="lineNum">     216</span> <span class="tlaGNC">          10 :         const auto &amp;all_params = this_const-&gt;get_all_params(do_sort);</span></span>
+<span id="L217"><span class="lineNum">     217</span> <span class="tlaGNC">           5 :         std::vector&lt;param_t *&gt; ret;</span></span>
+<span id="L218"><span class="lineNum">     218</span> <span class="tlaGNC">           5 :         ret.reserve(all_params.size());</span></span>
+<span id="L219"><span class="lineNum">     219</span> <span class="tlaGNC">          35 :         for (auto *p : all_params) {</span></span>
+<span id="L220"><span class="lineNum">     220</span> <span class="tlaGNC">          30 :             ret.push_back(const_cast&lt;param_t *&gt;(p));</span></span>
+<span id="L221"><span class="lineNum">     221</span>              :         }</span>
+<span id="L222"><span class="lineNum">     222</span> <span class="tlaGNC">          10 :         return ret;</span></span>
+<span id="L223"><span class="lineNum">     223</span>              :     }</span>
+<span id="L224"><span class="lineNum">     224</span>              : </span>
+<span id="L225"><span class="lineNum">     225</span> <span class="tlaGNC">           5 :     std::vector&lt;const param_t *&gt; get_all_params(bool do_sort = false) const {</span></span>
+<span id="L226"><span class="lineNum">     226</span> <span class="tlaGNC">           5 :         std::vector&lt;const param_t *&gt; ret;</span></span>
+<span id="L227"><span class="lineNum">     227</span> <span class="tlaGNC">           5 :         ret.reserve(get_params_.size());</span></span>
+<span id="L228"><span class="lineNum">     228</span> <span class="tlaGNC">          35 :         for (auto &amp;gp : get_params_)</span></span>
+<span id="L229"><span class="lineNum">     229</span> <span class="tlaGNC">          30 :             ret.push_back(gp(this));</span></span>
+<span id="L230"><span class="lineNum">     230</span> <span class="tlaGNC">           5 :         if (do_sort) {</span></span>
+<span id="L231"><span class="lineNum">     231</span> <span class="tlaUNC">           0 :             std::sort(ret.begin(), ret.end(),</span></span>
+<span id="L232"><span class="lineNum">     232</span> <span class="tlaUNC">           0 :                     [this](const param_t *a, const param_t *b) {</span></span>
+<span id="L233"><span class="lineNum">     233</span> <span class="tlaUNC">           0 :                 return sort_key(a) &lt; sort_key(b);</span></span>
+<span id="L234"><span class="lineNum">     234</span>              :             });</span>
+<span id="L235"><span class="lineNum">     235</span>              :         }</span>
+<span id="L236"><span class="lineNum">     236</span> <span class="tlaGNC">           5 :         return ret;</span></span>
+<span id="L237"><span class="lineNum">     237</span>              :     }</span>
+<span id="L238"><span class="lineNum">     238</span>              : </span>
+<span id="L239"><span class="lineNum">     239</span> <span class="tlaUNC">           0 :     std::string get_config_line() const {</span></span>
+<span id="L240"><span class="lineNum">     240</span> <span class="tlaUNC">           0 :         ostringstream_t oss;</span></span>
+<span id="L241"><span class="lineNum">     241</span> <span class="tlaUNC">           0 :         auto params = get_all_params(/*do_sort=*/true);</span></span>
+<span id="L242"><span class="lineNum">     242</span> <span class="tlaUNC">           0 :         bool is_first = true;</span></span>
+<span id="L243"><span class="lineNum">     243</span> <span class="tlaUNC">           0 :         for (auto *p : params) {</span></span>
+<span id="L244"><span class="lineNum">     244</span> <span class="tlaUNC">           0 :             if (!p-&gt;is_overridable()) continue;</span></span>
+<span id="L245"><span class="lineNum">     245</span> <span class="tlaUNC">           0 :             auto keys = p-&gt;accepted_keys();</span></span>
+<span id="L246"><span class="lineNum">     246</span> <span class="tlaUNC">           0 :             for (auto &amp;k : keys) {</span></span>
+<span id="L247"><span class="lineNum">     247</span> <span class="tlaUNC">           0 :                 if (p-&gt;is_default(k)) continue;</span></span>
+<span id="L248"><span class="lineNum">     248</span> <span class="tlaUNC">           0 :                 if (!is_first) oss &lt;&lt; &quot; &quot;;</span></span>
+<span id="L249"><span class="lineNum">     249</span> <span class="tlaUNC">           0 :                 oss &lt;&lt; p-&gt;str(k);</span></span>
+<span id="L250"><span class="lineNum">     250</span> <span class="tlaUNC">           0 :                 is_first = false;</span></span>
+<span id="L251"><span class="lineNum">     251</span>              :             }</span>
+<span id="L252"><span class="lineNum">     252</span>              :         }</span>
+<span id="L253"><span class="lineNum">     253</span> <span class="tlaUNC">           0 :         return oss.str();</span></span>
+<span id="L254"><span class="lineNum">     254</span>              :     }</span>
+<span id="L255"><span class="lineNum">     255</span>              : };</span>
+<span id="L256"><span class="lineNum">     256</span>              : </span>
+<span id="L257"><span class="lineNum">     257</span>              : } // namespace intel</span>
+<span id="L258"><span class="lineNum">     258</span>              : } // namespace gpu</span>
+<span id="L259"><span class="lineNum">     259</span>              : } // namespace impl</span>
+<span id="L260"><span class="lineNum">     260</span>              : } // namespace dnnl</span>
+<span id="L261"><span class="lineNum">     261</span>              : </span>
+<span id="L262"><span class="lineNum">     262</span>              : #endif</span>
+        </pre>
+              </td>
+            </tr>
+          </table>
+          <br>
+
+          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+            <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+            <tr><td class="versionInfo">Generated by: <a href="https://github.com//linux-test-project/lcov" target="_parent">LCOV version 2.4-0</a></td></tr>
+          </table>
+          <br>
+
+</body>
+</html>
